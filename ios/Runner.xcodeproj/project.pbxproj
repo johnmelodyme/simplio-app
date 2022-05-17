@@ -286,6 +286,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = Runner;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Profile;
 		};
