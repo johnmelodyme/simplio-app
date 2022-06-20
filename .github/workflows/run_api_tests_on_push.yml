@@ -1,4 +1,4 @@
-name: Run unit & e2e tests
+name: Run api tests
 
 on:
   push:
