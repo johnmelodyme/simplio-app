@@ -6,6 +6,5 @@ on:
       - '*'
 jobs:
   run-tests:
-    uses: SimplioOfficial/simplio-app/.github/workflows/_api_tests.yml@insfrastructure/apiTests_Mario
-    with:
-      api-tests: true
+    uses: SimplioOfficial/simplio-app/.github/workflows/_api_tests.yml@feature/initial-infrastructure
+
