@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "e0cf8929-bce0-4891-8d73-dece31b983dc",
+		"name": "Simplio_Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateUser_new",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function randomString(minValue, maxValue, dataSet = 'abcdefghijklmnopqrstuvwxyz0123456789') {",
+							"    if (!minValue) {",
+							"        minValue = 20;",
+							"        maxValue = 20;",
+							"    }",
+							"",
+							"    if (!maxValue) {",
+							"        maxValue = minValue;",
+							"    }",
+							"",
+							"    let length = _.random(minValue, maxValue),",
+							"        randomString = \"\";",
+							"",
+							"    for (let i = 0; i < length; i++)",
+							"        randomString += dataSet.charAt(Math.floor(Math.random() * dataSet.length));",
+							"    return randomString;",
+							"}",
+							"",
+							"pm.variables.set('randomString', randomString());",
+							"pm.environment.set('randomString', randomString());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"  pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"API response contains the expected fields\", () => {",
+							"  const randomString = pm.variables.get(\"randomString\");",
+							"  const mail_domain = pm.variables.get(\"mail_domain\");",
+							"  const response = pm.response.json();",
+							"  // the line below checks value of the id field is 2 (number).",
+							"  pm.expect(response).to.have.property(\"nickName\", randomString );",
+							"",
+							"  // the line below checks value of the name field is Morty Smith (string).",
+							"  pm.expect(response).to.have.property(\"fullName\", randomString + mail_domain );",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "code",
+						"value": "UVPT9GLZKRooypGpg4lHzf6GffCP9TuTXUkrl0weRn4YAzFuuxmjsA%3D%3D",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"{{randomString}}{{mail_domain}}\",\n  \"password\": \"{{default_password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{protocol}}{{url_address}}/users/account?code={{header_code}}",
+					"host": [
+						"{{protocol}}{{url_address}}"
+					],
+					"path": [
+						"users",
+						"account"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "{{header_code}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUser_duplication",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 409\", function () {",
+							"  pm.response.to.have.status(409);",
+							"});",
+							"pm.test(\"API response contains the expected fields\", () => {",
+							"  const response = pm.response.json();",
+							"  // the line below checks value of the id field is 2 (number).",
+							"  pm.expect(response).to.have.property(\"code\", \"DUPLICATE\");",
+							"  });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"{{randomString}}@testmail.com\",\n  \"password\": \"zap!@wsxCDE\"\n}"
+				},
+				"url": {
+					"raw": "{{protocol}}{{url_address}}/users/account?code=UVPT9GLZKRooypGpg4lHzf6GffCP9TuTXUkrl0weRn4YAzFuuxmjsA%3D%3D",
+					"host": [
+						"{{protocol}}{{url_address}}"
+					],
+					"path": [
+						"users",
+						"account"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "UVPT9GLZKRooypGpg4lHzf6GffCP9TuTXUkrl0weRn4YAzFuuxmjsA%3D%3D"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "apiKey",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
