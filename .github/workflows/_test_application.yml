@@ -24,6 +24,7 @@ jobs:
         run: flutter analyze .
 
   tests:
+    if: ${{ inputs.unitTests }}
     runs-on: ubuntu-latest
     name: Unit tests
     needs: analyze-app
