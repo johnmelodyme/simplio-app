@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/model/asset_wallet.dart';
 
 class WalletListItem extends StatefulWidget {
-  final Wallet wallet;
+  final AssetWallet assetWallet;
   final GestureTapCallback onTap;
 
-  const WalletListItem({Key? key, required this.wallet, required this.onTap})
-      : super(key: key);
+  const WalletListItem(
+      {super.key, required this.assetWallet, required this.onTap});
 
   @override
   State<StatefulWidget> createState() => _WalletListItem();
@@ -26,9 +26,10 @@ class _WalletListItem extends State<WalletListItem> {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundColor: widget.wallet.project.primaryColor,
-                child: Icon(widget.wallet.project.icon, size: 18.0),
-                foregroundColor: widget.wallet.project.foregroundColor,
+                backgroundColor:
+                    widget.assetWallet.asset.detail.style.primaryColor,
+                foregroundColor:
+                    widget.assetWallet.asset.detail.style.foregroundColor,
               ),
               Padding(
                 padding:
@@ -37,12 +38,12 @@ class _WalletListItem extends State<WalletListItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.wallet.project.name,
+                      widget.assetWallet.asset.detail.name,
                       textScaleFactor: 1.2,
                     ),
-                    Opacity(
-                      opacity: 0.4,
-                      child: Text(widget.wallet.project.ticker.toUpperCase()),
+                    Text(
+                      widget.assetWallet.asset.detail.ticker.toUpperCase(),
+                      style: const TextStyle(color: Colors.black26),
                     ),
                   ],
                 ),
