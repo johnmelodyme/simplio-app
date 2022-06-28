@@ -139,6 +139,52 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GetToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": \"string\",\n  \"email\": \"shovax@poczta.fm\",\n  \"password\": \"Kruszynka1@\"\n}"
+				},
+				"url": {
+					"raw": "{{protocol}}{{url_address}}/users/token/issue?code={{header_code}}",
+					"host": [
+						"{{protocol}}{{url_address}}"
+					],
+					"path": [
+						"users",
+						"token",
+						"issue"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "{{header_code}}"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -169,6 +215,12 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BarerToken",
+			"value": ""
 		}
 	]
 }
