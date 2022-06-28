@@ -1,9 +1,8 @@
 name: Run api tests
 
 on:
-  push:
-    branches:
-      - '*'
+  push
+  
 jobs:
   run-tests:
     uses: SimplioOfficial/simplio-app/.github/workflows/_api_tests.yml@infrastructure/API_tests_Mario
