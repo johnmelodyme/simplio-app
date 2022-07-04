@@ -20,17 +20,34 @@ class WelcomeScreen extends StatelessWidget {
             ),
             Padding(
               padding: CommonTheme.paddingAll,
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(UnauthenticatedRoute.login);
-                  },
-                  child:
-                      Text(context.locale.enterApplicationLabel),
-                ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: CommonTheme.verticalPadding,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('Go to app'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: CommonTheme.bottomPadding,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(UnauthenticatedRoute.signIn);
+                        },
+                        child: const Text('Sign in'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
+            )
           ],
         ),
       ),
