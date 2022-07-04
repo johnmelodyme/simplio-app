@@ -18,8 +18,6 @@ class PortfolioScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         title: AppBarSearch<String>(
           delegate: _AssetSearchDelegate.of(context),
           label: context.locale.searchAllAssetsInputLabel,
@@ -35,7 +33,6 @@ class PortfolioScreen extends StatelessWidget {
                 ? Center(
                     child: Text(
                       context.locale.noWalletsLabel,
-                      style: const TextStyle(color: Colors.black26),
                     ),
                   )
                 : ListView.builder(
@@ -70,16 +67,6 @@ class _AssetSearchDelegate extends SearchDelegate<String> {
 
   @override
   String? get searchFieldLabel => context.locale.searchAllAssetsInputLabel;
-
-  @override
-  ThemeData appBarTheme(_) => Theme.of(context).copyWith(
-        inputDecorationTheme: const InputDecorationTheme(
-          border: InputBorder.none,
-          hintStyle: TextStyle(
-            fontSize: 16.0,
-          ),
-        ),
-      );
 
   @override
   List<Widget>? buildActions(_) => [];

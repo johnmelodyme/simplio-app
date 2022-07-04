@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
@@ -14,7 +15,8 @@ import 'package:simplio_app/view/routes/authenticated_route.dart';
 import 'package:simplio_app/view/routes/guards/auth_guard.dart';
 import 'package:simplio_app/view/routes/unauthenticated_route.dart';
 import 'package:simplio_app/view/screens/authenticated_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simplio_app/view/themes/dark_mode.dart';
+import 'package:simplio_app/view/themes/light_mode.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,60 +83,69 @@ class _SimplioAppState extends State<SimplioApp> {
         ],
         child: BlocBuilder<AccountCubit, AccountState>(
           buildWhen: (previous, current) =>
-              previous.account?.settings.locale.languageCode != null &&
-              previous.account?.settings.locale.languageCode !=
-                  current.account?.settings.locale.languageCode,
-          builder: (context, state) => MaterialApp(
-            onGenerateTitle: (context) => context.locale.simplioTitle,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            locale: state.account?.settings.locale ??
-                const AccountSettings.preset().locale,
-            theme: ThemeData(
-              backgroundColor: Colors.white,
-              scaffoldBackgroundColor: Colors.white,
-              unselectedWidgetColor: Colors.black38,
-              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                unselectedItemColor: Colors.black38,
-                selectedItemColor: Colors.blue,
-                selectedLabelStyle: TextStyle(
-                  color: Colors.red,
-                ),
-                backgroundColor: Color.fromRGBO(255, 255, 255, 0.96),
-              ),
-              appBarTheme: const AppBarTheme(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.white,
-                elevation: 0.3,
-              ),
-            ),
-            home: AuthGuard(
-              onAuthenticated: (context, state) {
-                return Builder(
-                  builder: (context) {
-                    context.read<AccountCubit>().loadAccount(state.accountId);
+              _languageChangeCondition(previous, current) ||
+              _themeChangeCondition(previous, current),
+          builder: (context, state) {
+            // set default system bar color
+            if (state.account?.settings.themeMode == null) {
+              SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+            } else {
+              SystemChrome.setSystemUIOverlayStyle(
+                  state.account?.settings.themeMode == ThemeMode.dark
+                      ? SystemUiOverlayStyle.light
+                      : SystemUiOverlayStyle.dark);
+            }
 
-                    return AuthenticatedScreen(
-                      navigatorKey: AuthenticatedRoute.key,
-                      initialRoute: AuthenticatedRoute.home,
-                      onGenerateRoute: _authenticatedRouter.generateRoute,
-                    );
-                  },
-                );
-              },
-              onUnauthenticated: (context) {
-                context.read<AccountCubit>().clearAccount();
+            return MaterialApp(
+              onGenerateTitle: (context) => context.locale.simplioTitle,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: state.account?.settings.locale ??
+                  const AccountSettings.preset().locale,
+              themeMode: state.account?.settings.themeMode ??
+                  const AccountSettings.preset().themeMode,
+              theme: LightMode.theme,
+              darkTheme: DarkMode.theme,
+              home: AuthGuard(
+                onAuthenticated: (context, state) {
+                  return Builder(
+                    builder: (context) {
+                      context.read<AccountCubit>().loadAccount(state.accountId);
 
-                return Navigator(
-                  key: UnauthenticatedRoute.key,
-                  initialRoute: UnauthenticatedRoute.home,
-                  onGenerateRoute: _unauthenticatedRouter.generateRoute,
-                );
-              },
-            ),
-          ),
+                      return AuthenticatedScreen(
+                        navigatorKey: AuthenticatedRoute.key,
+                        initialRoute: AuthenticatedRoute.home,
+                        onGenerateRoute: _authenticatedRouter.generateRoute,
+                      );
+                    },
+                  );
+                },
+                onUnauthenticated: (context) {
+                  context.read<AccountCubit>().clearAccount();
+
+                  return Navigator(
+                    key: UnauthenticatedRoute.key,
+                    initialRoute: UnauthenticatedRoute.home,
+                    onGenerateRoute: _unauthenticatedRouter.generateRoute,
+                  );
+                },
+              ),
+            );
+          },
         ),
       ),
     );
+  }
+
+  bool _languageChangeCondition(AccountState previous, AccountState current) {
+    return previous.account?.settings.locale.languageCode != null &&
+        previous.account?.settings.locale.languageCode !=
+            current.account?.settings.locale.languageCode;
+  }
+
+  bool _themeChangeCondition(AccountState previous, AccountState current) {
+    return previous.account?.settings.themeMode != null &&
+        previous.account?.settings.themeMode !=
+            current.account?.settings.themeMode;
   }
 }
