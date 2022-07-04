@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/authenticated_route.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class DashboardScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Games'),
+                      Text(context.locale.gamesLabel),
                       Container(
                         alignment: Alignment.bottomRight,
                         child: const Icon(

@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:simplio_app/data/model/account.dart';
+import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_wallet_repository.dart';
@@ -41,10 +43,30 @@ class AccountCubit extends Cubit<AccountState> {
     return account;
   }
 
+  void clearAccount() {
+    emit(AccountState.value(
+      account: Account.builder(
+          id: '0',
+          secret: LockableSecret.from(secret: ''),
+          refreshToken: '',
+          lastLogin: DateTime(0),
+          settings: state.account?.settings ?? const AccountSettings.preset()),
+      assetWallets: const [],
+    ));
+  }
+
   Future<void> updateAccount(Account account) async {
     final savedAccount = await _accountRepository.save(account);
 
     emit(state.copyWith(account: savedAccount));
+  }
+
+  Future<void> setLanguage(String languageCode) async {
+    var account = state.account?.copyWith(
+        settings:
+            state.account?.settings.copyFrom(locale: Locale(languageCode)));
+
+    if (account != null) return updateAccount(account);
   }
 
   Future<void> enableAssetWallet(String assetId) async {
