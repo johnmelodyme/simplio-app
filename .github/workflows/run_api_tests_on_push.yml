@@ -1,9 +1,0 @@
-name: Run api tests
-
-on:
-  workflow_dispatch:
-  
-jobs:
-  run-tests:
-    uses: SimplioOfficial/simplio-app/.github/workflows/_api_tests.yml@task/106-remove_generated_files_from_git
-

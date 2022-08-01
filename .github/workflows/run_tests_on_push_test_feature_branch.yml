@@ -1,7 +1,12 @@
-name: Run unit & e2e tests
+name: Run e2e and unit tests in all test/feature/task branches
 
 on:
-  pull_request:
+  push:
+    branches:
+      - 'test/**'
+      - 'feature/**'
+      - 'task/**'
+  workflow_dispatch:
 
 jobs:
   run-tests:

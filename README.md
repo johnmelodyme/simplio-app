@@ -17,3 +17,8 @@ API_KEY and API_URL in your `.bashrc` or `.zshrc` file. See `run.sh` for details
 ```bash
 flutter packages pub run build_runner build
 ```
+
+## Available parameters
+* --dart-define=API_URL=PLACEHOLDER_URL
+* --dart-define=API_KEY=PLACEHOLDER_KEY
+* --dart-define=TEST_RUN=true / false

@@ -14,7 +14,7 @@ class OnboardingScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Story(
-          repeat: true,
+          repeat: !const bool.fromEnvironment('TEST_RUN'),
           itemDuration: const Duration(seconds: 2),
           items: [
             Container(
