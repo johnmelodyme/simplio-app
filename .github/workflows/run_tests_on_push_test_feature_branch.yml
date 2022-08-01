@@ -10,7 +10,7 @@ on:
 
 jobs:
   run-tests:
-    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@task/104_cleaning_test_structure
+    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@test/fix_source_branch_in_build_workflows
     with:
       e2e: true
       unitTests: true
