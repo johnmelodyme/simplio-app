@@ -58,3 +58,7 @@ http_testing
 
 # IDE config files
 .vscode
+
+# Generated files
+*.g.dart
+*.chopper.dart

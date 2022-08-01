@@ -61,7 +61,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: $FLUTTER_VERSION
-      - run: flutter pub get
+      - uses: actions/download-artifact@v3
+        with:
+          name: generated-files-and-packages
 
       - name: Write version to the version.yml
         if: ${{ inputs.environment == 'production' }}

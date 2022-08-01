@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
+part 'custom_wallet.g.dart';
+
 @HiveType(typeId: 6)
 class CustomWallet extends HiveObject {
   @HiveField(0)

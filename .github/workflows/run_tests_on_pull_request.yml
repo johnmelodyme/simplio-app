@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-tests:
-    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@master
+    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@task/106-remove_generated_files_from_git
     with:
       e2e: true
       unitTests: true
