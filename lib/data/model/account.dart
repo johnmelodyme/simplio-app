@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:simplio_app/data/mixins/aes_encryption_mixin.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/data/model/account_wallet.dart';
+import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 part 'account.g.dart';
 
@@ -77,6 +78,16 @@ class Account extends Equatable {
   AccountWallet? get accountWallet {
     if (wallets.isNotEmpty) return wallets.first;
     return null;
+  }
+
+  HDWallet? get trustWallet {
+    String mnemonic = wallets
+        .firstWhere(
+            (element) => element.walletType == AccountWalletTypes.hdWallet)
+        .seed
+        .toString();
+
+    return HDWallet.createWithMnemonic(mnemonic);
   }
 }
 

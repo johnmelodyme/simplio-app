@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/auth_bloc/auth_bloc.dart';
 import 'package:simplio_app/logic/auth_form_cubit/auth_form_cubit.dart';
 import 'package:simplio_app/view/routes/unauthenticated_route.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
@@ -21,13 +20,16 @@ class SignUpScreen extends StatelessWidget {
       listener: (context, state) {
         final res = state.response;
 
-        if (res is SignInFormSuccess) {
-          context
-              .read<AuthBloc>()
-              .add(GotAuthenticated(accountId: res.account.id));
+        if (res is SignUpFormSuccess) {
+          Navigator.of(context)
+              .pushReplacementNamed(UnauthenticatedRoute.setupPin);
         }
 
-        if (res is SignInFormFailure) {
+        if (res is SignUpFormPending) {
+          // todo: add some notification for the user about pending email verification
+        }
+
+        if (res is SignUpFormFailure) {
           //  TODO: Implement logic for failure.
         }
       },
@@ -150,8 +152,9 @@ class SignUpScreen extends StatelessWidget {
                                   .state
                                   .signUpForm
                                   .isValid) {
-                                Navigator.of(context).pushReplacementNamed(
-                                    UnauthenticatedRoute.setupPin);
+                                await context
+                                    .read<AuthFormCubit>()
+                                    .requestSignUp();
                               } else {
                                 formKey.currentState!.validate();
                               }

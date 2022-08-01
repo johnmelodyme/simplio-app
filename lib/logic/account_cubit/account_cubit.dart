@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
+import 'package:simplio_app/data/model/account_wallet.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_wallet_repository.dart';
@@ -80,6 +81,24 @@ class AccountCubit extends Cubit<AccountState> {
           signedIn: state.account!.signedIn,
           settings: state.account!.settings,
           wallets: state.account!.wallets);
+
+      return updateAccount(account);
+    }
+  }
+
+  Future<void> updateHDWalletSeed(String seed) async {
+    if (state.account != null) {
+      var account = state.account!.copyWith(
+          wallets: state.account!.wallets
+              .map((e) => e.walletType == AccountWalletTypes.hdWallet
+                  ? e.copyWith(
+                      seed: LockableSeed.from(
+                      mnemonic: seed,
+                      isImported: true,
+                      isBackedUp: true,
+                    ))
+                  : e)
+              .toList());
 
       return updateAccount(account);
     }

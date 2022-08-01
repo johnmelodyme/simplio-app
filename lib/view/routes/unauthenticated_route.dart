@@ -13,10 +13,10 @@ class UnauthenticatedRoute {
   );
 
   static const String home = '/';
-  static const String signIn = '/signIn';
-  static const String signUp = '/signUp';
+  static const String signIn = '/sign-in';
+  static const String signUp = '/sign-up';
   static const String setupPin = '/setup-pin';
-  static const String passwordReset = '/passwordReset';
+  static const String passwordReset = '/password-reset';
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {

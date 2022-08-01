@@ -41,12 +41,13 @@ class AccountWallet extends Equatable {
   AccountWallet copyWith({
     String? name,
     DateTime? updatedAt,
+    LockableSeed? seed,
   }) {
     return AccountWallet._(
       name: name ?? this.name,
       uuid: uuid,
       accountId: accountId,
-      seed: seed,
+      seed: seed ?? this.seed,
       walletType: walletType,
       updatedAt: updatedAt ?? this.updatedAt,
     );

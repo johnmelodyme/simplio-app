@@ -25,6 +25,7 @@ import 'package:simplio_app/view/screens/authenticated_screen.dart';
 import 'package:simplio_app/view/screens/splash_screen.dart';
 import 'package:simplio_app/view/themes/dark_mode.dart';
 import 'package:simplio_app/view/themes/light_mode.dart';
+import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 import 'data/http_clients/public_http_client.dart';
 
@@ -140,10 +141,11 @@ class _SimplioAppState extends State<SimplioApp> {
               darkTheme: DarkMode.theme,
               home: SplashScreen(
                 // prepared for some future data loading or similar stuff
-                loadingFunction: () => Future.delayed(
-                  const Duration(milliseconds: 1500),
-                  () => _routeGuard(),
-                ),
+                loadingFunction: () async {
+                  TrustWalletCoreLib.init();
+                  return Future.delayed(
+                      const Duration(milliseconds: 1500), () => _routeGuard());
+                },
               ),
             );
           },

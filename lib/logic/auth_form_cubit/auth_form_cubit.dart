@@ -68,7 +68,8 @@ class AuthFormCubit extends Cubit<AuthFormState> {
     try {
       final login = state.signInForm.login.toString();
       final password = state.signInForm.password.toString();
-      final account = await _authRepository.signIn(login, password);
+      final account =
+          await _authRepository.signIn(login: login, password: password);
 
       emit(state.copyWith(
         response: SignInFormSuccess(account: account),
@@ -86,10 +87,14 @@ class AuthFormCubit extends Cubit<AuthFormState> {
     ));
 
     try {
-      await _authRepository.signUp(
-        state.signUpForm.login.toString(),
-        state.signUpForm.password.toString(),
-      );
+      final login = state.signUpForm.login.toString();
+      final password = state.signUpForm.password.toString();
+
+      await _authRepository.signUp(login, password);
+
+      // wait until email is confirmed
+      await _authRepository.signIn(
+          login: login, password: password, repeat: true);
 
       emit(state.copyWith(
         response: const SignUpFormSuccess(),
