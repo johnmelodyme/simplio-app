@@ -18,6 +18,7 @@ import 'package:simplio_app/data/services/sign_up_service.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/account_cubit/account_cubit.dart';
 import 'package:simplio_app/logic/auth_bloc/auth_bloc.dart';
+import 'package:simplio_app/logic/loading_cubit/loading_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_route.dart';
 import 'package:simplio_app/view/routes/guards/auth_guard.dart';
 import 'package:simplio_app/view/routes/unauthenticated_route.dart';
@@ -32,54 +33,12 @@ import 'data/http_clients/public_http_client.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.initFlutter();
-
-  /// Initialize all top-level Hive Db Providers
-  final accountDbProvider = AccountDbProvider();
-  final assetWalletDbProvider = AssetWalletDbProvider();
-  final authTokenDbProvider = AuthTokenDbProvider();
-
-  await accountDbProvider.init();
-  await assetWalletDbProvider.init();
-  await authTokenDbProvider.init();
-
-  /// Init http client
-  const apiUrl = String.fromEnvironment('API_URL');
-  final publicApi = PublicHttpClient.builder(apiUrl);
-  final securedApi = SecuredHttpClient.builder(
-    apiUrl,
-    authTokenStorage: authTokenDbProvider,
-    refreshTokenService: publicApi.service<RefreshTokenService>(),
-  );
-
-  runApp(SimplioApp(
-    accountRepository: AccountRepository.builder(
-      db: accountDbProvider,
-    ),
-    assetWalletRepository: AssetWalletRepository.builder(
-      db: assetWalletDbProvider,
-    ),
-    authRepository: AuthRepository.builder(
-      db: accountDbProvider,
-      authTokenStorage: authTokenDbProvider,
-      signInService: publicApi.service<SignInService>(),
-      signUpService: publicApi.service<SignUpService>(),
-      passwordChangeService: securedApi.service<PasswordChangeService>(),
-      passwordResetService: publicApi.service<PasswordResetService>(),
-    ),
-  ));
+  runApp(const SimplioApp());
 }
 
 class SimplioApp extends StatefulWidget {
-  final AccountRepository accountRepository;
-  final AssetWalletRepository assetWalletRepository;
-  final AuthRepository authRepository;
-
   const SimplioApp({
     super.key,
-    required this.accountRepository,
-    required this.assetWalletRepository,
-    required this.authRepository,
   });
 
   @override
@@ -90,13 +49,42 @@ class _SimplioAppState extends State<SimplioApp> {
   final UnauthenticatedRoute _unauthenticatedRouter = UnauthenticatedRoute();
   final AuthenticatedRoute _authenticatedRouter = AuthenticatedRoute();
 
+  late AccountRepository accountRepository;
+  late AssetWalletRepository assetWalletRepository;
+  late AuthRepository authRepository;
+
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LoadingCubit.builder(),
+      child: BlocBuilder<LoadingCubit, LoadingState>(
+        buildWhen: (prev, curr) =>
+            prev.displaySplashScreen != curr.displaySplashScreen,
+        builder: (context, state) => state.displaySplashScreen
+            ? SplashScreen(loadingFunction: _appInitializationActions)
+            : _mainApp(),
+      ),
+    );
+  }
+
+  bool _languageChangeCondition(AccountState previous, AccountState current) {
+    return previous.account?.settings.locale.languageCode != null &&
+        previous.account?.settings.locale.languageCode !=
+            current.account?.settings.locale.languageCode;
+  }
+
+  bool _themeChangeCondition(AccountState previous, AccountState current) {
+    return previous.account?.settings.themeMode != null &&
+        previous.account?.settings.themeMode !=
+            current.account?.settings.themeMode;
+  }
+
+  Widget _mainApp() {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider.value(value: widget.accountRepository),
-        RepositoryProvider.value(value: widget.assetWalletRepository),
-        RepositoryProvider.value(value: widget.authRepository),
+        RepositoryProvider.value(value: accountRepository),
+        RepositoryProvider.value(value: assetWalletRepository),
+        RepositoryProvider.value(value: authRepository),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -115,55 +103,36 @@ class _SimplioAppState extends State<SimplioApp> {
           ),
         ],
         child: BlocBuilder<AccountCubit, AccountState>(
-          buildWhen: (previous, current) =>
-              _languageChangeCondition(previous, current) ||
-              _themeChangeCondition(previous, current),
-          builder: (context, state) {
-            // set default system bar color
-            if (state.account?.settings.themeMode == null) {
-              SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-            } else {
-              SystemChrome.setSystemUIOverlayStyle(
-                  state.account?.settings.themeMode == ThemeMode.dark
-                      ? SystemUiOverlayStyle.light
-                      : SystemUiOverlayStyle.dark);
-            }
+            buildWhen: (previous, current) =>
+                _languageChangeCondition(previous, current) ||
+                _themeChangeCondition(previous, current),
+            builder: (context, state) {
+              // set default system bar color
+              if (state.account?.settings.themeMode == null) {
+                SystemChrome.setSystemUIOverlayStyle(
+                    SystemUiOverlayStyle.light);
+              } else {
+                SystemChrome.setSystemUIOverlayStyle(
+                    state.account?.settings.themeMode == ThemeMode.dark
+                        ? SystemUiOverlayStyle.light
+                        : SystemUiOverlayStyle.dark);
+              }
 
-            return MaterialApp(
-              onGenerateTitle: (context) => context.locale.simplioTitle,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: state.account?.settings.locale ??
-                  const AccountSettings.preset().locale,
-              themeMode: state.account?.settings.themeMode ??
-                  const AccountSettings.preset().themeMode,
-              theme: LightMode.theme,
-              darkTheme: DarkMode.theme,
-              home: SplashScreen(
-                // prepared for some future data loading or similar stuff
-                loadingFunction: () async {
-                  TrustWalletCoreLib.init();
-                  return Future.delayed(
-                      const Duration(milliseconds: 1500), () => _routeGuard());
-                },
-              ),
-            );
-          },
-        ),
+              return MaterialApp(
+                onGenerateTitle: (context) => context.locale.simplioTitle,
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: state.account?.settings.locale ??
+                    const AccountSettings.preset().locale,
+                themeMode: state.account?.settings.themeMode ??
+                    const AccountSettings.preset().themeMode,
+                theme: LightMode.theme,
+                darkTheme: DarkMode.theme,
+                home: _routeGuard(),
+              );
+            }),
       ),
     );
-  }
-
-  bool _languageChangeCondition(AccountState previous, AccountState current) {
-    return previous.account?.settings.locale.languageCode != null &&
-        previous.account?.settings.locale.languageCode !=
-            current.account?.settings.locale.languageCode;
-  }
-
-  bool _themeChangeCondition(AccountState previous, AccountState current) {
-    return previous.account?.settings.themeMode != null &&
-        previous.account?.settings.themeMode !=
-            current.account?.settings.themeMode;
   }
 
   Widget _routeGuard() {
@@ -191,5 +160,47 @@ class _SimplioAppState extends State<SimplioApp> {
         );
       },
     );
+  }
+
+  Future<void> _appInitializationActions() async {
+    await Hive.initFlutter();
+
+    /// Initialize all top-level Hive Db Providers
+    final accountDbProvider = AccountDbProvider();
+    final assetWalletDbProvider = AssetWalletDbProvider();
+    final authTokenDbProvider = AuthTokenDbProvider();
+
+    await accountDbProvider.init();
+    await assetWalletDbProvider.init();
+    await authTokenDbProvider.init();
+
+    /// Init http client
+    const apiUrl = String.fromEnvironment('API_URL');
+    final publicApi = PublicHttpClient.builder(apiUrl);
+    final securedApi = SecuredHttpClient.builder(
+      apiUrl,
+      authTokenStorage: authTokenDbProvider,
+      refreshTokenService: publicApi.service<RefreshTokenService>(),
+    );
+
+    accountRepository = AccountRepository.builder(
+      db: accountDbProvider,
+    );
+    assetWalletRepository = AssetWalletRepository.builder(
+      db: assetWalletDbProvider,
+    );
+    authRepository = AuthRepository.builder(
+      db: accountDbProvider,
+      authTokenStorage: authTokenDbProvider,
+      signInService: publicApi.service<SignInService>(),
+      signUpService: publicApi.service<SignUpService>(),
+      passwordChangeService: securedApi.service<PasswordChangeService>(),
+      passwordResetService: publicApi.service<PasswordResetService>(),
+    );
+
+    TrustWalletCoreLib.init();
+
+    // todo: remove before release
+    await Future.delayed(const Duration(milliseconds: 1500));
   }
 }
