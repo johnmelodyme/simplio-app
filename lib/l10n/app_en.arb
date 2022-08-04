@@ -47,6 +47,11 @@
 
     "accountCreationBeforePinSetup":"Done! \n One last thing to do",
     "setPinLabel":"Set your security code to keep your account secure",
+    "protectedLabel": "Enter your pin code.",
+    "protectedErrorRemaining": "You have remaining attempts:",
+    "protectedErrorLast": "This is your last chance",
     "accountCreatedLabel":"Hurray! \n Your account have been created",
-    "accountCreatedDescriptionLabel":"Before you start, we suggest you\n verify your account due to the use\n of all functionalities and full\n security of your Simplio app."
+    "accountCreatedDescriptionLabel":"Before you start, we suggest you\n verify your account due to the use\n of all functionalities and full\n security of your Simplio app.",
+    "accountCreatedVerifyButton": "Verify your account to get more",
+    "accountCreatedStartButton": "Start using app"
 }

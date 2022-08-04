@@ -1,34 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:simplio_app/data/http_clients/secured_http_client.dart';
-import 'package:simplio_app/data/model/account_settings.dart';
+import 'package:simplio_app/data/http/clients/public_http_client.dart';
+import 'package:simplio_app/data/http/clients/secured_http_client.dart';
+import 'package:simplio_app/data/http/services/password_change_service.dart';
+import 'package:simplio_app/data/http/services/password_reset_service.dart';
+import 'package:simplio_app/data/http/services/refresh_token_service.dart';
+import 'package:simplio_app/data/http/services/sign_in_service.dart';
+import 'package:simplio_app/data/http/services/sign_up_service.dart';
 import 'package:simplio_app/data/providers/account_db_provider.dart';
 import 'package:simplio_app/data/providers/asset_wallet_db_provider.dart';
 import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_wallet_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
-import 'package:simplio_app/data/services/password_change_service.dart';
-import 'package:simplio_app/data/services/password_reset_service.dart';
-import 'package:simplio_app/data/services/refresh_token_service.dart';
-import 'package:simplio_app/data/services/sign_in_service.dart';
-import 'package:simplio_app/data/services/sign_up_service.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/account_cubit/account_cubit.dart';
-import 'package:simplio_app/logic/auth_bloc/auth_bloc.dart';
-import 'package:simplio_app/logic/loading_cubit/loading_cubit.dart';
-import 'package:simplio_app/view/routes/authenticated_route.dart';
+import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
+import 'package:simplio_app/logic/cubit/loading/loading_cubit.dart';
+import 'package:simplio_app/view/authenticated_app.dart';
 import 'package:simplio_app/view/routes/guards/auth_guard.dart';
-import 'package:simplio_app/view/routes/unauthenticated_route.dart';
-import 'package:simplio_app/view/screens/authenticated_screen.dart';
 import 'package:simplio_app/view/screens/splash_screen.dart';
-import 'package:simplio_app/view/themes/dark_mode.dart';
-import 'package:simplio_app/view/themes/light_mode.dart';
-import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
-
-import 'data/http_clients/public_http_client.dart';
+import 'package:simplio_app/view/unauthenticated_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,18 +28,13 @@ Future<void> main() async {
 }
 
 class SimplioApp extends StatefulWidget {
-  const SimplioApp({
-    super.key,
-  });
+  const SimplioApp({super.key});
 
   @override
   State<SimplioApp> createState() => _SimplioAppState();
 }
 
 class _SimplioAppState extends State<SimplioApp> {
-  final UnauthenticatedRoute _unauthenticatedRouter = UnauthenticatedRoute();
-  final AuthenticatedRoute _authenticatedRouter = AuthenticatedRoute();
-
   late AccountRepository accountRepository;
   late AssetWalletRepository assetWalletRepository;
   late AuthRepository authRepository;
@@ -67,18 +53,6 @@ class _SimplioAppState extends State<SimplioApp> {
     );
   }
 
-  bool _languageChangeCondition(AccountState previous, AccountState current) {
-    return previous.account?.settings.locale.languageCode != null &&
-        previous.account?.settings.locale.languageCode !=
-            current.account?.settings.locale.languageCode;
-  }
-
-  bool _themeChangeCondition(AccountState previous, AccountState current) {
-    return previous.account?.settings.themeMode != null &&
-        previous.account?.settings.themeMode !=
-            current.account?.settings.themeMode;
-  }
-
   Widget _mainApp() {
     return MultiRepositoryProvider(
       providers: [
@@ -93,72 +67,18 @@ class _SimplioAppState extends State<SimplioApp> {
               authRepository: RepositoryProvider.of<AuthRepository>(context),
             )..add(GotLastAuthenticated()),
           ),
-          BlocProvider(
-            create: (context) => AccountCubit.builder(
-              accountRepository:
-                  RepositoryProvider.of<AccountRepository>(context),
-              assetWalletRepository:
-                  RepositoryProvider.of<AssetWalletRepository>(context),
-            ),
-          ),
         ],
-        child: BlocBuilder<AccountCubit, AccountState>(
-            buildWhen: (previous, current) =>
-                _languageChangeCondition(previous, current) ||
-                _themeChangeCondition(previous, current),
-            builder: (context, state) {
-              // set default system bar color
-              if (state.account?.settings.themeMode == null) {
-                SystemChrome.setSystemUIOverlayStyle(
-                    SystemUiOverlayStyle.light);
-              } else {
-                SystemChrome.setSystemUIOverlayStyle(
-                    state.account?.settings.themeMode == ThemeMode.dark
-                        ? SystemUiOverlayStyle.light
-                        : SystemUiOverlayStyle.dark);
-              }
-
-              return MaterialApp(
-                onGenerateTitle: (context) => context.locale.simplioTitle,
-                localizationsDelegates: context.localizationDelegates,
-                supportedLocales: context.supportedLocales,
-                locale: state.account?.settings.locale ??
-                    const AccountSettings.preset().locale,
-                themeMode: state.account?.settings.themeMode ??
-                    const AccountSettings.preset().themeMode,
-                theme: LightMode.theme,
-                darkTheme: DarkMode.theme,
-                home: _routeGuard(),
-              );
-            }),
-      ),
-    );
-  }
-
-  Widget _routeGuard() {
-    return AuthGuard(
-      onAuthenticated: (context, state) {
-        return Builder(
-          builder: (context) {
-            context.read<AccountCubit>().loadAccount(state.accountId);
-
-            return AuthenticatedScreen(
-              navigatorKey: AuthenticatedRoute.key,
-              initialRoute: AuthenticatedRoute.home,
-              onGenerateRoute: _authenticatedRouter.generateRoute,
+        child: AuthGuard(
+          onAuthenticated: (context, authState) {
+            return AuthenticatedApp(
+              accountId: authState.accountId,
             );
           },
-        );
-      },
-      onUnauthenticated: (context) {
-        context.read<AccountCubit>().clearAccount();
-
-        return Navigator(
-          key: UnauthenticatedRoute.key,
-          initialRoute: UnauthenticatedRoute.home,
-          onGenerateRoute: _unauthenticatedRouter.generateRoute,
-        );
-      },
+          onUnauthenticated: (context) {
+            return const UnauthenticatedApp();
+          },
+        ),
+      ),
     );
   }
 
@@ -197,10 +117,5 @@ class _SimplioAppState extends State<SimplioApp> {
       passwordChangeService: securedApi.service<PasswordChangeService>(),
       passwordResetService: publicApi.service<PasswordResetService>(),
     );
-
-    TrustWalletCoreLib.init();
-
-    // todo: remove before release
-    await Future.delayed(const Duration(milliseconds: 1500));
   }
 }

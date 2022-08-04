@@ -92,13 +92,15 @@ class LockableSeed with AesEncryption {
 
   String unlock(String key) {
     if (!_isLocked) return _mnemonic;
-    return decrypt(key, _mnemonic);
+    // TODO - Change IV value!
+    return decrypt(key, '', _mnemonic);
   }
 
   LockableSeed lock(String key) {
     if (_isLocked) return this;
 
-    _mnemonic = encrypt(key, _mnemonic);
+    // TODO - Change IV value!
+    _mnemonic = encrypt(key, '', _mnemonic);
     _isLocked = true;
 
     return this;

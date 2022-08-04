@@ -1,18 +1,17 @@
-import 'package:simplio_app/data/http_clients/secured_http_client.dart';
+import 'package:simplio_app/data/http/services/password_change_service.dart';
+import 'package:simplio_app/data/http/services/password_reset_service.dart';
+import 'package:simplio_app/data/http/services/sign_in_service.dart';
+import 'package:simplio_app/data/http/services/sign_up_service.dart';
 import 'package:simplio_app/data/mixins/jwt_mixin.dart';
 import 'package:simplio_app/data/model/account.dart';
-import 'package:simplio_app/data/model/account_wallet.dart';
 import 'package:simplio_app/data/model/auth_token.dart';
+import 'package:simplio_app/data/model/lockable_string.dart';
 import 'package:simplio_app/data/providers/account_db_provider.dart';
-import 'package:simplio_app/data/services/password_reset_service.dart';
-import 'package:simplio_app/data/services/sign_in_service.dart';
-import 'package:simplio_app/data/services/password_change_service.dart';
-import 'package:simplio_app/data/services/sign_up_service.dart';
-import 'package:sio_core/sio_core.dart' as sio;
+import 'package:simplio_app/data/providers/storage_provider.dart';
 
 class AuthRepository with JwtMixin {
   final AccountDbProvider _db;
-  final AuthTokenStorage _authTokenStorage;
+  final StorageProvider<AuthToken> _authTokenStorage;
   final SignInService _signInService;
   final SignUpService _signUpService;
   final PasswordChangeService _passwordChangeService;
@@ -29,7 +28,7 @@ class AuthRepository with JwtMixin {
 
   const AuthRepository.builder({
     required AccountDbProvider db,
-    required AuthTokenStorage authTokenStorage,
+    required StorageProvider<AuthToken> authTokenStorage,
     required SignInService signInService,
     required SignUpService signUpService,
     required PasswordChangeService passwordChangeService,
@@ -60,18 +59,13 @@ class AuthRepository with JwtMixin {
     ));
 
     if (response.isSuccessful) {
-      return await signIn(login: email, password: password, repeat: true);
+      return await signIn(email, password);
     }
 
     throw Exception("Sign up has failed");
   }
 
-  Future<Account> signIn({
-    required String login,
-    required String password,
-    bool repeat = false,
-    Duration delay = const Duration(seconds: 3),
-  }) async {
+  Future<Account> signIn(String login, String password) async {
     try {
       final response = await _signInService
           .signIn(SignInBody(email: login, password: password));
@@ -79,11 +73,13 @@ class AuthRepository with JwtMixin {
       final body = response.body;
 
       if (response.isSuccessful && body != null) {
+        const accountIdKey = 'sub';
         final decodedIdToken = parseJwt(body.idToken);
 
-        decodedIdToken.containsKey("name");
-        if (!decodedIdToken.containsKey('name')) {
-          throw Exception("Provided IdToken has missing 'name' field.");
+        decodedIdToken.containsKey(accountIdKey);
+        if (!decodedIdToken.containsKey(accountIdKey)) {
+          throw Exception(
+              "Provided IdToken has missing '$accountIdKey' field.");
         }
 
         await _authTokenStorage.save(AuthToken(
@@ -92,45 +88,21 @@ class AuthRepository with JwtMixin {
           accessToken: body.accessToken,
         ));
 
-        final userId = decodedIdToken['name'];
-        final acc = _db.get(userId);
+        final accountId = decodedIdToken[accountIdKey];
+        final acc = _db.get(accountId);
 
         if (acc != null) {
           return await _db.save(acc.copyWith(
             signedIn: DateTime.now(),
+            securityAttempts: securityAttemptsLimit,
           ));
         }
 
-        // setup initial values in the database
-        return await _db.save(Account.builder(
-          id: userId,
-          secret: LockableSecret.generate(),
-          refreshToken: '',
+        return await _db.save(Account.registered(
+          id: accountId,
+          secret: LockableString.generate(),
           signedIn: DateTime.now(),
-          wallets: [
-            AccountWallet.builder(
-              name: 'trust-wallet',
-              accountId: userId,
-              walletType: AccountWalletTypes.hdWallet,
-              seed: LockableSeed.from(
-                mnemonic:
-                    sio.Mnemonic().generate, // generate seed for the new user
-                isImported: false,
-                isBackedUp: false,
-                isLocked: false, // todo: needs to be locked with pin
-              ),
-              updatedAt: DateTime.now(),
-            ),
-          ],
         ));
-      } else if (repeat) {
-        return Future.delayed(
-            delay,
-            () => signIn(
-                login: login,
-                password: password,
-                repeat: repeat,
-                delay: delay));
       }
 
       // TODO: Provide with a custom error

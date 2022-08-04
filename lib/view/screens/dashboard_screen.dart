@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/view/routes/authenticated_route.dart';
+import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -29,8 +30,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               child: InkWell(
                 onTap: () {
-                  AuthenticatedRoute.key.currentState
-                      ?.pushReplacementNamed(AuthenticatedRoute.inventory);
+                  GoRouter.of(context).goNamed(AuthenticatedRouter.inventory);
                 },
                 child: Padding(
                   padding: CommonTheme.paddingAll,

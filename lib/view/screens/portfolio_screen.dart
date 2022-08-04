@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/account_cubit/account_cubit.dart';
-import 'package:simplio_app/view/routes/authenticated_route.dart';
+import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/view/widgets/appbar_search.dart';
 import 'package:simplio_app/view/widgets/asset_toggle_item.dart';
 import 'package:simplio_app/view/widgets/wallet_list_item.dart';
@@ -45,11 +44,7 @@ class PortfolioScreen extends StatelessWidget {
                       return WalletListItem(
                         key: Key(wallet.assetId),
                         assetWallet: wallet,
-                        onTap: () =>
-                            AuthenticatedRoute.key.currentState?.pushNamed(
-                          AuthenticatedRoute.wallet,
-                          arguments: wallet,
-                        ),
+                        onTap: () {},
                       );
                     },
                   ),

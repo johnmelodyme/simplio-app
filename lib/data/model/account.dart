@@ -1,68 +1,81 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:simplio_app/data/mixins/aes_encryption_mixin.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/data/model/account_wallet.dart';
+import 'package:simplio_app/data/model/lockable_string.dart';
+import 'package:uuid/uuid.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 part 'account.g.dart';
 
+const int securityAttemptsLimit = 6;
+
 class Account extends Equatable {
   final String id;
-  final LockableSecret secret;
-  final String? accessToken;
-  final String refreshToken;
+  final AccountType accountType;
+  final LockableString secret;
+  final SecurityLevel securityLevel;
+  final int securityAttempts;
   final DateTime signedIn;
   final AccountSettings settings;
   final List<AccountWallet> wallets;
 
-  const Account._(
+  const Account(
     this.id,
+    this.accountType,
     this.secret,
-    this.accessToken,
-    this.refreshToken,
+    this.securityLevel,
+    this.securityAttempts,
     this.signedIn,
     this.settings,
     this.wallets,
-  ) : assert(id.length > 0);
+  )   : assert(id.length > 0),
+        assert(securityAttempts >= 0);
 
-  const Account.builder({
-    /// `id` is a Auth0 identifier. e.g apps@simplio.io
+  const Account.registered({
     required String id,
-
-    /// [LockableSecret] is a generated string hash that is used for encrypting
-    /// account sensitive data across application.
-    required LockableSecret secret,
-    String? accessToken,
-
-    /// `refreshToken` is a long-live token provided by Auth0. It is used
-    /// only when authentication fails with `401` status.
-    required String refreshToken,
+    required LockableString secret,
+    SecurityLevel? securityLevel,
     required DateTime signedIn,
     AccountSettings settings = const AccountSettings.preset(),
     List<AccountWallet> wallets = const <AccountWallet>[],
-  }) : this._(
+  }) : this(
           id,
+          AccountType.registered,
           secret,
-          accessToken,
-          refreshToken,
+          securityLevel ?? SecurityLevel.none,
+          securityAttemptsLimit,
           signedIn,
           settings,
           wallets,
         );
 
+  Account.anonymous()
+      : this(
+          "${const Uuid().v4()}.${DateTime.now().microsecondsSinceEpoch}",
+          AccountType.anonymous,
+          LockableString.generate(),
+          SecurityLevel.none,
+          securityAttemptsLimit,
+          DateTime.now(),
+          const AccountSettings.preset(),
+          const <AccountWallet>[],
+        );
+
   Account copyWith({
-    String? accessToken,
-    String? refreshToken,
+    LockableString? secret,
+    SecurityLevel? securityLevel,
+    int? securityAttempts,
     DateTime? signedIn,
     AccountSettings? settings,
     List<AccountWallet>? wallets,
   }) {
-    return Account._(
+    return Account(
       id,
-      secret,
-      accessToken ?? this.accessToken,
-      refreshToken ?? this.refreshToken,
+      accountType,
+      secret ?? this.secret,
+      securityLevel ?? this.securityLevel,
+      securityAttempts ?? this.securityAttempts,
       signedIn ?? this.signedIn,
       settings ?? this.settings,
       wallets ?? this.wallets,
@@ -72,7 +85,11 @@ class Account extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        accountType,
         secret,
+        securityLevel,
+        securityAttempts,
+        signedIn,
       ];
 
   AccountWallet? get accountWallet {
@@ -91,40 +108,22 @@ class Account extends Equatable {
   }
 }
 
-class LockableSecret with AesEncryption {
-  static String generateSecret() {
-    return Hive.generateSecureKey().toString();
-  }
+@HiveType(typeId: 11)
+enum AccountType {
+  @HiveField(0)
+  anonymous,
 
-  String _secret;
-  bool _isLocked;
+  @HiveField(1)
+  registered,
+}
 
-  LockableSecret._(this._secret, this._isLocked);
+@HiveType(typeId: 12)
+enum SecurityLevel {
+  @HiveField(0)
+  none,
 
-  LockableSecret.from({required String secret}) : this._(secret, true);
-
-  LockableSecret.generate() : this._(LockableSecret.generateSecret(), false);
-
-  bool get isLocked => _isLocked;
-
-  String unlock(String key) {
-    if (!_isLocked) return _secret;
-    return decrypt(key, _secret);
-  }
-
-  LockableSecret lock(String key) {
-    if (_isLocked) return this;
-
-    _secret = encrypt(key, _secret);
-    _isLocked = true;
-
-    return this;
-  }
-
-  @override
-  String toString() {
-    return _secret;
-  }
+  @HiveField(1)
+  pin,
 }
 
 @HiveType(typeId: 1)
@@ -133,24 +132,32 @@ class AccountLocal extends HiveObject {
   final String id;
 
   @HiveField(1)
-  final String secret;
+  final AccountType accountType;
 
   @HiveField(2)
-  final String refreshToken;
+  final String secret;
 
   @HiveField(3)
-  final DateTime signedIn;
+  final SecurityLevel securityLevel;
 
   @HiveField(4)
-  final AccountSettingsLocal settings;
+  final int securityAttempts;
 
   @HiveField(5)
+  final DateTime signedIn;
+
+  @HiveField(6)
+  final AccountSettingsLocal settings;
+
+  @HiveField(7)
   final List<AccountWalletLocal> wallets;
 
   AccountLocal({
     required this.id,
+    required this.accountType,
     required this.secret,
-    required this.refreshToken,
+    required this.securityLevel,
+    required this.securityAttempts,
     required this.signedIn,
     required this.settings,
     required this.wallets,

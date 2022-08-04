@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
-import 'package:simplio_app/logic/loading_cubit/loading_cubit.dart';
+import 'package:simplio_app/logic/cubit/loading/loading_cubit.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/themes/dark_mode.dart';
 import 'package:simplio_app/view/themes/light_mode.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/logic/tap_bar_cubit/tap_bar_cubit.dart';
-import 'package:simplio_app/view/routes/settings/authenticated_settings.dart';
+import 'package:simplio_app/logic/cubit/tap_bar/tap_bar_cubit.dart';
+import 'package:simplio_app/view/routes/settings/application_settings.dart';
 
 class TapBarObserver extends NavigatorObserver {
   final BuildContext context;
@@ -24,7 +24,7 @@ class TapBarObserver extends NavigatorObserver {
   }
 
   void _handleArguments(Object? args) {
-    if (args is AuthenticatedArguments) {
+    if (args is ApplicationSettings) {
       _setTapBarVisibility(args.tapBar);
     } else {
       _hideTapBar();

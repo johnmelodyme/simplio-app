@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/account_cubit/account_cubit.dart';
-import 'package:simplio_app/logic/auth_bloc/auth_bloc.dart';
-import 'package:simplio_app/view/routes/authenticated_route.dart';
+import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
+import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
+import 'package:simplio_app/view/routes/authenticated_router.dart';
 
 class ConfigurationScreen extends StatelessWidget {
   const ConfigurationScreen({super.key});
@@ -43,8 +44,8 @@ class ConfigurationScreen extends StatelessWidget {
             ElevatedButton(
               child: const Text('Change password'),
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(AuthenticatedRoute.passwordChange);
+                GoRouter.of(context)
+                    .pushNamed(AuthenticatedRouter.passwordChange);
               },
             ),
             ElevatedButton(

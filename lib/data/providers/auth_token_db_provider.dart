@@ -1,10 +1,10 @@
 import 'package:hive_flutter/adapters.dart';
-import 'package:simplio_app/data/http_clients/secured_http_client.dart';
 import 'package:simplio_app/data/model/auth_token.dart';
 import 'package:simplio_app/data/providers/box_provider.dart';
+import 'package:simplio_app/data/providers/storage_provider.dart';
 
 class AuthTokenDbProvider extends BoxProvider<AuthToken>
-    implements AuthTokenStorage {
+    implements StorageProvider<AuthToken> {
   static final AuthTokenDbProvider _instance = AuthTokenDbProvider._();
 
   @override

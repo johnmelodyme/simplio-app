@@ -7,8 +7,12 @@ class HeadlineText extends StatelessWidget {
   final HeadlineSize headlineSize;
   final double? width;
 
-  const HeadlineText(this.data,
-      {super.key, this.headlineSize = HeadlineSize.medium, this.width});
+  const HeadlineText(
+    this.data, {
+    super.key,
+    this.headlineSize = HeadlineSize.medium,
+    this.width,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/auth_form_cubit/auth_form_cubit.dart';
+import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
@@ -13,7 +13,7 @@ class PasswordChangeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    return BlocListener<AuthFormCubit, AuthFormState>(
+    return BlocListener<PasswordChangeFormCubit, PasswordChangeFormState>(
       listener: (context, state) {
         // TODO: handle responses
       },
@@ -40,21 +40,21 @@ class PasswordChangeScreen extends StatelessWidget {
                               key: UniqueKey(),
                               labelText: context.locale.oldPasswordInputLabel,
                               validator: (pass) => context
-                                  .read<AuthFormCubit>()
+                                  .read<PasswordChangeFormCubit>()
                                   .state
-                                  .passwordChangeForm
                                   .newPassword
-                                  .passwordValidator(pass, context),
+                                  .passwordValidator(pass,
+                                      errorMsg: context
+                                          .locale.passwordValidationError),
                               passwordComplexityCondition: (pass) => context
-                                  .read<AuthFormCubit>()
+                                  .read<PasswordChangeFormCubit>()
                                   .state
-                                  .passwordChangeForm
                                   .oldPassword
                                   .isValid,
                               onChanged: (password) {
                                 context
-                                    .read<AuthFormCubit>()
-                                    .changePasswordChangeForm(
+                                    .read<PasswordChangeFormCubit>()
+                                    .changeFormValue(
                                       oldPassword: password,
                                     );
                               },
@@ -65,15 +65,14 @@ class PasswordChangeScreen extends StatelessWidget {
                                 key: UniqueKey(),
                                 labelText: context.locale.newPasswordInputLabel,
                                 passwordComplexityCondition: (pass) => context
-                                    .read<AuthFormCubit>()
+                                    .read<PasswordChangeFormCubit>()
                                     .state
-                                    .passwordChangeForm
                                     .newPassword
                                     .isValid,
                                 onChanged: (password) {
                                   context
-                                      .read<AuthFormCubit>()
-                                      .changePasswordChangeForm(
+                                      .read<PasswordChangeFormCubit>()
+                                      .changeFormValue(
                                         newPassword: password,
                                       );
                                 },
@@ -85,28 +84,29 @@ class PasswordChangeScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: CommonTheme.horizontalPadding,
-                      child: BlocBuilder<AuthFormCubit, AuthFormState>(
+                      child: BlocBuilder<PasswordChangeFormCubit,
+                          PasswordChangeFormState>(
                         buildWhen: (previous, current) => previous != current,
                         builder: (context, state) => Column(
                           children: [
                             PasswordRulesRow(
                                 text: context.locale.passwordRuleAtLeast8Chars,
-                                passed: state.passwordChangeForm.newPassword
-                                        .missingValue['length'] ??
-                                    false),
+                                passed:
+                                    state.newPassword.missingValue['length'] ??
+                                        false),
                             PasswordRulesRow(
                                 text: context.locale.passwordRuleNumChar,
-                                passed: state.passwordChangeForm.newPassword
+                                passed: state.newPassword
                                         .missingValue['numberChar'] ??
                                     false),
                             PasswordRulesRow(
                                 text: context.locale.passwordRuleSpecialChar,
-                                passed: state.passwordChangeForm.newPassword
+                                passed: state.newPassword
                                         .missingValue['specialChar'] ??
                                     false),
                             PasswordRulesRow(
                                 text: context.locale.passwordRuleUpperChar,
-                                passed: state.passwordChangeForm.newPassword
+                                passed: state.newPassword
                                         .missingValue['upperChar'] ??
                                     false),
                           ],
@@ -124,8 +124,8 @@ class PasswordChangeScreen extends StatelessWidget {
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         await context
-                            .read<AuthFormCubit>()
-                            .requestPasswordChange();
+                            .read<PasswordChangeFormCubit>()
+                            .submitForm();
                       }
                     },
                     child: Text(context.locale.submitBtnLabel),

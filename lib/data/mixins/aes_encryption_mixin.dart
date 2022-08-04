@@ -1,37 +1,66 @@
-import 'dart:convert';
-import 'dart:typed_data';
+import 'package:encrypt/encrypt.dart';
 
-import 'package:hive/hive.dart';
+const _keyByteSize = 32;
+const _ivByteSize = 16;
 
 mixin AesEncryption {
-  static const int _offset = 128;
+  Key makeKey(String inp) {
+    final keyStr = List.generate(_keyByteSize, (i) {
+      try {
+        return inp.split('').elementAt(i);
+      } on RangeError {
+        return '0';
+      }
+    }).join('');
 
-  String decrypt(String key, String input) {
-    return HiveAesCipher(key.codeUnits)
-        .decrypt(
-          utf8.encoder.convert(input),
-          _offset,
-          key.length,
-          Uint8List(0),
-          _offset,
-        )
-        .toString();
+    return Key.fromUtf8(keyStr);
   }
 
-  String encrypt(String key, input) {
-    return HiveAesCipher(key.codeUnits)
-        .encrypt(
-          utf8.encoder.convert(input),
-          _offset,
-          key.length,
-          Uint8List(0),
-          _offset,
-        )
-        .toString();
+  String generateKey() {
+    return Key.fromSecureRandom(_keyByteSize).base64;
   }
 
-  // TODO: missing logic
-  bool isValid() {
-    return false;
+  String generateInitializationVector() {
+    return IV.fromSecureRandom(_ivByteSize).base64;
   }
+
+  String decrypt(String key, iv, base64Input) {
+    final encrypter = Encrypter(
+      AES(makeKey(key)),
+    );
+
+    try {
+      final decryptedString = encrypter.decrypt(
+        Encrypted.fromBase64(base64Input),
+        iv: IV.fromBase64(iv),
+      );
+
+      return decryptedString;
+    } catch (e) {
+      throw AesEncryptionException(e.toString());
+    }
+  }
+
+  String encrypt(String key, iv, input) {
+    final encrypter = Encrypter(
+      AES(makeKey(key)),
+    );
+
+    try {
+      final encrypted = encrypter.encrypt(
+        input,
+        iv: IV.fromBase64(iv),
+      );
+
+      return encrypted.base64;
+    } catch (e) {
+      throw AesEncryptionException(e.toString());
+    }
+  }
+}
+
+class AesEncryptionException implements Exception {
+  final String message;
+
+  AesEncryptionException(this.message);
 }

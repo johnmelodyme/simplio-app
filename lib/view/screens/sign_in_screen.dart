@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/auth_bloc/auth_bloc.dart';
-import 'package:simplio_app/logic/auth_form_cubit/auth_form_cubit.dart';
-import 'package:simplio_app/view/routes/unauthenticated_route.dart';
+import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
+import 'package:simplio_app/logic/cubit/sign_in_form/sign_in_form_cubit.dart';
+import 'package:simplio_app/view/routes/unauthenticated_router.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/text_header.dart';
@@ -16,7 +17,7 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    return BlocListener<AuthFormCubit, AuthFormState>(
+    return BlocListener<SignInFormCubit, SignInFormState>(
       listener: (context, state) {
         final res = state.response;
 
@@ -62,19 +63,22 @@ class SignInScreen extends StatelessWidget {
                               key: const Key('sign-in-screen-email-text-field'),
                               keyboardType: TextInputType.emailAddress,
                               validator: (email) => context
-                                  .read<AuthFormCubit>()
+                                  .read<SignInFormCubit>()
                                   .state
-                                  .signInForm
                                   .login
-                                  .emailValidator(email, context),
+                                  .emailValidator(
+                                    email,
+                                    errorMessage:
+                                        context.locale.emailValidationError,
+                                  ),
                               decoration: InputDecoration(
                                 labelText: context.locale.email,
                                 hintText: context.locale.email,
                               ),
                               onChanged: (String? email) {
                                 context
-                                    .read<AuthFormCubit>()
-                                    .changeSignInForm(login: email);
+                                    .read<SignInFormCubit>()
+                                    .changeFormValue(login: email);
                               },
                               onFocusChange: (focused) => focused
                                   ? null
@@ -85,21 +89,23 @@ class SignInScreen extends StatelessWidget {
                             key:
                                 const Key('sign-in-screen-password-text-field'),
                             validator: (pass) => context
-                                .read<AuthFormCubit>()
+                                .read<SignInFormCubit>()
                                 .state
-                                .signInForm
                                 .password
-                                .passwordValidator(pass, context),
+                                .passwordValidator(
+                                  pass,
+                                  errorMsg:
+                                      context.locale.passwordValidationError,
+                                ),
                             passwordComplexityCondition: (_) => context
-                                .read<AuthFormCubit>()
+                                .read<SignInFormCubit>()
                                 .state
-                                .signInForm
                                 .password
                                 .isValid,
                             onChanged: (password) {
                               context
-                                  .read<AuthFormCubit>()
-                                  .changeSignInForm(password: password);
+                                  .read<SignInFormCubit>()
+                                  .changeFormValue(password: password);
                             },
                           ),
                         ],
@@ -112,10 +118,9 @@ class SignInScreen extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         final res =
-                            context.read<AuthFormCubit>().state.response;
+                            context.read<SignInFormCubit>().state.response;
                         if (res is! SignInFormPending) {
-                          Navigator.of(context)
-                              .pushNamed(UnauthenticatedRoute.passwordReset);
+                          GoRouter.of(context).pushNamed('password-reset');
                         }
                       },
                       child: Text(
@@ -132,7 +137,7 @@ class SignInScreen extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: double.infinity,
-                          child: BlocBuilder<AuthFormCubit, AuthFormState>(
+                          child: BlocBuilder<SignInFormCubit, SignInFormState>(
                             builder: (context, state) {
                               if (state.response != null) {
                                 final res = state.response;
@@ -170,8 +175,8 @@ class SignInScreen extends StatelessWidget {
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     await context
-                                        .read<AuthFormCubit>()
-                                        .requestSignIn();
+                                        .read<SignInFormCubit>()
+                                        .submitForm();
                                   }
                                 },
                                 child: Text(context.locale.signInButtonLabel),
@@ -191,11 +196,13 @@ class SignInScreen extends StatelessWidget {
                                       Theme.of(context).colorScheme.secondary),
                             ),
                             onTap: () {
-                              final res =
-                                  context.read<AuthFormCubit>().state.response;
+                              final res = context
+                                  .read<SignInFormCubit>()
+                                  .state
+                                  .response;
                               if (res is! SignInFormPending) {
-                                Navigator.of(context)
-                                    .pushNamed(UnauthenticatedRoute.signUp);
+                                GoRouter.of(context)
+                                    .pushNamed(UnauthenticatedRouter.signUp);
                               }
                             },
                           ),

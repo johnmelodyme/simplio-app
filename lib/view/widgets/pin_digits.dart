@@ -1,7 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:simplio_app/logic/security_form_cubit/security_form_cubit.dart';
+import 'package:simplio_app/data/model/validated_pin.dart';
 
 enum PinDigitStyle { hideAllExceptLast, hideAllAfterTime, showAll }
 
@@ -14,7 +13,7 @@ class PinDigits extends StatefulWidget {
   const PinDigits({
     super.key,
     this.pin,
-    this.pinLength = SecurityFormState.pinLength,
+    this.pinLength = ValidatedPin.length,
     this.pinDigitStyle = PinDigitStyle.hideAllAfterTime,
     this.duration = const Duration(milliseconds: 1000),
   });
@@ -86,12 +85,9 @@ class _PinDigitsState extends State<PinDigits> {
       ));
     }
 
-    return Column(children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: pinNumbers,
-      ),
-    ]);
+    return Wrap(
+      children: pinNumbers,
+    );
   }
 
   String _getPin(int index) {

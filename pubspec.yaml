@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # For production version we use tags on master branch, e.g. 'v1.2.4'
-version: 0.0.0+64
+version: 0.0.0+65
 
 
 environment:
@@ -24,6 +24,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.17.0
+  go_router: ^4.2.2
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   hive: ^2.2.3
@@ -32,6 +33,7 @@ dependencies:
   chopper: ^4.0.6
   json_annotation: ^4.6.0
   uuid: ^3.0.6
+  encrypt: ^5.0.1
   trust_wallet_core_lib: ^0.0.6+2.9.6
   sio_core: ^0.0.13
   crypto_assets:
@@ -48,6 +50,7 @@ dev_dependencies:
   chopper_generator: ^4.0.6
   json_serializable: ^6.3.1
   build_runner: ^2.2.0
+  string_validator: ^0.3.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

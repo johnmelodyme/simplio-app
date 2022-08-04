@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/auth_form_cubit/auth_form_cubit.dart';
-import 'package:simplio_app/view/routes/unauthenticated_route.dart';
+import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
+import 'package:simplio_app/logic/cubit/sign_up_form/sign_up_form_cubit.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
@@ -16,23 +16,21 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    return BlocListener<AuthFormCubit, AuthFormState>(
+    return BlocListener<SignUpFormCubit, SignUpFormState>(
       listener: (context, state) {
-        final res = state.response;
+        final r = state.response;
 
-        if (res is SignUpFormSuccess) {
-          Navigator.of(context)
-              .pushReplacementNamed(UnauthenticatedRoute.setupPin);
+        if (r is SignUpFormSuccess) {
+          context
+              .read<AuthBloc>()
+              .add(GotAuthenticated(accountId: r.account.id));
         }
 
-        if (res is SignUpFormPending) {
-          // todo: add some notification for the user about pending email verification
-        }
-
-        if (res is SignUpFormFailure) {
+        if (r is SignUpFormFailure) {
           //  TODO: Implement logic for failure.
         }
       },
+      // TODO - FIX - There is constrains when keyboard is on.
       child: Scaffold(
         appBar: AppBar(
           key: const Key('sign-up-screen-app-bar-button'),
@@ -62,19 +60,22 @@ class SignUpScreen extends StatelessWidget {
                               key: const Key('sign-up-screen-email-text-field'),
                               autofocus: true,
                               validator: (email) => context
-                                  .read<AuthFormCubit>()
+                                  .read<SignUpFormCubit>()
                                   .state
-                                  .signUpForm
                                   .login
-                                  .emailValidator(email, context),
+                                  .emailValidator(
+                                    email,
+                                    errorMessage:
+                                        context.locale.emailValidationError,
+                                  ),
                               decoration: InputDecoration(
                                 labelText: context.locale.email,
                                 hintText: context.locale.email,
                               ),
                               onChanged: (String? email) {
                                 context
-                                    .read<AuthFormCubit>()
-                                    .changeSignUpForm(login: email);
+                                    .read<SignUpFormCubit>()
+                                    .changeFormValue(login: email);
                               },
                               onFocusChange: (focused) => focused
                                   ? null
@@ -85,15 +86,14 @@ class SignUpScreen extends StatelessWidget {
                             key:
                                 const Key('sign-up-screen-password-text-field'),
                             passwordComplexityCondition: (pass) => context
-                                .read<AuthFormCubit>()
+                                .read<SignUpFormCubit>()
                                 .state
-                                .signUpForm
                                 .password
                                 .isValid,
                             onChanged: (password) {
                               context
-                                  .read<AuthFormCubit>()
-                                  .changeSignUpForm(password: password);
+                                  .read<SignUpFormCubit>()
+                                  .changeFormValue(password: password);
                             },
                           ),
                         ],
@@ -102,7 +102,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: CommonTheme.paddingAll,
-                    child: BlocBuilder<AuthFormCubit, AuthFormState>(
+                    child: BlocBuilder<SignUpFormCubit, SignUpFormState>(
                       buildWhen: (previous, current) => previous != current,
                       builder: (context, state) => Column(
                         children: [
@@ -110,30 +110,29 @@ class SignUpScreen extends StatelessWidget {
                               key: const Key(
                                   'sign-up-screen-length-password-rule'),
                               text: context.locale.passwordRuleAtLeast8Chars,
-                              passed: state.signUpForm.password
-                                      .missingValue['length'] ??
+                              passed: state.password.missingValue['length'] ??
                                   false),
                           PasswordRulesRow(
                               key: const Key(
                                   'sign-up-screen-number-password-rule'),
                               text: context.locale.passwordRuleNumChar,
-                              passed: state.signUpForm.password
-                                      .missingValue['numberChar'] ??
-                                  false),
+                              passed:
+                                  state.password.missingValue['numberChar'] ??
+                                      false),
                           PasswordRulesRow(
                               key: const Key(
                                   'sign-up-screen-special-char-password-rule'),
                               text: context.locale.passwordRuleSpecialChar,
-                              passed: state.signUpForm.password
-                                      .missingValue['specialChar'] ??
-                                  false),
+                              passed:
+                                  state.password.missingValue['specialChar'] ??
+                                      false),
                           PasswordRulesRow(
                               key: const Key(
                                   'sign-up-screen-upper-char-password-rule'),
                               text: context.locale.passwordRuleUpperChar,
-                              passed: state.signUpForm.password
-                                      .missingValue['upperChar'] ??
-                                  false),
+                              passed:
+                                  state.password.missingValue['upperChar'] ??
+                                      false),
                         ],
                       ),
                     ),
@@ -144,22 +143,32 @@ class SignUpScreen extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: double.infinity,
-                          child: ElevatedButton(
-                            key: const Key('sign-up-screen-sign-in-button'),
-                            onPressed: () async {
-                              if (context
-                                  .read<AuthFormCubit>()
-                                  .state
-                                  .signUpForm
-                                  .isValid) {
-                                await context
-                                    .read<AuthFormCubit>()
-                                    .requestSignUp();
-                              } else {
-                                formKey.currentState!.validate();
-                              }
+                          child: BlocBuilder<SignUpFormCubit, SignUpFormState>(
+                            builder: (context, state) {
+                              return state.isValid
+                                  ? ElevatedButton(
+                                      key: const Key(
+                                        'sign-up-screen-sign-up-button',
+                                      ),
+                                      onPressed: () {
+                                        context
+                                            .read<SignUpFormCubit>()
+                                            .submitForm();
+                                      },
+                                      child: Text(
+                                        context.locale.createAccountBtnLabel,
+                                      ),
+                                    )
+                                  : OutlinedButton(
+                                      key: const Key(
+                                        'sign-up-screen-disabled-sign-up-button',
+                                      ),
+                                      onPressed: null,
+                                      child: Text(
+                                        context.locale.createAccountBtnLabel,
+                                      ),
+                                    );
                             },
-                            child: Text(context.locale.createAccountBtnLabel),
                           ),
                         ),
                       ],
