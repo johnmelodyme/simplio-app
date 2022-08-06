@@ -84,8 +84,8 @@ jobs:
       matrix:
         device:
           - "iPhone 13 Pro Simulator"
-          - "iPhone 11 Pro Max Simulator"
-          - "iPhone 12 Pro Simulator"
+#          - "iPhone 11 Pro Max Simulator"
+#          - "iPhone 12 Pro Simulator"
       fail-fast: false
     runs-on: macos-latest
     needs: run-e2e-tests
@@ -108,12 +108,12 @@ jobs:
       - name: Run Flutter Driver tests - screen recording test
         run: |
           xcrun simctl io booted recordVideo --codec=h264 recording.mp4 &
-          sleep 5
+          sleep 3
           export RECORDING_PID=${!}
-          flutter drive --driver=test/integration_tests/integration_test.dart --target=test/integration_tests/app_test.dart --dart-define=TEST_RUN=true
-          sleep 5
+          flutter test integration_test --reporter expanded --dart-define=TEST_RUN=true
+          sleep 3
           kill -SIGINT $RECORDING_PID
-          sleep 10
+          sleep 5
       # Upload Recordings As Artifact
       - name: upload recordedVideo
         uses: actions/upload-artifact@v3
@@ -146,4 +146,4 @@ jobs:
           target: ${{ matrix.target }}
           arch: x86_64
           profile: Nexus 6
-          script: flutter drive --driver=test/integration_tests/integration_test.dart --target=test/integration_tests/app_test.dart --flavor dev --dart-define=TEST_RUN=true
+          script: flutter test integration_test --reporter expanded --flavor dev --dart-define=TEST_RUN=true

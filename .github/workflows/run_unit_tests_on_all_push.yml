@@ -1,11 +1,15 @@
-name: Run unit & e2e tests
+name: UnitTests
 
 on:
-  pull_request:
+  push:
+    branches:
+      - 'task/**'
+      - 'feature/**'
+  workflow_dispatch:
 
 jobs:
   run-tests:
     uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@test/fix_long_execution
     with:
-      e2e: true
+      e2e: false
       unitTests: true

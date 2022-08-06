@@ -1,7 +1,10 @@
-name: Run unit & e2e tests
+name: ALL IntegrationTests/UnitTests
 
 on:
-  pull_request:
+  push:
+    branches:
+      - 'test/**'
+  workflow_dispatch:
 
 jobs:
   run-tests:
