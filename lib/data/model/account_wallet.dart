@@ -1,114 +1,138 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:simplio_app/data/mixins/aes_encryption_mixin.dart';
+import 'package:simplio_app/data/model/asset_wallet.dart';
+import 'package:simplio_app/data/model/lockable_string.dart';
 import 'package:uuid/uuid.dart';
 
 part 'account_wallet.g.dart';
 
 class AccountWallet extends Equatable {
-  final String name;
   final String uuid;
   final String accountId;
-  final LockableSeed seed;
-  final AccountWalletTypes walletType;
   final DateTime updatedAt;
+  final LockableMnemonic mnemonic;
+  final AccountWalletTypes walletType;
+  final Map<int, AssetWallet> _wallets;
 
-  const AccountWallet._({
-    required this.uuid,
-    required this.name,
-    required this.accountId,
-    required this.seed,
-    required this.walletType,
-    required this.updatedAt,
-  });
+  const AccountWallet(
+    this.uuid,
+    this.accountId,
+    this.updatedAt,
+    this.mnemonic,
+    this.walletType,
+    this._wallets,
+  );
 
-  AccountWallet.builder({
+  AccountWallet.hd({
     String? uuid,
-    required String name,
     required String accountId,
-    required AccountWalletTypes walletType,
-    required LockableSeed seed,
-    required DateTime updatedAt,
-  }) : this._(
-          uuid: uuid ?? const Uuid().v4(),
-          name: name,
-          accountId: accountId,
-          seed: seed,
-          walletType: walletType,
-          updatedAt: updatedAt,
+    DateTime? updatedAt,
+    String? name,
+    required LockableMnemonic mnemonic,
+    Map<int, AssetWallet>? wallets,
+  }) : this(
+          uuid ?? const Uuid().v4(),
+          accountId,
+          updatedAt ?? DateTime.now(),
+          mnemonic,
+          AccountWalletTypes.hdWallet,
+          wallets ?? const {},
         );
 
-  AccountWallet copyWith({
-    String? name,
-    DateTime? updatedAt,
-    LockableSeed? seed,
-  }) {
-    return AccountWallet._(
-      name: name ?? this.name,
-      uuid: uuid,
-      accountId: accountId,
-      seed: seed ?? this.seed,
-      walletType: walletType,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
+  List<AssetWallet> get wallets => _wallets.values.toList();
 
   @override
   List<Object?> get props => [
         uuid,
-        name,
         accountId,
-        walletType,
         updatedAt,
+        walletType,
+        wallets,
       ];
-}
 
-class LockableSeed with AesEncryption {
-  String _mnemonic;
-  final bool isImported;
-  final bool isBackedUp;
-  bool _isLocked;
-
-  LockableSeed._(
-    this._mnemonic,
-    this.isImported,
-    this.isBackedUp,
-    this._isLocked,
-  );
-
-  LockableSeed.from({
-    required String mnemonic,
-    required bool isImported,
-    required bool isBackedUp,
-    bool isLocked = true,
-  }) : this._(
-          mnemonic,
-          isImported,
-          isBackedUp,
-          isLocked,
-        );
-
-  bool get isLocked => _isLocked;
-
-  String unlock(String key) {
-    if (!_isLocked) return _mnemonic;
-    // TODO - Change IV value!
-    return decrypt(key, '', _mnemonic);
+  AssetWallet? getWallet(int assetId) {
+    return _wallets[assetId];
   }
 
-  LockableSeed lock(String key) {
-    if (_isLocked) return this;
+  AccountWallet addWallet(AssetWallet wallet) {
+    final Map<int, AssetWallet> m = Map.from(_wallets);
+    m[wallet.assetId] = wallet;
+    return copyWith(wallets: m);
+  }
 
-    // TODO - Change IV value!
-    _mnemonic = encrypt(key, '', _mnemonic);
-    _isLocked = true;
+  bool containsWallet(int assetId) {
+    return _wallets.containsKey(assetId);
+  }
 
+  AccountWallet copyWith({
+    DateTime? updatedAt,
+    LockableMnemonic? mnemonic,
+    Map<int, AssetWallet>? wallets,
+  }) {
+    return AccountWallet(
+      uuid,
+      accountId,
+      updatedAt ?? this.updatedAt,
+      mnemonic ?? this.mnemonic,
+      walletType,
+      wallets ?? _wallets,
+    );
+  }
+}
+
+class LockableMnemonic {
+  final LockableString value;
+  final bool isBackedUp;
+  final bool isImported;
+
+  LockableMnemonic({
+    required this.value,
+    required this.isBackedUp,
+    required this.isImported,
+  }) : assert(
+          isImported ? isBackedUp == isImported : true,
+          'If mnemonic is imported, it is considered also backed up',
+        );
+  LockableMnemonic.locked({
+    required String base64Mnemonic,
+    required bool isBackedUp,
+    required bool isImported,
+  }) : this(
+          value: LockableString.locked(base64String: base64Mnemonic),
+          isBackedUp: isBackedUp,
+          isImported: isImported,
+        );
+
+  LockableMnemonic.unlocked({
+    required String mnemonic,
+    bool? isBackedUp,
+    bool? isImported,
+  }) : this(
+          value: LockableString.unlocked(value: mnemonic),
+          isBackedUp: isBackedUp ?? false,
+          isImported: isImported ?? false,
+        );
+
+  LockableMnemonic.imported({
+    required String mnemonic,
+  }) : this(
+          value: LockableString.unlocked(value: mnemonic),
+          isBackedUp: true,
+          isImported: true,
+        );
+
+  String unlock(String key) {
+    return value.unlock(key);
+  }
+
+  LockableMnemonic lock(String key) {
+    value.lock(key);
     return this;
   }
 
   @override
   String toString() {
-    return _mnemonic;
+    return value.toString();
   }
 }
 
@@ -121,13 +145,13 @@ enum AccountWalletTypes {
 @HiveType(typeId: 3)
 class AccountWalletLocal extends HiveObject {
   @HiveField(0)
-  final String name;
-
-  @HiveField(1)
   final String uuid;
 
-  @HiveField(2)
+  @HiveField(1)
   final String accountId;
+
+  @HiveField(2)
+  final DateTime updatedAt;
 
   @HiveField(3)
   final String mnemonic;
@@ -142,16 +166,16 @@ class AccountWalletLocal extends HiveObject {
   final AccountWalletTypes walletType;
 
   @HiveField(7)
-  final DateTime updatedAt;
+  final List<AssetWalletLocal> wallets;
 
   AccountWalletLocal({
     required this.uuid,
-    required this.name,
     required this.accountId,
+    required this.updatedAt,
     required this.mnemonic,
     required this.isImported,
     required this.isBackedUp,
     required this.walletType,
-    required this.updatedAt,
+    required this.wallets,
   });
 }

@@ -53,10 +53,13 @@ class PinVerifyFormCubit extends Cubit<PinVerifyFormState> {
       state.pin.toString(),
     );
 
-    if (res.isValid) {
+    if (res.secret != null) {
       return emit(state.copyWith(
         account: res.account,
-        response: const PinVerifyFormSuccess(),
+        response: PinVerifyFormSuccess(
+          account: res.account,
+          secret: res.secret!,
+        ),
       ));
     }
 

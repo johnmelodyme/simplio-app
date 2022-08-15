@@ -49,10 +49,14 @@ class PinSetupScreen extends StatelessWidget {
               flex: 4,
               child: BlocConsumer<PinSetupFormCubit, PinSetupFormState>(
                 listener: (context, state) {
-                  if (state.response is PinSetupFormSuccess) {
-                    GoRouter.of(context).goNamed(
-                      AuthenticatedRouter.accountSetup,
-                    );
+                  final res = state.response;
+                  if (res is PinSetupFormSuccess) {
+                    context
+                        .read<AccountCubit>()
+                        .unlockAccount(res.account, res.secret)
+                        .then((_) => GoRouter.of(context).goNamed(
+                              AuthenticatedRouter.accountSetup,
+                            ));
                   }
                 },
                 buildWhen: (previous, current) =>
@@ -66,10 +70,9 @@ class PinSetupScreen extends StatelessWidget {
                       context.read<PinSetupFormCubit>().eraseLastValue();
                     },
                     onProceed: () {
-                      final account =
-                          context.read<AccountCubit>().state.account;
-                      if (account != null) {
-                        context.read<PinSetupFormCubit>().submitForm(account);
+                      final s = context.read<AccountCubit>().state;
+                      if (s is AccountProvided) {
+                        context.read<PinSetupFormCubit>().submitForm(s.account);
                       }
                     },
                     displayEraseButton: true,

@@ -3,19 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:simplio_app/data/http/clients/public_http_client.dart';
 import 'package:simplio_app/data/http/clients/secured_http_client.dart';
+import 'package:simplio_app/data/http/services/asset_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
 import 'package:simplio_app/data/http/services/sign_in_service.dart';
 import 'package:simplio_app/data/http/services/sign_up_service.dart';
 import 'package:simplio_app/data/providers/account_db_provider.dart';
-import 'package:simplio_app/data/providers/asset_wallet_db_provider.dart';
 import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
+import 'package:simplio_app/data/providers/wallet_db_provider.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
-import 'package:simplio_app/data/repositories/asset_wallet_repository.dart';
+import 'package:simplio_app/data/repositories/asset_repository.dart';
+import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
-import 'package:simplio_app/logic/cubit/loading/loading_cubit.dart';
 import 'package:simplio_app/view/authenticated_app.dart';
 import 'package:simplio_app/view/routes/guards/auth_guard.dart';
 import 'package:simplio_app/view/screens/splash_screen.dart';
@@ -35,44 +36,40 @@ class SimplioApp extends StatefulWidget {
 }
 
 class _SimplioAppState extends State<SimplioApp> {
-  late AccountRepository accountRepository;
-  late AssetWalletRepository assetWalletRepository;
+  bool _isInitializing = true;
+
   late AuthRepository authRepository;
+  late AccountRepository accountRepository;
+  late WalletRepository walletRepository;
+  late AssetRepository assetRepository;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoadingCubit.builder(),
-      child: BlocBuilder<LoadingCubit, LoadingState>(
-        buildWhen: (prev, curr) =>
-            prev.displaySplashScreen != curr.displaySplashScreen,
-        builder: (context, state) => state.displaySplashScreen
-            ? SplashScreen(loadingFunction: _appInitializationActions)
-            : _mainApp(),
-      ),
-    );
-  }
+    if (_isInitializing) {
+      return SplashScreen(
+        loadingFunction: init,
+        onLoaded: () => setState(() {
+          _isInitializing = false;
+        }),
+      );
+    }
 
-  Widget _mainApp() {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider.value(value: accountRepository),
-        RepositoryProvider.value(value: assetWalletRepository),
         RepositoryProvider.value(value: authRepository),
+        RepositoryProvider.value(value: accountRepository),
+        RepositoryProvider.value(value: walletRepository),
+        RepositoryProvider.value(value: assetRepository),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => AuthBloc.builder(
-              authRepository: RepositoryProvider.of<AuthRepository>(context),
-            )..add(GotLastAuthenticated()),
-          ),
-        ],
+      child: BlocProvider(
+        create: (context) => AuthBloc.builder(
+          authRepository: RepositoryProvider.of<AuthRepository>(context),
+        )..add(GotLastAuthenticated()),
         child: AuthGuard(
           onAuthenticated: (context, authState) {
             return AuthenticatedApp(
               accountId: authState.accountId,
-            );
+            )..init();
           },
           onUnauthenticated: (context) {
             return const UnauthenticatedApp();
@@ -82,17 +79,17 @@ class _SimplioAppState extends State<SimplioApp> {
     );
   }
 
-  Future<void> _appInitializationActions() async {
+  Future<void> init() async {
     await Hive.initFlutter();
 
     /// Initialize all top-level Hive Db Providers
-    final accountDbProvider = AccountDbProvider();
-    final assetWalletDbProvider = AssetWalletDbProvider();
     final authTokenDbProvider = AuthTokenDbProvider();
+    final accountDbProvider = AccountDbProvider();
+    final walletDbProvider = WalletDbProvider();
 
-    await accountDbProvider.init();
-    await assetWalletDbProvider.init();
     await authTokenDbProvider.init();
+    await accountDbProvider.init();
+    await walletDbProvider.init();
 
     /// Init http client
     const apiUrl = String.fromEnvironment('API_URL');
@@ -103,19 +100,23 @@ class _SimplioAppState extends State<SimplioApp> {
       refreshTokenService: publicApi.service<RefreshTokenService>(),
     );
 
-    accountRepository = AccountRepository.builder(
-      db: accountDbProvider,
-    );
-    assetWalletRepository = AssetWalletRepository.builder(
-      db: assetWalletDbProvider,
-    );
+    // Initialize repositories
     authRepository = AuthRepository.builder(
-      db: accountDbProvider,
+      accountDb: accountDbProvider,
       authTokenStorage: authTokenDbProvider,
       signInService: publicApi.service<SignInService>(),
       signUpService: publicApi.service<SignUpService>(),
       passwordChangeService: securedApi.service<PasswordChangeService>(),
       passwordResetService: publicApi.service<PasswordResetService>(),
+    );
+    accountRepository = AccountRepository.builder(
+      accountDb: accountDbProvider,
+    );
+    walletRepository = WalletRepository.builder(
+      walletDb: walletDbProvider,
+    );
+    assetRepository = AssetRepository.builder(
+      assetService: securedApi.service<AssetService>(),
     );
   }
 }

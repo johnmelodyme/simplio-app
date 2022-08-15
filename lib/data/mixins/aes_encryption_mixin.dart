@@ -1,11 +1,11 @@
 import 'package:encrypt/encrypt.dart';
 
-const _keyByteSize = 32;
-const _ivByteSize = 16;
+const keyByteSize = 32;
+const ivByteSize = 16;
 
-mixin AesEncryption {
+mixin AesEncryptionMixin {
   Key makeKey(String inp) {
-    final keyStr = List.generate(_keyByteSize, (i) {
+    final keyStr = List.generate(keyByteSize, (i) {
       try {
         return inp.split('').elementAt(i);
       } on RangeError {
@@ -16,12 +16,8 @@ mixin AesEncryption {
     return Key.fromUtf8(keyStr);
   }
 
-  String generateKey() {
-    return Key.fromSecureRandom(_keyByteSize).base64;
-  }
-
   String generateInitializationVector() {
-    return IV.fromSecureRandom(_ivByteSize).base64;
+    return IV.fromSecureRandom(ivByteSize).base64;
   }
 
   String decrypt(String key, iv, base64Input) {

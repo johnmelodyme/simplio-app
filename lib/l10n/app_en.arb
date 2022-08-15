@@ -9,6 +9,7 @@
     "enterApplicationLabel": "I have an account",
 
     "switchLanguage": "Switch language",
+    "switchThemeMode": "Switch theme",
     "logoutBtn": "Logout",
     "loginBtn": "Login",
     "goToAppBtn":"Go to app",

@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
+import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
+import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';
 import 'package:simplio_app/view/routes/guards/protected_guard.dart';
@@ -37,17 +40,34 @@ class AuthenticatedRouter with PageBuilderMixin {
   GoRouter get router {
     return GoRouter(
       initialLocation: '/in',
-      navigatorBuilder: (_, __, child) => ProtectedGuard(
-        protectWhen: (account) =>
-            account.securityLevel.index > SecurityLevel.none.index &&
-            account.secret.unlockedValue == null,
-        protectedChild: ApplicationScreen(
-          child: child,
-        ),
-        onPrevent: (context) {
-          context.read<AuthBloc>().add(const GotUnauthenticated());
-        },
-      ),
+      // TODO - Replace this param with [ShellRoute] on go_router v5 migration
+      // See https://github.com/flutter/flutter/issues/108141
+      navigatorBuilder: (_, __, child) {
+        return ProtectedGuard(
+          protectWhen: (state) =>
+              state.account.securityLevel.index > SecurityLevel.none.index &&
+              state is AccountLocked,
+          protectedBuilder: (_) =>
+              BlocBuilder<AccountWalletCubit, AccountWalletState>(
+            buildWhen: (previous, current) => previous != current,
+            builder: (context, state) {
+              if (state is AccountWalletProvided) {
+                return ApplicationScreen(child: child);
+              }
+
+              if (state is AccountWalletLoading ||
+                  state is AccountWalletLoadedWithError) {
+                return const ApplicationLoadingScreen();
+              }
+
+              return child;
+            },
+          ),
+          onPrevent: (context) {
+            context.read<AuthBloc>().add(const GotUnauthenticated());
+          },
+        );
+      },
       observers: [
         TapBarObserver.of(context),
       ],
@@ -55,12 +75,11 @@ class AuthenticatedRouter with PageBuilderMixin {
         GoRoute(
           path: '/in',
           redirect: (state) {
-            final account = context.read<AccountCubit>().state.account;
+            final accountState = context.read<AccountCubit>().state;
 
-            if (account != null) {
-              if (account.securityLevel.index <= SecurityLevel.none.index) {
-                return '/set/pin-setup';
-              }
+            if (accountState is AccountProvided) {
+              final index = accountState.account.securityLevel.index;
+              if (index <= SecurityLevel.none.index) return '/set/pin-setup';
             }
 
             return '/in/dashboard';
@@ -83,7 +102,15 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'portfolio',
               name: portfolio,
               pageBuilder: pageBuilder(
-                child: const PortfolioScreen(),
+                child: BlocProvider(
+                  create: (context) => CryptoAssetCubit.builder(
+                    assetRepository:
+                        RepositoryProvider.of<AssetRepository>(context),
+                  ),
+                  child: Builder(builder: (context) {
+                    return const PortfolioScreen();
+                  }),
+                ),
                 withTransition: false,
                 settings: ApplicationSettings(
                   tapBar: TapBarRouteSettings(
@@ -134,7 +161,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                             RepositoryProvider.of<AuthRepository>(context),
                       ),
                       child: ProtectedGuard(
-                        protectedChild: const PasswordChangeScreen(),
+                        protectedBuilder: (_) => const PasswordChangeScreen(),
                         onPrevent: (context) => context.goNamed(configuration),
                       ),
                     ),

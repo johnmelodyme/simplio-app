@@ -14,7 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required AuthRepository authRepository,
   }) : this._(authRepository);
 
-  AuthBloc._(this._authRepository) : super(const Unauthenticated()) {
+  AuthBloc._(this._authRepository) : super(const Authenticating()) {
     on<GotAuthenticated>(_onGotAuthenticated);
     on<GotUnauthenticated>(_onGotUnauthenticated);
     on<GotLastAuthenticated>(_onGotLastAuthenticated);
@@ -43,7 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     GotLastAuthenticated event,
     Emitter<AuthState> emit,
   ) {
-    final Account? account = _authRepository.lastSignedIn();
+    final Account? account = _authRepository.getLastSignedIn();
 
     emit(
       account != null

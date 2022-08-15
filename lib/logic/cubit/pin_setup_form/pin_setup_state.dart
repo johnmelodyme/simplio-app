@@ -40,11 +40,15 @@ class PinSetupFormPending extends PinFormResponse {
 
 class PinSetupFormSuccess extends PinFormResponse {
   final Account account;
+  final String secret;
 
-  const PinSetupFormSuccess({required this.account});
+  const PinSetupFormSuccess({
+    required this.account,
+    required this.secret,
+  });
 
   @override
-  List<Object?> get props => [account];
+  List<Object?> get props => [account, secret];
 }
 
 class PinSetupFormFailure extends PinFormResponse {

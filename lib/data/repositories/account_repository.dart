@@ -1,28 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/model/lockable_string.dart';
-import 'package:simplio_app/data/providers/account_db_provider.dart';
 
 class AccountRepository {
-  final AccountDbProvider _db;
+  final AccountDb _accountDb;
 
-  const AccountRepository._(this._db);
+  const AccountRepository._(this._accountDb);
 
   const AccountRepository.builder({
-    required AccountDbProvider db,
-  }) : this._(db);
-
-  Future<AccountRepository> init() async {
-    await _db.init();
-
-    return this;
-  }
+    required AccountDb accountDb,
+  }) : this._(accountDb);
 
   Future<Account> save(Account account) async {
-    return _db.save(account);
+    return _accountDb.save(account);
   }
 
   Account? get(String id) {
-    return _db.get(id);
+    return _accountDb.get(id);
   }
 
   Future<Account> updateSecret(
@@ -37,7 +31,7 @@ class AccountRepository {
     if (prevKey != null) {
       try {
         final unlockedSecret = acc.secret.unlock(prevKey);
-        final updatedSecret = LockableString.value(unlockedSecret);
+        final updatedSecret = LockableString.unlocked(value: unlockedSecret);
 
         updatedSecret.lock(key);
         return save(acc.copyWith(
@@ -59,31 +53,59 @@ class AccountRepository {
     }
   }
 
+  Future<Account> updateLanguage(
+    Account acc, {
+    required String languageCode,
+  }) {
+    return save(acc.copyWith(
+      settings: acc.settings.copyWith(
+        locale: Locale(languageCode),
+      ),
+    ));
+  }
+
+  Future<Account> updateTheme(
+    Account acc, {
+    required ThemeMode themeMode,
+  }) {
+    return save(acc.copyWith(
+      settings: acc.settings.copyWith(
+        themeMode: themeMode,
+      ),
+    ));
+  }
+
   PinVerifyResponse verifyPin(Account acc, String pin) {
-    bool isValid;
+    String? secret;
 
     try {
-      acc.secret.unlock(pin);
-      isValid = true;
+      secret = acc.secret.unlock(pin);
     } catch (e) {
-      isValid = false;
+      secret = null;
     }
 
     return PinVerifyResponse(
-      isValid: isValid,
+      secret: secret,
       account: acc.copyWith(
-          securityAttempts:
-              isValid ? securityAttemptsLimit : acc.securityAttempts - 1),
+          securityAttempts: secret != null
+              ? securityAttemptsLimit
+              : acc.securityAttempts - 1),
     );
   }
 }
 
 class PinVerifyResponse {
-  final bool isValid;
+  final String? secret;
   final Account account;
 
   const PinVerifyResponse({
-    required this.isValid,
+    required this.secret,
     required this.account,
   });
+}
+
+abstract class AccountDb {
+  Account? get(String id);
+  Future<Account> save(Account account);
+  Account? getLast();
 }

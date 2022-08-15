@@ -4,6 +4,13 @@ abstract class AuthState extends Equatable {
   const AuthState();
 }
 
+class Authenticating extends AuthState {
+  const Authenticating();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class Unauthenticated extends AuthState {
   final Exception? error;
 

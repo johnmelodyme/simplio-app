@@ -47,7 +47,7 @@ class RefreshTokenAuthenticator extends Authenticator {
         tokenType: body.tokenType,
       );
 
-      await authTokenStorage.save(authToken);
+      await authTokenStorage.write(authToken);
 
       return authToken;
     }
@@ -56,7 +56,7 @@ class RefreshTokenAuthenticator extends Authenticator {
   }
 
   String _loadRefreshToken() {
-    final token = authTokenStorage.get();
+    final token = authTokenStorage.read();
     return token.refreshToken;
   }
 }

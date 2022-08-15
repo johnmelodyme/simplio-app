@@ -9,15 +9,17 @@ import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/pin_digits.dart';
 
+typedef BuildContextCallback = void Function(BuildContext context);
+
 class ProtectedGuard extends StatefulWidget {
-  final bool Function(Account account)? protectWhen;
-  final Widget protectedChild;
-  final Function(BuildContext context) onPrevent;
+  final bool Function(AccountProvided state)? protectWhen;
+  final WidgetBuilder protectedBuilder;
+  final BuildContextCallback onPrevent;
 
   const ProtectedGuard({
     super.key,
     this.protectWhen,
-    required this.protectedChild,
+    required this.protectedBuilder,
     required this.onPrevent,
   });
 
@@ -30,17 +32,23 @@ class _ProtectedGuardState extends State<ProtectedGuard> {
 
   @override
   Widget build(BuildContext context) {
-    final Account account = context.read<AccountCubit>().state.account!;
-    final shouldProtect = widget.protectWhen?.call(account) ?? true;
-    if (!shouldProtect) return widget.protectedChild;
+    final s = context.read<AccountCubit>().state;
+
+    if (s is! AccountProvided) {
+      widget.onPrevent(context);
+      return Container();
+    }
+
+    bool shouldProtect = widget.protectWhen?.call(s) ?? true;
+    if (!shouldProtect) return Builder(builder: widget.protectedBuilder);
 
     return isVerified
-        ? widget.protectedChild
+        ? Builder(builder: widget.protectedBuilder)
         : BlocProvider(
             create: (context) => PinVerifyFormCubit.builder(
               accountRepository:
                   RepositoryProvider.of<AccountRepository>(context),
-              account: account,
+              account: s.account,
             ),
             child: _Protection(
               onFailure: (context, account) async {
@@ -49,10 +57,10 @@ class _ProtectedGuardState extends State<ProtectedGuard> {
                     .updateAccount(account)
                     .then((_) => widget.onPrevent(context));
               },
-              onSuccess: (_, account) async {
+              onSuccess: (context, response) {
                 context
                     .read<AccountCubit>()
-                    .updateAccount(account)
+                    .unlockAccount(response.account, response.secret)
                     .then((_) => setState(() => isVerified = true));
               },
             ),
@@ -61,7 +69,7 @@ class _ProtectedGuardState extends State<ProtectedGuard> {
 }
 
 class _Protection extends StatelessWidget {
-  final Function(BuildContext context, Account account) onSuccess;
+  final Function(BuildContext context, PinVerifyFormSuccess) onSuccess;
   final Function(BuildContext context, Account account) onFailure;
 
   const _Protection({
@@ -84,19 +92,18 @@ class _Protection extends StatelessWidget {
                   Padding(
                     padding: CommonTheme.verticalPadding,
                     child: BlocConsumer<PinVerifyFormCubit, PinVerifyFormState>(
-                      listenWhen: (previous, current) =>
-                          previous.response != current.response,
+                      listenWhen: (p, c) => p.response != c.response,
                       listener: (context, state) {
-                        if (state.response is PinVerifyFormSuccess) {
-                          onSuccess(context, state.account);
+                        final res = state.response;
+                        if (res is PinVerifyFormSuccess) {
+                          onSuccess(context, res);
                         }
 
-                        if (state.response is PinVerifyFormFailure) {
+                        if (res is PinVerifyFormFailure) {
                           onFailure(context, state.account);
                         }
                       },
-                      buildWhen: (previous, current) =>
-                          previous.pin != current.pin,
+                      buildWhen: (prev, curr) => prev.pin != curr.pin,
                       builder: (context, state) {
                         return PinDigits(
                           pin: state.pin.value,
@@ -107,9 +114,9 @@ class _Protection extends StatelessWidget {
                     ),
                   ),
                   BlocBuilder<PinVerifyFormCubit, PinVerifyFormState>(
-                    buildWhen: (previous, current) =>
-                        previous.account.securityAttempts !=
-                        current.account.securityAttempts,
+                    buildWhen: (prev, curr) =>
+                        prev.account.securityAttempts !=
+                        curr.account.securityAttempts,
                     builder: (context, state) {
                       final attempts = state.account.securityAttempts;
                       return Visibility(
@@ -124,8 +131,7 @@ class _Protection extends StatelessWidget {
                               ? "${context.locale.protectedErrorRemaining} $attempts"
                               : context.locale.protectedErrorLast,
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
+                              color: Theme.of(context).colorScheme.error),
                         ),
                       );
                     },

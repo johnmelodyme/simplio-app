@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
+import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 
 class ConfigurationScreen extends StatelessWidget {
@@ -18,26 +18,22 @@ class ConfigurationScreen extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                var currentLanguage = context.locale.localeName;
-                var newLanguage = context.supportedLanguageCodes
-                    .firstWhere((element) => element != currentLanguage);
-
-                context
-                    .read<AccountCubit>()
-                    .setLanguage(newLanguage)
-                    .then((value) {
-                  var newTheme = context
-                      .read<AccountCubit>()
-                      .state
-                      .account
-                      ?.settings
-                      .themeMode;
-
-                  context.read<AccountCubit>().setTheme(
-                      newTheme == ThemeMode.dark
-                          ? ThemeMode.light
-                          : ThemeMode.dark);
-                });
+                final cubit = context.read<AccountCubit>();
+                final state = cubit.state;
+                if (state is AccountProvided) {
+                  final themeMode = state.account.settings.themeMode;
+                  cubit.updateTheme(themeMode == ThemeMode.dark
+                      ? ThemeMode.light
+                      : ThemeMode.dark);
+                }
+              },
+              child: Text(context.locale.switchThemeMode),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final languageCode = context.supportedLanguageCodes
+                    .firstWhere((e) => e != context.locale.localeName);
+                context.read<AccountCubit>().updateLanguage(languageCode);
               },
               child: Text(context.locale.switchLanguage),
             ),

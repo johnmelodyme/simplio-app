@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+@immutable
 class AssetStyle {
   final Color primaryColor;
   final Color foregroundColor;

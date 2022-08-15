@@ -15,7 +15,7 @@ class _WalletScreen extends State<WalletScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.assetWallet.asset.detail.name),
+        title: Text(widget.assetWallet.uuid),
         elevation: 0,
       ),
     );

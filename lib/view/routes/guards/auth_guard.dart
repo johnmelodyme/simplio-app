@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
+import 'package:simplio_app/view/themes/dark_mode.dart';
+import 'package:simplio_app/view/themes/light_mode.dart';
 
 class AuthGuard extends StatelessWidget {
   final Widget Function(
     BuildContext context,
     Authenticated state,
   ) onAuthenticated;
-  final Widget Function(BuildContext context) onUnauthenticated;
+  final WidgetBuilder onUnauthenticated;
 
   const AuthGuard({
     super.key,
@@ -19,9 +22,19 @@ class AuthGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       buildWhen: (previous, current) => previous != current,
-      builder: (context, state) => state is Authenticated
-          ? onAuthenticated(context, state)
-          : onUnauthenticated(context),
+      builder: (context, state) {
+        if (state is Authenticated) return onAuthenticated(context, state);
+        if (state is Unauthenticated) return onUnauthenticated(context);
+
+        return MaterialApp(
+          key: UniqueKey(),
+          title: 'Simplio',
+          themeMode: defaultThemeMode,
+          theme: LightMode.theme,
+          darkTheme: DarkMode.theme,
+          home: const Scaffold(),
+        );
+      },
     );
   }
 }

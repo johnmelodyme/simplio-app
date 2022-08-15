@@ -54,9 +54,16 @@ class PinSetupFormCubit extends Cubit<PinSetupFormState> {
         key: pin.toString(),
       );
 
-      emit(state.copyWith(
-        response: PinSetupFormSuccess(account: acc),
-      ));
+      final res = _accountRepository.verifyPin(acc, pin.toString());
+      if (res.secret != null) {
+        return emit(state.copyWith(
+          response: PinSetupFormSuccess(
+            account: res.account,
+            secret: res.secret!,
+          ),
+        ));
+      }
+      throw Exception('Account failed to be unlocked with a new pin');
     } on Exception catch (e) {
       emit(state.copyWith(
         response: PinSetupFormFailure(exception: e),

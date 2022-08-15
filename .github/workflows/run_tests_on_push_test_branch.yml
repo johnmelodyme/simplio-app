@@ -8,7 +8,7 @@ on:
 
 jobs:
   run-tests:
-    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@test/fix_long_execution
+    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@task/116-create-utxo-wallet
     with:
       e2e: true
       unitTests: true

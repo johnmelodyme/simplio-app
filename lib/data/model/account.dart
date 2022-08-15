@@ -1,16 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
+import 'package:simplio_app/data/mixins/aes_encryption_mixin.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
-import 'package:simplio_app/data/model/account_wallet.dart';
 import 'package:simplio_app/data/model/lockable_string.dart';
 import 'package:uuid/uuid.dart';
-import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
+import 'package:encrypt/encrypt.dart';
 
 part 'account.g.dart';
 
 const int securityAttemptsLimit = 6;
 
 class Account extends Equatable {
+  static String generateSecret() => Key.fromSecureRandom(keyByteSize).base64;
+
   final String id;
   final AccountType accountType;
   final LockableString secret;
@@ -18,48 +20,42 @@ class Account extends Equatable {
   final int securityAttempts;
   final DateTime signedIn;
   final AccountSettings settings;
-  final List<AccountWallet> wallets;
 
-  const Account(
-    this.id,
-    this.accountType,
-    this.secret,
-    this.securityLevel,
-    this.securityAttempts,
-    this.signedIn,
-    this.settings,
-    this.wallets,
-  )   : assert(id.length > 0),
+  const Account({
+    required this.id,
+    required this.accountType,
+    required this.secret,
+    required this.securityLevel,
+    required this.securityAttempts,
+    required this.signedIn,
+    required this.settings,
+  })  : assert(id.length > 0),
         assert(securityAttempts >= 0);
 
-  const Account.registered({
+  Account.registered({
     required String id,
-    required LockableString secret,
     SecurityLevel? securityLevel,
     required DateTime signedIn,
-    AccountSettings settings = const AccountSettings.preset(),
-    List<AccountWallet> wallets = const <AccountWallet>[],
+    AccountSettings settings = const AccountSettings.builder(),
   }) : this(
-          id,
-          AccountType.registered,
-          secret,
-          securityLevel ?? SecurityLevel.none,
-          securityAttemptsLimit,
-          signedIn,
-          settings,
-          wallets,
+          id: id,
+          accountType: AccountType.registered,
+          secret: LockableString.unlocked(value: generateSecret()),
+          securityLevel: securityLevel ?? SecurityLevel.none,
+          securityAttempts: securityAttemptsLimit,
+          signedIn: signedIn,
+          settings: settings,
         );
 
   Account.anonymous()
       : this(
-          "${const Uuid().v4()}.${DateTime.now().microsecondsSinceEpoch}",
-          AccountType.anonymous,
-          LockableString.generate(),
-          SecurityLevel.none,
-          securityAttemptsLimit,
-          DateTime.now(),
-          const AccountSettings.preset(),
-          const <AccountWallet>[],
+          id: "${const Uuid().v4()}.${DateTime.now().microsecondsSinceEpoch}",
+          accountType: AccountType.anonymous,
+          secret: LockableString.unlocked(value: generateSecret()),
+          securityLevel: SecurityLevel.none,
+          securityAttempts: securityAttemptsLimit,
+          signedIn: DateTime.now(),
+          settings: const AccountSettings.builder(),
         );
 
   Account copyWith({
@@ -68,17 +64,15 @@ class Account extends Equatable {
     int? securityAttempts,
     DateTime? signedIn,
     AccountSettings? settings,
-    List<AccountWallet>? wallets,
   }) {
     return Account(
-      id,
-      accountType,
-      secret ?? this.secret,
-      securityLevel ?? this.securityLevel,
-      securityAttempts ?? this.securityAttempts,
-      signedIn ?? this.signedIn,
-      settings ?? this.settings,
-      wallets ?? this.wallets,
+      id: id,
+      accountType: accountType,
+      secret: secret ?? this.secret,
+      securityLevel: securityLevel ?? this.securityLevel,
+      securityAttempts: securityAttempts ?? this.securityAttempts,
+      signedIn: signedIn ?? this.signedIn,
+      settings: settings ?? this.settings,
     );
   }
 
@@ -90,22 +84,8 @@ class Account extends Equatable {
         securityLevel,
         securityAttempts,
         signedIn,
+        settings,
       ];
-
-  AccountWallet? get accountWallet {
-    if (wallets.isNotEmpty) return wallets.first;
-    return null;
-  }
-
-  HDWallet? get trustWallet {
-    String mnemonic = wallets
-        .firstWhere(
-            (element) => element.walletType == AccountWalletTypes.hdWallet)
-        .seed
-        .toString();
-
-    return HDWallet.createWithMnemonic(mnemonic);
-  }
 }
 
 @HiveType(typeId: 11)
@@ -149,9 +129,6 @@ class AccountLocal extends HiveObject {
   @HiveField(6)
   final AccountSettingsLocal settings;
 
-  @HiveField(7)
-  final List<AccountWalletLocal> wallets;
-
   AccountLocal({
     required this.id,
     required this.accountType,
@@ -160,6 +137,5 @@ class AccountLocal extends HiveObject {
     required this.securityAttempts,
     required this.signedIn,
     required this.settings,
-    required this.wallets,
   });
 }

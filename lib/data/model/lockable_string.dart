@@ -37,14 +37,12 @@ enum SecretState {
   }
 }
 
-class LockableString with AesEncryption {
-  String? _unlockedValue;
-
+class LockableString with AesEncryptionMixin {
   late SecretState _state;
   late String _value;
   late String _iv;
 
-  LockableString.from({required String base64String}) {
+  LockableString.locked({required String base64String}) {
     final bytes = base64.decode(base64String);
     final Map<String, dynamic> map = json.decode(utf8.decode(bytes));
 
@@ -55,33 +53,17 @@ class LockableString with AesEncryption {
     );
   }
 
-  LockableString.generate() {
-    _iv = generateInitializationVector();
-    _value = generateKey();
-    _state = SecretState.decoded;
-  }
-
-  LockableString.value(String value) {
+  LockableString.unlocked({required String value}) {
     _iv = generateInitializationVector();
     _value = value;
     _state = SecretState.decoded;
   }
 
   bool get isLocked => _state == SecretState.encoded;
-  String? get unlockedValue {
-    return _state == SecretState.decoded ? _value : _unlockedValue;
-  }
 
-  String unlock(String key, {bool keepUnlocked = true}) {
+  String unlock(String key) {
     if (_state == SecretState.decoded) return _value;
-    if (_state == SecretState.encoded) {
-      final decrypted = decrypt(key, _iv, _value);
-      if (keepUnlocked) {
-        _unlockedValue = decrypted;
-      }
-
-      return decrypted;
-    }
+    if (_state == SecretState.encoded) return decrypt(key, _iv, _value);
 
     throw Exception('Your secret was corrupted');
   }

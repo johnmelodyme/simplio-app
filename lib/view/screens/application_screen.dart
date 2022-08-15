@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/tap_bar/tap_bar_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/widgets/tap_bar.dart';
@@ -21,8 +22,6 @@ class ApplicationScreen extends StatefulWidget {
 
 class _ApplicationScreenState extends State<ApplicationScreen>
     with AutomaticKeepAliveClientMixin {
-  bool cachedVisibility = false;
-
   @override
   void dispose() {
     super.dispose();
@@ -34,7 +33,6 @@ class _ApplicationScreenState extends State<ApplicationScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
@@ -55,7 +53,6 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                           onTap: (context, key) {
                             GoRouter.of(context)
                                 .goNamed(AuthenticatedRouter.dashboard);
-                            //     ?.pushReplacementNamed(ApplicationRoute.home);
                           }),
                       TapBarItem(
                           key: const ValueKey(AuthenticatedRouter.portfolio),
@@ -101,6 +98,39 @@ class _ApplicationScreenState extends State<ApplicationScreen>
           },
         ),
       ],
+    );
+  }
+}
+
+class ApplicationLoadingScreen extends StatelessWidget {
+  const ApplicationLoadingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: BlocBuilder<AccountWalletCubit, AccountWalletState>(
+                buildWhen: (previous, current) => previous != current,
+                builder: (context, state) {
+                  if (state is AccountWalletLoadedWithError) {
+                    return Text(
+                      state.error.toString(),
+                      style: TextStyle(color: Theme.of(context).errorColor),
+                    );
+                  }
+                  return CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                    backgroundColor: Theme.of(context).indicatorColor,
+                  );
+                },
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

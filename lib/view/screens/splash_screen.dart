@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
-import 'package:simplio_app/logic/cubit/loading/loading_cubit.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/themes/dark_mode.dart';
 import 'package:simplio_app/view/themes/light_mode.dart';
 
 class SplashScreen extends StatelessWidget {
   final Future<void> Function() loadingFunction;
+  final VoidCallback onLoaded;
 
-  const SplashScreen({super.key, required this.loadingFunction});
+  const SplashScreen({
+    super.key,
+    required this.loadingFunction,
+    required this.onLoaded,
+  });
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-        future: loadingFunction()
-            .then((_) => context.read<LoadingCubit>().setSplashScreen(false)),
-        builder: (context, snapshot) => _splashScreenWidget(context));
+      future: loadingFunction().then(((_) => onLoaded())),
+      builder: (context, snapshot) => _splashScreenWidget(context),
+    );
   }
 
   Widget _splashScreenWidget(BuildContext context) {
@@ -28,7 +31,7 @@ class SplashScreen extends StatelessWidget {
     // this page. Only one of these widgets is displayed at any time
     return MaterialApp(
       title: 'Simplio',
-      themeMode: const AccountSettings.preset().themeMode,
+      themeMode: defaultThemeMode,
       theme: LightMode.theme,
       darkTheme: DarkMode.theme,
       home: Builder(

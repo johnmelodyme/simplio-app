@@ -48,7 +48,13 @@ class PinVerifyFormPending extends PinVerifyFormResponse {
 }
 
 class PinVerifyFormSuccess extends PinVerifyFormResponse {
-  const PinVerifyFormSuccess();
+  final Account account;
+  final String secret;
+
+  const PinVerifyFormSuccess({
+    required this.account,
+    required this.secret,
+  });
 }
 
 class PinVerifyFormFailure extends PinVerifyFormResponse {

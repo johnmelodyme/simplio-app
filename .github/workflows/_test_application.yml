@@ -64,7 +64,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: generated-files-and-packages
-      - run: flutter test test/unit_tests
+      - run: flutter test
 
   run-e2e-tests:
     if: ${{ inputs.e2e }}

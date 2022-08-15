@@ -1,39 +1,59 @@
 part of 'account_cubit.dart';
 
-class AccountState extends Equatable {
-  final Account? account;
-  final List<AssetWallet> assetWallets;
-
-  const AccountState._({
-    required this.account,
-    required this.assetWallets,
-  });
-
-  const AccountState.initial() : this._(account: null, assetWallets: const []);
-
-  const AccountState.value({
-    required Account? account,
-    required List<AssetWallet> assetWallets,
-  }) : this._(account: account, assetWallets: assetWallets);
+abstract class AccountState extends Equatable {
+  const AccountState();
 
   @override
-  List<Object?> get props => [
-        account,
-        assetWallets,
-        account?.settings.locale,
-        account?.settings.themeMode
-      ];
+  List<Object?> get props => [];
+}
 
-  List<AssetWallet> get enabledAssetWallets =>
-      assetWallets.where((element) => element.isEnabled).toList();
+class AccountInitial extends AccountState {
+  const AccountInitial();
+}
 
-  AccountState copyWith({
+class AccountLoading extends AccountState {
+  const AccountLoading();
+}
+
+abstract class AccountProvided extends AccountState {
+  final Account account;
+
+  const AccountProvided({required this.account});
+
+  @override
+  List<Object?> get props => [account];
+
+  AccountProvided copyWith({Account? account});
+}
+
+class AccountLocked extends AccountProvided {
+  const AccountLocked({required super.account});
+
+  @override
+  AccountLocked copyWith({Account? account}) {
+    return AccountLocked(account: account ?? this.account);
+  }
+}
+
+class AccountUnlocked extends AccountProvided {
+  final String secret;
+
+  const AccountUnlocked({
+    required super.account,
+    required this.secret,
+  });
+
+  @override
+  List<Object?> get props => [account, secret];
+
+  @override
+  AccountUnlocked copyWith({
     Account? account,
-    List<AssetWallet>? assetWallets,
+    String? secret,
   }) {
-    return AccountState.value(
+    return AccountUnlocked(
       account: account ?? this.account,
-      assetWallets: assetWallets ?? this.assetWallets,
+      secret: secret ?? this.secret,
     );
   }
 }

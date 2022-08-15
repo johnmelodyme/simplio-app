@@ -12,11 +12,7 @@ class AuthTokenDbProvider extends BoxProvider<AuthToken>
 
   AuthTokenDbProvider._();
 
-  factory AuthTokenDbProvider() {
-    return _instance;
-  }
-
-  final _cache = _AuthTokenCache();
+  factory AuthTokenDbProvider() => _instance;
 
   @override
   void registerAdapters() {
@@ -24,42 +20,14 @@ class AuthTokenDbProvider extends BoxProvider<AuthToken>
   }
 
   @override
-  AuthToken get() {
-    final cached = _cache.read();
-    if (cached != null) {
-      return cached;
-    }
-
-    if (box.isNotEmpty) {
-      return box.values.first;
-    }
-
+  AuthToken read() {
+    if (box.isNotEmpty) return box.values.first;
     throw Exception('Auth token not found.');
   }
 
   @override
-  Future<void> save(AuthToken authToken) async {
+  Future<void> write(AuthToken authToken) async {
     await box.clear();
     box.add(authToken);
-
-    _cache.cache(authToken);
-  }
-}
-
-class _AuthTokenCache {
-  AuthToken? _authToken;
-  _AuthTokenCache();
-
-  AuthToken cache(AuthToken authToken) {
-    _authToken = authToken;
-    return authToken;
-  }
-
-  AuthToken? read() {
-    return _authToken;
-  }
-
-  void clear() {
-    _authToken = null;
   }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/routes/guards/protected_guard.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 
 class AppBarSearch<T> extends StatelessWidget {
   final SearchDelegate<T> delegate;
   final String label;
-  final Function(BuildContext context)? onTap;
+  final BuildContextCallback? onTap;
 
   const AppBarSearch({
     super.key,

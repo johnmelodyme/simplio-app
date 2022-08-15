@@ -13,7 +13,7 @@ class AuthorizeInterceptor extends RequestInterceptor {
 
   @override
   FutureOr<Request> onRequest(Request request) {
-    final authToken = authTokenStorage.get();
+    final authToken = authTokenStorage.read();
 
     return request.copyWith(headers: {
       "Authorization": "${authToken.tokenType} ${authToken.accessToken}",
