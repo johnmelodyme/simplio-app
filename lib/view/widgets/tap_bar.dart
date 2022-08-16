@@ -108,32 +108,25 @@ class _TapBarItem extends StatelessWidget {
           tapBarItem.onTap?.call(context, tapBarItem.key!);
         },
         child: Center(
-          child: isActive
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 2.0),
-                      child: Icon(
-                        tapBarItem.activeIcon,
-                        color: selectedColor,
-                      ),
-                    ),
-                    Text(
-                      tapBarItem.label ?? '',
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: selectedColor,
-                      ),
-                    ),
-                  ],
-                )
-              : Icon(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(bottom: 2.0),
+                child: Icon(
                   tapBarItem.icon,
-                  color: unselectedColor,
-                ),
-        ),
+                  color: isActive ? selectedColor : unselectedColor,
+                )),
+            Text(
+              tapBarItem.label ?? '',
+              style: TextStyle(
+                fontSize: 12.0,
+                color: isActive ? selectedColor : unselectedColor,
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }

@@ -4,8 +4,8 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+class DiscoveryScreen extends StatelessWidget {
+  const DiscoveryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

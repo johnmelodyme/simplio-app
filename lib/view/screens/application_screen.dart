@@ -45,54 +45,43 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                     activeItem: state.selectedItem,
                     items: [
                       TapBarItem(
-                          key: const ValueKey(AuthenticatedRouter.dashboard),
+                          key: const ValueKey(AuthenticatedRouter.discovery),
                           tapBarItemType: TapTabItemType.button,
-                          icon: Icons.home_outlined,
-                          activeIcon: Icons.home,
-                          label: context.locale.homeTapBarLabel,
+                          icon: Icons.assistant_navigation,
+                          label: context.locale.discoveryTapBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.dashboard);
+                                .goNamed(AuthenticatedRouter.discovery);
                           }),
                       TapBarItem(
-                          key: const ValueKey(AuthenticatedRouter.portfolio),
+                          key: const ValueKey(AuthenticatedRouter.games),
                           tapBarItemType: TapTabItemType.button,
-                          icon: Icons.pie_chart_outline,
-                          activeIcon: Icons.pie_chart,
-                          label: context.locale.portfolioTapBarLabel,
+                          icon: Icons.sports_esports_outlined,
+                          label: context.locale.gamesTapBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.portfolio);
+                                .goNamed(AuthenticatedRouter.games);
                           }),
-                      TapBarItem(tapBarItemType: TapTabItemType.spacer),
                       TapBarItem(
                           key: const ValueKey(AuthenticatedRouter.inventory),
                           tapBarItemType: TapTabItemType.button,
-                          icon: Icons.sports_esports_outlined,
-                          activeIcon: Icons.sports_esports,
-                          label: context.locale.gamesTapBarLabel,
+                          icon: Icons.pie_chart_outline,
+                          label: context.locale.inventoryTapBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
                                 .goNamed(AuthenticatedRouter.inventory);
                           }),
                       TapBarItem(
-                          key:
-                              const ValueKey(AuthenticatedRouter.configuration),
+                          key: const ValueKey(AuthenticatedRouter.findDaaps),
                           tapBarItemType: TapTabItemType.button,
-                          icon: Icons.settings_outlined,
-                          activeIcon: Icons.settings,
-                          label: context.locale.settingsTapBarLabel,
+                          icon: Icons.language,
+                          label: context.locale.findDappsTapBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.configuration);
+                                .goNamed(AuthenticatedRouter.findDaaps);
                           }),
                     ],
                     height: 70.0,
-                    floatingActionButtonOffset: 30,
-                    floatingActionButton: FloatingActionButton(
-                      child: const Icon(Icons.swap_calls),
-                      onPressed: () {},
-                    ),
                   )
                 : Container();
           },
