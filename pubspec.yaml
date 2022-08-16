@@ -35,7 +35,7 @@ dependencies:
   uuid: ^3.0.6
   encrypt: ^5.0.1
   trust_wallet_core_lib: ^0.0.6+2.9.6
-  sio_core: ^0.0.13
+  sio_core_light: ^1.0.0
   crypto_assets:
     path: packages/crypto_assets
 

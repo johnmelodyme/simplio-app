@@ -3,7 +3,7 @@ import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
-import 'package:sio_core/sio_core.dart' as sio;
+import 'package:sio_core_light/sio_core_light.dart' as sio;
 
 class WalletRepository {
   final WalletDb _walletDb;
