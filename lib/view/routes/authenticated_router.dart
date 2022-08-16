@@ -18,8 +18,8 @@ import 'package:simplio_app/view/routes/settings/application_settings.dart';
 import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
+import 'package:simplio_app/view/screens/dapps_screen.dart';
 import 'package:simplio_app/view/screens/discovery_screen.dart';
-import 'package:simplio_app/view/screens/daaps_screen.dart';
 import 'package:simplio_app/view/screens/games_screen.dart';
 import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
@@ -30,7 +30,7 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String games = 'games';
   static const String inventory = 'inventory';
   static const String configuration = 'configuration';
-  static const String findDaaps = 'find-daaps';
+  static const String findDapps = 'find-dapps';
   static const String pinSetup = 'pin-setup';
   static const String accountSetup = 'account-setup';
   static const String passwordChange = 'password-change';
@@ -135,14 +135,14 @@ class AuthenticatedRouter with PageBuilderMixin {
               ),
             ),
             GoRoute(
-              path: 'find-daaps',
-              name: findDaaps,
+              path: 'find-dapps',
+              name: findDapps,
               pageBuilder: pageBuilder(
-                child: const DaapsScreen(),
+                child: const DappsScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
                   tapBar: TapBarRouteSettings(
-                    selectedKey: const ValueKey(findDaaps),
+                    selectedKey: const ValueKey(findDapps),
                   ),
                 ),
               ),

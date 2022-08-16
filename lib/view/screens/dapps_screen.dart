@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class DaapsScreen extends StatelessWidget {
-  const DaapsScreen({super.key});
+class DappsScreen extends StatelessWidget {
+  const DappsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('DaapsScreen screen placeholder'),
+        child: Text('DappsScreen screen placeholder'),
       ),
     );
   }

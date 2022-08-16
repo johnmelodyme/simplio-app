@@ -72,13 +72,13 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                                 .goNamed(AuthenticatedRouter.inventory);
                           }),
                       TapBarItem(
-                          key: const ValueKey(AuthenticatedRouter.findDaaps),
+                          key: const ValueKey(AuthenticatedRouter.findDapps),
                           tapBarItemType: TapTabItemType.button,
                           icon: Icons.language,
                           label: context.locale.findDappsTapBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.findDaaps);
+                                .goNamed(AuthenticatedRouter.findDapps);
                           }),
                     ],
                     height: 70.0,

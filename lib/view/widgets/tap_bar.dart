@@ -7,6 +7,7 @@ class TapBar extends StatelessWidget {
   final double height;
   final double floatingActionButtonOffset;
   final double elevation;
+  final double borderRadius;
   final int spacerRatio;
   final bool showLabel;
   final Key activeItem;
@@ -19,6 +20,7 @@ class TapBar extends StatelessWidget {
     this.height = 56,
     this.floatingActionButtonOffset = 20,
     this.elevation = 20.0,
+    this.borderRadius = 20.0,
     this.spacerRatio = 2,
     this.showLabel = true,
   })  : assert(items.length <= 5),
@@ -27,56 +29,57 @@ class TapBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final double bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return SafeArea(
-      bottom: true,
-      child: SizedBox(
-        height: height + floatingActionButtonOffset,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              height: height,
-              decoration: BoxDecoration(
-                color: theme.bottomNavigationBarTheme.backgroundColor,
-                border: Border(
-                  top: BorderSide(
-                    width: 1,
-                    color: theme.hoverColor,
-                  ),
+    return SizedBox(
+      height: height + bottomPadding,
+      child: Container(
+        color: bottomPadding > 0
+            ? theme.bottomNavigationBarTheme.backgroundColor
+            : Colors.transparent,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                height: height,
+                decoration: BoxDecoration(
+                  color: theme.bottomNavigationBarTheme.backgroundColor,
+                  borderRadius: BorderRadius.circular(borderRadius),
+                ),
+                child: Builder(
+                  builder: (context) {
+                    return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: items.map((e) {
+                          if (e.tapBarItemType == TapTabItemType.spacer) {
+                            return Expanded(
+                              key: UniqueKey(),
+                              flex: 1,
+                              child: Container(),
+                            );
+                          }
+
+                          return Expanded(
+                              key: e.key,
+                              flex: spacerRatio,
+                              child: _TapBarItem(
+                                isActive: activeItem == e.key,
+                                tapBarItem: e,
+                              ));
+                        }).toList());
+                  },
                 ),
               ),
-              child: Builder(
-                builder: (context) {
-                  return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: items.map((e) {
-                        if (e.tapBarItemType == TapTabItemType.spacer) {
-                          return Expanded(
-                            key: UniqueKey(),
-                            flex: 1,
-                            child: Container(),
-                          );
-                        }
-
-                        return Expanded(
-                            key: e.key,
-                            flex: spacerRatio,
-                            child: _TapBarItem(
-                              isActive: activeItem == e.key,
-                              tapBarItem: e,
-                            ));
-                      }).toList());
-                },
-              ),
-            ),
-            if (floatingActionButton != null)
-              Positioned(
-                top: 0,
-                child: floatingActionButton!,
-              ),
-          ],
+              if (floatingActionButton != null)
+                Positioned(
+                  top: 0,
+                  child: floatingActionButton!,
+                ),
+            ],
+          ),
         ),
       ),
     );
