@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 
 class ApplicationSettings extends RouteSettings {
-  final TapBarRouteSettings? tapBar;
+  final TabBarRouteSettings? tabBar;
 
   @override
   ApplicationArguments get arguments => ApplicationArguments(
-        tapBar: tapBar,
+        tabBar: tabBar,
       );
 
   const ApplicationSettings({
-    this.tapBar,
+    this.tabBar,
   });
 }
 
 class ApplicationArguments {
-  final TapBarRouteSettings? tapBar;
+  final TabBarRouteSettings? tabBar;
 
   ApplicationArguments({
-    this.tapBar,
+    this.tabBar,
   });
 }
 
-class TapBarRouteSettings {
+class TabBarRouteSettings {
   final Key selectedKey;
   final bool isVisible;
 
-  TapBarRouteSettings({
+  TabBarRouteSettings({
     required this.selectedKey,
     this.isVisible = true,
   });

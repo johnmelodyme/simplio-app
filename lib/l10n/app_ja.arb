@@ -14,10 +14,10 @@
     "loginBtn": "ログアウト",
     "goToAppBtn":"両あなた自",
 
-    "homeTapBarLabel": "車両あなた自身",
-    "gamesTapBarLabel": "車両あなた自身",
-    "inventoryTapBarLabel": "車両あなた自身",
-    "findDappsTapBarLabel": "車両あなた自身",
+    "homeTabBarLabel": "車両あなた自身",
+    "portfolioTabBarLabel": "車両あなた自身",
+    "gamesTabBarLabel": "車両あなた自身",
+    "settingsTabBarLabel": "車両あなた自身",
 
     "loginScreenTitle": "車両あなた自身 車両",
     "loginScreenSubTitle": "あなたは財布を持っていません",

@@ -14,10 +14,10 @@
     "loginBtn": "Login",
     "goToAppBtn":"Go to app",
 
-    "discoveryTapBarLabel": "Discover",
-    "gamesTapBarLabel": "My Games",
-    "inventoryTapBarLabel": "Inventory",
-    "findDappsTapBarLabel": "Find Dapps",
+    "homeTabBarLabel": "Home",
+    "portfolioTabBarLabel": "Portfolio",
+    "gamesTabBarLabel": "Games",
+    "settingsTabBarLabel": "Settings",
 
     "loginScreenTitle": "Enter Simplio.",
     "loginScreenSubTitle": "It's good to see you back.",

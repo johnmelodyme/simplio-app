@@ -71,7 +71,7 @@ class AuthenticatedRouter with PageBuilderMixin {
         );
       },
       observers: [
-        TapBarObserver.of(context),
+        TabBarObserver.of(context),
       ],
       routes: [
         GoRoute(
@@ -154,7 +154,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 child: const ConfigurationScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
+                  tabBar: TabBarRouteSettings(
                     selectedKey: const ValueKey(configuration),
                   ),
                 ),
@@ -165,7 +165,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                   name: passwordChange,
                   pageBuilder: pageBuilder(
                     settings: ApplicationSettings(
-                      tapBar: TapBarRouteSettings(
+                      tabBar: TabBarRouteSettings(
                         selectedKey: const ValueKey(configuration),
                         isVisible: false,
                       ),

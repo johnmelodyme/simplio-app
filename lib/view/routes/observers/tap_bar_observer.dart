@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/logic/cubit/tap_bar/tap_bar_cubit.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
 
-class TapBarObserver extends NavigatorObserver {
+class TabBarObserver extends NavigatorObserver {
   final BuildContext context;
 
-  TapBarObserver.of(this.context);
+  TabBarObserver.of(this.context);
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
@@ -25,22 +25,22 @@ class TapBarObserver extends NavigatorObserver {
 
   void _handleArguments(Object? args) {
     if (args is ApplicationSettings) {
-      _setTapBarVisibility(args.tapBar);
+      _setTabBarVisibility(args.tabBar);
     } else {
-      _hideTapBar();
+      _hideTabBar();
     }
   }
 
-  _setTapBarVisibility(TapBarRouteSettings? tapBarSettings) {
-    if (tapBarSettings == null) return;
+  _setTabBarVisibility(TabBarRouteSettings? tabBarSettings) {
+    if (tabBarSettings == null) return;
 
-    context.read<TapBarCubit>().setVisibility(
-          isVisible: tapBarSettings.isVisible,
-          activeItem: tapBarSettings.selectedKey,
+    context.read<TabBarCubit>().setVisibility(
+          isVisible: tabBarSettings.isVisible,
+          activeItem: tabBarSettings.selectedKey,
         );
   }
 
-  _hideTapBar() {
-    context.read<TapBarCubit>().setVisibility();
+  _hideTabBar() {
+    context.read<TabBarCubit>().setVisibility();
   }
 }

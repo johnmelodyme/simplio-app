@@ -36,7 +36,7 @@ class AuthenticatedApp extends StatelessWidget {
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
           ),
         ),
-        BlocProvider(create: (_) => TapBarCubit()),
+        BlocProvider(create: (_) => TabBarCubit()),
       ],
       child: BlocListener<AccountCubit, AccountState>(
         listenWhen: (previous, current) => previous != current,

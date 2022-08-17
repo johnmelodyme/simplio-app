@@ -5,8 +5,8 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/tap_bar/tap_bar_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/widgets/tap_bar.dart';
-import 'package:simplio_app/view/widgets/tap_bar_item.dart';
+import 'package:simplio_app/view/widgets/bottom_tab_bar.dart';
+import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 
 class ApplicationScreen extends StatefulWidget {
   final Widget child;
@@ -37,11 +37,11 @@ class _ApplicationScreenState extends State<ApplicationScreen>
       alignment: AlignmentDirectional.bottomCenter,
       children: [
         widget.child,
-        BlocBuilder<TapBarCubit, TapBarState>(
+        BlocBuilder<TabBarCubit, TabBarState>(
           buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
             return state.isDisplayed
-                ? TapBar(
+                ? BottomTabBar(
                     activeItem: state.selectedItem,
                     items: [
                       TapBarItem(
