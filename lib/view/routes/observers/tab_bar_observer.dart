@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/logic/cubit/tap_bar/tap_bar_cubit.dart';
+import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
 
 class TabBarObserver extends NavigatorObserver {

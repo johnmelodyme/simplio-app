@@ -1,4 +1,4 @@
-part of './tap_bar_cubit.dart';
+part of 'tab_bar_cubit.dart';
 
 class TabBarState extends Equatable {
   final bool isDisplayed;

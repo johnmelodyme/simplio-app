@@ -13,7 +13,7 @@ import 'package:simplio_app/logic/cubit/password_change_form/password_change_for
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';
 import 'package:simplio_app/view/routes/guards/protected_guard.dart';
 import 'package:simplio_app/view/routes/mixins/page_builder_mixin.dart';
-import 'package:simplio_app/view/routes/observers/tap_bar_observer.dart';
+import 'package:simplio_app/view/routes/observers/tab_bar_observer.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
 import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
