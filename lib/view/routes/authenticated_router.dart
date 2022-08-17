@@ -94,7 +94,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 child: const DiscoveryScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
+                  tabBar: TabBarRouteSettings(
                     selectedKey: const ValueKey(discovery),
                   ),
                 ),
@@ -115,7 +115,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 ),
                 withTransition: false,
                 settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
+                  tabBar: TabBarRouteSettings(
                     selectedKey: const ValueKey(inventory),
                   ),
                 ),
@@ -128,7 +128,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 child: const GamesScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
+                  tabBar: TabBarRouteSettings(
                     selectedKey: const ValueKey(games),
                   ),
                 ),
@@ -141,7 +141,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 child: const DappsScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
+                  tabBar: TabBarRouteSettings(
                     selectedKey: const ValueKey(findDapps),
                   ),
                 ),

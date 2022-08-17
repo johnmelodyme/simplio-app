@@ -15,9 +15,9 @@
     "goToAppBtn":"両あなた自",
 
     "homeTabBarLabel": "車両あなた自身",
-    "portfolioTabBarLabel": "車両あなた自身",
     "gamesTabBarLabel": "車両あなた自身",
-    "settingsTabBarLabel": "車両あなた自身",
+    "inventoryTabBarLabel": "車両あなた自身",
+    "findDappsTabBarLabel": "車両あなた自身",
 
     "loginScreenTitle": "車両あなた自身 車両",
     "loginScreenSubTitle": "あなたは財布を持っていません",

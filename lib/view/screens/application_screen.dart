@@ -44,38 +44,38 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                 ? BottomTabBar(
                     activeItem: state.selectedItem,
                     items: [
-                      TapBarItem(
+                      TabBarItem(
                           key: const ValueKey(AuthenticatedRouter.discovery),
-                          tapBarItemType: TapTabItemType.button,
+                          tabBarItemType: TabItemType.button,
                           icon: Icons.assistant_navigation,
-                          label: context.locale.discoveryTapBarLabel,
+                          label: context.locale.discoveryTabBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
                                 .goNamed(AuthenticatedRouter.discovery);
                           }),
-                      TapBarItem(
+                      TabBarItem(
                           key: const ValueKey(AuthenticatedRouter.games),
-                          tapBarItemType: TapTabItemType.button,
+                          tabBarItemType: TabItemType.button,
                           icon: Icons.sports_esports_outlined,
-                          label: context.locale.gamesTapBarLabel,
+                          label: context.locale.gamesTabBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
                                 .goNamed(AuthenticatedRouter.games);
                           }),
-                      TapBarItem(
+                      TabBarItem(
                           key: const ValueKey(AuthenticatedRouter.inventory),
-                          tapBarItemType: TapTabItemType.button,
+                          tabBarItemType: TabItemType.button,
                           icon: Icons.pie_chart_outline,
-                          label: context.locale.inventoryTapBarLabel,
+                          label: context.locale.inventoryTabBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
                                 .goNamed(AuthenticatedRouter.inventory);
                           }),
-                      TapBarItem(
+                      TabBarItem(
                           key: const ValueKey(AuthenticatedRouter.findDapps),
-                          tapBarItemType: TapTabItemType.button,
+                          tabBarItemType: TabItemType.button,
                           icon: Icons.language,
-                          label: context.locale.findDappsTapBarLabel,
+                          label: context.locale.findDappsTabBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
                                 .goNamed(AuthenticatedRouter.findDapps);
