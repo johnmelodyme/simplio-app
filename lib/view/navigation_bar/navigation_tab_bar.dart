@@ -10,8 +10,6 @@ class NavigationTabBar extends StatefulWidget {
     Key? key,
     required this.tabs,
     this.currentTab = 0,
-    this.appBarWidget,
-    this.appBarWidgetHeight = 0.0,
     this.addTopGap = true,
   })  : assert(tabs.isNotEmpty),
         assert(currentTab < tabs.length),
@@ -20,8 +18,6 @@ class NavigationTabBar extends StatefulWidget {
   final List<NavigationBarTabItem> tabs;
   final int currentTab;
 
-  final Widget? appBarWidget;
-  final double appBarWidgetHeight;
   final bool addTopGap;
 
   @override
