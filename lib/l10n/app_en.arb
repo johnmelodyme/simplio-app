@@ -4,7 +4,7 @@
       "description": "Simplio name"
     },
     "noWalletsLabel": "You have no wallet",
-    "gamesLabel": "Games",
+    "gamesLabel": "My Games",
     "welcomeLabel": "Welcome to Simplio",
     "enterApplicationLabel": "I have an account",
 
@@ -14,10 +14,10 @@
     "loginBtn": "Login",
     "goToAppBtn":"Go to app",
 
-    "homeTapBarLabel": "Home",
-    "portfolioTapBarLabel": "Portfolio",
-    "gamesTapBarLabel": "Games",
-    "settingsTapBarLabel": "Settings",
+    "discoveryTabBarLabel": "Discover",
+    "gamesTabBarLabel": "My Games",
+    "inventoryTabBarLabel": "Inventory",
+    "findDappsTabBarLabel": "Find Dapps",
 
     "loginScreenTitle": "Enter Simplio.",
     "loginScreenSubTitle": "It's good to see you back.",

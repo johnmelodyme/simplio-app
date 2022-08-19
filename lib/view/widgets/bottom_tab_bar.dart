@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/view/widgets/tap_bar_item.dart';
+import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 
-class TapBar extends StatelessWidget {
-  final List<TapBarItem> items;
+class BottomTabBar extends StatelessWidget {
+  final List<TabBarItem> items;
   final FloatingActionButton? floatingActionButton;
   final double height;
   final double floatingActionButtonOffset;
   final double elevation;
+  final double borderRadius;
   final int spacerRatio;
   final bool showLabel;
   final Key activeItem;
 
-  const TapBar({
+  const BottomTabBar({
     super.key,
     required this.items,
     required this.activeItem,
@@ -19,6 +20,7 @@ class TapBar extends StatelessWidget {
     this.height = 56,
     this.floatingActionButtonOffset = 20,
     this.elevation = 20.0,
+    this.borderRadius = 20.0,
     this.spacerRatio = 2,
     this.showLabel = true,
   })  : assert(items.length <= 5),
@@ -27,32 +29,28 @@ class TapBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final double bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return SafeArea(
-      bottom: true,
-      child: SizedBox(
-        height: height + floatingActionButtonOffset,
+    return Container(
+      height: height + bottomPadding,
+      decoration: BoxDecoration(
+        color: theme.bottomNavigationBarTheme.backgroundColor,
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: bottomPadding),
         child: Stack(
           alignment: Alignment.bottomCenter,
           clipBehavior: Clip.none,
           children: [
-            Container(
+            SizedBox(
               height: height,
-              decoration: BoxDecoration(
-                color: theme.bottomNavigationBarTheme.backgroundColor,
-                border: Border(
-                  top: BorderSide(
-                    width: 1,
-                    color: theme.hoverColor,
-                  ),
-                ),
-              ),
               child: Builder(
                 builder: (context) {
                   return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: items.map((e) {
-                        if (e.tapBarItemType == TapTabItemType.spacer) {
+                        if (e.tabBarItemType == TabItemType.spacer) {
                           return Expanded(
                             key: UniqueKey(),
                             flex: 1,
@@ -63,9 +61,9 @@ class TapBar extends StatelessWidget {
                         return Expanded(
                             key: e.key,
                             flex: spacerRatio,
-                            child: _TapBarItem(
+                            child: _TabBarItem(
                               isActive: activeItem == e.key,
-                              tapBarItem: e,
+                              tabBarItem: e,
                             ));
                       }).toList());
                 },
@@ -83,13 +81,13 @@ class TapBar extends StatelessWidget {
   }
 }
 
-class _TapBarItem extends StatelessWidget {
+class _TabBarItem extends StatelessWidget {
   final bool isActive;
-  final TapBarItem tapBarItem;
+  final TabBarItem tabBarItem;
 
-  const _TapBarItem({
+  const _TabBarItem({
     required this.isActive,
-    required this.tapBarItem,
+    required this.tabBarItem,
   });
 
   @override
@@ -105,35 +103,29 @@ class _TapBarItem extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: () {
-          tapBarItem.onTap?.call(context, tapBarItem.key!);
+          tabBarItem.onTap?.call(context, tabBarItem.key!);
         },
         child: Center(
-          child: isActive
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 2.0),
-                      child: Icon(
-                        tapBarItem.activeIcon,
-                        color: selectedColor,
-                      ),
-                    ),
-                    Text(
-                      tapBarItem.label ?? '',
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: selectedColor,
-                      ),
-                    ),
-                  ],
-                )
-              : Icon(
-                  tapBarItem.icon,
-                  color: unselectedColor,
-                ),
-        ),
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 2.0),
+              child: Icon(
+                tabBarItem.icon,
+                color: isActive ? selectedColor : unselectedColor,
+              ),
+            ),
+            Text(
+              tabBarItem.label ?? '',
+              style: TextStyle(
+                fontSize: 12.0,
+                color: isActive ? selectedColor : unselectedColor,
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }

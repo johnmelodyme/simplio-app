@@ -1,15 +1,15 @@
-part of './tap_bar_cubit.dart';
+part of 'tab_bar_cubit.dart';
 
-class TapBarState extends Equatable {
+class TabBarState extends Equatable {
   final bool isDisplayed;
   final Key selectedItem;
 
-  const TapBarState._({
+  const TabBarState._({
     required this.isDisplayed,
     required this.selectedItem,
   });
 
-  const TapBarState.init()
+  const TabBarState.init()
       : this._(
           isDisplayed: true,
           selectedItem: const ValueKey('none'),
@@ -21,11 +21,11 @@ class TapBarState extends Equatable {
         selectedItem,
       ];
 
-  TapBarState copyWith({
+  TabBarState copyWith({
     bool? isDisplayed,
     Key? selectedItem,
   }) {
-    return TapBarState._(
+    return TabBarState._(
       isDisplayed: isDisplayed ?? this.isDisplayed,
       selectedItem: selectedItem ?? this.selectedItem,
     );

@@ -13,22 +13,24 @@ import 'package:simplio_app/logic/cubit/password_change_form/password_change_for
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';
 import 'package:simplio_app/view/routes/guards/protected_guard.dart';
 import 'package:simplio_app/view/routes/mixins/page_builder_mixin.dart';
-import 'package:simplio_app/view/routes/observers/tap_bar_observer.dart';
+import 'package:simplio_app/view/routes/observers/tab_bar_observer.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
+import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
-import 'package:simplio_app/view/screens/dashboard_screen.dart';
+import 'package:simplio_app/view/screens/dapps_screen.dart';
+import 'package:simplio_app/view/screens/discovery_screen.dart';
+import 'package:simplio_app/view/screens/games_screen.dart';
 import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
-import 'package:simplio_app/view/screens/portfolio_screen.dart';
-import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 
 class AuthenticatedRouter with PageBuilderMixin {
-  static const String dashboard = 'dashboard';
-  static const String portfolio = 'portfolio';
+  static const String discovery = 'discovery';
+  static const String games = 'games';
   static const String inventory = 'inventory';
   static const String configuration = 'configuration';
+  static const String findDapps = 'find-dapps';
   static const String pinSetup = 'pin-setup';
   static const String accountSetup = 'account-setup';
   static const String passwordChange = 'password-change';
@@ -69,7 +71,7 @@ class AuthenticatedRouter with PageBuilderMixin {
         );
       },
       observers: [
-        TapBarObserver.of(context),
+        TabBarObserver.of(context),
       ],
       routes: [
         GoRoute(
@@ -82,39 +84,18 @@ class AuthenticatedRouter with PageBuilderMixin {
               if (index <= SecurityLevel.none.index) return '/set/pin-setup';
             }
 
-            return '/in/dashboard';
+            return '/in/discovery';
           },
           routes: [
             GoRoute(
-              path: 'dashboard',
-              name: dashboard,
+              path: 'discovery',
+              name: discovery,
               pageBuilder: pageBuilder(
-                child: const DashboardScreen(),
+                child: const DiscoveryScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
-                    selectedKey: const ValueKey(dashboard),
-                  ),
-                ),
-              ),
-            ),
-            GoRoute(
-              path: 'portfolio',
-              name: portfolio,
-              pageBuilder: pageBuilder(
-                child: BlocProvider(
-                  create: (context) => CryptoAssetCubit.builder(
-                    assetRepository:
-                        RepositoryProvider.of<AssetRepository>(context),
-                  ),
-                  child: Builder(builder: (context) {
-                    return const PortfolioScreen();
-                  }),
-                ),
-                withTransition: false,
-                settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
-                    selectedKey: const ValueKey(portfolio),
+                  tabBar: TabBarRouteSettings(
+                    selectedKey: const ValueKey(discovery),
                   ),
                 ),
               ),
@@ -123,11 +104,45 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'inventory',
               name: inventory,
               pageBuilder: pageBuilder(
-                child: const InventoryScreen(),
+                child: BlocProvider(
+                  create: (context) => CryptoAssetCubit.builder(
+                    assetRepository:
+                        RepositoryProvider.of<AssetRepository>(context),
+                  ),
+                  child: Builder(builder: (context) {
+                    return const InventoryScreen();
+                  }),
+                ),
                 withTransition: false,
                 settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
+                  tabBar: TabBarRouteSettings(
                     selectedKey: const ValueKey(inventory),
+                  ),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'games',
+              name: games,
+              pageBuilder: pageBuilder(
+                child: const GamesScreen(),
+                withTransition: false,
+                settings: ApplicationSettings(
+                  tabBar: TabBarRouteSettings(
+                    selectedKey: const ValueKey(games),
+                  ),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'find-dapps',
+              name: findDapps,
+              pageBuilder: pageBuilder(
+                child: const DappsScreen(),
+                withTransition: false,
+                settings: ApplicationSettings(
+                  tabBar: TabBarRouteSettings(
+                    selectedKey: const ValueKey(findDapps),
                   ),
                 ),
               ),
@@ -139,7 +154,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 child: const ConfigurationScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
-                  tapBar: TapBarRouteSettings(
+                  tabBar: TabBarRouteSettings(
                     selectedKey: const ValueKey(configuration),
                   ),
                 ),
@@ -150,7 +165,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                   name: passwordChange,
                   pageBuilder: pageBuilder(
                     settings: ApplicationSettings(
-                      tapBar: TapBarRouteSettings(
+                      tabBar: TabBarRouteSettings(
                         selectedKey: const ValueKey(configuration),
                         isVisible: false,
                       ),

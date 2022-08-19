@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/tap_bar/tap_bar_cubit.dart';
+import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/widgets/tap_bar.dart';
-import 'package:simplio_app/view/widgets/tap_bar_item.dart';
+import 'package:simplio_app/view/widgets/bottom_tab_bar.dart';
+import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 
 class ApplicationScreen extends StatefulWidget {
   final Widget child;
@@ -37,62 +37,51 @@ class _ApplicationScreenState extends State<ApplicationScreen>
       alignment: AlignmentDirectional.bottomCenter,
       children: [
         widget.child,
-        BlocBuilder<TapBarCubit, TapBarState>(
+        BlocBuilder<TabBarCubit, TabBarState>(
           buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
             return state.isDisplayed
-                ? TapBar(
+                ? BottomTabBar(
                     activeItem: state.selectedItem,
                     items: [
-                      TapBarItem(
-                          key: const ValueKey(AuthenticatedRouter.dashboard),
-                          tapBarItemType: TapTabItemType.button,
-                          icon: Icons.home_outlined,
-                          activeIcon: Icons.home,
-                          label: context.locale.homeTapBarLabel,
+                      TabBarItem(
+                          key: const ValueKey(AuthenticatedRouter.discovery),
+                          tabBarItemType: TabItemType.button,
+                          icon: Icons.assistant_navigation,
+                          label: context.locale.discoveryTabBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.dashboard);
+                                .goNamed(AuthenticatedRouter.discovery);
                           }),
-                      TapBarItem(
-                          key: const ValueKey(AuthenticatedRouter.portfolio),
-                          tapBarItemType: TapTabItemType.button,
-                          icon: Icons.pie_chart_outline,
-                          activeIcon: Icons.pie_chart,
-                          label: context.locale.portfolioTapBarLabel,
-                          onTap: (context, key) {
-                            GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.portfolio);
-                          }),
-                      TapBarItem(tapBarItemType: TapTabItemType.spacer),
-                      TapBarItem(
-                          key: const ValueKey(AuthenticatedRouter.inventory),
-                          tapBarItemType: TapTabItemType.button,
+                      TabBarItem(
+                          key: const ValueKey(AuthenticatedRouter.games),
+                          tabBarItemType: TabItemType.button,
                           icon: Icons.sports_esports_outlined,
-                          activeIcon: Icons.sports_esports,
-                          label: context.locale.gamesTapBarLabel,
+                          label: context.locale.gamesTabBarLabel,
+                          onTap: (context, key) {
+                            GoRouter.of(context)
+                                .goNamed(AuthenticatedRouter.games);
+                          }),
+                      TabBarItem(
+                          key: const ValueKey(AuthenticatedRouter.inventory),
+                          tabBarItemType: TabItemType.button,
+                          icon: Icons.pie_chart_outline,
+                          label: context.locale.inventoryTabBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
                                 .goNamed(AuthenticatedRouter.inventory);
                           }),
-                      TapBarItem(
-                          key:
-                              const ValueKey(AuthenticatedRouter.configuration),
-                          tapBarItemType: TapTabItemType.button,
-                          icon: Icons.settings_outlined,
-                          activeIcon: Icons.settings,
-                          label: context.locale.settingsTapBarLabel,
+                      TabBarItem(
+                          key: const ValueKey(AuthenticatedRouter.findDapps),
+                          tabBarItemType: TabItemType.button,
+                          icon: Icons.language,
+                          label: context.locale.findDappsTabBarLabel,
                           onTap: (context, key) {
                             GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.configuration);
+                                .goNamed(AuthenticatedRouter.findDapps);
                           }),
                     ],
                     height: 70.0,
-                    floatingActionButtonOffset: 30,
-                    floatingActionButton: FloatingActionButton(
-                      child: const Icon(Icons.swap_calls),
-                      onPressed: () {},
-                    ),
                   )
                 : Container();
           },

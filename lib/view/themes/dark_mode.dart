@@ -62,7 +62,7 @@ class DarkMode {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: buttonColor,
       unselectedItemColor: fontColor,
-      selectedItemColor: fontColor,
+      selectedItemColor: colorScheme.secondary,
     ),
     inputDecorationTheme: CommonTheme.theme.inputDecorationTheme.copyWith(
       fillColor: colorScheme.onPrimary,

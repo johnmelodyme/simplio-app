@@ -7,7 +7,7 @@ import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/tap_bar/tap_bar_cubit.dart';
+import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/dark_mode.dart';
 import 'package:simplio_app/view/themes/light_mode.dart';
@@ -36,7 +36,7 @@ class AuthenticatedApp extends StatelessWidget {
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
           ),
         ),
-        BlocProvider(create: (_) => TapBarCubit()),
+        BlocProvider(create: (_) => TabBarCubit()),
       ],
       child: BlocListener<AccountCubit, AccountState>(
         listenWhen: (previous, current) => previous != current,

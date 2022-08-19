@@ -42,7 +42,7 @@ class AccountSetupSuccessScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       GoRouter.of(context)
-                          .goNamed(AuthenticatedRouter.dashboard);
+                          .goNamed(AuthenticatedRouter.discovery);
                     },
                     child: Text(context.locale.accountCreatedStartButton),
                   ),

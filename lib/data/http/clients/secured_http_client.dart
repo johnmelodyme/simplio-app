@@ -4,10 +4,10 @@ import 'package:simplio_app/data/http/clients/http_client.dart';
 import 'package:simplio_app/data/http/converters/json_serializable_converter.dart';
 import 'package:simplio_app/data/http/interceptors/api_key_interceptor.dart';
 import 'package:simplio_app/data/http/interceptors/authorize_interceptor.dart';
+import 'package:simplio_app/data/http/services/asset_service.dart';
 import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
-import 'package:simplio_app/data/http/services/asset_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
 import 'package:simplio_app/data/http/services/transaction_history_service.dart';
@@ -34,7 +34,6 @@ class SecuredHttpClient extends HttpClient {
               ...BroadcastService.converter(),
               ...PasswordChangeService.converter(),
               ...TransactionHistoryService.converter(),
-
             }),
             authenticator: RefreshTokenAuthenticator(
               authTokenStorage: authTokenStorage,
