@@ -3,7 +3,6 @@ import 'package:gap/gap.dart';
 import 'package:simplio_app/view/navigation_bar/navigation_bar_tab_item.dart';
 import 'package:simplio_app/view/navigation_bar/navigation_tab_chip.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/themes/simplio_colors.dart';
 
 class NavigationTabBar extends StatefulWidget {
   NavigationTabBar({
@@ -81,9 +80,9 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
               const EdgeInsets.symmetric(horizontal: PaddingSize.padding20),
           child: Container(
             height: 45,
-            decoration: const BoxDecoration(
-              color: SColors.secondary1,
-              borderRadius: BorderRadius.all(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: const BorderRadius.all(
                 Radius.circular(RadiusSize.radius64),
               ),
             ),

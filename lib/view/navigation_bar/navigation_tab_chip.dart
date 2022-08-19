@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/themes/simplio_colors.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
 class NavigationTabChip extends StatelessWidget {
@@ -38,8 +37,8 @@ class NavigationTabChip extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    SColors.tabStartColor,
-                    SColors.tabEndColor,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.tertiary,
                   ],
                 ),
                 borderRadius: const BorderRadius.all(
@@ -54,7 +53,9 @@ class NavigationTabChip extends StatelessWidget {
               Icon(
                 iconData,
                 size: 16,
-                color: isSelected ? SColors.black : SColors.white,
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onPrimary,
               ),
               const Gap(PaddingSize.padding8),
             },
@@ -62,8 +63,11 @@ class NavigationTabChip extends StatelessWidget {
               child: Text(
                 label,
                 maxLines: 1,
-                style: STextStyles.bodyM
-                    .apply(color: isSelected ? SColors.black : SColors.white),
+                style: STextStyles.bodyM.apply(
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
             ),
           ],
