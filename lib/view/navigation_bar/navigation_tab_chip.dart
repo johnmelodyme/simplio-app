@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_colors.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
