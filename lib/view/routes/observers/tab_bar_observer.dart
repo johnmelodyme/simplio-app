@@ -31,7 +31,7 @@ class TabBarObserver extends NavigatorObserver {
     }
   }
 
-  _setTabBarVisibility(TabBarRouteSettings? tabBarSettings) {
+  void _setTabBarVisibility(TabBarRouteSettings? tabBarSettings) {
     if (tabBarSettings == null) return;
 
     context.read<TabBarCubit>().setVisibility(
@@ -40,7 +40,7 @@ class TabBarObserver extends NavigatorObserver {
         );
   }
 
-  _hideTabBar() {
+  void _hideTabBar() {
     context.read<TabBarCubit>().setVisibility();
   }
 }
