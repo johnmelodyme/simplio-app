@@ -19,6 +19,10 @@
     "inventoryTabBarLabel": "車両あなた自身",
     "findDappsTabBarLabel": "車両あなた自身",
 
+    "inventory_tab_coins": "車両あ",
+    "inventory_tab_nft": "車両あ",
+    "inventory_tab_transactions": "両あなた自身",
+
     "loginScreenTitle": "車両あなた自身 車両",
     "loginScreenSubTitle": "あなたは財布を持っていません",
     "usernameInputLabel":"財布を持っ",

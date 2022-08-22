@@ -60,7 +60,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
             child: GestureDetector(
               onTapDown: (_) => _toggleAnimation(),
               onLongPressEnd: (_) => _toggleAnimation(stop: false),
-              onTapUp: (details) => _handleLeftRightTaps(details),
+              onTapUp: _handleLeftRightTaps,
               child: Padding(
                 padding: CommonTheme.bottomPadding
                     .add(CommonTheme.horizontalPadding),
@@ -109,7 +109,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    for (var controller in controllers) {
+    for (final controller in controllers) {
       controller.dispose();
     }
     super.dispose();
@@ -137,7 +137,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
   }
 
   void _resetProgressBars() {
-    for (var controller in controllers) {
+    for (final controller in controllers) {
       controller.stop();
       controller.value = 0;
     }
@@ -164,7 +164,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
         setState(() => displayedItemIndex -= 1);
       } else {
         controllers[0].stop();
-        for (var controller in controllers) {
+        for (final controller in controllers) {
           controller.value = 1;
         }
       }

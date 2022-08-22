@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-
-import 'common_theme.dart';
+import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/simplio_colors.dart';
 
 class DarkMode {
   DarkMode._();
 
-  static Color get backgroundColor => const Color.fromRGBO(41, 46, 50, 1);
+  static Color get backgroundColor => SioColors.black;
 
-  static Color get buttonColor => const Color.fromRGBO(58, 64, 69, 1);
+  static Color get buttonColor => SioColors.secondary1;
 
-  static Color get fontColor => Colors.white;
+  static Color get fontColor => SioColors.white;
 
-  static ColorScheme get colorScheme => ColorScheme(
+  static ColorScheme get colorScheme => const ColorScheme(
         brightness: Brightness.dark,
-        primary: backgroundColor,
-        onPrimary: fontColor,
-        secondary: const Color.fromRGBO(25, 220, 160, 1),
-        onSecondary: backgroundColor,
-        error: const Color.fromRGBO(232, 71, 61, 1),
+        primary: SioColors.black,
+        onPrimary: SioColors.white,
+        primaryContainer: SioColors.secondary1,
+        secondary: SioColors.highlight1,
+        onSecondary: SioColors.black,
+        tertiary: SioColors.highlight2,
+        error: SioColors.attention,
         onError: Colors.redAccent,
-        tertiary: const Color.fromRGBO(20, 193, 89, 1),
         background: Colors.orangeAccent,
         onBackground: Colors.orange,
         surface: Colors.brown,

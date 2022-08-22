@@ -19,6 +19,10 @@
     "inventoryTabBarLabel": "Inventory",
     "findDappsTabBarLabel": "Find Dapps",
 
+    "inventory_tab_coins": "Coins",
+    "inventory_tab_nft": "NFT",
+    "inventory_tab_transactions": "Transacions",
+    
     "loginScreenTitle": "Enter Simplio.",
     "loginScreenSubTitle": "It's good to see you back.",
     "usernameInputLabel":"Username",

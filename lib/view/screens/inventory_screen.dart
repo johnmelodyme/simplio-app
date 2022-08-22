@@ -4,12 +4,18 @@ import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
+import 'package:simplio_app/view/navigation_bar/navigation_bar_tab_item.dart';
+import 'package:simplio_app/view/navigation_bar/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/appbar_search.dart';
-import 'package:simplio_app/view/widgets/asset_wallet_expansion_list.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 
 class InventoryScreen extends StatelessWidget {
-  const InventoryScreen({super.key});
+  const InventoryScreen({
+    super.key,
+    this.inventoryTab = InventoryTab.coins,
+  });
+
+  final InventoryTab inventoryTab;
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +31,29 @@ class InventoryScreen extends StatelessWidget {
       body: BlocBuilder<AccountWalletCubit, AccountWalletState>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
-          return Container(
-            child: state is! AccountWalletProvided
-                ? Center(
-                    child: Text(
-                      context.locale.noWalletsLabel,
-                    ),
-                  )
-                : SingleChildScrollView(
-                    padding: const EdgeInsets.only(bottom: 140.0),
-                    child: AssetWalletExpansionList(
-                      children: state.wallet.wallets,
-                    ),
-                  ),
+          return NavigationTabBar(
+            addTopGap: false,
+            currentTab: inventoryTab.index,
+            tabs: [
+              NavigationBarTabItem(
+                  label: context.locale.inventory_tab_coins,
+                  iconData: Icons.pie_chart_outline,
+                  pageSlivers: [
+                    const SliverToBoxAdapter(child: Text('Coins content'))
+                  ]),
+              NavigationBarTabItem(
+                  label: context.locale.inventory_tab_nft,
+                  iconData: Icons.pie_chart_outline,
+                  pageSlivers: [
+                    const SliverToBoxAdapter(child: Text('NFT content'))
+                  ]),
+              NavigationBarTabItem(
+                  label: context.locale.inventory_tab_transactions,
+                  pageSlivers: [
+                    const SliverToBoxAdapter(
+                        child: Text('Transactions content'))
+                  ])
+            ],
           );
         },
       ),
@@ -118,3 +134,5 @@ class _AssetSearchDelegate extends SearchDelegate<String> {
         .toList();
   }
 }
+
+enum InventoryTab { coins, nft, transactions }

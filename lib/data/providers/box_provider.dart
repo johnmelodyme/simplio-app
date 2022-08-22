@@ -41,7 +41,7 @@ abstract class BoxProvider<T> {
     _open();
   }
 
-  _open() {
+  void _open() {
     _isOpen = true;
   }
 

@@ -38,6 +38,7 @@ dependencies:
   sio_core_light: ^1.0.0
   crypto_assets:
     path: packages/crypto_assets
+  gap: ^2.0.0
 
 dev_dependencies:
   flutter_test:
