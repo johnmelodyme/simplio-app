@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/simplio_colors.dart';
 
 class STextStyles {
-  static const TextStyle genericTextStyle = TextStyle(color: SColors.white);
+  static const TextStyle genericTextStyle = TextStyle(color: SioColors.white);
 
   static TextStyle headingStyle =
       genericTextStyle.copyWith(fontWeight: FontWeight.w400);
@@ -29,5 +29,5 @@ class STextStyles {
   static TextStyle bodyLabel = bodyStyle.copyWith(fontSize: 10, height: 1.2);
 
   static TextStyle navTitle = const TextStyle(
-      color: SColors.white, fontSize: 16, fontWeight: FontWeight.bold);
+      color: SioColors.white, fontSize: 16, fontWeight: FontWeight.bold);
 }

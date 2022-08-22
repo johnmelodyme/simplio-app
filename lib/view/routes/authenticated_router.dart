@@ -29,6 +29,9 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String discovery = 'discovery';
   static const String games = 'games';
   static const String inventory = 'inventory';
+  static const String inventoryCoins = 'inventory-coins';
+  static const String inventoryNft = 'inventory-nft';
+  static const String inventoryTransactions = 'inventory-transactions';
   static const String configuration = 'configuration';
   static const String findDapps = 'find-dapps';
   static const String pinSetup = 'pin-setup';
@@ -101,26 +104,96 @@ class AuthenticatedRouter with PageBuilderMixin {
               ),
             ),
             GoRoute(
-              path: 'inventory',
-              name: inventory,
-              pageBuilder: pageBuilder(
-                child: BlocProvider(
-                  create: (context) => CryptoAssetCubit.builder(
-                    assetRepository:
-                        RepositoryProvider.of<AssetRepository>(context),
+                path: 'inventory',
+                name: inventory,
+                pageBuilder: pageBuilder(
+                  child: BlocProvider(
+                    create: (context) => CryptoAssetCubit.builder(
+                      assetRepository:
+                          RepositoryProvider.of<AssetRepository>(context),
+                    ),
+                    child: Builder(builder: (context) {
+                      return const InventoryScreen();
+                    }),
                   ),
-                  child: Builder(builder: (context) {
-                    return const InventoryScreen();
-                  }),
-                ),
-                withTransition: false,
-                settings: ApplicationSettings(
-                  tabBar: TabBarRouteSettings(
-                    selectedKey: const ValueKey(inventory),
+                  withTransition: false,
+                  settings: ApplicationSettings(
+                    tabBar: TabBarRouteSettings(
+                      selectedKey: const ValueKey(inventory),
+                    ),
                   ),
                 ),
-              ),
-            ),
+                routes: [
+                  GoRoute(
+                    path: 'coins',
+                    name: inventoryCoins,
+                    pageBuilder: pageBuilder(
+                      child: BlocProvider(
+                        create: (context) => CryptoAssetCubit.builder(
+                          assetRepository:
+                              RepositoryProvider.of<AssetRepository>(context),
+                        ),
+                        child: Builder(builder: (context) {
+                          return const InventoryScreen(
+                            inventoryTab: InventoryTab.coins,
+                          );
+                        }),
+                      ),
+                      withTransition: false,
+                      settings: ApplicationSettings(
+                        tabBar: TabBarRouteSettings(
+                          selectedKey: const ValueKey(inventory),
+                        ),
+                      ),
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'nft',
+                    name: inventoryNft,
+                    pageBuilder: pageBuilder(
+                      child: BlocProvider(
+                        create: (context) => CryptoAssetCubit.builder(
+                          assetRepository:
+                              RepositoryProvider.of<AssetRepository>(context),
+                        ),
+                        child: Builder(builder: (context) {
+                          return const InventoryScreen(
+                            inventoryTab: InventoryTab.nft,
+                          );
+                        }),
+                      ),
+                      withTransition: false,
+                      settings: ApplicationSettings(
+                        tabBar: TabBarRouteSettings(
+                          selectedKey: const ValueKey(inventory),
+                        ),
+                      ),
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'transactions',
+                    name: inventoryTransactions,
+                    pageBuilder: pageBuilder(
+                      child: BlocProvider(
+                        create: (context) => CryptoAssetCubit.builder(
+                          assetRepository:
+                              RepositoryProvider.of<AssetRepository>(context),
+                        ),
+                        child: Builder(builder: (context) {
+                          return const InventoryScreen(
+                            inventoryTab: InventoryTab.transactions,
+                          );
+                        }),
+                      ),
+                      withTransition: false,
+                      settings: ApplicationSettings(
+                        tabBar: TabBarRouteSettings(
+                          selectedKey: const ValueKey(inventory),
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
             GoRoute(
               path: 'games',
               name: games,

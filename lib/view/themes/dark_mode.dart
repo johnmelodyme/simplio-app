@@ -5,22 +5,22 @@ import 'package:simplio_app/view/themes/simplio_colors.dart';
 class DarkMode {
   DarkMode._();
 
-  static Color get backgroundColor => SColors.black;
+  static Color get backgroundColor => SioColors.black;
 
-  static Color get buttonColor => SColors.secondary1;
+  static Color get buttonColor => SioColors.secondary1;
 
-  static Color get fontColor => SColors.white;
+  static Color get fontColor => SioColors.white;
 
-  static ColorScheme get colorScheme => ColorScheme(
+  static ColorScheme get colorScheme => const ColorScheme(
         brightness: Brightness.dark,
-        primary: backgroundColor,
-        onPrimary: fontColor,
-        primaryContainer: SColors.secondary1,
-        secondary: SColors.highlight1,
-        onSecondary: backgroundColor,
-        error: SColors.attention,
+        primary: SioColors.black,
+        onPrimary: SioColors.white,
+        primaryContainer: SioColors.secondary1,
+        secondary: SioColors.highlight1,
+        onSecondary: SioColors.black,
+        tertiary: SioColors.highlight2,
+        error: SioColors.attention,
         onError: Colors.redAccent,
-        tertiary: SColors.highlight2,
         background: Colors.orangeAccent,
         onBackground: Colors.orange,
         surface: Colors.brown,

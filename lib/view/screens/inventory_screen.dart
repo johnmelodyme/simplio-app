@@ -10,7 +10,12 @@ import 'package:simplio_app/view/widgets/appbar_search.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 
 class InventoryScreen extends StatelessWidget {
-  const InventoryScreen({super.key});
+  const InventoryScreen({
+    super.key,
+    this.inventoryTab = InventoryTab.coins,
+  });
+
+  final InventoryTab inventoryTab;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,7 @@ class InventoryScreen extends StatelessWidget {
         builder: (context, state) {
           return NavigationTabBar(
             addTopGap: false,
+            currentTab: inventoryTab.index,
             tabs: [
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_coins,
@@ -147,3 +153,5 @@ class _AssetSearchDelegate extends SearchDelegate<String> {
         .toList();
   }
 }
+
+enum InventoryTab { coins, nft, transactions }

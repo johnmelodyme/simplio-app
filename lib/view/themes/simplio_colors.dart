@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class SColors {
+abstract class SioColors {
   static const white = Color(0xFFFFFFFF);
   static const transparent = Color(0x00000000);
 
