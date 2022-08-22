@@ -61,25 +61,6 @@ class InventoryScreen extends StatelessWidget {
   }
 }
 
-/*
-SliverToBoxAdapter(
-                child: Container(
-                  child: state is! AccountWalletProvided
-                      ? Center(
-                          child: Text(
-                            context.locale.noWalletsLabel,
-                          ),
-                        )
-                      : SingleChildScrollView(
-                          padding: const EdgeInsets.only(bottom: 140.0),
-                          child: AssetWalletExpansionList(
-                            children: state.wallet.wallets,
-                          ),
-                        ),
-                ),
-              )
-              
-*/
 class _AssetSearchDelegate extends SearchDelegate<String> {
   final BuildContext context;
 

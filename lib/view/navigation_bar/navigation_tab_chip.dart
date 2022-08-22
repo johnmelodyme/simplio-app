@@ -63,7 +63,7 @@ class NavigationTabChip extends StatelessWidget {
               child: Text(
                 label,
                 maxLines: 1,
-                style: STextStyles.bodyM.apply(
+                style: SioTextStyles.bodyM.apply(
                   color: isSelected
                       ? Theme.of(context).colorScheme.primary
                       : Theme.of(context).colorScheme.onPrimary,
