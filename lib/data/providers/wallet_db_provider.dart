@@ -130,6 +130,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       address: local.address,
       balance: local.balance,
       isEnabled: local.isEnabled,
+      contractAddress: local.contractAddress,
     );
   }
 }

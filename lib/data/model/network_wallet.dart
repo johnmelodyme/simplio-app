@@ -16,7 +16,7 @@ class NetworkWallet extends Equatable {
     required this.uuid,
     required this.networkId,
     required this.address,
-    this.contractAddress,
+    required this.contractAddress,
     required this.balance,
     required this.isEnabled,
   });
