@@ -23,11 +23,11 @@ class Assets {
     20000714: AssetDetails.bnbSmartChain,
   };
 
-  static AssetDetail getAsset(int assetId) {
+  static AssetDetail getAssetDetail(int assetId) {
     return _assets[assetId] ?? SystemAssetDetails.notFound;
   }
 
-  static AssetDetail getNetwork(int networkId) {
+  static AssetDetail getNetworkDetail(int networkId) {
     return _networks[networkId] ?? SystemAssetDetails.notFound;
   }
 }

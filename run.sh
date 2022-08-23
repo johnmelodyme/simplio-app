@@ -3,7 +3,7 @@
 # use --flavor dev for running on android device
 
 flutter pub get
-flutter packages pub run build_runner build
+flutter packages pub run build_runner build --delete-conflicting-outputs
 
 # developer needs to specify runtime variables in ~/.zshrc or similar file
 # export DART_DEFINE_API_URL="URL_PLACEHOLDER"
