@@ -23,15 +23,15 @@ abstract class AssetService extends ChopperService {
 
 @JsonSerializable()
 class AssetResponse {
-  final String networkId;
+  final int networkId;
   final String? networkSymbol;
-  final String assetId;
+  final int assetId;
   final String name;
-  final String symbol;
-  final double? lowFee;
-  final double? regularFee;
-  final double? highFee;
-  final double? gasLimit;
+  final String ticker;
+  final String? lowFee;
+  final String? regularFee;
+  final String? highFee;
+  final String? gasLimit;
   final String? feeUnit;
   final int? decimalPlaces;
   final String? contractAddress;
@@ -43,7 +43,7 @@ class AssetResponse {
     required this.networkSymbol,
     required this.assetId,
     required this.name,
-    required this.symbol,
+    required this.ticker,
     this.lowFee,
     this.regularFee,
     this.highFee,

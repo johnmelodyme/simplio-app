@@ -68,12 +68,12 @@ class AssetRepository {
   }
 
   List<CryptoAssetData> _makeCryptoAssetData(List<AssetResponse> response) {
-    final map = response.fold<Map<String, CryptoAssetData>>({}, (acc, curr) {
+    final map = response.fold<Map<int, CryptoAssetData>>({}, (acc, curr) {
       final data = acc[curr.assetId];
       if (data != null) {
         data.networks.add(NetworkData(
-          networkId: int.parse(curr.networkId),
-          assetId: int.parse(curr.assetId),
+          networkId: curr.networkId,
+          assetId: curr.assetId,
           networkTicker: curr.networkSymbol ?? '',
           contractAddress: curr.contractAddress,
         ));
@@ -83,13 +83,13 @@ class AssetRepository {
       return acc
         ..addAll({
           curr.assetId: CryptoAssetData(
-              assetId: int.parse(curr.assetId),
+              assetId: curr.assetId,
               name: curr.name,
-              ticker: curr.symbol,
+              ticker: curr.ticker,
               networks: <NetworkData>{
                 NetworkData(
-                  networkId: int.parse(curr.networkId),
-                  assetId: int.parse(curr.assetId),
+                  networkId: curr.networkId,
+                  assetId: curr.assetId,
                   networkTicker: curr.networkSymbol ?? '',
                   contractAddress: curr.contractAddress,
                 ),
@@ -101,13 +101,13 @@ class AssetRepository {
   }
 
   List<FiatAssetData> _makeFiatAssetData(List<AssetResponse> response) {
-    final map = response.fold<Map<String, FiatAssetData>>({}, (acc, curr) {
+    final map = response.fold<Map<int, FiatAssetData>>({}, (acc, curr) {
       return acc
         ..addAll({
           curr.assetId: FiatAssetData(
-            assetId: int.parse(curr.assetId),
+            assetId: curr.assetId,
             name: curr.name,
-            ticker: curr.symbol,
+            ticker: curr.ticker,
           ),
         });
     });

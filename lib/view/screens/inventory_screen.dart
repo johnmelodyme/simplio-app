@@ -7,6 +7,7 @@ import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
 import 'package:simplio_app/view/navigation_bar/navigation_bar_tab_item.dart';
 import 'package:simplio_app/view/navigation_bar/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/appbar_search.dart';
+import 'package:simplio_app/view/widgets/asset_wallet_expansion_list.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 
 class InventoryScreen extends StatelessWidget {
@@ -36,11 +37,32 @@ class InventoryScreen extends StatelessWidget {
             currentTab: inventoryTab.index,
             tabs: [
               NavigationBarTabItem(
-                  label: context.locale.inventory_tab_coins,
-                  iconData: Icons.pie_chart_outline,
-                  pageSlivers: [
-                    const SliverToBoxAdapter(child: Text('Coins content'))
-                  ]),
+                label: context.locale.inventory_tab_coins,
+                iconData: Icons.pie_chart_outline,
+                pageSlivers: [
+                  SliverToBoxAdapter(
+                    child: BlocBuilder<AccountWalletCubit, AccountWalletState>(
+                      buildWhen: (previous, current) => previous != current,
+                      builder: (context, state) {
+                        return Container(
+                          child: state is! AccountWalletProvided
+                              ? Center(
+                                  child: Text(
+                                    context.locale.noWalletsLabel,
+                                  ),
+                                )
+                              : SingleChildScrollView(
+                                  padding: const EdgeInsets.only(bottom: 140.0),
+                                  child: AssetWalletExpansionList(
+                                    children: state.wallet.wallets,
+                                  ),
+                                ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_nft,
                   iconData: Icons.pie_chart_outline,
