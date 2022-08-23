@@ -8,11 +8,11 @@ PODS:
   - trust_wallet_core_lib (0.0.1):
     - Flutter
     - TrustWalletCore
-  - TrustWalletCore (2.7.9):
-    - TrustWalletCore/Core (= 2.7.9)
-  - TrustWalletCore/Core (2.7.9):
+  - TrustWalletCore (2.9.6):
+    - TrustWalletCore/Core (= 2.9.6)
+  - TrustWalletCore/Core (2.9.6):
     - TrustWalletCore/Types
-  - TrustWalletCore/Types (2.7.9):
+  - TrustWalletCore/Types (2.9.6):
     - SwiftProtobuf
 
 DEPENDENCIES:
@@ -42,7 +42,7 @@ SPEC CHECKSUMS:
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   SwiftProtobuf: 6ef3f0e422ef90d6605ca20b21a94f6c1324d6b3
   trust_wallet_core_lib: 1d25320104cd3a7fee634d5f57596200da2b5d7c
-  TrustWalletCore: c68dd80a0c75130c28b1583bd39918447ec9fa0a
+  TrustWalletCore: e90c905d84680a7c2d7d32f4341ca3671588eb18
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 

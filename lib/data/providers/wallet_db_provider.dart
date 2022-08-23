@@ -83,8 +83,9 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       uuid: wallet.uuid,
       networkId: wallet.networkId,
       address: wallet.address,
-      contractAddress: wallet.contractAddress,
+      contractAddress: wallet.isToken ? wallet.contractAddress : null,
       balance: wallet.balance,
+      decimalPlaces: wallet.decimalPlaces,
       isEnabled: wallet.isEnabled,
     );
   }
@@ -129,7 +130,9 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       networkId: local.networkId,
       address: local.address,
       balance: local.balance,
+      decimalPlaces: local.decimalPlaces,
       isEnabled: local.isEnabled,
+      contractAddress: local.contractAddress,
     );
   }
 }

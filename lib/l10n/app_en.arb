@@ -58,5 +58,11 @@
     "accountCreatedLabel":"Hurray! \n Your account have been created",
     "accountCreatedDescriptionLabel":"Before you start, we suggest you\n verify your account due to the use\n of all functionalities and full\n security of your Simplio app.",
     "accountCreatedVerifyButton": "Verify your account to get more",
-    "accountCreatedStartButton": "Start using app"
+    "accountCreatedStartButton": "Start using app",
+
+    "receiveCoinsBtn": "Receive",
+    "sendCoinsBtn": "Send",
+    "network": "network",
+
+    "asset_screens_address_copied": "Address copied!"
 }

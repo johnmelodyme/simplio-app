@@ -17,6 +17,8 @@ import 'package:simplio_app/view/routes/observers/tab_bar_observer.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
 import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
+import 'package:simplio_app/view/screens/asset_receive_screen.dart';
+import 'package:simplio_app/view/screens/asset_send_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
 import 'package:simplio_app/view/screens/dapps_screen.dart';
 import 'package:simplio_app/view/screens/discovery_screen.dart';
@@ -37,6 +39,8 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String pinSetup = 'pin-setup';
   static const String accountSetup = 'account-setup';
   static const String passwordChange = 'password-change';
+  static const String assetSend = 'asset-send';
+  static const String assetReceive = 'asset-receive';
 
   final BuildContext context;
 
@@ -94,7 +98,7 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'discovery',
               name: discovery,
               pageBuilder: pageBuilder(
-                child: const DiscoveryScreen(),
+                builder: (state) => const DiscoveryScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
                   tabBar: TabBarRouteSettings(
@@ -107,7 +111,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 path: 'inventory',
                 name: inventory,
                 pageBuilder: pageBuilder(
-                  child: BlocProvider(
+                  builder: (state) => BlocProvider(
                     create: (context) => CryptoAssetCubit.builder(
                       assetRepository:
                           RepositoryProvider.of<AssetRepository>(context),
@@ -128,7 +132,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     path: 'coins',
                     name: inventoryCoins,
                     pageBuilder: pageBuilder(
-                      child: BlocProvider(
+                      builder: (state) => BlocProvider(
                         create: (context) => CryptoAssetCubit.builder(
                           assetRepository:
                               RepositoryProvider.of<AssetRepository>(context),
@@ -151,7 +155,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     path: 'nft',
                     name: inventoryNft,
                     pageBuilder: pageBuilder(
-                      child: BlocProvider(
+                      builder: (state) => BlocProvider(
                         create: (context) => CryptoAssetCubit.builder(
                           assetRepository:
                               RepositoryProvider.of<AssetRepository>(context),
@@ -174,7 +178,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     path: 'transactions',
                     name: inventoryTransactions,
                     pageBuilder: pageBuilder(
-                      child: BlocProvider(
+                      builder: (state) => BlocProvider(
                         create: (context) => CryptoAssetCubit.builder(
                           assetRepository:
                               RepositoryProvider.of<AssetRepository>(context),
@@ -193,12 +197,30 @@ class AuthenticatedRouter with PageBuilderMixin {
                       ),
                     ),
                   ),
+                  GoRoute(
+                    path: ':assetId/:networkId/send',
+                    name: assetSend,
+                    pageBuilder: pageBuilder(
+                      builder: (state) =>
+                          AssetSendScreen(assetId: state.params['assetId']),
+                    ),
+                  ),
+                  GoRoute(
+                    path: ':assetId/:networkId/receive',
+                    name: assetReceive,
+                    pageBuilder: pageBuilder(
+                      builder: (state) => AssetReceiveScreen(
+                        assetId: state.params['assetId'],
+                        networkId: state.params['networkId'],
+                      ),
+                    ),
+                  ),
                 ]),
             GoRoute(
               path: 'games',
               name: games,
               pageBuilder: pageBuilder(
-                child: const GamesScreen(),
+                builder: (state) => const GamesScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
                   tabBar: TabBarRouteSettings(
@@ -211,7 +233,7 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'find-dapps',
               name: findDapps,
               pageBuilder: pageBuilder(
-                child: const DappsScreen(),
+                builder: (state) => const DappsScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
                   tabBar: TabBarRouteSettings(
@@ -224,7 +246,7 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'configuration',
               name: configuration,
               pageBuilder: pageBuilder(
-                child: const ConfigurationScreen(),
+                builder: (state) => const ConfigurationScreen(),
                 withTransition: false,
                 settings: ApplicationSettings(
                   tabBar: TabBarRouteSettings(
@@ -243,7 +265,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                         isVisible: false,
                       ),
                     ),
-                    child: BlocProvider(
+                    builder: (state) => BlocProvider(
                       create: (context) => PasswordChangeFormCubit.builder(
                         authRepository:
                             RepositoryProvider.of<AuthRepository>(context),
@@ -267,7 +289,7 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'pin-setup',
               name: pinSetup,
               pageBuilder: pageBuilder(
-                child: BlocProvider(
+                builder: (state) => BlocProvider(
                   create: (context) => PinSetupFormCubit.builder(
                     accountRepository:
                         RepositoryProvider.of<AccountRepository>(context),
@@ -280,7 +302,7 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'account-setup',
               name: accountSetup,
               pageBuilder: pageBuilder(
-                child: const AccountSetupSuccessScreen(),
+                builder: (state) => const AccountSetupSuccessScreen(),
               ),
             ),
           ],

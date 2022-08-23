@@ -42,9 +42,9 @@ class DarkMode {
             fontSize: 32),
         headlineMedium: TextStyle(color: colorScheme.onPrimary),
         headlineSmall: TextStyle(color: colorScheme.onPrimary),
-        bodyLarge: TextStyle(color: colorScheme.onPrimary),
-        bodyMedium: TextStyle(color: colorScheme.onPrimary),
-        bodySmall: TextStyle(color: colorScheme.onPrimary),
+        bodyLarge: TextStyle(color: colorScheme.onPrimary, fontSize: 18),
+        bodyMedium: TextStyle(color: colorScheme.onPrimary, fontSize: 16),
+        bodySmall: TextStyle(color: colorScheme.onPrimary, fontSize: 14),
         labelLarge: TextStyle(color: colorScheme.onPrimary),
         labelMedium: TextStyle(color: colorScheme.onPrimary),
         labelSmall: TextStyle(color: colorScheme.onPrimary),
@@ -96,6 +96,11 @@ class DarkMode {
           ),
         ),
       ),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: backgroundColor,
+      actionTextColor: fontColor,
+      contentTextStyle: TextStyle(color: fontColor),
     ),
   );
 }
