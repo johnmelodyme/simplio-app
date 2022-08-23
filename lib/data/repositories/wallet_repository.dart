@@ -90,6 +90,7 @@ class WalletRepository {
     return wallet.addWallet(NetworkWallet.builder(
       networkId: data.networkId,
       address: _wallet.getAddressForCoin(data.networkId),
+      decimalPlaces: data.decimalPlaces,
       contractAddress: data.contractAddress,
     ));
   }

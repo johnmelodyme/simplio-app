@@ -10,6 +10,7 @@ class NetworkWallet extends Equatable {
   final String address;
   final String? contractAddress;
   final BigInt balance;
+  final int decimalPlaces;
   final bool isEnabled;
 
   const NetworkWallet({
@@ -18,6 +19,7 @@ class NetworkWallet extends Equatable {
     required this.address,
     required this.contractAddress,
     required this.balance,
+    required this.decimalPlaces,
     required this.isEnabled,
   });
 
@@ -26,6 +28,7 @@ class NetworkWallet extends Equatable {
     required String address,
     String? contractAddress,
     BigInt? balance,
+    required int decimalPlaces,
     bool isEnabled = true,
   }) : this(
           uuid: const Uuid().v4(),
@@ -33,8 +36,12 @@ class NetworkWallet extends Equatable {
           address: address,
           contractAddress: contractAddress,
           balance: balance ?? BigInt.zero,
+          decimalPlaces: decimalPlaces,
           isEnabled: isEnabled,
         );
+
+  bool get isToken => contractAddress != null || contractAddress!.isNotEmpty;
+  bool get isNotToken => !isToken;
 
   @override
   List<Object?> get props => [
@@ -65,6 +72,9 @@ class NetworkWalletLocal extends HiveObject {
   final BigInt balance;
 
   @HiveField(5)
+  final int decimalPlaces;
+
+  @HiveField(6)
   final bool isEnabled;
 
   NetworkWalletLocal({
@@ -73,6 +83,7 @@ class NetworkWalletLocal extends HiveObject {
     required this.address,
     required this.contractAddress,
     required this.balance,
+    required this.decimalPlaces,
     required this.isEnabled,
   });
 }

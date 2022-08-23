@@ -23,7 +23,11 @@ void main() {
 
           for (var i = 0; i < 100; i++) {
             assetWallet = assetWallet.addWallet(
-              NetworkWallet.builder(networkId: i, address: ''),
+              NetworkWallet.builder(
+                networkId: i,
+                address: '',
+                decimalPlaces: 2,
+              ),
             );
           }
 

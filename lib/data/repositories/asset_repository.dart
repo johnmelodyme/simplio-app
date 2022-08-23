@@ -32,11 +32,7 @@ class AssetRepository {
   Future<List<CryptoAssetData>> loadCryptoAssets({bool cache = true}) async {
     if (cache && _cryptoDataCache.isValid) return _cryptoDataCache.read();
 
-    final response = await _assetService.system(
-      isCrypto: true,
-      isActive: true,
-    );
-
+    final response = await _assetService.crypto();
     final body = response.body;
 
     if (response.isSuccessful && body != null) {
@@ -51,11 +47,7 @@ class AssetRepository {
   Future<List<FiatAssetData>> loadFiatAssets({bool cache = true}) async {
     if (cache && _fiatDataCache.isValid) return _fiatDataCache.read();
 
-    final response = await _assetService.system(
-      isCrypto: false,
-      isActive: true,
-    );
-
+    final response = await _assetService.fiat();
     final body = response.body;
 
     if (response.isSuccessful && body != null) {
@@ -67,14 +59,16 @@ class AssetRepository {
     throw Exception("Could not load 'fiat' assets");
   }
 
-  List<CryptoAssetData> _makeCryptoAssetData(List<AssetResponse> response) {
+  List<CryptoAssetData> _makeCryptoAssetData(
+      List<CryptoAssetResponse> response) {
     final map = response.fold<Map<int, CryptoAssetData>>({}, (acc, curr) {
       final data = acc[curr.assetId];
       if (data != null) {
         data.networks.add(NetworkData(
           networkId: curr.networkId,
           assetId: curr.assetId,
-          networkTicker: curr.networkSymbol ?? '',
+          networkTicker: curr.networkTicker,
+          decimalPlaces: curr.decimalPlaces,
           contractAddress: curr.contractAddress,
         ));
         return acc;
@@ -90,7 +84,8 @@ class AssetRepository {
                 NetworkData(
                   networkId: curr.networkId,
                   assetId: curr.assetId,
-                  networkTicker: curr.networkSymbol ?? '',
+                  networkTicker: curr.networkTicker,
+                  decimalPlaces: curr.decimalPlaces,
                   contractAddress: curr.contractAddress,
                 ),
               })
@@ -100,8 +95,8 @@ class AssetRepository {
     return map.values.toList();
   }
 
-  List<FiatAssetData> _makeFiatAssetData(List<AssetResponse> response) {
-    final map = response.fold<Map<int, FiatAssetData>>({}, (acc, curr) {
+  List<FiatAssetData> _makeFiatAssetData(List<FiatAssetResponse> response) {
+    final map = response.fold<Map<String, FiatAssetData>>({}, (acc, curr) {
       return acc
         ..addAll({
           curr.assetId: FiatAssetData(
@@ -134,18 +129,20 @@ class NetworkData {
   final int networkId;
   final int assetId;
   final String networkTicker;
+  final int decimalPlaces;
   final String? contractAddress;
 
   const NetworkData({
     required this.networkId,
     required this.assetId,
     required this.networkTicker,
+    required this.decimalPlaces,
     this.contractAddress,
   });
 }
 
 class FiatAssetData {
-  final int assetId;
+  final String assetId;
   final String name;
   final String ticker;
 
