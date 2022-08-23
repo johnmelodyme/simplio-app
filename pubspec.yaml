@@ -39,6 +39,7 @@ dependencies:
   crypto_assets:
     path: packages/crypto_assets
   gap: ^2.0.0
+  flutter_svg: ^1.1.4
 
 dev_dependencies:
   flutter_test:
@@ -77,4 +78,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/icon/icon_blue.png
+    - assets/
+    - assets/icon/
+    - assets/icon/svg/

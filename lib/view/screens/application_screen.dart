@@ -33,60 +33,75 @@ class _ApplicationScreenState extends State<ApplicationScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Stack(
-      alignment: AlignmentDirectional.bottomCenter,
-      children: [
-        widget.child,
-        BlocBuilder<TabBarCubit, TabBarState>(
-          buildWhen: (previous, current) => previous != current,
-          builder: (context, state) {
-            return state.isDisplayed
-                ? BottomTabBar(
-                    activeItem: state.selectedItem,
-                    items: [
-                      TabBarItem(
-                          key: const ValueKey(AuthenticatedRouter.discovery),
-                          tabBarItemType: TabItemType.button,
-                          icon: Icons.assistant_navigation,
-                          label: context.locale.discoveryTabBarLabel,
-                          onTap: (context, key) {
-                            GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.discovery);
-                          }),
-                      TabBarItem(
-                          key: const ValueKey(AuthenticatedRouter.games),
-                          tabBarItemType: TabItemType.button,
-                          icon: Icons.sports_esports_outlined,
-                          label: context.locale.gamesTabBarLabel,
-                          onTap: (context, key) {
-                            GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.games);
-                          }),
-                      TabBarItem(
-                          key: const ValueKey(AuthenticatedRouter.inventory),
-                          tabBarItemType: TabItemType.button,
-                          icon: Icons.pie_chart_outline,
-                          label: context.locale.inventoryTabBarLabel,
-                          onTap: (context, key) {
-                            GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.inventory);
-                          }),
-                      TabBarItem(
-                          key: const ValueKey(AuthenticatedRouter.findDapps),
-                          tabBarItemType: TabItemType.button,
-                          icon: Icons.language,
-                          label: context.locale.findDappsTabBarLabel,
-                          onTap: (context, key) {
-                            GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.findDapps);
-                          }),
-                    ],
-                    height: 70.0,
-                  )
-                : Container();
-          },
-        ),
-      ],
+    return Scaffold(
+      body: Stack(
+        alignment: AlignmentDirectional.bottomCenter,
+        children: [
+          widget.child,
+          BlocBuilder<TabBarCubit, TabBarState>(
+            buildWhen: (previous, current) => previous != current,
+            builder: (context, state) {
+              return state.isDisplayed
+                  ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: BottomTabBar(
+                        activeItem: state.selectedItem,
+                        items: [
+                          TabBarItem(
+                              key:
+                                  const ValueKey(AuthenticatedRouter.discovery),
+                              tabBarItemType: TabItemType.button,
+                              selectedColor:
+                                  Theme.of(context).colorScheme.inverseSurface,
+                              icon: Icons.assistant_navigation,
+                              label: context.locale.discoveryTabBarLabel,
+                              onTap: (context, key) {
+                                GoRouter.of(context)
+                                    .goNamed(AuthenticatedRouter.discovery);
+                              }),
+                          TabBarItem(
+                              key: const ValueKey(AuthenticatedRouter.games),
+                              tabBarItemType: TabItemType.button,
+                              selectedColor:
+                                  Theme.of(context).colorScheme.onBackground,
+                              icon: Icons.sports_esports_outlined,
+                              label: context.locale.gamesTabBarLabel,
+                              onTap: (context, key) {
+                                GoRouter.of(context)
+                                    .goNamed(AuthenticatedRouter.games);
+                              }),
+                          TabBarItem(
+                              key:
+                                  const ValueKey(AuthenticatedRouter.inventory),
+                              tabBarItemType: TabItemType.button,
+                              selectedColor:
+                                  Theme.of(context).colorScheme.surface,
+                              icon: Icons.pie_chart_outline,
+                              label: context.locale.inventoryTabBarLabel,
+                              onTap: (context, key) {
+                                GoRouter.of(context)
+                                    .goNamed(AuthenticatedRouter.inventory);
+                              }),
+                          TabBarItem(
+                              key:
+                                  const ValueKey(AuthenticatedRouter.findDapps),
+                              tabBarItemType: TabItemType.button,
+                              selectedColor:
+                                  Theme.of(context).colorScheme.surface,
+                              icon: Icons.language,
+                              label: context.locale.findDappsTabBarLabel,
+                              onTap: (context, key) {
+                                GoRouter.of(context)
+                                    .goNamed(AuthenticatedRouter.findDapps);
+                              }),
+                        ],
+                        height: 70.0,
+                      ))
+                  : Container();
+            },
+          ),
+        ],
+      ),
     );
   }
 }
