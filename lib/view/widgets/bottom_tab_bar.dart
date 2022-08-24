@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:simplio_app/view/themes/Constants.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 
 class BottomTabBar extends StatelessWidget {
