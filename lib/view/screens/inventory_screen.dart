@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/app_bar/sio_app_bar.dart';
 import 'package:simplio_app/view/navigation_bar/navigation_bar_tab_item.dart';
 import 'package:simplio_app/view/navigation_bar/navigation_tab_bar.dart';
+import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/inventory_coins_content.dart';
+import 'package:simplio_app/view/widgets/search_bar_sliver.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({
@@ -29,33 +33,15 @@ class InventoryScreen extends StatelessWidget {
             ];
           },
           body: NavigationTabBar(
-            addSearchBar: true,
             tabs: [
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_coins,
                   iconData: Icons.pie_chart_outline,
                   iconColor: Theme.of(context).colorScheme.surface,
                   pageSlivers: [
-                    const SliverToBoxAdapter(child: Text('Coins content')),
-                    const SliverToBoxAdapter(
-                        child: SizedBox(
-                      height: 400,
-                    )),
-                    const SliverToBoxAdapter(child: Text('Coins content')),
-                    const SliverToBoxAdapter(
-                        child: SizedBox(
-                      height: 200,
-                    )),
-                    const SliverToBoxAdapter(child: Text('Coins content')),
-                    const SliverToBoxAdapter(
-                        child: SizedBox(
-                      height: 200,
-                    )),
-                    const SliverToBoxAdapter(child: Text('Coins content')),
-                    const SliverToBoxAdapter(
-                        child: SizedBox(
-                      height: 200,
-                    )),
+                    const SliverGap(PaddingSize.padding10),
+                    const SearchBarSliver(),
+                    const InventoryCoinsContent(),
                   ]),
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_nft,

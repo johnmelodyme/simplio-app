@@ -1,19 +1,13 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/navigation_bar/navigation_bar_tab_item.dart';
 import 'package:simplio_app/view/navigation_bar/navigation_tab_chip.dart';
-import 'package:simplio_app/view/navigation_bar/search_bar_delegate.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/appbar_search.dart';
 
 class NavigationTabBar extends StatefulWidget {
   NavigationTabBar({
     Key? key,
     required this.tabs,
-    this.addSearchBar = false,
     this.currentTab = 0,
     this.topGap = 0,
   })  : assert(tabs.isNotEmpty),
@@ -21,7 +15,6 @@ class NavigationTabBar extends StatefulWidget {
         super(key: key);
 
   final List<NavigationBarTabItem> tabs;
-  final bool addSearchBar;
   final int currentTab;
   final double topGap;
 
@@ -104,23 +97,6 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
                     ),
                   ))),
         ),
-        if (widget.addSearchBar) ...{
-          SliverPadding(
-              padding: const EdgeInsets.only(
-                left: PaddingSize.padding20,
-                right: PaddingSize.padding20,
-              ),
-              sliver: SliverPersistentHeader(
-                  floating: true,
-                  delegate: ShrinkableSearchBarItemDelegate(
-                    fixedHeight: Constants.navigationTabBarHeight +
-                        PaddingSize.padding10,
-                    child: AppBarSearch<String>(
-                      delegate: SearchBarDelegate.of(context),
-                      label: context.locale.searchAllAssetsInputLabel,
-                    ),
-                  ))),
-        },
         ...widget.tabs[currentTab].pageSlivers,
         SliverGap(bottomGap)
       ],
@@ -141,35 +117,6 @@ class FixedHeightItemDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get maxExtent => fixedHeight;
-
-  @override
-  double get minExtent => fixedHeight;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
-}
-
-class ShrinkableSearchBarItemDelegate extends SliverPersistentHeaderDelegate {
-  ShrinkableSearchBarItemDelegate(
-      {required this.child, required this.fixedHeight});
-  final Widget child;
-  final double fixedHeight;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return ClipRect(
-        child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Column(children: [
-              Flexible(child: SizedBox(height: fixedHeight)),
-              child,
-            ])));
-  }
-
-  @override
-  double get maxExtent => fixedHeight + Constants.searchBarHeight;
 
   @override
   double get minExtent => fixedHeight;
