@@ -34,13 +34,15 @@ class BottomTabBar extends StatelessWidget {
     final theme = Theme.of(context);
     final double bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return ClipRect(
+    return ClipRRect(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(borderRadius),
+            topRight: Radius.circular(borderRadius)),
         child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
               height: height + bottomPadding,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
