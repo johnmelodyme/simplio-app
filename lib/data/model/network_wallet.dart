@@ -40,7 +40,7 @@ class NetworkWallet extends Equatable {
           isEnabled: isEnabled,
         );
 
-  bool get isToken => contractAddress != null || contractAddress!.isNotEmpty;
+  bool get isToken => contractAddress?.isNotEmpty == true;
   bool get isNotToken => !isToken;
 
   @override
