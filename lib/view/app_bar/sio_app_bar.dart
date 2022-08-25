@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -22,7 +21,7 @@ class SioAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
         pinned: true,
-        delegate: MyHeaderDelegate(
+        delegate: SioAppBarDelegate(
           title: title,
           subtitle: subtitle,
           height: height + MediaQuery.of(context).viewPadding.top,
@@ -30,8 +29,8 @@ class SioAppBar extends StatelessWidget {
   }
 }
 
-class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
-  MyHeaderDelegate({
+class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
+  SioAppBarDelegate({
     required this.title,
     this.subtitle,
     required this.height,
@@ -105,32 +104,19 @@ class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
-                      padding: EdgeInsets.zero,
-                      icon: SvgPicture.asset(
-                        'assets/icon/svg/icon_qr_code.svg',
-                        color: Theme.of(context).colorScheme.inverseSurface,
-                        height: 16,
-                      ),
-                    ),
+                        onPressed: () {},
+                        padding: EdgeInsets.zero,
+                        icon: Icon(
+                          Icons.qr_code,
+                          color: Theme.of(context).colorScheme.inverseSurface,
+                        )),
                     IconButton(
                       onPressed: () {},
                       padding: EdgeInsets.zero,
-                      icon: SvgPicture.asset(
-                        'assets/icon/svg/icon_belt.svg',
+                      icon: Icon(
+                        Icons.notifications_none,
                         color: Theme.of(context).colorScheme.surfaceTint,
-                        width: 16,
-                        height: 16,
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      padding: EdgeInsets.zero,
-                      icon: SvgPicture.asset(
-                          'assets/icon/svg/icon_menu_vertical.svg',
-                          color: Theme.of(context).colorScheme.surfaceTint,
-                          width: 16,
-                          height: 16),
                     ),
                   ],
                 )
