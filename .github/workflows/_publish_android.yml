@@ -1,6 +1,6 @@
 name: Publish Android
 env:
-  FLUTTER_VERSION: '3.0.4'
+  FLUTTER_VERSION: '3.0.5'
 
 on:
   workflow_call:
@@ -52,7 +52,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: $FLUTTER_VERSION
+         flutter-version: ${{ env.FLUTTER_VERSION }}
       - uses: actions/download-artifact@v3
         with:
           name: generated-files-and-packages
