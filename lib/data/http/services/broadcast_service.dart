@@ -22,7 +22,7 @@ abstract class BroadcastService extends ChopperService {
 @JsonSerializable()
 class BroadcastResponse {
   final bool success;
-  final String errorMessage;
+  final String? errorMessage;
   final String? result;
 
   const BroadcastResponse({

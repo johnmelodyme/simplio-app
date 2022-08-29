@@ -57,3 +57,6 @@ http_testing
 # Generated files
 *.g.dart
 *.chopper.dart
+
+# Local created script by Ami
+runlocal.sh
