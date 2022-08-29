@@ -35,73 +35,69 @@ class BottomTabBar extends StatelessWidget {
     final double bottomPadding = MediaQuery.of(context).padding.bottom;
 
     return ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(borderRadius),
-            topRight: Radius.circular(borderRadius)),
-        child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              height: height + bottomPadding,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Theme.of(context)
-                        .colorScheme
-                        .surfaceVariant
-                        .withOpacity(0.5),
-                    Theme.of(context)
-                        .colorScheme
-                        .onSurfaceVariant
-                        .withOpacity(0.5),
-                  ],
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(bottom: bottomPadding),
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  clipBehavior: Clip.none,
-                  children: [
-                    SizedBox(
-                      height: height,
-                      child: Builder(
-                        builder: (context) {
-                          return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: items.map((e) {
-                                if (e.tabBarItemType == TabItemType.spacer) {
-                                  return Expanded(
-                                    key: UniqueKey(),
-                                    flex: 1,
-                                    child: Container(),
-                                  );
-                                }
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(borderRadius),
+          topRight: Radius.circular(borderRadius)),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          height: height + bottomPadding,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+                Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
+              ],
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: bottomPadding),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              clipBehavior: Clip.none,
+              children: [
+                SizedBox(
+                  height: height,
+                  child: Builder(
+                    builder: (context) {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: items.map((e) {
+                            if (e.tabBarItemType == TabItemType.spacer) {
+                              return Expanded(
+                                key: UniqueKey(),
+                                flex: 1,
+                                child: Container(),
+                              );
+                            }
 
-                                return Expanded(
-                                    key: e.key,
-                                    flex: spacerRatio,
-                                    child: _TabBarItem(
-                                        isActive: activeItem == e.key,
-                                        tabBarItem: e,
-                                        selectedColor: e.selectedColor,
-                                        unselectedColor: theme
-                                            .bottomNavigationBarTheme
-                                            .unselectedItemColor!));
-                              }).toList());
-                        },
-                      ),
-                    ),
-                    if (floatingActionButton != null)
-                      Positioned(
-                        top: 0,
-                        child: floatingActionButton!,
-                      ),
-                  ],
+                            return Expanded(
+                                key: e.key,
+                                flex: spacerRatio,
+                                child: _TabBarItem(
+                                    isActive: activeItem == e.key,
+                                    tabBarItem: e,
+                                    selectedColor: e.selectedColor,
+                                    unselectedColor: theme
+                                        .bottomNavigationBarTheme
+                                        .unselectedItemColor!));
+                          }).toList());
+                    },
+                  ),
                 ),
-              ),
-            )));
+                if (floatingActionButton != null)
+                  Positioned(
+                    top: 0,
+                    child: floatingActionButton!,
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

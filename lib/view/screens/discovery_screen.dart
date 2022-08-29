@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/app_bar/sio_app_bar.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/sio_app_bar.dart';
 
 class DiscoveryScreen extends StatelessWidget {
   const DiscoveryScreen({super.key});
@@ -50,7 +50,6 @@ class DiscoveryScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            //Text(context.locale.gamesTabBarLabel),
                             Container(
                               alignment: Alignment.bottomRight,
                               child: Icon(

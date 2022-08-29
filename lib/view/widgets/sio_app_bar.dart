@@ -7,11 +7,11 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
 class SioAppBar extends StatelessWidget {
   const SioAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.height = Constants.appBarHeight,
-  }) : super(key: key);
+  });
 
   final String title;
   final String? subtitle;
@@ -88,16 +88,19 @@ class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title,
-                          style: SioTextStyles.h4.apply(
-                              color: Theme.of(context).colorScheme.onPrimary)),
-                      if (subtitle != null) ...{
+                      Text(
+                        title,
+                        style: SioTextStyles.h4.apply(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      if (subtitle != null) ...[
                         const Gap(3),
-                        Text(subtitle!,
-                            style: SioTextStyles.bodyLabel.apply(
-                                color:
-                                    Theme.of(context).colorScheme.onTertiary))
-                      },
+                        Text(
+                          subtitle!,
+                          style: SioTextStyles.bodyLabel.apply(
+                              color: Theme.of(context).colorScheme.onTertiary),
+                        )
+                      ],
                     ],
                   ),
                 ),
