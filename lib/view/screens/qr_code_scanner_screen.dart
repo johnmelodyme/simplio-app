@@ -27,13 +27,13 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFF062333),
-              Color(0xFF031017),
+              Theme.of(context).colorScheme.onPrimaryContainer,
+              Theme.of(context).colorScheme.secondaryContainer,
             ],
           ),
         ),
