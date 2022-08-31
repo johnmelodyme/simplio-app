@@ -31,7 +31,7 @@ class ColorizedAppBar extends StatelessWidget {
                 onPressed: () {
                   onBackTap?.call();
                 },
-                padding: const EdgeInsets.all(PaddingSize.padding16),
+                padding: const EdgeInsets.all(Dimensions.padding16),
                 color: Colors.white,
                 icon: actionType == ActionType.back
                     ? const Icon(Icons.arrow_back_ios)
@@ -39,8 +39,8 @@ class ColorizedAppBar extends StatelessWidget {
               ),
             ),
             Positioned.fill(
-              left: PaddingSize.padding48,
-              right: PaddingSize.padding48,
+              left: Dimensions.padding48,
+              right: Dimensions.padding48,
               child: Center(
                 child: RichText(
                   textAlign: TextAlign.center,

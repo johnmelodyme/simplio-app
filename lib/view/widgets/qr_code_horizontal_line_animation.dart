@@ -41,7 +41,7 @@ class _QrCodeHorizontalLineAnimationState
             Radius.circular(32),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(PaddingSize.padding8),
+            padding: const EdgeInsets.all(Dimensions.padding8),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
@@ -49,18 +49,24 @@ class _QrCodeHorizontalLineAnimationState
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onPrimary,
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  boxShadow: const [
+                  boxShadow: [
                     BoxShadow(
-                      color: Color.fromRGBO(55, 255, 198, 0.5),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .inverseSurface
+                          .withOpacity(0.5),
                       spreadRadius: 20,
                       blurRadius: 20,
-                      offset: Offset(1, 1),
+                      offset: const Offset(1, 1),
                     ),
                     BoxShadow(
-                      color: Color.fromRGBO(55, 255, 198, 0.5),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .inverseSurface
+                          .withOpacity(0.5),
                       spreadRadius: 3,
                       blurRadius: 3,
-                      offset: Offset(0, 0),
+                      offset: const Offset(0, 0),
                     ),
                   ],
                 ),

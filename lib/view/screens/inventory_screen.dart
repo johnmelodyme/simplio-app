@@ -39,7 +39,7 @@ class InventoryScreen extends StatelessWidget {
                   iconData: Icons.pie_chart_outline,
                   iconColor: Theme.of(context).colorScheme.surface,
                   pageSlivers: [
-                    const SliverGap(PaddingSize.padding10),
+                    const SliverGap(Dimensions.padding10),
                     const SearchBarSliver(),
                     const InventoryCoinsContent(),
                   ]),

@@ -57,9 +57,9 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
         SliverGap(widget.topGap),
         SliverPadding(
           padding: const EdgeInsets.only(
-            top: PaddingSize.padding10,
-            left: PaddingSize.padding20,
-            right: PaddingSize.padding20,
+            top: Dimensions.padding10,
+            left: Dimensions.padding20,
+            right: Dimensions.padding20,
           ),
           sliver: SliverPersistentHeader(
               pinned: true,

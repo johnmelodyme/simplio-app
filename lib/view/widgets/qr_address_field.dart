@@ -16,7 +16,7 @@ class QrAddressField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 70,
-        padding: const EdgeInsets.symmetric(horizontal: PaddingSize.padding20),
+        padding: const EdgeInsets.symmetric(horizontal: Dimensions.padding20),
         decoration: BoxDecoration(
           borderRadius:
               const BorderRadius.all(Radius.circular(RadiusSize.radius20)),
@@ -33,7 +33,7 @@ class QrAddressField extends StatelessWidget {
                         : Theme.of(context).colorScheme.onSecondaryContainer),
               ),
             ),
-            const Gap(PaddingSize.padding5),
+            const Gap(Dimensions.padding5),
             IconButton(
               onPressed: () {
                 if (address?.isNotEmpty == true) {

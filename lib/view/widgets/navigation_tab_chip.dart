@@ -59,7 +59,7 @@ class NavigationTabChip extends StatelessWidget {
                     ? Theme.of(context).colorScheme.primary
                     : iconColor ?? Theme.of(context).colorScheme.onPrimary,
               ),
-              const Gap(PaddingSize.padding8),
+              const Gap(Dimensions.padding8),
             },
             Flexible(
               child: Text(
