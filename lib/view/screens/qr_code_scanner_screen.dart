@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/view/themes/Constants.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_colors.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/qr_address_field.dart';
