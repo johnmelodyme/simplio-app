@@ -4,10 +4,10 @@ import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
-import 'package:simplio_app/view/navigation_bar/navigation_tab_bar.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/appbar_search.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
+import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 
 class SearchBarSliver extends StatefulWidget {
   const SearchBarSliver({Key? key}) : super(key: key);

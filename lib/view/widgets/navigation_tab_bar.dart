@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:simplio_app/view/navigation_bar/navigation_bar_tab_item.dart';
-import 'package:simplio_app/view/navigation_bar/navigation_tab_chip.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/navigation_bar_tab_item.dart';
+import 'package:simplio_app/view/widgets/navigation_tab_chip.dart';
 
 class NavigationTabBar extends StatefulWidget {
   NavigationTabBar({

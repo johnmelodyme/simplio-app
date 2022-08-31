@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/view/navigation_bar/navigation_bar_tab_item.dart';
-import 'package:simplio_app/view/navigation_bar/navigation_tab_bar.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/inventory_coins_content.dart';
+import 'package:simplio_app/view/widgets/navigation_bar_tab_item.dart';
+import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/search_bar_sliver.dart';
 import 'package:simplio_app/view/widgets/sio_app_bar.dart';
 
