@@ -39,7 +39,7 @@ class Utxo {
   final String? value;
   final int? height;
   final int? confirmations;
-  final String? confirmed;
+  final String? scriptPubKey;
 
   const Utxo({
     required this.txid,
@@ -47,7 +47,7 @@ class Utxo {
     required this.value,
     required this.height,
     required this.confirmations,
-    required this.confirmed,
+    required this.scriptPubKey,
   });
 
   factory Utxo.fromJson(Map<String, dynamic> json) => _$UtxoFromJson(json);
@@ -75,7 +75,7 @@ class UtxoUtilsResponse {
 
 @JsonSerializable()
 class SolanaUtilsResponse {
-  final String lastBlockHash;
+  final String? lastBlockHash;
   final bool success;
   final String? errorMessage;
 
@@ -94,7 +94,7 @@ class SolanaUtilsResponse {
 @JsonSerializable()
 class EthereumUtilsResponse {
   final String address;
-  final String transactionCount;
+  final String? transactionCount;
   final bool success;
   final String? errorMessage;
 

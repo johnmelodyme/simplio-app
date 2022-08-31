@@ -29,7 +29,7 @@ abstract class BalanceService extends ChopperService {
 @JsonSerializable()
 class BalanceResponse {
   final String walletAddress;
-  final String contractAddress;
+  final String? contractAddress;
   final int balance;
   final bool success;
   final String? errorMessage;
