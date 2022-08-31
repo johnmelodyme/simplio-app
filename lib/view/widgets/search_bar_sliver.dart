@@ -21,8 +21,8 @@ class _SearchBarSliverState extends State<SearchBarSliver> {
   Widget build(BuildContext context) {
     return SliverPadding(
         padding: const EdgeInsets.only(
-          left: PaddingSize.padding20,
-          right: PaddingSize.padding20,
+          left: Dimensions.padding20,
+          right: Dimensions.padding20,
         ),
         sliver: SliverPersistentHeader(
             floating: true,

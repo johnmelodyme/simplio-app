@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
@@ -48,28 +50,34 @@ class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
         child: Padding(
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).viewPadding.top,
-              bottom: PaddingSize.padding20,
-              left: PaddingSize.padding16,
+              bottom: Dimensions.padding20,
+              left: Dimensions.padding16,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromRGBO(55, 255, 198, 0.35),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .inverseSurface
+                            .withOpacity(0.35),
                         spreadRadius: 5,
                         blurRadius: 20,
-                        offset: Offset(1, 1),
+                        offset: const Offset(1, 1),
                       ),
                       BoxShadow(
-                        color: Color.fromRGBO(55, 255, 198, 0.2),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .inverseSurface
+                            .withOpacity(0.2),
                         spreadRadius: 1,
                         blurRadius: 3,
-                        offset: Offset(0, 0),
+                        offset: const Offset(0, 0),
                       ),
                     ],
                   ),
@@ -82,7 +90,7 @@ class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
                     ),
                   ),
                 ),
-                const Gap(PaddingSize.padding10),
+                const Gap(Dimensions.padding10),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +115,10 @@ class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
                 Row(
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          GoRouter.of(context)
+                              .pushNamed(AuthenticatedRouter.qrCodeScanner);
+                        },
                         padding: EdgeInsets.zero,
                         icon: Icon(
                           Icons.qr_code,

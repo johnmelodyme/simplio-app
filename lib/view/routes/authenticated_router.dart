@@ -26,6 +26,7 @@ import 'package:simplio_app/view/screens/games_screen.dart';
 import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
+import 'package:simplio_app/view/screens/qr_code_scanner_screen.dart';
 
 class AuthenticatedRouter with PageBuilderMixin {
   static const String discovery = 'discovery';
@@ -41,6 +42,7 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String passwordChange = 'password-change';
   static const String assetSend = 'asset-send';
   static const String assetReceive = 'asset-receive';
+  static const String qrCodeScanner = 'qr-code-scanner';
 
   final BuildContext context;
 
@@ -278,6 +280,13 @@ class AuthenticatedRouter with PageBuilderMixin {
                   ),
                 )
               ],
+            ),
+            GoRoute(
+              path: 'qr-code-scanner',
+              name: qrCodeScanner,
+              pageBuilder: pageBuilder(
+                builder: (state) => const QrCodeScannerScreen(),
+              ),
             ),
           ],
         ),

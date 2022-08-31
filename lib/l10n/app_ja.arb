@@ -64,5 +64,8 @@
     "sendCoinsBtn": "な 両",
     "network": "布を",
 
-    "asset_screens_address_copied": "っ\nたは\nたは財布\nたは"
+    "asset_screens_address_copied": "っ\nたは\nたは財布\nたは",
+
+    "qr_code_scanner_screen_connect": "は\nたは財布\n",
+    "qr_code_scanner_screen_wallet": "あな 両あ"
 }

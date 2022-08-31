@@ -19,7 +19,7 @@ class DiscoveryScreen extends StatelessWidget {
         child: Container(
             height: 600,
             padding: const EdgeInsets.all(
-              PaddingSize.padding20,
+              Dimensions.padding20,
             ),
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,

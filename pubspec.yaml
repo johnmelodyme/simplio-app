@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # For production version we use tags on master branch, e.g. 'v1.2.4'
-version: 0.0.0+76
+version: 0.0.0+77
 
 
 environment:
@@ -40,6 +40,8 @@ dependencies:
   crypto_assets:
     path: packages/crypto_assets
   gap: ^2.0.0
+  mobile_scanner: ^2.0.0
+  url_launcher: ^6.1.5
 
 dev_dependencies:
   flutter_test:
