@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
@@ -107,7 +109,10 @@ class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
                 Row(
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          GoRouter.of(context)
+                              .pushNamed(AuthenticatedRouter.qrCodeScanner);
+                        },
                         padding: EdgeInsets.zero,
                         icon: Icon(
                           Icons.qr_code,
