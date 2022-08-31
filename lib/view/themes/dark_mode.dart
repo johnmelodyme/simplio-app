@@ -19,12 +19,17 @@ class DarkMode {
         secondary: SioColors.highlight1,
         onSecondary: SioColors.black,
         tertiary: SioColors.highlight2,
+        onTertiary: SioColors.highlight,
         error: SioColors.attention,
         onError: Colors.redAccent,
-        background: Colors.orangeAccent,
-        onBackground: Colors.orange,
-        surface: Colors.brown,
-        onSurface: Colors.blueAccent,
+        background: SioColors.background,
+        inverseSurface: SioColors.mentolGreen,
+        onBackground: SioColors.games,
+        surface: SioColors.coins,
+        onSurface: SioColors.nft,
+        surfaceVariant: SioColors.bottomTabBarStartColor,
+        onSurfaceVariant: SioColors.bottomTabBarEndColor,
+        surfaceTint: SioColors.secondary5,
       );
 
   static TextTheme get textTheme => TextTheme(

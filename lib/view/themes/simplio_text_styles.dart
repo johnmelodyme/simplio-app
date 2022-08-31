@@ -23,6 +23,9 @@ class SioTextStyles {
   static TextStyle h2 = headingStyle.copyWith(
       fontSize: 22, height: 1.27, fontWeight: FontWeight.w700);
 
+  static TextStyle h4 = headingStyle.copyWith(
+      fontSize: 15, height: 1.11, fontWeight: FontWeight.w700);
+
   static TextStyle bodyL = bodyStyle.copyWith(fontSize: 15, height: 1.33);
   static TextStyle bodyM = bodyStyle.copyWith(fontSize: 14, height: 1.43);
   static TextStyle bodyS = bodyStyle.copyWith(fontSize: 12, height: 1.3);

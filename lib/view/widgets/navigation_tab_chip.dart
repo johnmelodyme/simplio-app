@@ -6,14 +6,16 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 class NavigationTabChip extends StatelessWidget {
   const NavigationTabChip({
     Key? key,
-    this.label = '',
-    this.iconData,
+    required this.label,
+    required this.iconData,
+    this.iconColor,
+    required this.onTap,
     this.isSelected = false,
-    this.onTap,
   }) : super(key: key);
 
   final String label;
   final IconData? iconData;
+  final Color? iconColor;
   final bool isSelected;
   final VoidCallback? onTap;
 
@@ -55,7 +57,7 @@ class NavigationTabChip extends StatelessWidget {
                 size: 16,
                 color: isSelected
                     ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.onPrimary,
+                    : iconColor ?? Theme.of(context).colorScheme.onPrimary,
               ),
               const Gap(PaddingSize.padding8),
             },
