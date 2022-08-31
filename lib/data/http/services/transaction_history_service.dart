@@ -71,7 +71,7 @@ class Transaction {
 class TransactionHistoryResponse {
   final String? walletAddress;
   final String? contractAddress;
-  final List<Transaction> transactions;
+  final List<Transaction>? transactions;
   final bool success;
   final String? errorMessage;
 

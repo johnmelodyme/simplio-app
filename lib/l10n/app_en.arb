@@ -19,6 +19,10 @@
     "inventoryTabBarLabel": "Inventory",
     "findDappsTabBarLabel": "Find Dapps",
 
+    "inventory_tab_coins": "Coins",
+    "inventory_tab_nft": "NFT",
+    "inventory_tab_transactions": "Transacions",
+    
     "loginScreenTitle": "Enter Simplio.",
     "loginScreenSubTitle": "It's good to see you back.",
     "usernameInputLabel":"Username",
@@ -54,5 +58,14 @@
     "accountCreatedLabel":"Hurray! \n Your account have been created",
     "accountCreatedDescriptionLabel":"Before you start, we suggest you\n verify your account due to the use\n of all functionalities and full\n security of your Simplio app.",
     "accountCreatedVerifyButton": "Verify your account to get more",
-    "accountCreatedStartButton": "Start using app"
+    "accountCreatedStartButton": "Start using app",
+
+    "receiveCoinsBtn": "Receive",
+    "sendCoinsBtn": "Send",
+    "network": "network",
+
+    "asset_screens_address_copied": "Address copied!",
+
+    "qr_code_scanner_screen_connect": "Connect",
+    "qr_code_scanner_screen_wallet": "wallet"
 }

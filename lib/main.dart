@@ -4,6 +4,8 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:simplio_app/data/http/clients/public_http_client.dart';
 import 'package:simplio_app/data/http/clients/secured_http_client.dart';
 import 'package:simplio_app/data/http/services/asset_service.dart';
+import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
+import 'package:simplio_app/data/http/services/broadcast_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
@@ -114,6 +116,8 @@ class _SimplioAppState extends State<SimplioApp> {
     );
     walletRepository = WalletRepository.builder(
       walletDb: walletDbProvider,
+      blockchainUtilsService: securedApi.service<BlockchainUtilsService>(),
+      broadcastService: securedApi.service<BroadcastService>(),
     );
     assetRepository = AssetRepository.builder(
       assetService: securedApi.service<AssetService>(),

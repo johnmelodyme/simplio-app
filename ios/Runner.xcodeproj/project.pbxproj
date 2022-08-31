@@ -355,6 +355,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 46512FBBD0B5F67C734D44A7 /* Pods-Runner.profile.xcconfig */;
 			buildSettings = {
+				ENABLE_BITCODE = NO;
 				PRODUCT_NAME = Runner;
 				SWIFT_VERSION = 5.0;
 			};

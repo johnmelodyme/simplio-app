@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/routes/guards/protected_guard.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 
 class AppBarSearch<T> extends StatelessWidget {
   final SearchDelegate<T> delegate;
@@ -23,7 +23,7 @@ class AppBarSearch<T> extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
             clipBehavior: Clip.hardEdge,
             shape: RoundedRectangleBorder(
-              borderRadius: CommonTheme.borderRadius,
+              borderRadius: BorderRadius.circular(RadiusSize.radius50),
               side: BorderSide(
                 width: 1,
                 color: Theme.of(context).colorScheme.onPrimary,
@@ -39,7 +39,7 @@ class AppBarSearch<T> extends StatelessWidget {
               },
               child: Container(
                 alignment: Alignment.centerLeft,
-                height: 42.0,
+                height: Constants.searchBarHeight,
                 child: Row(
                   children: [
                     Padding(

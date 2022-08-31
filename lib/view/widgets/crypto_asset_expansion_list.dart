@@ -19,7 +19,7 @@ class CryptoAssetExpansionList extends StatelessWidget {
       elevation: 0,
       children: children.map(
         (a) {
-          final asset = Assets.getAsset(a.assetId);
+          final asset = Assets.getAssetDetail(a.assetId);
 
           return ExpansionPanelRadio(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -38,7 +38,7 @@ class CryptoAssetExpansionList extends StatelessWidget {
             },
             body: Column(
               children: a.networks.map((n) {
-                final network = Assets.getNetwork(n.networkId);
+                final network = Assets.getNetworkDetail(n.networkId);
                 return ListTile(
                   title: Text(network.name),
                   subtitle: Text(network.ticker),

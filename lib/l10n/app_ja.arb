@@ -19,6 +19,10 @@
     "inventoryTabBarLabel": "車両あなた自身",
     "findDappsTabBarLabel": "車両あなた自身",
 
+    "inventory_tab_coins": "車両あ",
+    "inventory_tab_nft": "車両あ",
+    "inventory_tab_transactions": "両あなた自身",
+
     "loginScreenTitle": "車両あなた自身 車両",
     "loginScreenSubTitle": "あなたは財布を持っていません",
     "usernameInputLabel":"財布を持っ",
@@ -49,8 +53,19 @@
     "accountCreationBeforePinSetup":"はい! \n は財布を持っ",
     "setPinLabel":"あな 両ああな 両あ",
     "protectedLabel": "あな 両ああな 両あ",
+    "protectedErrorRemaining": "ントを持っ ントを",
+    "protectedErrorLast": "りて替えて ありて替えて あ",
     "accountCreatedLabel":"いません ませ",
     "accountCreatedDescriptionLabel":"たは財布を持っ\nたは\nたは財布\nたは財布を持ったは財布を持っ",
     "accountCreatedVerifyButton": "あな 両ああな 両あ",
-    "accountCreatedStartButton": "あな 両ああな 両あ"
+    "accountCreatedStartButton": "あな 両ああな 両あ",
+
+    "receiveCoinsBtn": "ウントを",
+    "sendCoinsBtn": "な 両",
+    "network": "布を",
+
+    "asset_screens_address_copied": "っ\nたは\nたは財布\nたは",
+
+    "qr_code_scanner_screen_connect": "は\nたは財布\n",
+    "qr_code_scanner_screen_wallet": "あな 両あ"
 }

@@ -37,7 +37,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
     try {
       return box.values
           .where((w) => w.accountId == accountId)
-          .map((w) => _mapAccountWalletFrom(w))
+          .map(_mapAccountWalletFrom)
           .toList();
     } catch (_) {
       return const [];
@@ -65,7 +65,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       isBackedUp: wallet.mnemonic.isBackedUp,
       isImported: wallet.mnemonic.isImported,
       walletType: wallet.walletType,
-      wallets: wallet.wallets.map((w) => _mapAssetWalletTo(w)).toList(),
+      wallets: wallet.wallets.map(_mapAssetWalletTo).toList(),
     );
   }
 
@@ -74,7 +74,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       uuid: wallet.uuid,
       assetId: wallet.assetId,
       isEnabled: wallet.isEnabled,
-      wallets: wallet.wallets.map((w) => _mapNetworkWalletTo(w)).toList(),
+      wallets: wallet.wallets.map(_mapNetworkWalletTo).toList(),
     );
   }
 
@@ -83,8 +83,9 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       uuid: wallet.uuid,
       networkId: wallet.networkId,
       address: wallet.address,
-      contractAddress: wallet.contractAddress,
+      contractAddress: wallet.isToken ? wallet.contractAddress : null,
       balance: wallet.balance,
+      decimalPlaces: wallet.decimalPlaces,
       isEnabled: wallet.isEnabled,
     );
   }
@@ -129,7 +130,9 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       networkId: local.networkId,
       address: local.address,
       balance: local.balance,
+      decimalPlaces: local.decimalPlaces,
       isEnabled: local.isEnabled,
+      contractAddress: local.contractAddress,
     );
   }
 }

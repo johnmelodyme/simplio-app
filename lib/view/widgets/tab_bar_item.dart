@@ -13,10 +13,12 @@ class TabBarItem {
   final TabBarItemCallback? onTap;
   final IconData? icon;
   final IconData? activeIcon;
+  final Color selectedColor;
   final String? label;
 
   TabBarItem({
     required this.tabBarItemType,
+    required this.selectedColor,
     this.key,
     this.onTap,
     this.icon,

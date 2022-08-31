@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
-
-import 'common_theme.dart';
+import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/simplio_colors.dart';
 
 class DarkMode {
   DarkMode._();
 
-  static Color get backgroundColor => const Color.fromRGBO(41, 46, 50, 1);
+  static Color get backgroundColor => SioColors.black;
 
-  static Color get buttonColor => const Color.fromRGBO(58, 64, 69, 1);
+  static Color get buttonColor => SioColors.secondary1;
 
-  static Color get fontColor => Colors.white;
+  static Color get fontColor => SioColors.white;
 
-  static ColorScheme get colorScheme => ColorScheme(
+  static ColorScheme get colorScheme => const ColorScheme(
         brightness: Brightness.dark,
-        primary: backgroundColor,
-        onPrimary: fontColor,
-        secondary: const Color.fromRGBO(25, 220, 160, 1),
-        onSecondary: backgroundColor,
-        error: const Color.fromRGBO(232, 71, 61, 1),
+        primary: SioColors.black,
+        onPrimary: SioColors.white,
+        primaryContainer: SioColors.secondary1,
+        onPrimaryContainer: SioColors.backGradient4Start,
+        secondaryContainer: SioColors.backGradient4End,
+        secondary: SioColors.highlight1,
+        onSecondary: SioColors.black,
+        shadow: SioColors.secondary7,
+        onSecondaryContainer: SioColors.secondary6,
+        tertiary: SioColors.highlight2,
+        onTertiary: SioColors.highlight,
+        error: SioColors.attention,
         onError: Colors.redAccent,
-        tertiary: const Color.fromRGBO(20, 193, 89, 1),
-        background: Colors.orangeAccent,
-        onBackground: Colors.orange,
-        surface: Colors.brown,
-        onSurface: Colors.blueAccent,
+        background: SioColors.background,
+        inverseSurface: SioColors.mentolGreen,
+        onBackground: SioColors.games,
+        surface: SioColors.coins,
+        onSurface: SioColors.nft,
+        surfaceVariant: SioColors.bottomTabBarStartColor,
+        onSurfaceVariant: SioColors.bottomTabBarEndColor,
+        surfaceTint: SioColors.secondary5,
+        tertiaryContainer: SioColors.backGradient3Start,
+        onTertiaryContainer: SioColors.backGradient3End,
       );
 
   static TextTheme get textTheme => TextTheme(
@@ -36,9 +48,9 @@ class DarkMode {
             fontSize: 32),
         headlineMedium: TextStyle(color: colorScheme.onPrimary),
         headlineSmall: TextStyle(color: colorScheme.onPrimary),
-        bodyLarge: TextStyle(color: colorScheme.onPrimary),
-        bodyMedium: TextStyle(color: colorScheme.onPrimary),
-        bodySmall: TextStyle(color: colorScheme.onPrimary),
+        bodyLarge: TextStyle(color: colorScheme.onPrimary, fontSize: 18),
+        bodyMedium: TextStyle(color: colorScheme.onPrimary, fontSize: 16),
+        bodySmall: TextStyle(color: colorScheme.onPrimary, fontSize: 14),
         labelLarge: TextStyle(color: colorScheme.onPrimary),
         labelMedium: TextStyle(color: colorScheme.onPrimary),
         labelSmall: TextStyle(color: colorScheme.onPrimary),
@@ -90,6 +102,11 @@ class DarkMode {
           ),
         ),
       ),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: backgroundColor,
+      actionTextColor: fontColor,
+      contentTextStyle: TextStyle(color: fontColor),
     ),
   );
 }

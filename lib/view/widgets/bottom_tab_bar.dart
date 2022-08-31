@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 
 class BottomTabBar extends StatelessWidget {
@@ -17,7 +20,7 @@ class BottomTabBar extends StatelessWidget {
     required this.items,
     required this.activeItem,
     this.floatingActionButton,
-    this.height = 56,
+    this.height = Constants.bottomTabBarHeight,
     this.floatingActionButtonOffset = 20,
     this.elevation = 20.0,
     this.borderRadius = 20.0,
@@ -31,50 +34,67 @@ class BottomTabBar extends StatelessWidget {
     final theme = Theme.of(context);
     final double bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return Container(
-      height: height + bottomPadding,
-      decoration: BoxDecoration(
-        color: theme.bottomNavigationBarTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      child: Padding(
-        padding: EdgeInsets.only(bottom: bottomPadding),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          clipBehavior: Clip.none,
-          children: [
-            SizedBox(
-              height: height,
-              child: Builder(
-                builder: (context) {
-                  return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: items.map((e) {
-                        if (e.tabBarItemType == TabItemType.spacer) {
-                          return Expanded(
-                            key: UniqueKey(),
-                            flex: 1,
-                            child: Container(),
-                          );
-                        }
-
-                        return Expanded(
-                            key: e.key,
-                            flex: spacerRatio,
-                            child: _TabBarItem(
-                              isActive: activeItem == e.key,
-                              tabBarItem: e,
-                            ));
-                      }).toList());
-                },
-              ),
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(borderRadius),
+          topRight: Radius.circular(borderRadius)),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          height: height + bottomPadding,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+                Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
+              ],
             ),
-            if (floatingActionButton != null)
-              Positioned(
-                top: 0,
-                child: floatingActionButton!,
-              ),
-          ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: bottomPadding),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              clipBehavior: Clip.none,
+              children: [
+                SizedBox(
+                  height: height,
+                  child: Builder(
+                    builder: (context) {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: items.map((e) {
+                            if (e.tabBarItemType == TabItemType.spacer) {
+                              return Expanded(
+                                key: UniqueKey(),
+                                flex: 1,
+                                child: Container(),
+                              );
+                            }
+
+                            return Expanded(
+                                key: e.key,
+                                flex: spacerRatio,
+                                child: _TabBarItem(
+                                    isActive: activeItem == e.key,
+                                    tabBarItem: e,
+                                    selectedColor: e.selectedColor,
+                                    unselectedColor: theme
+                                        .bottomNavigationBarTheme
+                                        .unselectedItemColor!));
+                          }).toList());
+                    },
+                  ),
+                ),
+                if (floatingActionButton != null)
+                  Positioned(
+                    top: 0,
+                    child: floatingActionButton!,
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -84,21 +104,18 @@ class BottomTabBar extends StatelessWidget {
 class _TabBarItem extends StatelessWidget {
   final bool isActive;
   final TabBarItem tabBarItem;
+  final Color selectedColor;
+  final Color unselectedColor;
 
   const _TabBarItem({
     required this.isActive,
     required this.tabBarItem,
+    required this.selectedColor,
+    required this.unselectedColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final Color? selectedColor =
-        theme.bottomNavigationBarTheme.selectedItemColor;
-    final Color? unselectedColor =
-        theme.bottomNavigationBarTheme.unselectedItemColor;
-
     return Material(
       color: Colors.transparent,
       child: InkWell(

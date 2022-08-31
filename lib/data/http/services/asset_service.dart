@@ -9,12 +9,21 @@ part 'asset_service.g.dart';
 abstract class AssetService extends ChopperService {
   static AssetService create() => _$AssetService();
   static FactoryConvertMap converter() => {
-        AssetResponse: AssetResponse.fromJson,
+        CryptoAssetResponse: CryptoAssetResponse.fromJson,
+        FiatAssetResponse: FiatAssetResponse.fromJson,
       };
 
   @Get(path: '/system-assets')
-  Future<Response<List<AssetResponse>>> system({
-    @Query('crypto') required bool isCrypto,
+  Future<Response<List<CryptoAssetResponse>>> crypto({
+    @Query('crypto') bool? isCrypto = true,
+    @Query('active') bool isActive = true,
+    @Query('assets') List<String> selectedAssets = const [],
+    @Query('networks') List<String> selectedNetworks = const [],
+  });
+
+  @Get(path: '/system-assets')
+  Future<Response<List<FiatAssetResponse>>> fiat({
+    @Query('crypto') bool? isCrypto = false,
     @Query('active') bool isActive = true,
     @Query('assets') List<String> selectedAssets = const [],
     @Query('networks') List<String> selectedNetworks = const [],
@@ -22,41 +31,61 @@ abstract class AssetService extends ChopperService {
 }
 
 @JsonSerializable()
-class AssetResponse {
-  final String networkId;
-  final String? networkSymbol;
-  final String assetId;
+class CryptoAssetResponse {
+  final int assetId;
+  final String ticker;
+  final int networkId;
+  final String networkTicker;
   final String name;
-  final String symbol;
-  final double? lowFee;
-  final double? regularFee;
-  final double? highFee;
-  final double? gasLimit;
+  final String lowFee;
+  final String regularFee;
+  final String highFee;
+  final String gasLimit;
   final String? feeUnit;
-  final int? decimalPlaces;
+  final int decimalPlaces;
   final String? contractAddress;
   final bool isActive;
-  final bool isFiat;
 
-  const AssetResponse({
-    required this.networkId,
-    required this.networkSymbol,
+  const CryptoAssetResponse({
     required this.assetId,
+    required this.ticker,
+    required this.networkId,
+    required this.networkTicker,
     required this.name,
-    required this.symbol,
-    this.lowFee,
-    this.regularFee,
-    this.highFee,
-    this.gasLimit,
+    required this.lowFee,
+    required this.regularFee,
+    required this.highFee,
+    required this.gasLimit,
     this.feeUnit,
-    this.decimalPlaces,
+    required this.decimalPlaces,
     this.contractAddress,
     required this.isActive,
-    required this.isFiat,
   });
 
-  factory AssetResponse.fromJson(Map<String, dynamic> json) =>
-      _$AssetResponseFromJson(json);
+  factory CryptoAssetResponse.fromJson(Map<String, dynamic> json) =>
+      _$CryptoAssetResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AssetResponseToJson(this);
+  Map<String, dynamic> toJson() => _$CryptoAssetResponseToJson(this);
+}
+
+@JsonSerializable()
+class FiatAssetResponse {
+  final String assetId;
+  final String ticker;
+  final int networkId;
+  final String name;
+  final bool isActive;
+
+  const FiatAssetResponse({
+    required this.assetId,
+    required this.ticker,
+    required this.networkId,
+    required this.name,
+    required this.isActive,
+  });
+
+  factory FiatAssetResponse.fromJson(Map<String, dynamic> json) =>
+      _$FiatAssetResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FiatAssetResponseToJson(this);
 }
