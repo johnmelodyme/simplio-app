@@ -12,10 +12,10 @@ class SioExpansionRadioPanel extends ExpansionPanelList {
   });
 
   @override
-  State<StatefulWidget> createState() => _ExpansionPanelListState2();
+  State<StatefulWidget> createState() => _SioExpansionRadioPanelState();
 }
 
-class _ExpansionPanelListState2 extends State<ExpansionPanelList> {
+class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
   ExpansionPanelRadio? _currentOpenPanel;
 
   bool _isChildExpanded(int index) {
