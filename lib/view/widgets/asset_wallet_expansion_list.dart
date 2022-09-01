@@ -5,7 +5,7 @@ import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/asset_wallet_item.dart';
-import 'package:simplio_app/view/widgets/sio_expansion_panel.dart' as sio_panel;
+import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
 
 class AssetWalletExpansionList extends StatelessWidget {
   final List<AssetWallet> children;
@@ -17,20 +17,16 @@ class AssetWalletExpansionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return sio_panel.ExpansionPanelList.radio(
-      elevation: 0,
+    return SioExpansionRadioPanel(
       dividerColor: Theme.of(context).colorScheme.background,
-      expandedHeaderPadding: EdgeInsets.zero,
       children: children.map(
         (a) {
           final asset = Assets.getAssetDetail(a.assetId);
 
-          return sio_panel.ExpansionPanelRadio(
-            backgroundColor: Theme.of(context).colorScheme.background,
+          return ExpansionPanelRadio(
             value: UniqueKey(),
+            backgroundColor: Theme.of(context).colorScheme.background,
             canTapOnHeader: true,
-            hasIcon: false,
-            hasVerticalExpandedGap: false,
             headerBuilder: (context, isExpanded) {
               return Padding(
                 padding: const EdgeInsets.only(
