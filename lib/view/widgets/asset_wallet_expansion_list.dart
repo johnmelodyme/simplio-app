@@ -18,6 +18,7 @@ class AssetWalletExpansionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SioExpansionRadioPanel(
+      animationDuration: const Duration(milliseconds: 500),
       dividerColor: Theme.of(context).colorScheme.background,
       children: children.map(
         (a) {

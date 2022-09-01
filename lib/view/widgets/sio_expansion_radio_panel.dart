@@ -7,6 +7,7 @@ class SioExpansionRadioPanel extends ExpansionPanelList {
     super.key,
     super.children,
     super.dividerColor,
+    super.animationDuration,
     super.expandedHeaderPadding = EdgeInsets.zero,
     super.elevation = 0,
   });
