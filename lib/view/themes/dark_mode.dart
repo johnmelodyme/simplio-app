@@ -20,6 +20,7 @@ class DarkMode {
         secondaryContainer: SioColors.backGradient4End,
         secondary: SioColors.highlight1,
         onSecondary: SioColors.black,
+        shadow: SioColors.secondary7,
         onSecondaryContainer: SioColors.secondary6,
         tertiary: SioColors.highlight2,
         onTertiary: SioColors.highlight,
@@ -33,6 +34,8 @@ class DarkMode {
         surfaceVariant: SioColors.bottomTabBarStartColor,
         onSurfaceVariant: SioColors.bottomTabBarEndColor,
         surfaceTint: SioColors.secondary5,
+        tertiaryContainer: SioColors.backGradient3Start,
+        onTertiaryContainer: SioColors.backGradient3End,
       );
 
   static TextTheme get textTheme => TextTheme(

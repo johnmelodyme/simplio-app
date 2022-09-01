@@ -59,6 +59,8 @@ class Paddings {
       EdgeInsets.symmetric(horizontal: Dimensions.padding8);
   static const EdgeInsetsGeometry horizontal10 =
       EdgeInsets.symmetric(horizontal: Dimensions.padding10);
+  static const EdgeInsetsGeometry horizontal16 =
+      EdgeInsets.symmetric(horizontal: Dimensions.padding16);
   static const EdgeInsetsGeometry horizontal20 =
       EdgeInsets.symmetric(horizontal: Dimensions.padding20);
   static const EdgeInsetsGeometry horizontal32 =
@@ -88,15 +90,12 @@ class Paddings {
 }
 
 class Dimensions {
+  static const double padding4 = 4;
   static const double padding5 = 5;
-
   static const double padding8 = 8;
-
   static const double padding10 = 10;
-
-  static const double padding20 = 20;
-
   static const double padding16 = 16;
+  static const double padding20 = 20;
   static const double padding32 = 32;
   static const double padding48 = 48;
 }

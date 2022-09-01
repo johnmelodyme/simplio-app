@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 
 class SioAppBar extends StatelessWidget {
   const SioAppBar({
@@ -56,40 +57,12 @@ class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .inverseSurface
-                            .withOpacity(0.35),
-                        spreadRadius: 5,
-                        blurRadius: 20,
-                        offset: const Offset(1, 1),
-                      ),
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .inverseSurface
-                            .withOpacity(0.2),
-                        spreadRadius: 1,
-                        blurRadius: 3,
-                        offset: const Offset(0, 0),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                AvatarWithShadov(
                     child: Image.asset(
-                      'assets/icon/profile_avatar_pic.png',
-                      width: 40,
-                      height: 40,
-                    ),
-                  ),
-                ),
+                  'assets/icon/profile_avatar_pic.png',
+                  width: 40,
+                  height: 40,
+                )),
                 const Gap(Dimensions.padding10),
                 Expanded(
                   child: Column(

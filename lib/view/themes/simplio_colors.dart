@@ -12,6 +12,7 @@ abstract class SioColors {
   static const secondary1 = Color(0xFF3A4045);
   static const secondary5 = Color(0xFF43738F);
   static const secondary6 = Color(0xFF5387A6);
+  static const secondary7 = Color(0xFF8BB3CC);
 
   static const attention = Color(0xFFEE3E3E);
   static const confirm = Color(0xFF3AF859);
@@ -30,4 +31,7 @@ abstract class SioColors {
 
   static const bottomTabBarStartColor = Color(0xFF172739);
   static const bottomTabBarEndColor = Color(0xFF091119);
+
+  static const backGradient3Start = Color(0xFF082D42);
+  static const backGradient3End = Color(0xFF0C4261);
 }

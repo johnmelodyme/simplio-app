@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/asset_wallet_item.dart';
+import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
 
 class AssetWalletExpansionList extends StatelessWidget {
   final List<AssetWallet> children;
@@ -15,38 +17,57 @@ class AssetWalletExpansionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionPanelList.radio(
-      elevation: 0,
+    return SioExpansionRadioPanel(
+      animationDuration: const Duration(milliseconds: 500),
+      dividerColor: Theme.of(context).colorScheme.background,
       children: children.map(
         (a) {
           final asset = Assets.getAssetDetail(a.assetId);
+
           return ExpansionPanelRadio(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             value: UniqueKey(),
+            backgroundColor: Theme.of(context).colorScheme.background,
             canTapOnHeader: true,
             headerBuilder: (context, isExpanded) {
               return Padding(
-                padding: CommonTheme.verticalPadding,
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: asset.style.primaryColor,
-                  ),
-                  title: Text(asset.name),
+                padding: const EdgeInsets.only(
+                  top: Dimensions.padding10,
+                  left: Dimensions.padding16,
+                  right: Dimensions.padding16,
+                ),
+                child: AssetWalletItem(
+                  title: asset.name,
+                  price: '220.8',
+                  volume: '\$24.70',
+                  backgroundAvatarColor: asset.style.primaryColor,
+                  assetType: AssetType.wallet,
                 ),
               );
             },
             body: Column(
               children: a.wallets.map((n) {
                 final network = Assets.getNetworkDetail(n.networkId);
-                return ListTile(
-                  title: Text(network.name),
-                  subtitle: Text(network.ticker),
-                  onTap: () => GoRouter.of(context).goNamed(
-                    AuthenticatedRouter.assetReceive,
-                    params: {
+                return InkWell(
+                  onTap: () {
+                    GoRouter.of(context)
+                        .goNamed(AuthenticatedRouter.assetReceive, params: {
                       'assetId': a.assetId.toString(),
                       'networkId': n.networkId.toString(),
-                    },
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: Dimensions.padding4,
+                        left: Dimensions.padding16,
+                        right: Dimensions.padding16),
+                    child: AssetWalletItem(
+                      title: network.name,
+                      price: '220.8',
+                      volume: '\$24.70',
+                      subTitle: network.ticker,
+                      backgroundAvatarColor: asset.style.primaryColor,
+                      assetType: AssetType.network,
+                    ),
                   ),
                 );
               }).toList(),
