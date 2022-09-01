@@ -90,15 +90,12 @@ class Paddings {
 }
 
 class Dimensions {
-  static const double padding5 = 5;
-
-  static const double padding10 = 10;
-
-  static const double padding20 = 20;
-
   static const double padding4 = 4;
+  static const double padding5 = 5;
   static const double padding8 = 8;
+  static const double padding10 = 10;
   static const double padding16 = 16;
+  static const double padding20 = 20;
   static const double padding32 = 32;
   static const double padding48 = 48;
 }
