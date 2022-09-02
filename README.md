@@ -1,24 +1,27 @@
-# Simplio Wallet v2
+![Open Source at Simplio](https://raw.githubusercontent.com/SimplioOfficial/.github/master/github-logo-chest.png) 
 
-Mobile application written in Flutter.
+## Getting started
 
-## Running application
+Simplio is a friendly multichain mobile app that lets players instantly start playing Web3 games, purchase tokens & NFT’s for FIAT and provide easy swaps among gaming assets & blockchains.
 
-The easiest way is to run it with `run.sh` script. In order to do that you need to define
-API_KEY and API_URL in your `.bashrc` or `.zshrc` file. See `run.sh` for details.
+## Questions
 
-## Developing guidelines
+For questions and support please use the official community chat. The issue list of this repo is exclusively for bug reports and feature requests.
 
-* Use autoformatting tools. See `pre-commit` file in `.github` folder and copy it into your 
-`.git/hooks` folder.
+## Stay in touch
 
-## Generating code
+If you're looking to get involved just check these links below:
 
-```bash
-flutter packages pub run build_runner build
-```
+* [Join our Community](https://discord.com/invite/aKhjuwZmdP)
+* [Join our Telegram group](https://t.me/simplioofficial)
+* [Follow us on Twitter](https://twitter.com/simplioofficial)
+* [Send us Email](mailto://support@simplio.io)
+* [Visit Web](https://simplio.io)
 
-## Available parameters
-* --dart-define=API_URL=PLACEHOLDER_URL
-* --dart-define=API_KEY=PLACEHOLDER_KEY
-* --dart-define=TEST_RUN=true / false
+## Project integration
+
+If you are looking for project integration, please apply [here](https://simplio.io/apply) .
+
+## License
+
+Simplio is under MIT license. See the [LICENSE](LICENSE) file for more info.
