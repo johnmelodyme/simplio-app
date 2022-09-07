@@ -16,6 +16,7 @@ import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
 import 'package:simplio_app/data/providers/wallet_db_provider.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
+import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
@@ -44,6 +45,7 @@ class _SimplioAppState extends State<SimplioApp> {
   late AccountRepository accountRepository;
   late WalletRepository walletRepository;
   late AssetRepository assetRepository;
+  late FeeRepository feeRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +64,7 @@ class _SimplioAppState extends State<SimplioApp> {
         RepositoryProvider.value(value: accountRepository),
         RepositoryProvider.value(value: walletRepository),
         RepositoryProvider.value(value: assetRepository),
+        RepositoryProvider.value(value: feeRepository),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc.builder(
@@ -120,6 +123,9 @@ class _SimplioAppState extends State<SimplioApp> {
       broadcastService: securedApi.service<BroadcastService>(),
     );
     assetRepository = AssetRepository.builder(
+      assetService: securedApi.service<AssetService>(),
+    );
+    feeRepository = FeeRepository.builder(
       assetService: securedApi.service<AssetService>(),
     );
   }

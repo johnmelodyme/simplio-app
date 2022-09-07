@@ -41,7 +41,7 @@ class CryptoAssetResponse {
   final String regularFee;
   final String highFee;
   final String gasLimit;
-  final String? feeUnit;
+  final String feeUnit;
   final int decimalPlaces;
   final String? contractAddress;
   final bool isActive;
@@ -56,7 +56,7 @@ class CryptoAssetResponse {
     required this.regularFee,
     required this.highFee,
     required this.gasLimit,
-    this.feeUnit,
+    required this.feeUnit,
     required this.decimalPlaces,
     this.contractAddress,
     required this.isActive,
