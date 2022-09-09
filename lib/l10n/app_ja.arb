@@ -3,6 +3,15 @@
     "@simplioTitle": {
       "description": "Simplio name"
     },
+
+    "common_period_section": "{periodType, select, week{あなた自} month{車両あなた自} months3{両あなた自身} months6{あなた自身} year{たは財布を持っ}}",
+    "@common_period_section": {
+      "description": "Period type",
+      "placeholders": {
+        "periodType": {}
+      }
+    },
+    
     "noWalletsLabel": "あなたは財布を持っていません",
     "gamesLabel": "ゲーム",
     "welcomeLabel": "アカウ へようこそ",
@@ -22,6 +31,8 @@
     "inventory_tab_coins": "車両あ",
     "inventory_tab_nft": "車両あ",
     "inventory_tab_transactions": "両あなた自身",
+
+    "Y": "あなたは財布を",
 
     "loginScreenTitle": "車両あなた自身 車両",
     "loginScreenSubTitle": "あなたは財布を持っていません",

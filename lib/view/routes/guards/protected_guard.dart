@@ -36,7 +36,7 @@ class _ProtectedGuardState extends State<ProtectedGuard> {
 
     if (s is! AccountProvided) {
       widget.onPrevent(context);
-      return Container();
+      return const SizedBox.shrink();
     }
 
     bool shouldProtect = widget.protectWhen?.call(s) ?? true;

@@ -74,6 +74,8 @@ class Paddings {
       EdgeInsets.symmetric(vertical: Dimensions.padding8);
   static const EdgeInsetsGeometry vertical10 =
       EdgeInsets.symmetric(vertical: Dimensions.padding10);
+  static const EdgeInsetsGeometry vertical16 =
+      EdgeInsets.symmetric(vertical: Dimensions.padding16);
   static const EdgeInsetsGeometry vertical20 =
       EdgeInsets.symmetric(vertical: Dimensions.padding20);
   static const EdgeInsetsGeometry vertical32 =

@@ -9,6 +9,7 @@ import 'package:simplio_app/view/widgets/navigation_bar_tab_item.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/search_bar_sliver.dart';
 import 'package:simplio_app/view/widgets/sio_app_bar.dart';
+import 'package:simplio_app/view/widgets/total_balance.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({
@@ -24,6 +25,7 @@ class InventoryScreen extends StatelessWidget {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         return NestedScrollView(
+          physics: const BouncingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               const SioAppBar(
@@ -38,7 +40,11 @@ class InventoryScreen extends StatelessWidget {
                   label: context.locale.inventory_tab_coins,
                   iconData: Icons.pie_chart_outline,
                   iconColor: Theme.of(context).colorScheme.surface,
-                  pageSlivers: [
+                  topSlivers: [
+                    const TotalBalance(balance: 2402.7),
+                    const SliverGap(Dimensions.padding10),
+                  ],
+                  bottomSlivers: [
                     const SliverGap(Dimensions.padding10),
                     const SearchBarSliver(),
                     const InventoryCoinsContent(),
@@ -47,7 +53,7 @@ class InventoryScreen extends StatelessWidget {
                   label: context.locale.inventory_tab_nft,
                   iconData: Icons.pie_chart_outline,
                   iconColor: Theme.of(context).colorScheme.onSurface,
-                  pageSlivers: [
+                  bottomSlivers: [
                     const SliverToBoxAdapter(child: Text('NFT content')),
                     const SliverToBoxAdapter(
                         child: SizedBox(
@@ -61,7 +67,7 @@ class InventoryScreen extends StatelessWidget {
                   ]),
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_transactions,
-                  pageSlivers: [
+                  bottomSlivers: [
                     const SliverToBoxAdapter(child: Text('Invetory content')),
                     const SliverToBoxAdapter(
                         child: SizedBox(

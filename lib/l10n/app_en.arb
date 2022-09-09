@@ -3,6 +3,15 @@
     "@simplioTitle": {
       "description": "Simplio name"
     },
+
+    "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
+    "@common_period_section": {
+      "description": "Period type",
+      "placeholders": {
+        "periodType": {}
+      }
+    },
+
     "noWalletsLabel": "You have no wallet",
     "gamesLabel": "My Games",
     "welcomeLabel": "Welcome to Simplio",
@@ -22,6 +31,8 @@
     "inventory_tab_coins": "Coins",
     "inventory_tab_nft": "NFT",
     "inventory_tab_transactions": "Transacions",
+
+    "inventory_screen_inventory_balance": "Inventory balance",
     
     "loginScreenTitle": "Enter Simplio.",
     "loginScreenSubTitle": "It's good to see you back.",

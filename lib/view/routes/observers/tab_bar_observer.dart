@@ -24,6 +24,8 @@ class TabBarObserver extends NavigatorObserver {
   }
 
   void _handleArguments(Object? args) {
+    if (args == null) return;
+
     if (args is ApplicationSettings) {
       _setTabBarVisibility(args.tabBar);
     } else {

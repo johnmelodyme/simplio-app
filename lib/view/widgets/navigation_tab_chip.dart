@@ -33,20 +33,23 @@ class NavigationTabChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: 2,
         ),
-        decoration: isSelected
-            ? BoxDecoration(
-                gradient: LinearGradient(
+        decoration: BoxDecoration(
+          gradient: isSelected
+              ? LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
                     Theme.of(context).colorScheme.secondary,
                     Theme.of(context).colorScheme.tertiary,
                   ],
-                ),
-                borderRadius: const BorderRadius.all(
-                    Radius.circular(RadiusSize.radius64)),
-              )
-            : null,
+                )
+              : null,
+          borderRadius:
+              const BorderRadius.all(Radius.circular(RadiusSize.radius64)),
+          color: isSelected
+              ? null
+              : Theme.of(context).colorScheme.onPrimaryContainer,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

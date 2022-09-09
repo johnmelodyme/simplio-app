@@ -10,13 +10,15 @@ class DiscoveryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: [
-      const SioAppBar(
-        title: 'Nick name',
-        subtitle: 'User Level 1',
-      ),
-      SliverToBoxAdapter(
-        child: Container(
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        const SioAppBar(
+          title: 'Nick name',
+          subtitle: 'User Level 1',
+        ),
+        SliverToBoxAdapter(
+          child: Container(
             height: 600,
             padding: const EdgeInsets.all(
               Dimensions.padding20,
@@ -68,8 +70,10 @@ class DiscoveryScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            )),
-      )
-    ]);
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

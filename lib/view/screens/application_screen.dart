@@ -97,7 +97,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                         ],
                         height: 70.0,
                       ))
-                  : Container();
+                  : const SizedBox.shrink();
             },
           ),
         ],

@@ -25,8 +25,6 @@ class NavigationTabBar extends StatefulWidget {
 class _NavigationTabBarState extends State<NavigationTabBar> {
   int currentTab = 0;
 
-  // There is the following issue which made me to implement resetting the scroll position to 0.
-  // https://github.com/flutter/flutter/issues/53040
   final scrollController = ScrollController();
 
   void onTabTap(tabIndex) {
@@ -55,9 +53,10 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
       controller: scrollController,
       slivers: [
         SliverGap(widget.topGap),
+        if (widget.tabs[currentTab].topSlivers?.isNotEmpty == true)
+          ...widget.tabs[currentTab].topSlivers!,
         SliverPadding(
           padding: const EdgeInsets.only(
-            top: Dimensions.padding10,
             left: Dimensions.padding20,
             right: Dimensions.padding20,
           ),
@@ -68,7 +67,7 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
                   child: Container(
                     height: Constants.navigationTabBarHeight,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                       borderRadius: const BorderRadius.all(
                         Radius.circular(RadiusSize.radius64),
                       ),
@@ -97,7 +96,7 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
                     ),
                   ))),
         ),
-        ...widget.tabs[currentTab].pageSlivers,
+        ...widget.tabs[currentTab].bottomSlivers,
         SliverGap(bottomGap)
       ],
     );

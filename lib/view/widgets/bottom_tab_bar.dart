@@ -69,7 +69,7 @@ class BottomTabBar extends StatelessWidget {
                               return Expanded(
                                 key: UniqueKey(),
                                 flex: 1,
-                                child: Container(),
+                                child: const SizedBox.shrink(),
                               );
                             }
 
