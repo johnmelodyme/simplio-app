@@ -5,11 +5,11 @@ abstract class SioColors {
   static const transparent = Color(0x00000000);
 
   static const black = Color(0xFF292E32);
-  static const background = Color(0xFF1D2225);
   static const backGradient4Start = Color(0xFF062333);
-  static const backGradient4End = Color(0xFF031017);
+  static const background = Color(0xFF031017);
   static const secondary0 = Color(0xFF343A3F);
   static const secondary1 = Color(0xFF3A4045);
+  static const secondary4 = Color(0xFF194963);
   static const secondary5 = Color(0xFF43738F);
   static const secondary6 = Color(0xFF5387A6);
   static const secondary7 = Color(0xFF8BB3CC);

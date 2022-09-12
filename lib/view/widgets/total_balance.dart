@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:simplio_app/extensions/number_extensions.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
@@ -57,7 +57,7 @@ class _TotalBalanceState extends State<TotalBalance> {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: Paddings.horizontal20,
+      padding: Paddings.horizontal16,
       sliver: SliverToBoxAdapter(
         child: Container(
             decoration: BoxDecoration(
@@ -69,7 +69,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                     end: Alignment.bottomCenter,
                     colors: [
                       Theme.of(context).colorScheme.onPrimaryContainer,
-                      Theme.of(context).colorScheme.secondaryContainer
+                      Theme.of(context).colorScheme.background
                     ])),
             child: Padding(
               padding: Paddings.vertical16,
@@ -98,7 +98,8 @@ class _TotalBalanceState extends State<TotalBalance> {
                 const Gap(Dimensions.padding5),
                 Text(
                   widget.balance.getThousandValueWithCurrency(),
-                  style: SioTextStyles.h1,
+                  style: SioTextStyles.h1.apply(
+                      color: Theme.of(context).colorScheme.inverseSurface),
                 ),
                 const Gap(Dimensions.padding5),
                 SizedBox(
@@ -134,12 +135,12 @@ class _TotalBalanceState extends State<TotalBalance> {
                                       style: SioTextStyles.bodyM.apply(
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .inverseSurface,
+                                            .onPrimary,
                                       )),
                                   Icon(Icons.expand_more,
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .inverseSurface)
+                                          .onPrimary)
                                 ],
                               ),
                             );

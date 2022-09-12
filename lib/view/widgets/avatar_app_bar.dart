@@ -8,43 +8,17 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 
-class SioAppBar extends StatelessWidget {
-  const SioAppBar({
+class AvatarAppBar extends StatelessWidget {
+  const AvatarAppBar({
     super.key,
     required this.title,
     this.subtitle,
-    this.height = Constants.appBarHeight,
   });
 
   final String title;
   final String? subtitle;
-  final double height;
-
   @override
   Widget build(BuildContext context) {
-    return SliverPersistentHeader(
-        pinned: true,
-        delegate: SioAppBarDelegate(
-          title: title,
-          subtitle: subtitle,
-          height: height + MediaQuery.of(context).viewPadding.top,
-        ));
-  }
-}
-
-class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
-  SioAppBarDelegate({
-    required this.title,
-    this.subtitle,
-    required this.height,
-  });
-  final String title;
-  final String? subtitle;
-  final double height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return ClipRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
@@ -112,14 +86,4 @@ class SioAppBarDelegate extends SliverPersistentHeaderDelegate {
       ),
     );
   }
-
-  @override
-  double get maxExtent => height;
-
-  @override
-  double get minExtent => height;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
-import 'package:simplio_app/view/themes/simplio_colors.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class DarkMode {
   DarkMode._();
@@ -17,10 +17,10 @@ class DarkMode {
         onPrimary: SioColors.white,
         primaryContainer: SioColors.secondary1,
         onPrimaryContainer: SioColors.backGradient4Start,
-        secondaryContainer: SioColors.backGradient4End,
         secondary: SioColors.highlight1,
         onSecondary: SioColors.black,
         shadow: SioColors.secondary7,
+        outline: SioColors.secondary4,
         onSecondaryContainer: SioColors.secondary6,
         tertiary: SioColors.highlight2,
         onTertiary: SioColors.highlight,

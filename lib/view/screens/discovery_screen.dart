@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/sio_app_bar.dart';
+import 'package:simplio_app/view/widgets/avatar_app_bar.dart';
+import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 
 class DiscoveryScreen extends StatelessWidget {
   const DiscoveryScreen({super.key});
@@ -13,9 +14,16 @@ class DiscoveryScreen extends StatelessWidget {
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
-        const SioAppBar(
-          title: 'Nick name',
-          subtitle: 'User Level 1',
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: FixedHeightItemDelegate(
+            fixedHeight:
+                Constants.appBarHeight + MediaQuery.of(context).viewPadding.top,
+            child: const AvatarAppBar(
+              title: 'Nick name',
+              subtitle: 'User Level 1',
+            ),
+          ),
         ),
         SliverToBoxAdapter(
           child: Container(

@@ -8,6 +8,7 @@ analyzer:
 linter:
   rules:
     always_use_package_imports: true
+    avoid_renaming_method_parameters: false
     always_declare_return_types: true
     sized_box_for_whitespace: true
     avoid_multiple_declarations_per_line: true

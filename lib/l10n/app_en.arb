@@ -33,7 +33,10 @@
     "inventory_tab_transactions": "Transacions",
 
     "inventory_screen_inventory_balance": "Inventory balance",
-    
+    "inventory_screen_seach_and_add_coins": "Search & add Coins",
+    "inventory_screen_seach_nft": "Search NFT",
+    "inventory_screen_seach_transactions": "Search Transactions",
+
     "loginScreenTitle": "Enter Simplio.",
     "loginScreenSubTitle": "It's good to see you back.",
     "usernameInputLabel":"Username",
@@ -57,7 +60,7 @@
     "createNewAccountTitle":"Create a new account",
     "createAccountBtnLabel":"Create account",
 
-    "searchAllAssetsInputLabel": "Search all assets",
+    
     "noWalletsLabel": "You have no wallet",
     "forgotPasswordLabel": "Forgot password",
 

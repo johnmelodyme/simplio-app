@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
@@ -10,9 +9,6 @@ class SearchBarDelegate extends SearchDelegate<String> {
   final BuildContext context;
 
   SearchBarDelegate.of(this.context) : super();
-
-  @override
-  String? get searchFieldLabel => context.locale.searchAllAssetsInputLabel;
 
   @override
   List<Widget>? buildActions(BuildContext context) => [];

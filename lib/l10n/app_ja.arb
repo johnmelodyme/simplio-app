@@ -32,6 +32,11 @@
     "inventory_tab_nft": "車両あ",
     "inventory_tab_transactions": "両あなた自身",
 
+    "inventory_screen_inventory_balance": "両あなた自身",
+    "inventory_screen_seach_and_add_coins": "なたは財布を持っ",
+    "inventory_screen_seach_nft": "なたは財布を持っ",
+    "inventory_screen_seach_transactions": "なたは財布を持っ",
+
     "Y": "あなたは財布を",
 
     "loginScreenTitle": "車両あなた自身 車両",
@@ -57,7 +62,6 @@
     "emailValidationError":"なたは財布を持ってなたは財布を持",
     "passwordValidationError":"りて替えて あな",
 
-    "searchAllAssetsInputLabel": "カウントを持ってい",
     "noWalletsLabel": "ゲー たは財",
     "forgotPasswordLabel": "て替えて あなて",
 

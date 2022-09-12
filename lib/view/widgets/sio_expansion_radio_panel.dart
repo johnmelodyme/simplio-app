@@ -96,7 +96,7 @@ class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
       items.add(
         MaterialSlice(
           key: _SaltedKey<BuildContext, int>(context, index * 2),
-          color: child.backgroundColor,
+          color: Colors.transparent,
           child: Column(
             children: <Widget>[
               header,
@@ -120,7 +120,7 @@ class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
     }
 
     return MergeableMaterial(
-      hasDividers: true,
+      hasDividers: false,
       dividerColor: widget.dividerColor,
       elevation: widget.elevation,
       children: items,

@@ -103,6 +103,7 @@ class Dimensions {
 }
 
 class RadiusSize {
+  static const double radius10 = 10;
   static const double radius20 = 20;
   static const double radius50 = 50;
   static const double radius64 = 64;

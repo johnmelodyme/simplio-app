@@ -1,48 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
-import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/appbar_search.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
-import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 
-class SearchBarSliver extends StatefulWidget {
-  const SearchBarSliver({Key? key}) : super(key: key);
-
-  @override
-  State<SearchBarSliver> createState() => _SearchBarSliverState();
-}
-
-class _SearchBarSliverState extends State<SearchBarSliver> {
-  @override
-  Widget build(BuildContext context) {
-    return SliverPadding(
-        padding: const EdgeInsets.only(
-          left: Dimensions.padding20,
-          right: Dimensions.padding20,
-        ),
-        sliver: SliverPersistentHeader(
-            floating: true,
-            delegate: FixedHeightItemDelegate(
-              fixedHeight: Constants.searchBarHeight,
-              child: AppBarSearch<String>(
-                delegate: _AssetSearchDelegate.of(context),
-                label: context.locale.searchAllAssetsInputLabel,
-              ),
-            )));
-  }
-}
-
-class _AssetSearchDelegate extends SearchDelegate<String> {
+class AssetSearchDelegate extends SearchDelegate<String> {
   final BuildContext context;
 
-  _AssetSearchDelegate.of(this.context) : super();
-
-  @override
-  String? get searchFieldLabel => context.locale.searchAllAssetsInputLabel;
+  AssetSearchDelegate.of(this.context) : super();
 
   @override
   List<Widget>? buildActions(_) => [];

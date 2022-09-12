@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/view/themes/simplio_colors.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class SioTextStyles {
   static const TextStyle genericTextStyle = TextStyle(color: SioColors.white);
