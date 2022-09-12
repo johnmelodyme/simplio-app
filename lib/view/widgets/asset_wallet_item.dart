@@ -8,7 +8,7 @@ class AssetWalletItem extends StatelessWidget {
   const AssetWalletItem({
     required this.title,
     required this.volume,
-    required this.price,
+    required this.balance,
     this.subTitle,
     required this.backgroundAvatarColor,
     required this.assetType,
@@ -17,7 +17,7 @@ class AssetWalletItem extends StatelessWidget {
 
   final String title;
   final String volume;
-  final String price;
+  final String balance;
   final String? subTitle;
   final Color backgroundAvatarColor;
   final AssetType assetType;
@@ -86,7 +86,7 @@ class AssetWalletItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  price,
+                  balance,
                   style: SioTextStyles.bodyS
                       .apply(color: Theme.of(context).colorScheme.onPrimary),
                 ),

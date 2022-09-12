@@ -26,7 +26,7 @@ class _InventoryCoinsContentState extends State<InventoryCoinsContent> {
               ))
             : SliverToBoxAdapter(
                 child: AssetWalletExpansionList(
-                children: state.wallet.wallets,
+                assetWallets: state.wallet.wallets,
               ));
       },
     );
