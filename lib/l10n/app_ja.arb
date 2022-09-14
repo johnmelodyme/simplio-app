@@ -4,9 +4,20 @@
       "description": "Simplio name"
     },
 
-    "common_user_level": "車両あ なた自",
-    "common_retry": "車両あなた自",
-    "common_period_section": "{periodType, select, week{あなた自} month{車両あなた自} months3{両あなた自身} months6{あなた自身} year{たは財布を持っ}}",
+  "common_user_level": "車両あなた自",
+  "common_email":"える",
+  "common_retry": "車両あなた自",
+  "common_password_input_label": "ていません",
+  "common_sign_in_button_label": "ンプル",
+  "common_password_rule_AtLeast8Chars":"切りて替えて あなて",
+  "common_password_rule_special_char":"は財布を持",
+  "common_password_rule_num_char":"両あな",
+  "common_password_rule_upper_char":"両あな 両あな",
+  "common_submit_btn_label":"りて替",
+  "common_email_validation_error":"なたは財布を持ってなたは財布を持",
+  "common_password_validation_error":"りて替えて あな",
+
+  "common_period_section": "{periodType, select, week{あなた自} month{車両あなた自} months3{両あなた自身} months6{あなた自身} year{たは財布を持っ}}",
     "@common_period_section": {
       "description": "Period type",
       "placeholders": {
@@ -22,77 +33,59 @@
       }
     },
     
-    "noWalletsLabel": "あなたは財布を持っていません",
-    "gamesLabel": "ゲーム",
-    "welcomeLabel": "アカウ へようこそ",
-    "enterApplicationLabel": "私はアカウントを持っています",
 
-    "switchLanguage": "言語を切り替える",
-    "switchThemeMode": "言語を切",
-    "logoutBtn": "ログアウト",
-    "loginBtn": "ログアウト",
-    "goToAppBtn":"両あなた自",
+    "configuration_screen_switch_language": "言語を切り替える",
+    "configuration_screen_switch_themeMode": "言語を切",
+    
+    "welcome_screen_go_to_app_btn":"両あなた自",
 
-    "homeTabBarLabel": "車両あなた自身",
-    "gamesTabBarLabel": "車両あなた自身",
-    "inventoryTabBarLabel": "車両あなた自身",
-    "findDappsTabBarLabel": "車両あなた自身",
-
-    "inventory_tab_coins": "車両あ",
-    "inventory_tab_nft": "車両あ",
-    "inventory_tab_transactions": "両あなた自身",
+    "application_screen_discovery_tabbar_label": "車両あなた自身",
+    "application_screen_games_tabbar_label": "車両あなた自身",
+    "application_screen_inventory_tabbar_label": "車両あなた自身",
+    "application_screen_find_dapps_tabbar_label": "車両あなた自身",
 
     "inventory_screen_inventory_balance": "両あなた自身",
     "inventory_screen_seach_and_add_coins": "なたは財布を持っ",
     "inventory_screen_seach_nft": "なたは財布を持っ",
     "inventory_screen_seach_transactions": "なたは財布を持っ",
-
     "inventory_screen_seach_transactions_no_items_found": "切りて替えて 切りて替えて",
+    "inventory_screen_no_wallets_label": "あなたは財布を持っていません",
 
-    "Y": "あなたは財布を",
+    "inventory_tab_coins": "車両あ",
+    "inventory_tab_nft": "車両あ",
+    "inventory_tab_transactions": "両あなた自身",
 
-    "loginScreenTitle": "車両あなた自身 車両",
-    "loginScreenSubTitle": "あなたは財布を持っていません",
-    "usernameInputLabel":"財布を持っ",
-    "passwordInputLabel":"ていません",
-    "email":"える",
-    "forgotPasswordButtonLabel":"た?な語",
-    "signingInLabel":"ウント",
-    "signInButtonLabel":"ンプル",
-    "orCreateAccountButtonLabel":"あなた自身",
+    "sign_in_screen_title": "車両あなた自身 車両",
+    "sign_in_screen_subtitle": "あなたは財布を持っていません",
+    "sign_in_screen_forgot_password_button_label":"た?な語",
+    "sign_in_screen_signing_in_label":"ウント",
+    "sign_in_screen_or_create_account_button_label":"あなた自身",
 
-    "createNewAccountTitle":"切りて替えて あなて",
-    "createAccountBtnLabel":"たは財布を持",
-    "passwordRuleAtLeast8Chars":"切りて替えて あなて",
-    "passwordRuleSpecialChar":"は財布を持",
-    "passwordRuleNumChar":"両あな",
-    "passwordRuleUpperChar":"両あな 両あな",
-    "newPasswordInputLabel":"あなた自身",
-    "oldPasswordInputLabel":"カウントを持って",
-    "submitBtnLabel":"りて替",
-    "changePasswordPageTitle":"なたは財布を持って",
-    "emailValidationError":"なたは財布を持ってなたは財布を持",
-    "passwordValidationError":"りて替えて あな",
+    "sign_up_screen_create_new_account_title":"切りて替えて あなて",
+    "sign_up_screen_create_account_btn_label":"たは財布を持",
+    
+    "password_change_screen_new_password_input_label":"あなた自身",
+    "password_change_screen_old_password_input_label":"カウントを持って",
+    "password_change_change_password_page_title":"なたは財布を持って",
 
-    "noWalletsLabel": "ゲー たは財",
-    "forgotPasswordLabel": "て替えて あなて",
+    "password_reset_screen_forgot_password_label": "て替えて あなて",
 
-    "accountCreationBeforePinSetup":"はい! \n は財布を持っ",
-    "setPinLabel":"あな 両ああな 両あ",
-    "protectedLabel": "あな 両ああな 両あ",
-    "protectedErrorRemaining": "ントを持っ ントを",
-    "protectedErrorLast": "りて替えて ありて替えて あ",
-    "accountCreatedLabel":"いません ませ",
-    "accountCreatedDescriptionLabel":"たは財布を持っ\nたは\nたは財布\nたは財布を持ったは財布を持っ",
-    "accountCreatedVerifyButton": "あな 両ああな 両あ",
-    "accountCreatedStartButton": "あな 両ああな 両あ",
+    "pin_setup_screen_account_creation_before_pin_setup":"はい! \n は財布を持っ",
+    "pin_setup_screen_set_pin_label":"あな 両ああな 両あ",
 
-    "receiveCoinsBtn": "ウントを",
-    "sendCoinsBtn": "な 両",
-    "network": "布を",
+    "protected_guard_enter_pin_code": "あな 両ああな 両あ",
+    "protected_guard_remaining_attempts": "ントを持っ ントを",
+    "protected_guard_last_chance": "りて替えて ありて替えて あ",
 
-    "asset_screens_address_copied": "っ\nたは\nたは財布\nたは",
+    "account_setup_success_screen_account_created_label":"いません ませ",
+    "account_setup_success_screen_account_created_description_label":"たは財布を持っ\nたは\nたは財布\nたは財布を持ったは財布を持っ",
+    "account_setup_success_screen_account_created_verify_button": "あな 両ああな 両あ",
+    "account_setup_success_screen_account_created_start_button": "あな 両ああな 両あ",
 
-    "qr_code_scanner_screen_connect": "は\nたは財布\n",
-    "qr_code_scanner_screen_wallet": "あな 両あ"
+    "asset_receive_screen_receive_coins_btn": "ウントを",
+    "asset_receive_screen_network": "布を",
+    "asset_send_screen_send_coins_btn": "な 両",
+
+    "qr_code_scanner_screen_connect_title": "は\nたは財布\n",
+    "qr_code_scanner_screen_wallet_title": "あな 両あ"
 }

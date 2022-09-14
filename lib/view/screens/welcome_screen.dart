@@ -68,7 +68,7 @@ class WelcomeScreen extends StatelessWidget {
                     width: double.infinity,
                     child: HighlightedElevatedButton(
                       onPressed: () => {},
-                      child: Text(context.locale.goToAppBtn),
+                      child: Text(context.locale.welcome_screen_go_to_app_btn),
                     ),
                   ),
                 ),
@@ -79,7 +79,7 @@ class WelcomeScreen extends StatelessWidget {
                       GoRouter.of(context)
                           .pushNamed(UnauthenticatedRouter.signIn);
                     },
-                    child: Text(context.locale.signInButtonLabel),
+                    child: Text(context.locale.common_sign_in_button_label),
                   ),
                 ),
               ],

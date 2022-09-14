@@ -27,11 +27,12 @@ class PinSetupScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   HeadlineText(
-                    context.locale.accountCreationBeforePinSetup,
+                    context.locale
+                        .pin_setup_screen_account_creation_before_pin_setup,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(context.locale.setPinLabel),
+                    child: Text(context.locale.pin_setup_screen_set_pin_label),
                   ),
                   BlocBuilder<PinSetupFormCubit, PinSetupFormState>(
                     builder: (context, state) {

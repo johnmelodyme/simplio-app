@@ -23,11 +23,12 @@ class AccountSetupSuccessScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    HeadlineText(context.locale.accountCreatedLabel),
+                    HeadlineText(context.locale
+                        .account_setup_success_screen_account_created_label),
                     Padding(
                       padding: CommonTheme.verticalPadding,
-                      child:
-                          Text(context.locale.accountCreatedDescriptionLabel),
+                      child: Text(context.locale
+                          .account_setup_success_screen_account_created_description_label),
                     ),
                   ],
                 ),
@@ -44,11 +45,13 @@ class AccountSetupSuccessScreen extends StatelessWidget {
                       GoRouter.of(context)
                           .goNamed(AuthenticatedRouter.discovery);
                     },
-                    child: Text(context.locale.accountCreatedStartButton),
+                    child: Text(context.locale
+                        .account_setup_success_screen_account_created_start_button),
                   ),
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text(context.locale.accountCreatedVerifyButton),
+                    child: Text(context.locale
+                        .account_setup_success_screen_account_created_verify_button),
                   ),
                 ],
               ),

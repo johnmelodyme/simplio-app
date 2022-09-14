@@ -25,7 +25,7 @@ class AssetSendScreen extends StatelessWidget with WalletUtilsMixin {
     return Scaffold(
       appBar: AppBar(
         title: HeadlineText(
-          '${context.locale.sendCoinsBtn} ${assetWallet.toString()}',
+          '${context.locale.asset_send_screen_send_coins_btn} ${assetWallet.toString()}',
           headlineSize: HeadlineSize.small,
         ),
         elevation: 0,
@@ -39,7 +39,7 @@ class AssetSendScreen extends StatelessWidget with WalletUtilsMixin {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () => {},
-                child: Text(context.locale.sendCoinsBtn),
+                child: Text(context.locale.asset_send_screen_send_coins_btn),
               ),
             ),
           ),

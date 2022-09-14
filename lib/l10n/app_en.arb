@@ -4,9 +4,20 @@
       "description": "Simplio name"
     },
 
-  "common_user_level": "User Level",  
+  "common_user_level": "User Level",
+  "common_email":"Email",
   "common_retry": "Retry",
-    "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
+  "common_password_input_label": "Password",
+  "common_sign_in_button_label": "Sign in",
+  "common_password_rule_atleast_8_chars":"Has at least 8 characters",
+  "common_password_rule_special_char":"Must include special character",
+  "common_password_rule_num_char":"Must include number",
+  "common_password_rule_upper_char":"Must include upper case character",
+  "common_submit_btn_label":"Submit",
+  "common_email_validation_error":"Please enter valid email address",
+  "common_password_validation_error":"Please enter valid password",
+
+  "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
       "description": "Period type",
       "placeholders": {
@@ -22,76 +33,58 @@
       }
     },
 
-    "noWalletsLabel": "You have no wallet",
-    "gamesLabel": "My Games",
-    "welcomeLabel": "Welcome to Simplio",
-    "enterApplicationLabel": "I have an account",
+    "configuration_screen_switch_language": "Switch language",
+    "configuration_screen_switch_themeMode": "Switch theme",
 
-    "switchLanguage": "Switch language",
-    "switchThemeMode": "Switch theme",
-    "logoutBtn": "Logout",
-    "loginBtn": "Login",
-    "goToAppBtn":"Go to app",
+    "welcome_screen_go_to_app_btn":"Go to app",
 
-    "discoveryTabBarLabel": "Discover",
-    "gamesTabBarLabel": "My Games",
-    "inventoryTabBarLabel": "Inventory",
-    "findDappsTabBarLabel": "Find Dapps",
-
-    "inventory_tab_coins": "Coins",
-    "inventory_tab_nft": "NFT",
-    "inventory_tab_transactions": "Transacions",
+    "application_screen_discovery_tabbar_label": "Discover",
+    "application_screen_games_tabbar_label": "My Games",
+    "application_screen_inventory_tabbar_label": "Inventory",
+    "application_screen_find_dapps_tabbar_label": "Find Dapps",
 
     "inventory_screen_inventory_balance": "Inventory balance",
     "inventory_screen_seach_and_add_coins": "Search & add Coins",
     "inventory_screen_seach_nft": "Search NFT",
     "inventory_screen_seach_transactions": "Search Transactions",
-
     "inventory_screen_seach_transactions_no_items_found": "You’ll see your transaction\nhistory here.",
+    "inventory_screen_no_wallets_label": "You have no wallet",
 
-    "loginScreenTitle": "Enter Simplio.",
-    "loginScreenSubTitle": "It's good to see you back.",
-    "usernameInputLabel":"Username",
-    "passwordInputLabel":"Password",
-    "email":"Email",
-    "forgotPasswordButtonLabel":"Forgot password?",
-    "signingInLabel":"Signing in...",
-    "signInButtonLabel":"Sign in",
-    "orCreateAccountButtonLabel":"or Create account",
-    "passwordRuleAtLeast8Chars":"Has at least 8 characters",
-    "passwordRuleSpecialChar":"Must include special character",
-    "passwordRuleNumChar":"Must include number",
-    "passwordRuleUpperChar":"Must include upper case character",
-    "newPasswordInputLabel":"New password",
-    "oldPasswordInputLabel":"Old password",
-    "submitBtnLabel":"Submit",
-    "changePasswordPageTitle":"Change password",
-    "emailValidationError":"Please enter valid email address",
-    "passwordValidationError":"Please enter valid password",
+    "inventory_tab_coins": "Coins",
+    "inventory_tab_nft": "NFT",
+    "inventory_tab_transactions": "Transacions",
 
-    "createNewAccountTitle":"Create a new account",
-    "createAccountBtnLabel":"Create account",
+    "sign_in_screen_title": "Enter Simplio.",
+    "sign_in_screen_subtitle": "It's good to see you back.",
+    "sign_in_screen_forgot_password_button_label":"Forgot password?",
+    "sign_in_screen_signing_in_label":"Signing in...",
+    "sign_in_screen_or_create_account_button_label":"or Create account",
 
+    "sign_up_screen_create_new_account_title":"Create a new account",
+    "sign_up_screen_create_account_btn_label":"Create account",
     
-    "noWalletsLabel": "You have no wallet",
-    "forgotPasswordLabel": "Forgot password",
+    "password_change_screen_new_password_input_label":"New password",
+    "password_change_screen_old_password_input_label":"Old password",
+    "password_change_change_password_page_title":"Change password",
+  
+    "password_reset_screen_forgot_password_label": "Forgot password",
 
-    "accountCreationBeforePinSetup":"Done! \n One last thing to do",
-    "setPinLabel":"Set your security code to keep your account secure",
-    "protectedLabel": "Enter your pin code.",
-    "protectedErrorRemaining": "You have remaining attempts:",
-    "protectedErrorLast": "This is your last chance",
-    "accountCreatedLabel":"Hurray! \n Your account have been created",
-    "accountCreatedDescriptionLabel":"Before you start, we suggest you\n verify your account due to the use\n of all functionalities and full\n security of your Simplio app.",
-    "accountCreatedVerifyButton": "Verify your account to get more",
-    "accountCreatedStartButton": "Start using app",
+    "pin_setup_screen_account_creation_before_pin_setup":"Done! \n One last thing to do",
+    "pin_setup_screen_set_pin_label":"Set your security code to keep your account secure",
 
-    "receiveCoinsBtn": "Receive",
-    "sendCoinsBtn": "Send",
-    "network": "network",
+    "protected_guard_enter_pin_code": "Enter your pin code.",
+    "protected_guard_remaining_attempts": "You have remaining attempts:",
+    "protected_guard_last_chance": "This is your last chance",
 
-    "asset_screens_address_copied": "Address copied!",
+    "account_setup_success_screen_account_created_label":"Hurray! \n Your account have been created",
+    "account_setup_success_screen_account_created_description_label":"Before you start, we suggest you\n verify your account due to the use\n of all functionalities and full\n security of your Simplio app.",
+    "account_setup_success_screen_account_created_verify_button": "Verify your account to get more",
+    "account_setup_success_screen_account_created_start_button": "Start using app",
 
-    "qr_code_scanner_screen_connect": "Connect",
-    "qr_code_scanner_screen_wallet": "wallet"
+    "asset_receive_screen_receive_coins_btn": "Receive",
+    "asset_receive_screen_network": "Network",
+    "asset_send_screen_send_coins_btn": "Send",
+
+    "qr_code_scanner_screen_connect_title": "Connect",
+    "qr_code_scanner_screen_wallet_title": "wallet"
 }

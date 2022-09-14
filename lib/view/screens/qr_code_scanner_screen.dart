@@ -40,8 +40,8 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
         child: Column(
           children: [
             ColorizedAppBar(
-              firstPart: context.locale.qr_code_scanner_screen_connect,
-              secondPart: context.locale.qr_code_scanner_screen_wallet,
+              firstPart: context.locale.qr_code_scanner_screen_connect_title,
+              secondPart: context.locale.qr_code_scanner_screen_wallet_title,
               actionType: ActionType.close,
               onBackTap: () => Navigator.pop(context),
             ),

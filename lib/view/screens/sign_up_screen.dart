@@ -45,7 +45,8 @@ class SignUpScreen extends StatelessWidget {
                   Padding(
                     padding: CommonTheme.paddingAll,
                     child: TextHeader(
-                      title: context.locale.createNewAccountTitle,
+                      title: context
+                          .locale.sign_up_screen_create_new_account_title,
                     ),
                   ),
                   Padding(
@@ -65,12 +66,12 @@ class SignUpScreen extends StatelessWidget {
                                   .login
                                   .emailValidator(
                                     email,
-                                    errorMessage:
-                                        context.locale.emailValidationError,
+                                    errorMessage: context
+                                        .locale.common_email_validation_error,
                                   ),
                               decoration: InputDecoration(
-                                labelText: context.locale.email,
-                                hintText: context.locale.email,
+                                labelText: context.locale.common_email,
+                                hintText: context.locale.common_email,
                               ),
                               onChanged: (String? email) {
                                 context
@@ -109,27 +110,31 @@ class SignUpScreen extends StatelessWidget {
                           PasswordRulesRow(
                               key: const Key(
                                   'sign-up-screen-length-password-rule'),
-                              text: context.locale.passwordRuleAtLeast8Chars,
+                              text: context
+                                  .locale.common_password_rule_atleast_8_chars,
                               passed: state.password.missingValue['length'] ??
                                   false),
                           PasswordRulesRow(
                               key: const Key(
                                   'sign-up-screen-number-password-rule'),
-                              text: context.locale.passwordRuleNumChar,
+                              text:
+                                  context.locale.common_password_rule_num_char,
                               passed:
                                   state.password.missingValue['numberChar'] ??
                                       false),
                           PasswordRulesRow(
                               key: const Key(
                                   'sign-up-screen-special-char-password-rule'),
-                              text: context.locale.passwordRuleSpecialChar,
+                              text: context
+                                  .locale.common_password_rule_special_char,
                               passed:
                                   state.password.missingValue['specialChar'] ??
                                       false),
                           PasswordRulesRow(
                               key: const Key(
                                   'sign-up-screen-upper-char-password-rule'),
-                              text: context.locale.passwordRuleUpperChar,
+                              text: context
+                                  .locale.common_password_rule_upper_char,
                               passed:
                                   state.password.missingValue['upperChar'] ??
                                       false),
@@ -156,7 +161,8 @@ class SignUpScreen extends StatelessWidget {
                                             .submitForm();
                                       },
                                       child: Text(
-                                        context.locale.createAccountBtnLabel,
+                                        context.locale
+                                            .sign_up_screen_create_account_btn_label,
                                       ),
                                     )
                                   : OutlinedButton(
@@ -165,7 +171,8 @@ class SignUpScreen extends StatelessWidget {
                                       ),
                                       onPressed: null,
                                       child: Text(
-                                        context.locale.createAccountBtnLabel,
+                                        context.locale
+                                            .sign_up_screen_create_account_btn_label,
                                       ),
                                     );
                             },

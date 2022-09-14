@@ -47,8 +47,8 @@ class SignInScreen extends StatelessWidget {
                   Padding(
                     padding: CommonTheme.horizontalPadding,
                     child: TextHeader(
-                      title: context.locale.loginScreenTitle,
-                      subtitle: context.locale.loginScreenSubTitle,
+                      title: context.locale.sign_in_screen_title,
+                      subtitle: context.locale.sign_in_screen_subtitle,
                     ),
                   ),
                   Padding(
@@ -68,12 +68,12 @@ class SignInScreen extends StatelessWidget {
                                   .login
                                   .emailValidator(
                                     email,
-                                    errorMessage:
-                                        context.locale.emailValidationError,
+                                    errorMessage: context
+                                        .locale.common_email_validation_error,
                                   ),
                               decoration: InputDecoration(
-                                labelText: context.locale.email,
-                                hintText: context.locale.email,
+                                labelText: context.locale.common_email,
+                                hintText: context.locale.common_email,
                               ),
                               onChanged: (String? email) {
                                 context
@@ -94,8 +94,8 @@ class SignInScreen extends StatelessWidget {
                                 .password
                                 .passwordValidator(
                                   pass,
-                                  errorMsg:
-                                      context.locale.passwordValidationError,
+                                  errorMsg: context
+                                      .locale.common_password_validation_error,
                                 ),
                             passwordComplexityCondition: (_) => context
                                 .read<SignInFormCubit>()
@@ -125,7 +125,8 @@ class SignInScreen extends StatelessWidget {
                       },
                       child: Text(
                         key: const Key('sign-in-screen-reset-password-button'),
-                        context.locale.forgotPasswordButtonLabel,
+                        context
+                            .locale.sign_in_screen_forgot_password_button_label,
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary),
                       ),
@@ -162,7 +163,8 @@ class SignInScreen extends StatelessWidget {
                                         Padding(
                                           padding: CommonTheme.paddingAll,
                                           child: Text(
-                                            context.locale.signingInLabel,
+                                            context.locale
+                                                .sign_in_screen_signing_in_label,
                                           ),
                                         )
                                       ],
@@ -179,7 +181,8 @@ class SignInScreen extends StatelessWidget {
                                         .submitForm();
                                   }
                                 },
-                                child: Text(context.locale.signInButtonLabel),
+                                child: Text(
+                                    context.locale.common_sign_in_button_label),
                               );
                             },
                           ),
@@ -190,7 +193,8 @@ class SignInScreen extends StatelessWidget {
                             child: Text(
                               key: const Key(
                                   'sign-in-screen-create-account-button'),
-                              context.locale.orCreateAccountButtonLabel,
+                              context.locale
+                                  .sign_in_screen_or_create_account_button_label,
                               style: TextStyle(
                                   color:
                                       Theme.of(context).colorScheme.secondary),

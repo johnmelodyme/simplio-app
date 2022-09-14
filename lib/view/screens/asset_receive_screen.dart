@@ -2,6 +2,7 @@ import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
@@ -9,7 +10,6 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/widgets/headline_text.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
   final String? assetId;
@@ -48,7 +48,7 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
         return Scaffold(
           appBar: AppBar(
             title: HeadlineText(
-              '${context.locale.receiveCoinsBtn} ${assetDetail.name}',
+              '${context.locale.asset_receive_screen_receive_coins_btn} ${assetDetail.name}',
               headlineSize: HeadlineSize.small,
             ),
             elevation: 0,
@@ -60,7 +60,7 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                   Padding(
                     padding: CommonTheme.bottomPadding,
                     child: Text(
-                      '(${networkDetail.name} ${context.locale.network})',
+                      '(${networkDetail.name} ${context.locale.asset_receive_screen_network})',
                       textAlign: TextAlign.center,
                     ),
                   ),

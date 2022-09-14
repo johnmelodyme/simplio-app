@@ -54,7 +54,8 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               selectedColor:
                                   Theme.of(context).colorScheme.inverseSurface,
                               icon: Icons.assistant_navigation,
-                              label: context.locale.discoveryTabBarLabel,
+                              label: context.locale
+                                  .application_screen_discovery_tabbar_label,
                               onTap: (context, key) {
                                 GoRouter.of(context)
                                     .goNamed(AuthenticatedRouter.discovery);
@@ -65,7 +66,8 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               selectedColor:
                                   Theme.of(context).colorScheme.onBackground,
                               icon: Icons.sports_esports_outlined,
-                              label: context.locale.gamesTabBarLabel,
+                              label: context
+                                  .locale.application_screen_games_tabbar_label,
                               onTap: (context, key) {
                                 GoRouter.of(context)
                                     .goNamed(AuthenticatedRouter.games);
@@ -77,7 +79,8 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               selectedColor:
                                   Theme.of(context).colorScheme.surface,
                               icon: Icons.pie_chart_outline,
-                              label: context.locale.inventoryTabBarLabel,
+                              label: context.locale
+                                  .application_screen_inventory_tabbar_label,
                               onTap: (context, key) {
                                 GoRouter.of(context)
                                     .goNamed(AuthenticatedRouter.inventory);
@@ -89,7 +92,8 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               selectedColor:
                                   Theme.of(context).colorScheme.surface,
                               icon: Icons.language,
-                              label: context.locale.findDappsTabBarLabel,
+                              label: context.locale
+                                  .application_screen_find_dapps_tabbar_label,
                               onTap: (context, key) {
                                 GoRouter.of(context)
                                     .goNamed(AuthenticatedRouter.findDapps);

@@ -27,7 +27,7 @@ class ConfigurationScreen extends StatelessWidget {
                       : ThemeMode.dark);
                 }
               },
-              child: Text(context.locale.switchThemeMode),
+              child: Text(context.locale.configuration_screen_switch_themeMode),
             ),
             ElevatedButton(
               onPressed: () {
@@ -35,7 +35,7 @@ class ConfigurationScreen extends StatelessWidget {
                     .firstWhere((e) => e != context.locale.localeName);
                 context.read<AccountCubit>().updateLanguage(languageCode);
               },
-              child: Text(context.locale.switchLanguage),
+              child: Text(context.locale.configuration_screen_switch_language),
             ),
             ElevatedButton(
               child: const Text('Change password'),

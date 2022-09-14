@@ -26,7 +26,9 @@ class PasswordResetScreen extends StatelessWidget {
                 padding: CommonTheme.paddingAll,
                 child: Column(
                   children: [
-                    TextHeader(title: context.locale.forgotPasswordLabel),
+                    TextHeader(
+                        title: context.locale
+                            .password_reset_screen_forgot_password_label),
                     Form(
                       key: formKey,
                       child: ThemedTextFormFiled(
@@ -38,11 +40,12 @@ class PasswordResetScreen extends StatelessWidget {
                             .email
                             .emailValidator(
                               email,
-                              errorMessage: context.locale.emailValidationError,
+                              errorMessage:
+                                  context.locale.common_email_validation_error,
                             ),
                         decoration: InputDecoration(
-                          labelText: context.locale.email,
-                          hintText: context.locale.email,
+                          labelText: context.locale.common_email,
+                          hintText: context.locale.common_email,
                         ),
                         onChanged: (String? email) {
                           context
@@ -66,7 +69,7 @@ class PasswordResetScreen extends StatelessWidget {
                       context.read<PasswordResetFormCubit>().submitForm();
                     }
                   },
-                  child: Text(context.locale.submitBtnLabel),
+                  child: Text(context.locale.common_submit_btn_label),
                 ),
               ),
             )

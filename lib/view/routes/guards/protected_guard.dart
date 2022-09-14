@@ -88,7 +88,7 @@ class _Protection extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(context.locale.protectedLabel),
+                  Text(context.locale.protected_guard_enter_pin_code),
                   Padding(
                     padding: CommonTheme.verticalPadding,
                     child: BlocConsumer<PinVerifyFormCubit, PinVerifyFormState>(
@@ -128,8 +128,8 @@ class _Protection extends StatelessWidget {
                         maintainState: true,
                         child: Text(
                           attempts > 1
-                              ? "${context.locale.protectedErrorRemaining} $attempts"
-                              : context.locale.protectedErrorLast,
+                              ? "${context.locale.protected_guard_remaining_attempts} $attempts"
+                              : context.locale.protected_guard_last_chance,
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.error),
                         ),

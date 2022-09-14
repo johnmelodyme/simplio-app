@@ -19,7 +19,8 @@ class PasswordChangeScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(context.locale.changePasswordPageTitle),
+          title:
+              Text(context.locale.password_change_change_password_page_title),
           elevation: 0,
         ),
         body: SafeArea(
@@ -38,14 +39,15 @@ class PasswordChangeScreen extends StatelessWidget {
                           children: [
                             PasswordTextField(
                               key: UniqueKey(),
-                              labelText: context.locale.oldPasswordInputLabel,
+                              labelText: context.locale
+                                  .password_change_screen_old_password_input_label,
                               validator: (pass) => context
                                   .read<PasswordChangeFormCubit>()
                                   .state
                                   .newPassword
                                   .passwordValidator(pass,
-                                      errorMsg: context
-                                          .locale.passwordValidationError),
+                                      errorMsg: context.locale
+                                          .common_password_validation_error),
                               passwordComplexityCondition: (pass) => context
                                   .read<PasswordChangeFormCubit>()
                                   .state
@@ -63,7 +65,8 @@ class PasswordChangeScreen extends StatelessWidget {
                               padding: CommonTheme.verticalPadding,
                               child: PasswordTextField(
                                 key: UniqueKey(),
-                                labelText: context.locale.newPasswordInputLabel,
+                                labelText: context.locale
+                                    .password_change_screen_new_password_input_label,
                                 passwordComplexityCondition: (pass) => context
                                     .read<PasswordChangeFormCubit>()
                                     .state
@@ -90,22 +93,26 @@ class PasswordChangeScreen extends StatelessWidget {
                         builder: (context, state) => Column(
                           children: [
                             PasswordRulesRow(
-                                text: context.locale.passwordRuleAtLeast8Chars,
+                                text: context.locale
+                                    .common_password_rule_atleast_8_chars,
                                 passed:
                                     state.newPassword.missingValue['length'] ??
                                         false),
                             PasswordRulesRow(
-                                text: context.locale.passwordRuleNumChar,
+                                text: context
+                                    .locale.common_password_rule_num_char,
                                 passed: state.newPassword
                                         .missingValue['numberChar'] ??
                                     false),
                             PasswordRulesRow(
-                                text: context.locale.passwordRuleSpecialChar,
+                                text: context
+                                    .locale.common_password_rule_special_char,
                                 passed: state.newPassword
                                         .missingValue['specialChar'] ??
                                     false),
                             PasswordRulesRow(
-                                text: context.locale.passwordRuleUpperChar,
+                                text: context
+                                    .locale.common_password_rule_upper_char,
                                 passed: state.newPassword
                                         .missingValue['upperChar'] ??
                                     false),
@@ -128,7 +135,7 @@ class PasswordChangeScreen extends StatelessWidget {
                             .submitForm();
                       }
                     },
-                    child: Text(context.locale.submitBtnLabel),
+                    child: Text(context.locale.common_submit_btn_label),
                   ),
                 ),
               ),

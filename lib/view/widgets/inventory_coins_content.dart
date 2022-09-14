@@ -21,7 +21,7 @@ class _InventoryCoinsContentState extends State<InventoryCoinsContent> {
             ? SliverFillRemaining(
                 child: Center(
                 child: Text(
-                  context.locale.noWalletsLabel,
+                  context.locale.inventory_screen_no_wallets_label,
                 ),
               ))
             : SliverToBoxAdapter(
