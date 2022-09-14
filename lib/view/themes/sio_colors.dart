@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 abstract class SioColors {
   static const white = Color(0xFFFFFFFF);
+  static const whiteBlue = Color(0xFFF1F7FA);
   static const transparent = Color(0x00000000);
 
   static const black = Color(0xFF292E32);
@@ -9,6 +10,7 @@ abstract class SioColors {
   static const background = Color(0xFF031017);
   static const secondary0 = Color(0xFF343A3F);
   static const secondary1 = Color(0xFF3A4045);
+  static const secondary2 = Color(0xFF061F2E);
   static const secondary4 = Color(0xFF194963);
   static const secondary5 = Color(0xFF43738F);
   static const secondary6 = Color(0xFF5387A6);
@@ -25,6 +27,7 @@ abstract class SioColors {
   static const coins = Color(0xFFFFCE4F);
   static const nft = Color(0xFFBC88FF);
   static const games = Color(0xFF2AE4F0);
+  static const earning = Color(0XFFFF6666);
 
   static const appBarStartColor = Color(0xFF0C2639);
   static const appBarEndColor = Color(0xFF101E2E);

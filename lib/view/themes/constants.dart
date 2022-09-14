@@ -92,6 +92,7 @@ class Paddings {
 }
 
 class Dimensions {
+  static const double padding2 = 2;
   static const double padding4 = 4;
   static const double padding5 = 5;
   static const double padding8 = 8;
@@ -114,4 +115,6 @@ class Constants {
   static const double bottomTabBarHeight = 56;
   static const double navigationTabBarHeight = 45;
   static const double searchBarHeight = 42;
+
+  static const pageSizeTransactions = 7;
 }

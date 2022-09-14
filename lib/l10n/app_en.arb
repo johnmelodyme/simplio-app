@@ -3,12 +3,20 @@
     "@simplioTitle": {
       "description": "Simplio name"
     },
-
+  "common_retry": "Retry",
     "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
       "description": "Period type",
       "placeholders": {
         "periodType": {}
+      }
+    },
+
+    "common_transaction_type": "{transactionType, select, processing{Processing} earning{Earning}}",
+    "@common_transaction_type": {
+      "description": "Transaction type",
+      "placeholders": {
+        "transactionType": {}
       }
     },
 
@@ -36,6 +44,8 @@
     "inventory_screen_seach_and_add_coins": "Search & add Coins",
     "inventory_screen_seach_nft": "Search NFT",
     "inventory_screen_seach_transactions": "Search Transactions",
+
+    "inventory_screen_seach_transactions_no_items_found": "You’ll see your transaction\nhistory here.",
 
     "loginScreenTitle": "Enter Simplio.",
     "loginScreenSubTitle": "It's good to see you back.",

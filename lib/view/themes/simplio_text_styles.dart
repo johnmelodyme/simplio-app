@@ -30,9 +30,10 @@ class SioTextStyles {
       fontSize: 14, height: 1.07, fontWeight: FontWeight.bold);
 
   static TextStyle bodyPrimary = bodyStyle.copyWith(fontSize: 15, height: 1.4);
-  static TextStyle bodyL = bodyStyle.copyWith(fontSize: 15, height: 1.33);
+  static TextStyle bodyL = bodyStyle.copyWith(fontSize: 14, height: 1.36);
   static TextStyle bodyM = bodyStyle.copyWith(fontSize: 14, height: 1.43);
-  static TextStyle bodyS = bodyStyle.copyWith(fontSize: 12, height: 1.3);
+  static TextStyle bodyS = bodyStyle.copyWith(fontSize: 12, height: 1.42);
+  static TextStyle bodyDetail = bodyStyle.copyWith(fontSize: 11, height: 1.36);
   static TextStyle bodyLabel = bodyStyle.copyWith(fontSize: 10, height: 1.2);
 
   static TextStyle navTitle = const TextStyle(

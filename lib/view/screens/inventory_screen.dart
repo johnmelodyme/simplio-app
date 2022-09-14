@@ -10,6 +10,7 @@ import 'package:simplio_app/view/widgets/navigation_bar_tab_item.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/search_bar.dart';
 import 'package:simplio_app/view/widgets/total_balance.dart';
+import 'package:simplio_app/view/widgets/transactions_content.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({
@@ -53,9 +54,7 @@ class InventoryScreen extends StatelessWidget {
                   bottomSlivers: [
                     const SliverGap(Dimensions.padding10),
                     const InventoryCoinsContent(),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 500),
-                    ),
+                    const SliverGap(Dimensions.padding20),
                   ]),
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_nft,
@@ -87,7 +86,8 @@ class InventoryScreen extends StatelessWidget {
                     const SliverGap(Dimensions.padding20),
                   ],
                   bottomSlivers: [
-                    const SliverGap(100),
+                    const SliverGap(Dimensions.padding20),
+                    const TransactionsContent(),
                   ])
             ],
           ),

@@ -9,23 +9,27 @@ class DarkMode {
 
   static Color get buttonColor => SioColors.secondary1;
 
-  static Color get fontColor => SioColors.white;
+  static Color get fontColor => SioColors.whiteBlue;
 
   static ColorScheme get colorScheme => const ColorScheme(
         brightness: Brightness.dark,
         primary: SioColors.black,
-        onPrimary: SioColors.white,
+        onPrimary: SioColors.whiteBlue,
         primaryContainer: SioColors.secondary1,
         onPrimaryContainer: SioColors.backGradient4Start,
         secondary: SioColors.highlight1,
         onSecondary: SioColors.black,
-        shadow: SioColors.secondary7,
-        outline: SioColors.secondary4,
+        secondaryContainer: SioColors.confirm,
         onSecondaryContainer: SioColors.secondary6,
         tertiary: SioColors.highlight2,
         onTertiary: SioColors.highlight,
+        tertiaryContainer: Color.fromRGBO(8, 45, 66, 1),
+        onTertiaryContainer: SioColors.backGradient3End,
         error: SioColors.attention,
-        onError: Colors.redAccent,
+        onError: SioColors.earning,
+        errorContainer: SioColors.secondary2,
+        shadow: SioColors.secondary7,
+        outline: SioColors.secondary4,
         background: SioColors.background,
         inverseSurface: SioColors.mentolGreen,
         onBackground: SioColors.games,
@@ -34,8 +38,6 @@ class DarkMode {
         surfaceVariant: SioColors.bottomTabBarStartColor,
         onSurfaceVariant: SioColors.bottomTabBarEndColor,
         surfaceTint: SioColors.secondary5,
-        tertiaryContainer: SioColors.backGradient3Start,
-        onTertiaryContainer: SioColors.backGradient3End,
       );
 
   static TextTheme get textTheme => TextTheme(

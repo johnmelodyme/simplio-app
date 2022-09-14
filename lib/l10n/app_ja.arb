@@ -4,11 +4,20 @@
       "description": "Simplio name"
     },
 
+    "common_retry": "車両あなた自",
     "common_period_section": "{periodType, select, week{あなた自} month{車両あなた自} months3{両あなた自身} months6{あなた自身} year{たは財布を持っ}}",
     "@common_period_section": {
       "description": "Period type",
       "placeholders": {
         "periodType": {}
+      }
+    },
+
+    "common_transaction_type": "{transactionType, select, processing{あなた自} earning{両あなた自身}}",
+    "@common_transaction_type": {
+      "description": "Transaction type",
+      "placeholders": {
+        "transactionType": {}
       }
     },
     
@@ -36,6 +45,8 @@
     "inventory_screen_seach_and_add_coins": "なたは財布を持っ",
     "inventory_screen_seach_nft": "なたは財布を持っ",
     "inventory_screen_seach_transactions": "なたは財布を持っ",
+
+    "inventory_screen_seach_transactions_no_items_found": "切りて替えて 切りて替えて",
 
     "Y": "あなたは財布を",
 
