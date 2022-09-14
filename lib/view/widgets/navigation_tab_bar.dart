@@ -76,7 +76,7 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
                       MediaQuery.of(context).viewPadding.top,
                   child: const AvatarAppBar(
                     title: 'Nick name',
-                    subtitle: 'User Level 1',
+                    userLevel: 1,
                   ),
                 ),
               ),

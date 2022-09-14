@@ -4,6 +4,7 @@
       "description": "Simplio name"
     },
 
+    "common_user_level": "車両あ なた自",
     "common_retry": "車両あなた自",
     "common_period_section": "{periodType, select, week{あなた自} month{車両あなた自} months3{両あなた自身} months6{あなた自身} year{たは財布を持っ}}",
     "@common_period_section": {

@@ -3,6 +3,8 @@
     "@simplioTitle": {
       "description": "Simplio name"
     },
+
+  "common_user_level": "User Level",  
   "common_retry": "Retry",
     "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {

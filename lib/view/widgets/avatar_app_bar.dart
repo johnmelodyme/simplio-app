@@ -7,16 +7,18 @@ import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
+import 'package:simplio_app/view/widgets/user_level_bar.dart';
 
 class AvatarAppBar extends StatelessWidget {
   const AvatarAppBar({
     super.key,
     required this.title,
-    this.subtitle,
+    required this.userLevel,
   });
 
   final String title;
-  final String? subtitle;
+  final int userLevel;
+
   @override
   Widget build(BuildContext context) {
     return ClipRect(
@@ -48,14 +50,11 @@ class AvatarAppBar extends StatelessWidget {
                         style: SioTextStyles.h4.apply(
                             color: Theme.of(context).colorScheme.onPrimary),
                       ),
-                      if (subtitle != null) ...[
-                        const Gap(3),
-                        Text(
-                          subtitle!,
-                          style: SioTextStyles.bodyLabel.apply(
-                              color: Theme.of(context).colorScheme.onTertiary),
-                        )
-                      ],
+                      const Gap(3),
+                      UserLevelBar(
+                        userLevel:
+                            userLevel, //TODO replace with real user level
+                      ),
                     ],
                   ),
                 ),

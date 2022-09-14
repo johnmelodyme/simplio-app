@@ -20,8 +20,8 @@ class DiscoveryScreen extends StatelessWidget {
             fixedHeight:
                 Constants.appBarHeight + MediaQuery.of(context).viewPadding.top,
             child: const AvatarAppBar(
-              title: 'Nick name',
-              subtitle: 'User Level 1',
+              title: 'Nickname',
+              userLevel: 1,
             ),
           ),
         ),
