@@ -74,26 +74,12 @@ class _TotalBalanceState extends State<TotalBalance> {
             child: Padding(
               padding: Paddings.vertical16,
               child: Column(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      context.locale.inventory_screen_inventory_balance,
-                      style:
-                          SioTextStyles.bodyPrimary.copyWith(height: 1.0).apply(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                              ),
-                    ),
-                    const Gap(10),
-                    Icon(
-                      Icons.pie_chart_outline,
-                      size: 15,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                    )
-                  ],
+                Text(
+                  context.locale.inventory_screen_inventory_balance,
+                  style: SioTextStyles.bodyPrimary.copyWith(height: 1.0).apply(
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
                 ),
                 const Gap(Dimensions.padding5),
                 Text(
@@ -116,7 +102,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                         value: _periodType,
                         elevation: 0,
                         iconSize: 20,
-                        style: SioTextStyles.bodyM.apply(
+                        style: SioTextStyles.bodyPrimary.apply(
                           color: Theme.of(context).colorScheme.inverseSurface,
                         ),
                         iconEnabledColor:
@@ -132,7 +118,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(_getPeriodTimeValue(),
-                                      style: SioTextStyles.bodyM.apply(
+                                      style: SioTextStyles.bodyPrimary.apply(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onPrimary,
@@ -157,7 +143,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                             child: Center(
                               child: Text(
                                 periodName,
-                                style: SioTextStyles.bodyM.apply(
+                                style: SioTextStyles.bodyPrimary.apply(
                                   color: periodType == _periodType
                                       ? Theme.of(context)
                                           .colorScheme
@@ -174,7 +160,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(_getPeriodTimeValue(),
-                                  style: SioTextStyles.bodyM.apply(
+                                  style: SioTextStyles.bodyPrimary.apply(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .inverseSurface,

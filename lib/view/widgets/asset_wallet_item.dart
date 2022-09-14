@@ -32,7 +32,7 @@ class AssetWalletItem extends StatelessWidget {
 
   TextStyle getTextStyle() {
     return assetType == AssetType.wallet
-        ? SioTextStyles.h4
+        ? SioTextStyles.h5
         : SioTextStyles.bodyS;
   }
 

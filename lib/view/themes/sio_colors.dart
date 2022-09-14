@@ -24,7 +24,7 @@ abstract class SioColors {
 
   static const highlight = Color(0xFFDEEB4B);
   static const mentolGreen = Color(0xFF37FFC6);
-  static const coins = Color(0xFFFFCE4F);
+  static const coins = Color(0xFFFFA02C);
   static const nft = Color(0xFFBC88FF);
   static const games = Color(0xFF2AE4F0);
   static const earning = Color(0XFFFF6666);

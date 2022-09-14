@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 
 class BottomTabBar extends StatelessWidget {
@@ -136,8 +137,7 @@ class _TabBarItem extends StatelessWidget {
             ),
             Text(
               tabBarItem.label ?? '',
-              style: TextStyle(
-                fontSize: 12.0,
+              style: SioTextStyles.bodyDetail.apply(
                 color: isActive ? selectedColor : unselectedColor,
               ),
             ),

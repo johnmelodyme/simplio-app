@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CommonTheme {
   CommonTheme._();
 
-  static String get fontFamily => 'Roboto';
+  static String get fontFamily => 'Karla';
 
   static BorderRadius get borderRadius =>
       const BorderRadius.all(Radius.circular(12));

@@ -1,41 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class SioTextStyles {
-  static const TextStyle genericTextStyle = TextStyle(color: SioColors.white);
+  static const String _fontFamilyHeaders = "Syne";
+  static const String _fontFamilyButton = "Syne";
+  static const String _fontFamilyBody = "Karla";
+  static const String _fontFamilySubtitle = "Karla";
 
-  static TextStyle headingStyle =
-      genericTextStyle.copyWith(fontWeight: FontWeight.w400);
-  static TextStyle subtitleStyle = genericTextStyle.copyWith(height: 1.3);
-  static TextStyle bodyStyle =
-      genericTextStyle.copyWith(fontWeight: FontWeight.w400);
-  static TextStyle labelStyle =
-      genericTextStyle.copyWith(fontWeight: FontWeight.w400);
-  static TextStyle buttonStyle =
-      genericTextStyle.copyWith(fontWeight: FontWeight.w600);
-  static TextStyle allCapsStyle =
-      genericTextStyle.copyWith(fontWeight: FontWeight.w400);
-  static TextStyle allCapsBoldStyle = genericTextStyle.copyWith();
+  //static const TextStyle genericTextStyle = TextStyle(color: SioColors.whiteBlue);
 
-  static TextStyle headingLarge =
-      headingStyle.copyWith(fontSize: 32, height: 1.25);
-  static TextStyle h1 = headingStyle.copyWith(fontSize: 22, height: 1.27);
+  static TextStyle buttonStyle = const TextStyle(
+    fontFamily: _fontFamilyButton,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle bodyStyle = const TextStyle(
+    fontFamily: _fontFamilyBody,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle headingStyle = const TextStyle(
+    fontFamily: _fontFamilyHeaders,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle subtitleStyle = const TextStyle(
+    fontFamily: _fontFamilySubtitle,
+    fontWeight: FontWeight.w300,
+  );
+
+  static TextStyle bodyPrimary = bodyStyle.copyWith(
+    fontWeight: FontWeight.w400,
+    fontSize: 15,
+    height: 1.4,
+  );
+
+  static TextStyle bodyL = bodyStyle.copyWith(
+    fontSize: 14,
+    height: 1.36,
+  );
+
+  static TextStyle bodyLargeBold = bodyStyle.copyWith(
+    fontWeight: FontWeight.w500,
+    fontSize: 14,
+    height: 1.36,
+  );
+
+  static TextStyle bodyS = bodyStyle.copyWith(
+    fontSize: 12,
+    height: 1.42,
+  );
+  static TextStyle bodyDetail = bodyStyle.copyWith(
+    fontSize: 11,
+    height: 1.36,
+  );
+
+  static TextStyle h1 = headingStyle.copyWith(
+    fontSize: 26,
+    height: 1.3,
+  );
   static TextStyle h2 = headingStyle.copyWith(
-      fontSize: 22, height: 1.27, fontWeight: FontWeight.w700);
+    fontSize: 24,
+    height: 1.21,
+  );
+
+  static TextStyle h3 = headingStyle.copyWith(
+    fontSize: 18,
+    height: 1.28,
+  );
 
   static TextStyle h4 = headingStyle.copyWith(
-      fontSize: 15, height: 1.11, fontWeight: FontWeight.w700);
+    fontSize: 15,
+    height: 1.33,
+  );
 
   static TextStyle h5 = headingStyle.copyWith(
-      fontSize: 14, height: 1.07, fontWeight: FontWeight.bold);
+    fontSize: 14,
+    height: 1.29,
+  );
 
-  static TextStyle bodyPrimary = bodyStyle.copyWith(fontSize: 15, height: 1.4);
-  static TextStyle bodyL = bodyStyle.copyWith(fontSize: 14, height: 1.36);
-  static TextStyle bodyM = bodyStyle.copyWith(fontSize: 14, height: 1.43);
-  static TextStyle bodyS = bodyStyle.copyWith(fontSize: 12, height: 1.42);
-  static TextStyle bodyDetail = bodyStyle.copyWith(fontSize: 11, height: 1.36);
-  static TextStyle bodyLabel = bodyStyle.copyWith(fontSize: 10, height: 1.2);
+  static TextStyle h6 = headingStyle.copyWith(
+    fontSize: 12,
+    height: 1.33,
+  );
 
-  static TextStyle navTitle = const TextStyle(
-      color: SioColors.white, fontSize: 16, fontWeight: FontWeight.bold);
+  static TextStyle s1 = subtitleStyle.copyWith(
+    fontSize: 17,
+    height: 1.47,
+  );
+
+  static TextStyle s2 = subtitleStyle.copyWith(
+    fontSize: 16,
+    height: 1.5,
+  );
 }
