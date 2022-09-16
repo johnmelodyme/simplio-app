@@ -130,11 +130,16 @@ jobs:
     strategy:
       #set of different configurations of the virtual environment.
       matrix:
-        api-level: [ 31 ]
-        target: [ default ]
+        api-level: [ 32, 33 ]
+        target: [ google_apis ]
     needs: run-e2e-tests
     steps:
       - uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'temurin'
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
@@ -145,6 +150,9 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
+          disk-size: 4096M
+          heap-size: 1024M
+          sdcard-path-or-size: 1000M
           target: ${{ matrix.target }}
           arch: x86_64
           profile: Nexus 6

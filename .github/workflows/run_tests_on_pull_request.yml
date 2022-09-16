@@ -5,14 +5,15 @@ on:
 
 jobs:
   run-tests:
-    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@task/118-send_coins_ui_2
+    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@task/187_upgrade_to_api33
+
     with:
       e2e: true
       unitTests: true
 
   build-ios:
     needs: [run-tests]
-    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@task/118-send_coins_ui_2
+    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@master
     with:
       environment: 'dev'
       testBuild: true
@@ -34,7 +35,7 @@ jobs:
 
   build-android:
     needs: [run-tests]
-    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_android.yml@task/118-send_coins_ui_2
+    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_android.yml@master
     secrets:
       ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
       DART_DEFINE_API_KEY_DEV: ${{ secrets.DART_DEFINE_API_KEY_DEV }}
