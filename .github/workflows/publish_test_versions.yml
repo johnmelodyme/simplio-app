@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-tests:
-    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@master
+    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@task/118-send_coins_ui_2
     with:
       e2e: true
       unitTests: true
@@ -21,9 +21,10 @@ jobs:
 
   build-ios:
     needs: [run-tests]
-    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@master
+    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@task/118-send_coins_ui_2
     with:
       environment: 'dev'
+      testBuild: false
     secrets:
       APP_STORE_CONNECT_TEAM_ID: '${{ secrets.APP_STORE_CONNECT_TEAM_ID }}'
       DEVELOPER_APP_ID: '${{ secrets.DEVELOPER_APP_ID }}'
@@ -51,3 +52,4 @@ jobs:
       DART_DEFINE_API_URL_PROD: ${{ secrets.DART_DEFINE_API_URL_PROD }}
     with:
       environment: 'dev'
+      testBuild: false

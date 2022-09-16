@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 
 class DarkMode {
   DarkMode._();
@@ -99,7 +100,7 @@ class DarkMode {
                   : buttonColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: CommonTheme.buttonBorderRadius,
+              borderRadius: BorderRadiuses.radius6,
             ),
           ),
         ),
@@ -110,5 +111,6 @@ class DarkMode {
       actionTextColor: fontColor,
       contentTextStyle: TextStyle(color: fontColor),
     ),
+    canvasColor: backgroundColor,
   );
 }

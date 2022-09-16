@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 
@@ -32,7 +32,7 @@ class PasswordChangeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: CommonTheme.horizontalPadding,
+                      padding: Paddings.horizontal20,
                       child: Form(
                         key: formKey,
                         child: Column(
@@ -62,7 +62,7 @@ class PasswordChangeScreen extends StatelessWidget {
                               },
                             ),
                             Padding(
-                              padding: CommonTheme.verticalPadding,
+                              padding: Paddings.vertical20,
                               child: PasswordTextField(
                                 key: UniqueKey(),
                                 labelText: context.locale
@@ -86,7 +86,7 @@ class PasswordChangeScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: CommonTheme.horizontalPadding,
+                      padding: Paddings.horizontal20,
                       child: BlocBuilder<PasswordChangeFormCubit,
                           PasswordChangeFormState>(
                         buildWhen: (previous, current) => previous != current,

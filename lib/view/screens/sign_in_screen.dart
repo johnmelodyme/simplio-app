@@ -5,7 +5,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/sign_in_form/sign_in_form_cubit.dart';
 import 'package:simplio_app/view/routes/unauthenticated_router.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/text_header.dart';
 import 'package:simplio_app/view/widgets/themed_text_form_field.dart';
@@ -45,21 +45,21 @@ class SignInScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Padding(
-                    padding: CommonTheme.horizontalPadding,
+                    padding: Paddings.horizontal20,
                     child: TextHeader(
                       title: context.locale.sign_in_screen_title,
                       subtitle: context.locale.sign_in_screen_subtitle,
                     ),
                   ),
                   Padding(
-                    padding: CommonTheme.horizontalPadding,
+                    padding: Paddings.horizontal20,
                     child: Form(
                       key: formKey,
                       child: Column(
                         children: [
                           Padding(
-                            padding: CommonTheme.verticalPadding,
-                            child: ThemedTextFormFiled(
+                            padding: Paddings.vertical20,
+                            child: ThemedTextFormField(
                               key: const Key('sign-in-screen-email-text-field'),
                               keyboardType: TextInputType.emailAddress,
                               validator: (email) => context
@@ -133,7 +133,7 @@ class SignInScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: CommonTheme.horizontalPadding,
+                    padding: Paddings.horizontal20,
                     child: Column(
                       children: [
                         SizedBox(
@@ -161,7 +161,7 @@ class SignInScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Padding(
-                                          padding: CommonTheme.paddingAll,
+                                          padding: Paddings.all20,
                                           child: Text(
                                             context.locale
                                                 .sign_in_screen_signing_in_label,

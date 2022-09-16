@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/keypad_item.dart';
 
 class _KeypadRow {
@@ -37,10 +37,9 @@ class _KeypadGrid extends StatelessWidget {
         maxHeight: double.infinity,
         maxWidth: double.infinity,
         minHeight: rows.length * 59,
-        minWidth: double.infinity,
       ),
       child: Padding(
-        padding: CommonTheme.paddingAll,
+        padding: Paddings.horizontal5,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -68,6 +67,8 @@ class Numpad extends StatelessWidget {
   final ValueChanged<int> onTap;
   final VoidCallback? onProceed;
   final VoidCallback? onErase;
+  final VoidCallback? onDecimalDotTap;
+  final bool isDecimal;
 
   const Numpad({
     super.key,
@@ -76,10 +77,15 @@ class Numpad extends StatelessWidget {
     this.onErase,
     this.displayProceedButton = false,
     this.displayEraseButton = false,
-  });
+    this.onDecimalDotTap,
+    this.isDecimal = false,
+  }) : assert(isDecimal && onDecimalDotTap != null || !isDecimal,
+            'onDecimalDotTap needs to be specified when isDecimal is true');
 
   @override
   Widget build(BuildContext context) {
+    var iconColor = Theme.of(context).colorScheme.onPrimary;
+
     return _KeypadGrid.builder(
       rows: [
         _KeypadRow(
@@ -139,30 +145,50 @@ class Numpad extends StatelessWidget {
             ),
           ],
         ),
-        _KeypadRow(
-          children: [
-            displayEraseButton
-                ? KeypadItem.action(
+        isDecimal
+            ? _KeypadRow(
+                children: [
+                  KeypadItem.decimal(
+                    key: const Key('numpad-button-decimal-dot'),
+                    onTap: onDecimalDotTap!,
+                  ),
+                  KeypadItem.number(
+                    key: const Key('numpad-button-0'),
+                    value: 0,
+                    onTap: onTap,
+                  ),
+                  KeypadItem.action(
                     key: const Key('numpad-action-erase'),
-                    icon: Icons.backspace_outlined,
+                    content: Icon(Icons.backspace_outlined, color: iconColor),
                     onTap: () => onErase?.call(),
-                  )
-                : const KeypadItem(),
-            KeypadItem.number(
-              key: const Key('numpad-button-0'),
-              value: 0,
-              onTap: onTap,
-            ),
-            displayProceedButton
-                ? KeypadItem.action(
-                    key: const Key('numpad-action-proceed'),
-                    actionType: ActionButtonType.elevated,
-                    icon: Icons.check,
-                    onTap: () => onProceed?.call(),
-                  )
-                : const KeypadItem(),
-          ],
-        ),
+                  ),
+                ],
+              )
+            : _KeypadRow(
+                children: [
+                  displayEraseButton
+                      ? KeypadItem.action(
+                          key: const Key('numpad-action-erase'),
+                          content:
+                              Icon(Icons.backspace_outlined, color: iconColor),
+                          onTap: () => onErase?.call(),
+                        )
+                      : const KeypadItem(),
+                  KeypadItem.number(
+                    key: const Key('numpad-button-0'),
+                    value: 0,
+                    onTap: onTap,
+                  ),
+                  displayProceedButton
+                      ? KeypadItem.action(
+                          key: const Key('numpad-action-proceed'),
+                          actionType: ActionButtonType.elevated,
+                          content: Icon(Icons.check, color: iconColor),
+                          onTap: () => onProceed?.call(),
+                        )
+                      : const KeypadItem(),
+                ],
+              )
       ],
     );
   }

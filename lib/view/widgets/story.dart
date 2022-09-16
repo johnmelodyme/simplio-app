@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/themed_linear_progress_indicator.dart';
 
 class Story extends StatefulWidget {
@@ -29,7 +29,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var bars = Padding(
-      padding: CommonTheme.horizontalPadding,
+      padding: Paddings.horizontal20,
       child: Row(
         children: widget.items
             .asMap()
@@ -53,7 +53,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
       body: Column(
         children: [
           Padding(
-            padding: CommonTheme.bottomPadding,
+            padding: Paddings.bottom20,
             child: bars,
           ),
           Expanded(
@@ -62,8 +62,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
               onLongPressEnd: (_) => _toggleAnimation(stop: false),
               onTapUp: _handleLeftRightTaps,
               child: Padding(
-                padding: CommonTheme.bottomPadding
-                    .add(CommonTheme.horizontalPadding),
+                padding: Paddings.bottom20.add(Paddings.horizontal20),
                 child: widget.items[displayedItemIndex],
               ),
             ),
@@ -125,7 +124,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
 
   double _indicatorWidth() {
     return (MediaQuery.of(context).size.width -
-            CommonTheme.horizontalPadding.horizontal -
+            Paddings.horizontal20.horizontal -
             widget._indicatorPadding * (widget.items.length - 1)) /
         widget.items.length;
   }

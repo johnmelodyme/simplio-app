@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/password_reset_form/password_reset_form_cubit.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/text_header.dart';
 import 'package:simplio_app/view/widgets/themed_text_form_field.dart';
 
@@ -23,7 +23,7 @@ class PasswordResetScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: CommonTheme.paddingAll,
+                padding: Paddings.all20,
                 child: Column(
                   children: [
                     TextHeader(
@@ -31,7 +31,7 @@ class PasswordResetScreen extends StatelessWidget {
                             .password_reset_screen_forgot_password_label),
                     Form(
                       key: formKey,
-                      child: ThemedTextFormFiled(
+                      child: ThemedTextFormField(
                         key: const Key('reset-screen-email-text-field'),
                         autofocus: true,
                         validator: (email) => context
@@ -59,7 +59,7 @@ class PasswordResetScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: CommonTheme.paddingAll,
+              padding: Paddings.all20,
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

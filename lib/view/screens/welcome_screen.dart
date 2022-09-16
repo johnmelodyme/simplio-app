@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/unauthenticated_router.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/bordered_elevated_button.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/story.dart';
@@ -59,11 +59,11 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ],
           bottomNavigationBar: Padding(
-            padding: CommonTheme.horizontalPadding,
+            padding: Paddings.horizontal20,
             child: Column(
               children: [
                 Padding(
-                  padding: CommonTheme.bottomPadding,
+                  padding: Paddings.bottom20,
                   child: SizedBox(
                     width: double.infinity,
                     child: HighlightedElevatedButton(

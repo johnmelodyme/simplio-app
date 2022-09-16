@@ -50,6 +50,7 @@ jobs:
     uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@master
     with:
       environment: 'production'
+      testBuild: false
       major: ${{ needs.set-version.outputs.major }}
       minor: ${{needs.set-version.outputs.minor}}
       patch: ${{needs.set-version.outputs.patch}}
@@ -80,6 +81,7 @@ jobs:
       DART_DEFINE_API_URL_PROD: ${{ secrets.DART_DEFINE_API_URL_PROD }}
     with:
       environment: 'production'
+      testBuild: false
       major: ${{ needs.set-version.outputs.major }}
       minor: ${{needs.set-version.outputs.minor}}
       patch: ${{needs.set-version.outputs.patch}}

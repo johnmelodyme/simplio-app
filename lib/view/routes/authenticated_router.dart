@@ -8,6 +8,7 @@ import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';
@@ -17,8 +18,10 @@ import 'package:simplio_app/view/routes/observers/tab_bar_observer.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
 import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
+import 'package:simplio_app/view/screens/asset_detail_screen.dart';
 import 'package:simplio_app/view/screens/asset_receive_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_screen.dart';
+import 'package:simplio_app/view/screens/asset_send_summary_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
 import 'package:simplio_app/view/screens/dapps_screen.dart';
 import 'package:simplio_app/view/screens/discovery_screen.dart';
@@ -27,6 +30,7 @@ import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
 import 'package:simplio_app/view/screens/qr_code_scanner_screen.dart';
+import 'package:simplio_app/view/screens/transaction_success_screen.dart';
 
 class AuthenticatedRouter with PageBuilderMixin {
   static const String discovery = 'discovery';
@@ -40,7 +44,10 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String pinSetup = 'pin-setup';
   static const String accountSetup = 'account-setup';
   static const String passwordChange = 'password-change';
+  static const String assetDetail = 'asset-detail';
   static const String assetSend = 'asset-send';
+  static const String assetSendSummary = 'asset-send-summary';
+  static const String assetSendSuccess = 'asset-send-success';
   static const String assetReceive = 'asset-receive';
   static const String qrCodeScanner = 'qr-code-scanner';
 
@@ -102,9 +109,9 @@ class AuthenticatedRouter with PageBuilderMixin {
               pageBuilder: pageBuilder(
                 builder: (state) => const DiscoveryScreen(),
                 withTransition: false,
-                settings: ApplicationSettings(
+                settings: const ApplicationSettings(
                   tabBar: TabBarRouteSettings(
-                    selectedKey: const ValueKey(discovery),
+                    selectedKey: ValueKey(discovery),
                   ),
                 ),
               ),
@@ -123,9 +130,9 @@ class AuthenticatedRouter with PageBuilderMixin {
                     }),
                   ),
                   withTransition: false,
-                  settings: ApplicationSettings(
+                  settings: const ApplicationSettings(
                     tabBar: TabBarRouteSettings(
-                      selectedKey: const ValueKey(inventory),
+                      selectedKey: ValueKey(inventory),
                     ),
                   ),
                 ),
@@ -146,9 +153,9 @@ class AuthenticatedRouter with PageBuilderMixin {
                         }),
                       ),
                       withTransition: false,
-                      settings: ApplicationSettings(
+                      settings: const ApplicationSettings(
                         tabBar: TabBarRouteSettings(
-                          selectedKey: const ValueKey(inventory),
+                          selectedKey: ValueKey(inventory),
                         ),
                       ),
                     ),
@@ -169,9 +176,9 @@ class AuthenticatedRouter with PageBuilderMixin {
                         }),
                       ),
                       withTransition: false,
-                      settings: ApplicationSettings(
+                      settings: const ApplicationSettings(
                         tabBar: TabBarRouteSettings(
-                          selectedKey: const ValueKey(inventory),
+                          selectedKey: ValueKey(inventory),
                         ),
                       ),
                     ),
@@ -192,20 +199,76 @@ class AuthenticatedRouter with PageBuilderMixin {
                         }),
                       ),
                       withTransition: false,
-                      settings: ApplicationSettings(
+                      settings: const ApplicationSettings(
                         tabBar: TabBarRouteSettings(
-                          selectedKey: const ValueKey(inventory),
+                          selectedKey: ValueKey(inventory),
                         ),
                       ),
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'success',
+                        name: assetSendSuccess,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => BlocProvider(
+                            create: (context) => AssetSendFormCubit.builder(
+                              initialState: state.extra as AssetSendFormState,
+                            ),
+                            child: Builder(
+                              builder: (context) =>
+                                  const TransactionSuccessScreen(),
+                            ),
+                          ),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: ':assetId/:networkId/detail',
+                    name: assetDetail,
+                    pageBuilder: pageBuilder(
+                      builder: (state) => AssetDetailScreen(
+                        assetId: state.params['assetId'],
+                        networkId: state.params['networkId'],
+                      ),
+                      settings: const ApplicationSettings.hiddenTabBar(),
                     ),
                   ),
                   GoRoute(
                     path: ':assetId/:networkId/send',
                     name: assetSend,
                     pageBuilder: pageBuilder(
-                      builder: (state) =>
-                          AssetSendScreen(assetId: state.params['assetId']),
+                      builder: (state) => BlocProvider(
+                        create: (context) => AssetSendFormCubit.builder(
+                            initialState: state.extra as AssetSendFormState?),
+                        child: Builder(
+                          builder: (context) => AssetSendScreen(
+                            assetId: state.params['assetId'],
+                            networkId: state.params['networkId'],
+                          ),
+                        ),
+                      ),
+                      settings: const ApplicationSettings.hiddenTabBar(),
                     ),
+                    routes: [
+                      GoRoute(
+                        path: 'summary',
+                        name: assetSendSummary,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => BlocProvider(
+                            create: (context) => AssetSendFormCubit.builder(
+                              initialState: state.extra as AssetSendFormState,
+                            ),
+                            child: Builder(
+                              builder: (context) =>
+                                  const AssetSendSummaryScreen(),
+                            ),
+                          ),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: ':assetId/:networkId/receive',
@@ -224,9 +287,9 @@ class AuthenticatedRouter with PageBuilderMixin {
               pageBuilder: pageBuilder(
                 builder: (state) => const GamesScreen(),
                 withTransition: false,
-                settings: ApplicationSettings(
+                settings: const ApplicationSettings(
                   tabBar: TabBarRouteSettings(
-                    selectedKey: const ValueKey(games),
+                    selectedKey: ValueKey(games),
                   ),
                 ),
               ),
@@ -237,9 +300,9 @@ class AuthenticatedRouter with PageBuilderMixin {
               pageBuilder: pageBuilder(
                 builder: (state) => const DappsScreen(),
                 withTransition: false,
-                settings: ApplicationSettings(
+                settings: const ApplicationSettings(
                   tabBar: TabBarRouteSettings(
-                    selectedKey: const ValueKey(findDapps),
+                    selectedKey: ValueKey(findDapps),
                   ),
                 ),
               ),
@@ -250,9 +313,9 @@ class AuthenticatedRouter with PageBuilderMixin {
               pageBuilder: pageBuilder(
                 builder: (state) => const ConfigurationScreen(),
                 withTransition: false,
-                settings: ApplicationSettings(
+                settings: const ApplicationSettings(
                   tabBar: TabBarRouteSettings(
-                    selectedKey: const ValueKey(configuration),
+                    selectedKey: ValueKey(configuration),
                   ),
                 ),
               ),
@@ -261,9 +324,9 @@ class AuthenticatedRouter with PageBuilderMixin {
                   path: 'password-change',
                   name: passwordChange,
                   pageBuilder: pageBuilder(
-                    settings: ApplicationSettings(
+                    settings: const ApplicationSettings(
                       tabBar: TabBarRouteSettings(
-                        selectedKey: const ValueKey(configuration),
+                        selectedKey: ValueKey(configuration),
                         isVisible: false,
                       ),
                     ),

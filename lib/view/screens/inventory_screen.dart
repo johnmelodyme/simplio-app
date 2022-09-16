@@ -6,7 +6,6 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/asset_search_delegate.dart';
 import 'package:simplio_app/view/widgets/inventory_coins_content.dart';
-import 'package:simplio_app/view/widgets/navigation_bar_tab_item.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/search_bar.dart';
 import 'package:simplio_app/view/widgets/total_balance.dart';

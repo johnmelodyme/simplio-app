@@ -55,7 +55,7 @@ class ColorizedAppBar extends StatelessWidget {
                       TextSpan(
                         text: secondPart,
                         style: SioTextStyles.h4.apply(
-                          color: const Color(0xFF37FFC6),
+                          color: Theme.of(context).colorScheme.inverseSurface,
                         ),
                       ),
                     ],

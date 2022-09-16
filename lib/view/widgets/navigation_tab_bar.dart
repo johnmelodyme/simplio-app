@@ -3,8 +3,27 @@ import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/avatar_app_bar.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
-import 'package:simplio_app/view/widgets/navigation_bar_tab_item.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_chip.dart';
+
+class NavigationBarTabItem {
+  NavigationBarTabItem({
+    required this.label,
+    this.searchBar,
+    required this.bottomSlivers,
+    this.topSlivers,
+    this.iconData,
+    this.iconColor,
+    this.onRefresh,
+  });
+
+  final String label;
+  final Widget? searchBar;
+  final List<Widget>? topSlivers;
+  final List<Widget> bottomSlivers;
+  final IconData? iconData;
+  final Color? iconColor;
+  final Future<void> Function()? onRefresh;
+}
 
 class NavigationTabBar extends StatefulWidget {
   NavigationTabBar({

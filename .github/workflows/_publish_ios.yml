@@ -39,6 +39,11 @@ on:
         default: 'dev'
         required: true
         type: string
+      testBuild:
+        description: 'Boolean value which triggers only building the application without publishing'
+        default: true
+        required: true
+        type: boolean
       major:
         required: false
         type: string
@@ -55,9 +60,6 @@ jobs:
     runs-on: macos-12
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
       - uses: subosito/flutter-action@v2
         with:
          flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -89,8 +91,28 @@ jobs:
         if: ${{ inputs.environment != 'production' }}
         run: flutter build ios --config-only --release --no-codesign --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }} --dart-define=API_KEY=${{ secrets.DART_DEFINE_API_KEY_DEV }}
 
+      - name: Run Fastlane
+        if: ${{ inputs.testBuild == true }}
+        uses: maierj/fastlane-action@v2.2.0
+        with:
+          lane: build
+          subdirectory: ios
+          env: ${{ inputs.environment }}
+        env:
+          APP_STORE_CONNECT_TEAM_ID: '${{ secrets.APP_STORE_CONNECT_TEAM_ID }}'
+          DEVELOPER_APP_ID: '${{ secrets.DEVELOPER_APP_ID }}'
+          DEVELOPER_PORTAL_TEAM_ID: '${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}'
+          FASTLANE_APPLE_ID: '${{ secrets.FASTLANE_APPLE_ID }}'
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: '${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}'
+          MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+          GIT_AUTHORIZATION: '${{ secrets.GIT_AUTHORIZATION }}'
+          PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
+          TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
+          TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
+          GIT_BRANCH: '${{ github.event.head_commit.message }}'
 
       - name: Run Fastlane
+        if: ${{ inputs.testBuild == false }}
         uses: maierj/fastlane-action@v2.2.0
         with:
           lane: build_and_deploy

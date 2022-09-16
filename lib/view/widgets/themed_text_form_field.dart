@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemedTextFormFiled extends StatelessWidget {
+class ThemedTextFormField extends StatelessWidget {
   final bool autofocus;
   final FormFieldValidator<String>? validator;
   final InputDecoration? decoration;
@@ -8,8 +8,11 @@ class ThemedTextFormFiled extends StatelessWidget {
   final ValueChanged<bool>? onFocusChange;
   final TextInputType? keyboardType;
   final TextStyle? style;
+  final TextEditingController? controller;
+  final int? maxLines;
+  final TextAlignVertical? textAlignVertical;
 
-  const ThemedTextFormFiled({
+  const ThemedTextFormField({
     super.key,
     this.autofocus = false,
     this.validator,
@@ -18,6 +21,9 @@ class ThemedTextFormFiled extends StatelessWidget {
     this.keyboardType,
     this.style,
     this.onFocusChange,
+    this.controller,
+    this.maxLines,
+    this.textAlignVertical,
   });
 
   @override
@@ -26,11 +32,14 @@ class ThemedTextFormFiled extends StatelessWidget {
       onFocusChange: onFocusChange,
       child: TextFormField(
         key: key,
+        controller: controller,
         autofocus: autofocus,
         validator: validator,
         decoration: decoration,
         onChanged: onChanged,
         keyboardType: keyboardType,
+        maxLines: maxLines,
+        textAlignVertical: textAlignVertical,
         style: TextStyle(
           color: Theme.of(context).colorScheme.primary,
         ).merge(style),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 
 class InfoSnackBar extends StatelessWidget {
   final String text;
@@ -9,7 +9,7 @@ class InfoSnackBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: CommonTheme.horizontalPadding,
+      padding: Paddings.horizontal20,
       child: Row(
         children: [
           Expanded(

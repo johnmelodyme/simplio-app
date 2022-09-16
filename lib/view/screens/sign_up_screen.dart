@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/sign_up_form/sign_up_form_cubit.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/text_header.dart';
@@ -43,21 +43,21 @@ class SignUpScreen extends StatelessWidget {
               Column(
                 children: [
                   Padding(
-                    padding: CommonTheme.paddingAll,
+                    padding: Paddings.all20,
                     child: TextHeader(
                       title: context
                           .locale.sign_up_screen_create_new_account_title,
                     ),
                   ),
                   Padding(
-                    padding: CommonTheme.horizontalPadding,
+                    padding: Paddings.horizontal20,
                     child: Form(
                       key: formKey,
                       child: Column(
                         children: [
                           Padding(
-                            padding: CommonTheme.verticalPadding,
-                            child: ThemedTextFormFiled(
+                            padding: Paddings.vertical20,
+                            child: ThemedTextFormField(
                               key: const Key('sign-up-screen-email-text-field'),
                               autofocus: true,
                               validator: (email) => context
@@ -102,7 +102,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: CommonTheme.paddingAll,
+                    padding: Paddings.all20,
                     child: BlocBuilder<SignUpFormCubit, SignUpFormState>(
                       buildWhen: (previous, current) => previous != current,
                       builder: (context, state) => Column(
@@ -143,7 +143,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: CommonTheme.paddingAll,
+                    padding: Paddings.all20,
                     child: Column(
                       children: [
                         SizedBox(

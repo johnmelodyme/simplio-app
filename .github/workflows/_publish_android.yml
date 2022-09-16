@@ -21,6 +21,11 @@ on:
         default: 'dev'
         required: true
         type: string
+      testBuild:
+        description: 'Boolean value which triggers only building the application without publishing'
+        default: true
+        required: true
+        type: boolean
       major:
         required: false
         type: string
@@ -82,6 +87,7 @@ jobs:
         run: flutter build appbundle --release --flavor dev --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }} --dart-define=API_KEY=${{ secrets.DART_DEFINE_API_KEY_DEV }}
 
       - name: Run Fastlane
+        if: ${{ inputs.testBuild == false }}
         uses: maierj/fastlane-action@v2.2.0
         with:
           lane: build_and_deploy

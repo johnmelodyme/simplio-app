@@ -1,7 +1,7 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 
 class CryptoAssetExpansionList extends StatelessWidget {
   final List<CryptoAssetData> children;
@@ -27,7 +27,7 @@ class CryptoAssetExpansionList extends StatelessWidget {
             canTapOnHeader: true,
             headerBuilder: (context, _) {
               return Padding(
-                padding: CommonTheme.verticalPadding,
+                padding: Paddings.vertical20,
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: asset.style.primaryColor,

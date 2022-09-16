@@ -8,7 +8,7 @@ import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/headline_text.dart';
 
 class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
@@ -23,8 +23,9 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
 
   @override
   Widget build(BuildContext context) {
-    AssetWallet? assetWallet = getAssetWallet(context, assetId!);
-    NetworkWallet? networkWallet = getNetwork(context, assetId!, networkId!);
+    final AssetWallet? assetWallet = getAssetWallet(context, assetId!);
+    final NetworkWallet? networkWallet =
+        getNetwork(context, assetId!, networkId!);
 
     return BlocBuilder<AccountWalletCubit, AccountWalletState>(
       builder: (context, state) {
@@ -41,9 +42,9 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
           throw Exception('No Network Provided');
         }
 
-        var address = getAddress(context, assetId!, networkId) ?? '';
-        var assetDetail = Assets.getAssetDetail(assetWallet.assetId);
-        var networkDetail = Assets.getNetworkDetail(networkWallet.networkId);
+        final address = getAddress(context, assetId!, networkId) ?? '';
+        final assetDetail = Assets.getAssetDetail(assetWallet.assetId);
+        final networkDetail = Assets.getNetworkDetail(networkWallet.networkId);
 
         return Scaffold(
           appBar: AppBar(
@@ -58,7 +59,7 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
-                    padding: CommonTheme.bottomPadding,
+                    padding: Paddings.bottom20,
                     child: Text(
                       '(${networkDetail.name} ${context.locale.asset_receive_screen_network})',
                       textAlign: TextAlign.center,
@@ -70,11 +71,11 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                     color: assetDetail.style.primaryColor,
                   ),
                   Padding(
-                    padding: CommonTheme.verticalPadding,
+                    padding: Paddings.vertical20,
                     child: FractionallySizedBox(
                       widthFactor: 0.7,
                       child: ClipRRect(
-                        borderRadius: CommonTheme.buttonBorderRadius,
+                        borderRadius: BorderRadiuses.radius6,
                         child: QrImage(
                           data: address,
                           foregroundColor:
@@ -86,24 +87,25 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                     ),
                   ),
                   Padding(
-                    padding: CommonTheme.verticalPadding,
+                    padding: Paddings.vertical20,
                     child: Text(
-                      'Your ${assetDetail.name} address',
+                      context.locale.asset_receive_screen_your_crypto_address(
+                          assetDetail.name),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   Padding(
-                    padding: CommonTheme.horizontalPadding,
+                    padding: Paddings.horizontal20,
                     child: GestureDetector(
                         onTap: () {
                           Clipboard.setData(ClipboardData(text: address));
                           // todo: add notification for the user when the snackbar task is done
                         },
                         child: Container(
-                          padding: CommonTheme.paddingAll,
+                          padding: Paddings.all20,
                           decoration: BoxDecoration(
                             color: Theme.of(context).highlightColor,
-                            borderRadius: CommonTheme.borderRadius,
+                            borderRadius: BorderRadiuses.radius12,
                           ),
                           child: Row(
                             children: [
@@ -119,7 +121,7 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                                 ),
                               ),
                               Padding(
-                                padding: CommonTheme.leftPadding,
+                                padding: Paddings.left10,
                                 child: Icon(
                                   Icons.copy_outlined,
                                   color:

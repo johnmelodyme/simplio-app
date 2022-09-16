@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 
 class BorderedElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -17,7 +17,7 @@ class BorderedElevatedButton extends StatelessWidget {
                   : Theme.of(context).colorScheme.primary),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: CommonTheme.buttonBorderRadius,
+              borderRadius: BorderRadiuses.radius6,
               side: BorderSide(
                 color: Theme.of(context).colorScheme.onPrimary,
               ),

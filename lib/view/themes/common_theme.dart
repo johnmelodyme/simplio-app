@@ -1,35 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 
 class CommonTheme {
   CommonTheme._();
 
   static String get fontFamily => 'Karla';
 
-  static BorderRadius get borderRadius =>
-      const BorderRadius.all(Radius.circular(12));
-
-  static BorderRadius get buttonBorderRadius =>
-      const BorderRadius.all(Radius.circular(6));
-
   static EdgeInsetsGeometry get padding =>
       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0);
 
-  static EdgeInsetsGeometry get rightPadding =>
-      const EdgeInsets.only(right: 10.0);
-
-  static EdgeInsetsGeometry get leftPadding =>
-      const EdgeInsets.only(left: 10.0);
-
-  static EdgeInsetsGeometry get horizontalPadding =>
-      const EdgeInsets.symmetric(horizontal: 20.0);
-
-  static EdgeInsetsGeometry get verticalPadding =>
-      const EdgeInsets.symmetric(vertical: 20.0);
-
-  static EdgeInsetsGeometry get bottomPadding =>
-      const EdgeInsets.only(bottom: 20.0);
-
-  static EdgeInsetsGeometry get paddingAll => const EdgeInsets.all(20.0);
+  static EdgeInsetsGeometry get leftTopRightPadding =>
+      const EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0);
 
   static InputBorder get outlineBorder => OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -61,8 +42,7 @@ class CommonTheme {
       focusedBorder: outlineBorder,
       errorBorder: outlineBorder,
       focusedErrorBorder: outlineBorder,
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 0.0, horizontal: 18.0),
+      contentPadding: Paddings.horizontal20,
     ),
   );
 }

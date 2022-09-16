@@ -91,6 +91,19 @@ class Paddings {
   static const EdgeInsetsGeometry all48 = EdgeInsets.all(Dimensions.padding48);
 }
 
+class BorderRadiuses {
+  static BorderRadius radius6 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius6));
+  static BorderRadius radius12 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius12));
+  static BorderRadius radius20 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius20));
+  static BorderRadius radius50 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius50));
+  static BorderRadius radius64 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius64));
+}
+
 class Dimensions {
   static const double padding2 = 2;
   static const double padding4 = 4;
@@ -104,7 +117,9 @@ class Dimensions {
 }
 
 class RadiusSize {
+  static const double radius6 = 6;
   static const double radius10 = 10;
+  static const double radius12 = 12;
   static const double radius20 = 20;
   static const double radius50 = 50;
   static const double radius64 = 64;

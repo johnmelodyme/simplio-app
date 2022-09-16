@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/headline_text.dart';
 
 class AccountSetupSuccessScreen extends StatelessWidget {
@@ -19,14 +19,14 @@ class AccountSetupSuccessScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: CommonTheme.paddingAll,
+                padding: Paddings.all20,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     HeadlineText(context.locale
                         .account_setup_success_screen_account_created_label),
                     Padding(
-                      padding: CommonTheme.verticalPadding,
+                      padding: Paddings.vertical20,
                       child: Text(context.locale
                           .account_setup_success_screen_account_created_description_label),
                     ),

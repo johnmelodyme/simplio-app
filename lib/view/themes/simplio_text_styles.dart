@@ -6,8 +6,6 @@ class SioTextStyles {
   static const String _fontFamilyBody = "Karla";
   static const String _fontFamilySubtitle = "Karla";
 
-  //static const TextStyle genericTextStyle = TextStyle(color: SioColors.whiteBlue);
-
   static TextStyle buttonStyle = const TextStyle(
     fontFamily: _fontFamilyButton,
     fontWeight: FontWeight.w600,

@@ -5,7 +5,7 @@ import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_verify_form/pin_verify_cubit.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/pin_digits.dart';
 
@@ -90,7 +90,7 @@ class _Protection extends StatelessWidget {
                 children: [
                   Text(context.locale.protected_guard_enter_pin_code),
                   Padding(
-                    padding: CommonTheme.verticalPadding,
+                    padding: Paddings.vertical20,
                     child: BlocConsumer<PinVerifyFormCubit, PinVerifyFormState>(
                       listenWhen: (p, c) => p.response != c.response,
                       listener: (context, state) {

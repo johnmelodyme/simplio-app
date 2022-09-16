@@ -64,6 +64,12 @@ class AccountWallet extends Equatable {
     return _wallets.containsKey(assetId);
   }
 
+  String? getAddress(int assetId, int? networkAssetId) {
+    return networkAssetId == null
+        ? getWallet(assetId)?.getWallet(assetId)?.address
+        : getWallet(assetId)?.getWallet(networkAssetId)?.address;
+  }
+
   AccountWallet copyWith({
     DateTime? updatedAt,
     LockableMnemonic? mnemonic,

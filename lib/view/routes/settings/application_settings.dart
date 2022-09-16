@@ -11,6 +11,10 @@ class ApplicationSettings extends RouteSettings {
   const ApplicationSettings({
     this.tabBar,
   });
+
+  const ApplicationSettings.hiddenTabBar({
+    this.tabBar = const TabBarRouteSettings(isVisible: false),
+  });
 }
 
 class ApplicationArguments {
@@ -22,11 +26,11 @@ class ApplicationArguments {
 }
 
 class TabBarRouteSettings {
-  final Key selectedKey;
+  final Key? selectedKey;
   final bool isVisible;
 
-  TabBarRouteSettings({
-    required this.selectedKey,
+  const TabBarRouteSettings({
+    this.selectedKey,
     this.isVisible = true,
   });
 }

@@ -63,6 +63,19 @@ platform :ios do
   end
 
   lane :build_and_deploy do
+    build()
+
+    pilot(
+      apple_id: "#{CONFIG_DEVELOPER_APP_ID}",
+      app_identifier: "#{CONFIG_DEVELOPER_APP_IDENTIFIER}",
+      skip_waiting_for_build_processing: true,
+      skip_submission: true,
+    )
+
+    delete_temp_keychain(keychain_name)
+  end
+
+  lane :build do
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD
     ensure_temp_keychain(keychain_name, keychain_password)
@@ -89,13 +102,6 @@ platform :ios do
             DEVELOPER_APP_ID => PROVISIONING_PROFILE_SPECIFIER,
         }
       }
-    )
-
-    pilot(
-      apple_id: "#{CONFIG_DEVELOPER_APP_ID}",
-      app_identifier: "#{CONFIG_DEVELOPER_APP_IDENTIFIER}",
-      skip_waiting_for_build_processing: true,
-      skip_submission: true,
     )
 
     delete_temp_keychain(keychain_name)

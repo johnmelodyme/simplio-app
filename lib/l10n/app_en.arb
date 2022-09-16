@@ -16,6 +16,12 @@
   "common_submit_btn_label":"Submit",
   "common_email_validation_error":"Please enter valid email address",
   "common_password_validation_error":"Please enter valid password",
+  "common_priority_low":"Low",
+  "common_priority_normal":"Normal",
+  "common_priority_high":"High",
+  "common_min_label_uc": "MIN",
+  "common_max_label_uc": "MAX",
+  "common_done": "Done",
 
   "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
@@ -52,7 +58,7 @@
 
     "inventory_tab_coins": "Coins",
     "inventory_tab_nft": "NFT",
-    "inventory_tab_transactions": "Transacions",
+    "inventory_tab_transactions": "Transactions",
 
     "sign_in_screen_title": "Enter Simplio.",
     "sign_in_screen_subtitle": "It's good to see you back.",
@@ -62,11 +68,11 @@
 
     "sign_up_screen_create_new_account_title":"Create a new account",
     "sign_up_screen_create_account_btn_label":"Create account",
-    
+
     "password_change_screen_new_password_input_label":"New password",
     "password_change_screen_old_password_input_label":"Old password",
     "password_change_change_password_page_title":"Change password",
-  
+
     "password_reset_screen_forgot_password_label": "Forgot password",
 
     "pin_setup_screen_account_creation_before_pin_setup":"Done! \n One last thing to do",
@@ -83,7 +89,43 @@
 
     "asset_receive_screen_receive_coins_btn": "Receive",
     "asset_receive_screen_network": "Network",
+
     "asset_send_screen_send_coins_btn": "Send",
+    "asset_send_screen_send_to_label": "Send to",
+    "asset_send_screen_total_to_send": "Total to send",
+    "asset_send_screen_what_you_send_label": "What you send",
+    "asset_send_screen_summary_btn_label": "Transaction summary",
+
+    "asset_screens_address_copied": "Address copied!",
+
+    "asset_send_summary_screen_transaction_summary_headline_first": "Transaction",
+    "asset_send_summary_screen_transaction_summary_headline_second": "Summary",
+    "asset_send_summary_screen_transaction_summary_amount_to_send": "Amount to send",
+    "asset_send_summary_screen_transaction_includes_fees_warning": "The transaction includes fees.",
+
+    "asset_send_success_screen_transaction_success":"Done!\nYour transaction\nis in process.",
+    "asset_send_success_screen_transaction_success_option":"or view transaction details",
+
+    "asset_send_summary_screen_transaction_fee":"Fee",
+    "asset_send_summary_screen_set_transaction_priority": "Set Priority",
+
+    "asset_receive_screen_your_crypto_address": "Your {crypto} address",
+    "@asset_receive_screen_your_crypto_address": {
+       "placeholders": {
+          "crypto": {
+             "type": "String"
+          }
+       }
+    },
+    "asset_receive_screen_crypto_chain": "{crypto} chain",
+    "@asset_receive_screen_crypto_chain": {
+       "placeholders": {
+          "crypto": {
+             "type": "String"
+          }
+       }
+    },
+    "asset_send_summary_screen_swipe_up_button_label":"Swipe up to confirm",
 
     "qr_code_scanner_screen_connect_title": "Connect",
     "qr_code_scanner_screen_wallet_title": "wallet"

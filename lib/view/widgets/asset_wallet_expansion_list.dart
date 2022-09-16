@@ -88,7 +88,7 @@ class AssetWalletExpansionList extends StatelessWidget {
                 return InkWell(
                   onTap: () {
                     GoRouter.of(context)
-                        .goNamed(AuthenticatedRouter.assetReceive, params: {
+                        .goNamed(AuthenticatedRouter.assetDetail, params: {
                       'assetId': a.assetId.toString(),
                       'networkId': n.networkId.toString(),
                     });

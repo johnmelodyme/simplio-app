@@ -355,8 +355,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 46512FBBD0B5F67C734D44A7 /* Pods-Runner.profile.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				DEVELOPMENT_TEAM = 6KCD6N7FF3;
 				ENABLE_BITCODE = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.simplio.wallet;
 				PRODUCT_NAME = Runner;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore dev.simplio.wallet";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Profile;
@@ -558,19 +562,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = 6KCD6N7FF3;
+				DEVELOPMENT_TEAM = LY63MKBQQ8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dev.simplio.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.simplio.wallet.local;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore dev.simplio.wallet";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

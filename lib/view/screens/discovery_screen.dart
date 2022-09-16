@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/themes/common_theme.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/avatar_app_bar.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
@@ -42,7 +41,7 @@ class DiscoveryScreen extends StatelessWidget {
                 Material(
                   color: Theme.of(context).colorScheme.secondary,
                   shape: RoundedRectangleBorder(
-                    borderRadius: CommonTheme.borderRadius,
+                    borderRadius: BorderRadiuses.radius12,
                     side: BorderSide(
                       width: 1,
                       color: Theme.of(context).colorScheme.secondary,
@@ -56,7 +55,7 @@ class DiscoveryScreen extends StatelessWidget {
                     child: SizedBox(
                       height: 200,
                       child: Padding(
-                        padding: CommonTheme.paddingAll,
+                        padding: Paddings.all20,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

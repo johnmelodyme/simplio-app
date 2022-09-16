@@ -3,7 +3,6 @@ import 'package:simplio_app/view/themes/common_theme.dart';
 
 class LightMode {
   LightMode._();
-
   static ColorScheme get colorScheme => const ColorScheme(
       brightness: Brightness.light,
       primary: Colors.white,

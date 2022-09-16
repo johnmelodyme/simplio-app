@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const _keypadButtonDefaultSize = Size(60.0, 60.0);
+const _keypadButtonDefaultSize = Size(100.0, 60.0);
 
 class KeypadItem extends StatelessWidget {
   const KeypadItem({
@@ -23,10 +23,25 @@ class KeypadItem extends StatelessWidget {
     );
   }
 
+  factory KeypadItem.decimal({
+    key,
+    required VoidCallback onTap,
+    bool? isCircular,
+    Size? size,
+  }) {
+    return _ActionButton(
+      key: key,
+      content: const Text('.', style: TextStyle(fontSize: 32)),
+      actionButtonType: ActionButtonType.flat,
+      onTap: onTap,
+      isCircular: isCircular ?? true,
+      size: size ?? _keypadButtonDefaultSize,
+    );
+  }
+
   factory KeypadItem.action({
     key,
-    String? label,
-    IconData? icon,
+    required Icon content,
     ActionButtonType? actionType,
     required VoidCallback onTap,
     bool? isCircular,
@@ -34,8 +49,7 @@ class KeypadItem extends StatelessWidget {
   }) {
     return _ActionButton(
       key: key,
-      label: label ?? 'Action',
-      icon: icon,
+      content: content,
       actionButtonType: actionType ?? ActionButtonType.flat,
       onTap: onTap,
       isCircular: isCircular ?? true,
@@ -98,8 +112,7 @@ enum ActionButtonType {
 }
 
 class _ActionButton extends KeypadItem {
-  final String label;
-  final IconData? icon;
+  final Widget content;
   final Size size;
   final ActionButtonType actionButtonType;
   final VoidCallback onTap;
@@ -107,8 +120,7 @@ class _ActionButton extends KeypadItem {
 
   const _ActionButton({
     super.key,
-    required this.label,
-    this.icon,
+    required this.content,
     required this.size,
     required this.actionButtonType,
     required this.onTap,
@@ -117,11 +129,6 @@ class _ActionButton extends KeypadItem {
 
   @override
   Widget build(BuildContext context) {
-    final th = Theme.of(context);
-    final Widget child = icon != null
-        ? Icon(icon, color: th.textTheme.titleMedium?.color)
-        : Text(label);
-
     final CircleBorder? shape = isCircular ? const CircleBorder() : null;
 
     final Widget flatBody = SizedBox(
@@ -131,7 +138,7 @@ class _ActionButton extends KeypadItem {
         onTap: onTap,
         customBorder: shape,
         child: Center(
-          child: child,
+          child: content,
         ),
       ),
     );
@@ -142,7 +149,7 @@ class _ActionButton extends KeypadItem {
       child: ElevatedButton(
         onPressed: onTap,
         child: Center(
-          child: child,
+          child: content,
         ),
       ),
     );
