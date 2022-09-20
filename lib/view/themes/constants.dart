@@ -35,6 +35,8 @@ class Paddings {
       EdgeInsets.only(top: Dimensions.padding10);
   static const EdgeInsetsGeometry top20 =
       EdgeInsets.only(top: Dimensions.padding20);
+  static const EdgeInsetsGeometry top30 =
+      EdgeInsets.only(top: Dimensions.padding30);
   static const EdgeInsetsGeometry top32 =
       EdgeInsets.only(top: Dimensions.padding32);
   static const EdgeInsetsGeometry top48 =
@@ -53,6 +55,8 @@ class Paddings {
   static const EdgeInsetsGeometry bottom48 =
       EdgeInsets.only(bottom: Dimensions.padding48);
 
+  static const EdgeInsetsGeometry horizontal4 =
+      EdgeInsets.symmetric(horizontal: Dimensions.padding4);
   static const EdgeInsetsGeometry horizontal5 =
       EdgeInsets.symmetric(horizontal: Dimensions.padding5);
   static const EdgeInsetsGeometry horizontal8 =
@@ -68,6 +72,8 @@ class Paddings {
   static const EdgeInsetsGeometry horizontal48 =
       EdgeInsets.symmetric(horizontal: Dimensions.padding48);
 
+  static const EdgeInsetsGeometry vertical4 =
+      EdgeInsets.symmetric(vertical: Dimensions.padding4);
   static const EdgeInsetsGeometry vertical5 =
       EdgeInsets.symmetric(vertical: Dimensions.padding5);
   static const EdgeInsetsGeometry vertical8 =
@@ -86,6 +92,7 @@ class Paddings {
   static const EdgeInsetsGeometry all5 = EdgeInsets.all(Dimensions.padding5);
   static const EdgeInsetsGeometry all8 = EdgeInsets.all(Dimensions.padding8);
   static const EdgeInsetsGeometry all10 = EdgeInsets.all(Dimensions.padding10);
+  static const EdgeInsetsGeometry all16 = EdgeInsets.all(Dimensions.padding16);
   static const EdgeInsetsGeometry all20 = EdgeInsets.all(Dimensions.padding20);
   static const EdgeInsetsGeometry all32 = EdgeInsets.all(Dimensions.padding32);
   static const EdgeInsetsGeometry all48 = EdgeInsets.all(Dimensions.padding48);
@@ -96,8 +103,12 @@ class BorderRadiuses {
       const BorderRadius.all(Radius.circular(RadiusSize.radius6));
   static BorderRadius radius12 =
       const BorderRadius.all(Radius.circular(RadiusSize.radius12));
+  static BorderRadius radius15 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius15));
   static BorderRadius radius20 =
       const BorderRadius.all(Radius.circular(RadiusSize.radius20));
+  static BorderRadius radius30 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius30));
   static BorderRadius radius50 =
       const BorderRadius.all(Radius.circular(RadiusSize.radius50));
   static BorderRadius radius64 =
@@ -112,6 +123,7 @@ class Dimensions {
   static const double padding10 = 10;
   static const double padding16 = 16;
   static const double padding20 = 20;
+  static const double padding30 = 30;
   static const double padding32 = 32;
   static const double padding48 = 48;
 }
@@ -120,9 +132,13 @@ class RadiusSize {
   static const double radius6 = 6;
   static const double radius10 = 10;
   static const double radius12 = 12;
+  static const double radius15 = 15;
   static const double radius20 = 20;
+  static const double radius30 = 30;
   static const double radius50 = 50;
   static const double radius64 = 64;
+  static const double radius140 = 140;
+  static const double radius186 = 186;
 }
 
 class Constants {
@@ -130,6 +146,9 @@ class Constants {
   static const double bottomTabBarHeight = 56;
   static const double navigationTabBarHeight = 45;
   static const double searchBarHeight = 42;
+  static const double buttonHeight = 45;
+  static const double earningButtonHeight = 49;
+  static const double coinsBottomTabBarHeight = 131;
 
   static const pageSizeTransactions = 7;
 }

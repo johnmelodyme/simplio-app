@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/widgets/bottom_tab_bar_container.dart';
 import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 
 class BottomTabBar extends StatelessWidget {
@@ -24,7 +23,7 @@ class BottomTabBar extends StatelessWidget {
     this.height = Constants.bottomTabBarHeight,
     this.floatingActionButtonOffset = 20,
     this.elevation = 20.0,
-    this.borderRadius = 20.0,
+    this.borderRadius = RadiusSize.radius20,
     this.spacerRatio = 2,
     this.showLabel = true,
   })  : assert(items.length <= 5),
@@ -33,70 +32,48 @@ class BottomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final double bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(borderRadius),
-          topRight: Radius.circular(borderRadius)),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          height: height + bottomPadding,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
-                Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
-              ],
+    return BottomTabBarContainer(
+      height: height,
+      borderRadius: borderRadius,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        clipBehavior: Clip.none,
+        children: [
+          SizedBox(
+            height: height,
+            child: Builder(
+              builder: (context) {
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: items.map((e) {
+                      if (e.tabBarItemType == TabItemType.spacer) {
+                        return Expanded(
+                          key: UniqueKey(),
+                          flex: 1,
+                          child: const SizedBox.shrink(),
+                        );
+                      }
+
+                      return Expanded(
+                          key: e.key,
+                          flex: spacerRatio,
+                          child: _TabBarItem(
+                              isActive: activeItem == e.key,
+                              tabBarItem: e,
+                              selectedColor: e.selectedColor,
+                              unselectedColor: theme.bottomNavigationBarTheme
+                                  .unselectedItemColor!));
+                    }).toList());
+              },
             ),
           ),
-          child: Padding(
-            padding: EdgeInsets.only(bottom: bottomPadding),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              clipBehavior: Clip.none,
-              children: [
-                SizedBox(
-                  height: height,
-                  child: Builder(
-                    builder: (context) {
-                      return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: items.map((e) {
-                            if (e.tabBarItemType == TabItemType.spacer) {
-                              return Expanded(
-                                key: UniqueKey(),
-                                flex: 1,
-                                child: const SizedBox.shrink(),
-                              );
-                            }
-
-                            return Expanded(
-                                key: e.key,
-                                flex: spacerRatio,
-                                child: _TabBarItem(
-                                    isActive: activeItem == e.key,
-                                    tabBarItem: e,
-                                    selectedColor: e.selectedColor,
-                                    unselectedColor: theme
-                                        .bottomNavigationBarTheme
-                                        .unselectedItemColor!));
-                          }).toList());
-                    },
-                  ),
-                ),
-                if (floatingActionButton != null)
-                  Positioned(
-                    top: 0,
-                    child: floatingActionButton!,
-                  ),
-              ],
+          if (floatingActionButton != null)
+            Positioned(
+              top: 0,
+              child: floatingActionButton!,
             ),
-          ),
-        ),
+        ],
       ),
     );
   }

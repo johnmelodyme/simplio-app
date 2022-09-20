@@ -3,12 +3,13 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
 class ColorizedAppBar extends StatelessWidget {
-  const ColorizedAppBar(
-      {super.key,
-      required this.firstPart,
-      required this.secondPart,
-      this.actionType = ActionType.back,
-      this.onBackTap});
+  const ColorizedAppBar({
+    Key? key,
+    required this.firstPart,
+    required this.secondPart,
+    this.actionType = ActionType.back,
+    this.onBackTap,
+  }) : super(key: key);
 
   final String firstPart;
   final String secondPart;
@@ -49,14 +50,14 @@ class ColorizedAppBar extends StatelessWidget {
                       TextSpan(
                         text: '$firstPart ',
                         style: SioTextStyles.h4.apply(
-                          color: const Color(0xFFF1F7FA),
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                       TextSpan(
                         text: secondPart,
                         style: SioTextStyles.h4.apply(
-                          color: Theme.of(context).colorScheme.inverseSurface,
-                        ),
+                            color:
+                                Theme.of(context).colorScheme.inverseSurface),
                       ),
                     ],
                   ),

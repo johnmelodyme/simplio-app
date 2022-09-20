@@ -1,14 +1,18 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
-import 'package:simplio_app/view/widgets/body_text.dart';
+import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/coin_detail_balance.dart';
+import 'package:simplio_app/view/widgets/coin_details_menu.dart';
+import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
+import 'package:simplio_app/view/widgets/transactions_content.dart';
+import 'package:simplio_app/view/widgets/two_lines_app_bar.dart';
 
-// todo: dummy page which will be redesigned later together with unlocalized strings
 class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
   final String? assetId;
   final String? networkId;
@@ -21,6 +25,9 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
 
   @override
   Widget build(BuildContext context) {
+    final bottomGap = MediaQuery.of(context).viewPadding.bottom +
+        Constants.coinsBottomTabBarHeight;
+
     final AssetWallet? assetWallet = getAssetWallet(context, assetId!);
     final NetworkWallet? networkWallet =
         getNetwork(context, assetId!, networkId!);
@@ -35,59 +42,87 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
 
     final assetDetail = Assets.getAssetDetail(assetWallet.assetId);
     final networkDetail = Assets.getNetworkDetail(networkWallet.networkId);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detail'),
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // todo: do not forget to replace this with correct localized string
-                BodyText('${assetDetail.name} on ${networkDetail.name} network')
+
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.center,
+              colors: [
+                Theme.of(context).colorScheme.onPrimaryContainer,
+                Theme.of(context).colorScheme.background,
               ],
-            )
-          ],
+            ),
+          ),
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: FixedHeightItemDelegate(
+                  fixedHeight: Constants.appBarHeight +
+                      MediaQuery.of(context).viewPadding.top,
+                  child: TwoLinesAppBar(
+                    firstPart: networkDetail.name,
+                    secondPart: networkDetail.ticker,
+                    onBackTap: () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: Paddings.horizontal16,
+                sliver: SliverToBoxAdapter(
+                  child: CoinDetailBalance(
+                    assetDetail: assetDetail,
+                    networkWallet: networkWallet,
+                  ),
+                ),
+              ),
+              const SliverGap(Dimensions.padding16),
+              const TransactionsContent(),
+              SliverGap(bottomGap)
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              GoRouter.of(context).pushNamed(
-                AuthenticatedRouter.assetSend,
-                params: {
-                  'assetId': assetId!,
-                  'networkId': networkId!,
-                },
-              );
-              break;
-            case 1:
-              GoRouter.of(context).pushNamed(
-                AuthenticatedRouter.assetReceive,
-                params: {
-                  'assetId': assetId!,
-                  'networkId': networkId!,
-                },
-              );
-              break;
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.send),
-            label: context.locale.asset_send_screen_send_coins_btn,
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: CoinDetailsMenu(
+            onActionCallback: (actionType) {
+              switch (actionType) {
+                case ActionType.buy:
+                  // TODO: Handle this case.
+                  break;
+                case ActionType.exchange:
+                  // TODO: Handle this case.
+                  break;
+                case ActionType.receive:
+                  GoRouter.of(context).pushNamed(
+                    AuthenticatedRouter.assetReceive,
+                    params: {
+                      'assetId': assetId!,
+                      'networkId': networkId!,
+                    },
+                  );
+                  break;
+                case ActionType.send:
+                  GoRouter.of(context).pushNamed(
+                    AuthenticatedRouter.assetSend,
+                    params: {
+                      'assetId': assetId!,
+                      'networkId': networkId!,
+                    },
+                  );
+                  break;
+                case ActionType.earn:
+                  // TODO: Handle this case.
+                  break;
+              }
+            },
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.get_app),
-            label: context.locale.asset_receive_screen_receive_coins_btn,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -7,9 +7,9 @@ abstract class SioColors {
 
   static const black = Color(0xFF292E32);
   static const backGradient4Start = Color(0xFF062333);
-  static const background = Color(0xFF031017);
+  static const softBlack = Color(0xFF031017);
   static const secondary0 = Color(0xFF343A3F);
-  static const secondary1 = Color(0xFF3A4045);
+  static const secondary1 = Color(0xFF041721);
   static const secondary2 = Color(0xFF061F2E);
   static const secondary4 = Color(0xFF194963);
   static const secondary5 = Color(0xFF43738F);
@@ -27,7 +27,7 @@ abstract class SioColors {
   static const coins = Color(0xFFFFA02C);
   static const nft = Color(0xFFBC88FF);
   static const games = Color(0xFF2AE4F0);
-  static const earning = Color(0XFFFF6666);
+  static const earningStart = Color(0XFFFFE454);
 
   static const appBarStartColor = Color(0xFF0C2639);
   static const appBarEndColor = Color(0xFF101E2E);

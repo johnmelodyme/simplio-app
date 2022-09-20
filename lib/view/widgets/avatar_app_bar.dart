@@ -23,7 +23,7 @@ class AvatarAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Padding(
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).viewPadding.top,

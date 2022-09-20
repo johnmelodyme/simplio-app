@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
 class EmptyListPlaceholder extends StatelessWidget {
@@ -16,19 +17,44 @@ class EmptyListPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-            width: width,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-                spreadRadius: width / 6,
-                blurRadius: width / 4,
-                offset: const Offset(1, 1),
+        Stack(children: [
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                height: 105,
+                width: 105,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(
+                      Radius.circular(RadiusSize.radius186)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withOpacity(0.1),
+                      spreadRadius: RadiusSize.radius186 / 2,
+                      blurRadius: RadiusSize.radius186,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                ),
               ),
-            ]),
-            child: child),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: width,
+              child: Container(
+                child: child,
+              ),
+            ),
+          ),
+        ]),
         if (label?.isNotEmpty == true) ...{
           Text(
             label!,

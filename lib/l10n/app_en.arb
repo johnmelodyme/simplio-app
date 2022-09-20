@@ -128,5 +128,31 @@
     "asset_send_summary_screen_swipe_up_button_label":"Swipe up to confirm",
 
     "qr_code_scanner_screen_connect_title": "Connect",
-    "qr_code_scanner_screen_wallet_title": "wallet"
+    "qr_code_scanner_screen_wallet_title": "wallet",
+
+
+    "coin_detail_screen_add_to_inventory_button": "Add to Inventory",
+    "coin_detail_screen_remove_from_inventory_button": "Remove from Inventory",
+    "coin_detail_screen_start_earning_label": "Start Earning",
+    "coin_detail_screen_earning_label": "Earning",
+    "coin_detail_screen_apy_percentage" : "from {percentage} % APY",
+    "@coin_detail_screen_apy_percentage" : {
+        "description" : "Percentage of APY",
+        "placeholders": {
+            "percentage": {}
+        }
+    },
+    "coin_detail_screen_earning_last_week_increment": "+ ${increment} last week",
+    "@coin_detail_screen_earning_last_week_increment" : {
+        "description" : "Last week increment",
+        "placeholders": {
+            "increment": {}
+        }
+    },
+    "coin_detail_screen_menu_buy" : "Buy",
+    "coin_detail_screen_menu_exchange" : "Exchange",
+    "coin_detail_screen_menu_receive" : "Receive",
+    "coin_detail_screen_menu_send" : "Send",
+    "coin_detail_screen_menu_earn" : "Earn"
+
 }
