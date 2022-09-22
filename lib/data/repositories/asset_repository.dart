@@ -1,9 +1,22 @@
 import 'package:simplio_app/data/http/services/asset_service.dart';
 import 'package:simplio_app/data/providers/memory_cache_provider.dart';
+import 'package:sio_core_light/sio_core_light.dart' as sio;
 
 const _cacheLifetimeInSeconds = 10;
 
 class AssetRepository {
+  static int assetId({required int networkId}) {
+    return sio.Networks.assetId(networkId: networkId);
+  }
+
+  static int chainId({required int networkId}) {
+    return sio.EthNetworks.chainId(networkId: networkId);
+  }
+
+  static int networkId({required int chainId}) {
+    return sio.EthNetworks.networkId(chainId: chainId);
+  }
+
   final AssetService _assetService;
 
   final MemoryCacheProvider<List<CryptoAssetData>> _cryptoDataCache;

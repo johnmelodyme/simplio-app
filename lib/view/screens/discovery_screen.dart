@@ -18,9 +18,14 @@ class DiscoveryScreen extends StatelessWidget {
           delegate: FixedHeightItemDelegate(
             fixedHeight:
                 Constants.appBarHeight + MediaQuery.of(context).viewPadding.top,
-            child: const AvatarAppBar(
+            child: AvatarAppBar(
               title: 'Nickname',
               userLevel: 1,
+              onTap: () {
+                GoRouter.of(context).pushNamed(
+                  AuthenticatedRouter.configuration,
+                );
+              },
             ),
           ),
         ),

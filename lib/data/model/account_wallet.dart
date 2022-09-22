@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
-import 'package:simplio_app/data/model/lockable_string.dart';
+import 'package:simplio_app/data/model/helpers/lockable_string.dart';
 import 'package:uuid/uuid.dart';
 
 part 'account_wallet.g.dart';

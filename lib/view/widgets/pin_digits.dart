@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:simplio_app/data/model/validated_pin.dart';
+import 'package:simplio_app/data/model/helpers/validated_pin.dart';
 
 enum PinDigitStyle { hideAllExceptLast, hideAllAfterTime, showAll }
 

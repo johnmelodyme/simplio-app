@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
@@ -9,7 +11,7 @@ import 'package:simplio_app/view/widgets/qr_code_horizontal_line_animation.dart'
 import 'package:simplio_app/view/widgets/qr_code_mask.dart';
 import 'package:simplio_app/view/widgets/qr_code_mask_painter.dart';
 import 'package:simplio_app/view/widgets/qr_code_scanner.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QrCodeScannerScreen extends StatefulWidget {
   const QrCodeScannerScreen({
@@ -56,13 +58,13 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
                           color: SioColors.secondary5,
                           child: QrCodeScanner(
                             qrCodeCallback: (String value) async {
-                              try {
-                                await launchUrl(
-                                  Uri.parse(value),
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              } catch (e) {
-                                debugPrint('Couldn\'t open the link: $e');
+                              final s =
+                                  context.read<AccountWalletCubit>().state;
+                              if (s is AccountWalletProvided) {
+                                context.read<WalletConnectCubit>().openSession(
+                                      s.wallet.uuid,
+                                      uri: value,
+                                    );
                               }
 
                               setState(() {

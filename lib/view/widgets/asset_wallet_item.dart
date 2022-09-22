@@ -56,7 +56,7 @@ class AssetWalletItem extends StatelessWidget {
       child: Padding(
         padding: Paddings.horizontal16,
         child: Row(children: [
-          AvatarWithShadov(
+          AvatarWithShadow(
             size: getAvatarSize(),
             child: Container(color: backgroundAvatarColor),
           ),

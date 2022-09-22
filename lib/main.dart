@@ -14,10 +14,12 @@ import 'package:simplio_app/data/http/services/sign_up_service.dart';
 import 'package:simplio_app/data/providers/account_db_provider.dart';
 import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
 import 'package:simplio_app/data/providers/wallet_db_provider.dart';
+import 'package:simplio_app/data/providers/wallet_connect_session_db_provider.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
+import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
@@ -46,6 +48,7 @@ class _SimplioAppState extends State<SimplioApp> {
   late AccountRepository accountRepository;
   late WalletRepository walletRepository;
   late AssetRepository assetRepository;
+  late WalletConnectRepository walletConnectRepository;
   late FeeRepository feeRepository;
   late TransactionRepository transactionRepository;
 
@@ -66,6 +69,7 @@ class _SimplioAppState extends State<SimplioApp> {
         RepositoryProvider.value(value: accountRepository),
         RepositoryProvider.value(value: walletRepository),
         RepositoryProvider.value(value: assetRepository),
+        RepositoryProvider.value(value: walletConnectRepository),
         RepositoryProvider.value(value: feeRepository),
         RepositoryProvider.value(value: transactionRepository),
       ],
@@ -94,10 +98,12 @@ class _SimplioAppState extends State<SimplioApp> {
     final authTokenDbProvider = AuthTokenDbProvider();
     final accountDbProvider = AccountDbProvider();
     final walletDbProvider = WalletDbProvider();
+    final walletConnectSessionDbProvider = WalletConnectSessionDbProvider();
 
     await authTokenDbProvider.init();
     await accountDbProvider.init();
     await walletDbProvider.init();
+    await walletConnectSessionDbProvider.init();
 
     /// Init http client
     const apiUrl = String.fromEnvironment('API_URL');
@@ -127,6 +133,9 @@ class _SimplioAppState extends State<SimplioApp> {
     );
     assetRepository = AssetRepository.builder(
       assetService: securedApi.service<AssetService>(),
+    );
+    walletConnectRepository = WalletConnectRepository(
+      walletConnectSessionDb: walletConnectSessionDbProvider,
     );
     feeRepository = FeeRepository.builder(
       assetService: securedApi.service<AssetService>(),

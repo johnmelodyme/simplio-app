@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/data/model/validated_pin.dart';
+import 'package:simplio_app/data/model/helpers/validated_pin.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';

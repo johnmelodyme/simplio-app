@@ -11,6 +11,7 @@ void main() {
         BigInt.from(10),
       ];
       final feeData = FeeData(
+        gasLimit: BigInt.from(21000),
         unit: 'SATOSHI',
         values: feeValues,
       );
@@ -62,6 +63,7 @@ void main() {
         "'highFee' is null when is not present.",
         () {
           final feeData = FeeData(
+            gasLimit: BigInt.from(21000),
             unit: 'SATOSHI',
             values: [
               BigInt.from(200),

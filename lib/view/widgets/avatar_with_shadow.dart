@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AvatarWithShadov extends StatelessWidget {
-  const AvatarWithShadov({
+class AvatarWithShadow extends StatelessWidget {
+  const AvatarWithShadow({
     Key? key,
     this.child,
     this.size = 41,

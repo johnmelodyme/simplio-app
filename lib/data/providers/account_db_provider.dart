@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
-import 'package:simplio_app/data/model/lockable_string.dart';
+import 'package:simplio_app/data/model/helpers/lockable_string.dart';
 import 'package:simplio_app/data/providers/box_provider.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 

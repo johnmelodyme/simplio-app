@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:simplio_app/data/model/lockable_string.dart';
+import 'package:simplio_app/data/model/helpers/lockable_string.dart';
 import 'package:string_validator/string_validator.dart' as string_validator;
 
 const secretValue = 'secret_value';

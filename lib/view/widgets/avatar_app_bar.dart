@@ -14,74 +14,79 @@ class AvatarAppBar extends StatelessWidget {
     super.key,
     required this.title,
     required this.userLevel,
+    this.onTap,
   });
 
   final String title;
   final int userLevel;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Padding(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).viewPadding.top,
-              bottom: Dimensions.padding20,
-              left: Dimensions.padding16,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AvatarWithShadov(
-                    child: Image.asset(
-                  'assets/icon/profile_avatar_pic.png',
-                  width: 40,
-                  height: 40,
-                )),
-                const Gap(Dimensions.padding10),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: SioTextStyles.h4.apply(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                      const Gap(3),
-                      UserLevelBar(
-                        userLevel:
-                            userLevel, //TODO replace with real user level
-                      ),
-                    ],
+    return GestureDetector(
+      onTap: () => onTap?.call(),
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).viewPadding.top,
+                bottom: Dimensions.padding20,
+                left: Dimensions.padding16,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AvatarWithShadow(
+                      child: Image.asset(
+                    'assets/icon/profile_avatar_pic.png',
+                    width: 40,
+                    height: 40,
+                  )),
+                  const Gap(Dimensions.padding10),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: SioTextStyles.h4.apply(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                        const Gap(3),
+                        UserLevelBar(
+                          userLevel:
+                              userLevel, //TODO replace with real user level
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          GoRouter.of(context)
-                              .pushNamed(AuthenticatedRouter.qrCodeScanner);
-                        },
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            GoRouter.of(context)
+                                .pushNamed(AuthenticatedRouter.qrCodeScanner);
+                          },
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            Icons.qr_code,
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                          )),
+                      IconButton(
+                        onPressed: () {},
                         padding: EdgeInsets.zero,
                         icon: Icon(
-                          Icons.qr_code,
-                          color: Theme.of(context).colorScheme.inverseSurface,
-                        )),
-                    IconButton(
-                      onPressed: () {},
-                      padding: EdgeInsets.zero,
-                      icon: Icon(
-                        Icons.notifications_none,
-                        color: Theme.of(context).colorScheme.surfaceTint,
+                          Icons.notifications_none,
+                          color: Theme.of(context).colorScheme.surfaceTint,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              ],
-            )),
+                    ],
+                  )
+                ],
+              )),
+        ),
       ),
     );
   }

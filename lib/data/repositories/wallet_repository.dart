@@ -105,42 +105,55 @@ class WalletRepository {
     ));
   }
 
-  String getMnemonic() {
+  String getMnemonic(String accountWalletId) {
+    _checkInitializedAccountWallet(accountWalletId);
     return _wallet.mnemonic();
   }
 
-  Future<String> sendTransaction({
-    required int assetId,
+  String getCoinAddress(
+    String accountWalletId, {
     required int networkId,
-    required String amount,
-    required String toAddress,
-    required String feeAmount,
-    required String gasLimit,
-    required String? contractAddress,
-    required int assetDecimals,
+  }) {
+    _checkInitializedAccountWallet(accountWalletId);
+    return _wallet.getAddressForCoin(networkId);
+  }
 
-    // not implemented yet in Backend since they have not implemented
-    // EIP1559 chains yet.
-    // TODO: set this as required after backend provide value. Meanwhile this
-    // is set to 2_000_000_000 wei.
+  Future<WalletTransaction> signTransaction(
+    String accountWalletId, {
+    required int networkId,
+    required String toAddress,
+    required BigInt amount,
+    required BigInt feeAmount,
+    required BigInt gasLimit,
+    required int assetDecimals,
+    String contractAddress = '',
     String maxInclusionFeePerGas = '2000000000',
+    String? data,
   }) async {
-    var rawTransaction = await _getEthereumRawTx(
+    WalletTransaction? transaction;
+
+    transaction ??= await signEthereumTransaction(
+      accountWalletId,
       networkId: networkId,
       amount: amount,
       toAddress: toAddress,
       feeAmount: feeAmount,
       gasLimit: gasLimit,
       contractAddress: contractAddress,
+      maxInclusionFeePerGas: maxInclusionFeePerGas,
+      data: data,
     );
 
-    rawTransaction ??= await _getUtxoRawTx(
-        networkId: networkId,
-        amount: amount,
-        toAddress: toAddress,
-        feeAmount: feeAmount);
+    transaction ??= await _signUtxoTransaction(
+      accountWalletId,
+      networkId: networkId,
+      amount: amount,
+      toAddress: toAddress,
+      feeAmount: feeAmount,
+    );
 
-    rawTransaction ??= await _getSolanaRawTx(
+    transaction ??= await _signSolanaTransaction(
+      accountWalletId,
       networkId: networkId,
       amount: amount,
       toAddress: toAddress,
@@ -149,223 +162,318 @@ class WalletRepository {
       assetDecimals: assetDecimals,
     );
 
-    if (rawTransaction == null) {
+    if (transaction == null) {
       throw Exception('networkId $networkId not supported!');
     }
 
-    // Step3. Broadcast transaction and return Success or Not
-    final broadcastResult =
-        await _broadcastTransaction(networkId, rawTransaction);
-
-    return broadcastResult;
+    return transaction;
   }
 
-  Future<String> _getNonce(int networkId) async {
-    final resp = await _blockchainUtilsService.ethereum(
-        networkId: networkId.toString(),
-        walletAddress: _wallet.getAddressForCoin(networkId));
+  Future<int> _getNonce({
+    required int networkId,
+    required String walletAddress,
+  }) async {
+    final res = await _blockchainUtilsService.ethereum(
+      networkId: networkId.toString(),
+      walletAddress: walletAddress,
+    );
 
-    final respBody = resp.body;
+    final body = res.body;
 
-    if (!resp.isSuccessful || respBody == null) {
+    if (!res.isSuccessful || body == null) {
       throw Exception('Nonce fetching has failed!');
     }
 
-    if (respBody.success == false) {
-      throw Exception(respBody.errorMessage);
+    if (!body.success) {
+      throw Exception(body.errorMessage);
     }
 
-    return respBody.transactionCount!;
+    return int.parse(body.transactionCount ?? '0');
   }
 
-  Future<sio.Transaction?> _getEthereumRawTx({
+  WalletTransaction _makeTransaction({
     required int networkId,
-    required String amount,
-    required String toAddress,
-    required String feeAmount,
-    required String gasLimit,
-    required String? contractAddress,
-    String maxInclusionFeePerGas = '2000000000',
-  }) async {
-    if (sio.ethereumLegacyGroup.contains(networkId) ||
-        sio.ethereumEIP1559Group.contains(networkId)) {
-      // Step1. GetUtils
-      final nonce = await _getNonce(networkId);
+    required sio.Transaction transaction,
+  }) {
+    return WalletTransaction(
+      networkId: networkId,
+      raw: transaction.rawTx,
+    );
+  }
 
-      // Step2. BuildTransaction with sio_core_light
-      if (sio.ethereumLegacyGroup.contains(networkId)) {
-        if (contractAddress == null || contractAddress == '') {
-          return sio.BuildTransaction.ethereumLegacy(
+  Future<WalletTransaction?> signEthereumTransaction(
+    String accountWalletId, {
+    required int networkId,
+    required BigInt amount,
+    required String toAddress,
+    required BigInt feeAmount,
+    required BigInt gasLimit,
+    String contractAddress = '',
+    String maxInclusionFeePerGas = '2000000000',
+    String? data,
+  }) async {
+    _checkInitializedAccountWallet(accountWalletId);
+
+    final nonce = await _getNonce(
+      networkId: networkId,
+      walletAddress: _wallet.getAddressForCoin(networkId),
+    );
+
+    WalletTransaction? transaction;
+
+    if (sio.Cluster.ethereumLegacy.contains(networkId)) {
+      if (contractAddress.isNotEmpty) {
+        transaction = _makeTransaction(
+          networkId: networkId,
+          transaction: sio.BuildTransaction.ethereumERC20TokenLegacy(
             wallet: _wallet,
             amount: amount,
+            tokenContract: contractAddress,
             toAddress: toAddress,
             nonce: nonce,
-            chainId: sio.EthereumNetworks.chainId(networkId: networkId),
+            chainId: AssetRepository.chainId(networkId: networkId),
             coinType: networkId,
             gasPrice: feeAmount,
             gasLimit: gasLimit,
-          );
-        }
-        return sio.BuildTransaction.ethereumERC20TokenLegacy(
+          ),
+        );
+        transaction.raw = '0x${transaction.raw}';
+      }
+      transaction = _makeTransaction(
+        networkId: networkId,
+        transaction: sio.BuildTransaction.ethereumLegacy(
           wallet: _wallet,
           amount: amount,
-          tokenContract: contractAddress,
           toAddress: toAddress,
           nonce: nonce,
-          chainId: sio.EthereumNetworks.chainId(networkId: networkId),
+          chainId: AssetRepository.chainId(networkId: networkId),
           coinType: networkId,
           gasPrice: feeAmount,
           gasLimit: gasLimit,
-        );
-      }
+          data: data,
+        ),
+      );
+      transaction.raw = '0x${transaction.raw}';
+    }
 
-      if (sio.ethereumEIP1559Group.contains(networkId)) {
-        if (contractAddress == null || contractAddress == '') {
-          return sio.BuildTransaction.ethereumEIP1559(
+    if (sio.Cluster.ethereumEIP1559.contains(networkId)) {
+      if (contractAddress.isNotEmpty) {
+        transaction = _makeTransaction(
+          networkId: networkId,
+          transaction: sio.BuildTransaction.ethereumERC20TokenEIP1559(
             wallet: _wallet,
             amount: amount,
+            tokenContract: contractAddress,
             toAddress: toAddress,
             nonce: nonce,
-            chainId: sio.EthereumNetworks.chainId(networkId: networkId),
+            chainId: AssetRepository.chainId(networkId: networkId),
             coinType: networkId,
             maxFeePerGas: feeAmount,
             maxInclusionFeePerGas: maxInclusionFeePerGas,
             gasLimit: gasLimit,
-          );
-        }
-        return sio.BuildTransaction.ethereumERC20TokenEIP1559(
+          ),
+        );
+        transaction.raw = '0x${transaction.raw}';
+      }
+      transaction = _makeTransaction(
+        networkId: networkId,
+        transaction: sio.BuildTransaction.ethereumEIP1559(
           wallet: _wallet,
           amount: amount,
-          tokenContract: contractAddress,
           toAddress: toAddress,
           nonce: nonce,
-          chainId: sio.EthereumNetworks.chainId(networkId: networkId),
+          chainId: AssetRepository.chainId(networkId: networkId),
           coinType: networkId,
           maxFeePerGas: feeAmount,
           maxInclusionFeePerGas: maxInclusionFeePerGas,
           gasLimit: gasLimit,
-        );
-      }
+          data: data,
+        ),
+      );
+      transaction.raw = '0x${transaction.raw}';
     }
-    return null;
+
+    return transaction;
   }
 
-  Future<List<Utxo>> _getUtxo(int networkId) async {
-    final resp = await _blockchainUtilsService.utxo(
-        networkId: networkId.toString(),
-        walletAddress: _wallet.getAddressForCoin(networkId));
-    final respBody = resp.body;
+  Future<List<Utxo>> _getUtxo({required int networkId}) async {
+    final res = await _blockchainUtilsService.utxo(
+      networkId: networkId.toString(),
+      walletAddress: _wallet.getAddressForCoin(networkId),
+    );
 
-    if (!resp.isSuccessful || respBody == null) {
+    final body = res.body;
+
+    if (!res.isSuccessful || body == null) {
       throw Exception('Utxo fetching has failed!');
     }
 
-    return respBody.items;
+    return body.items;
   }
 
-  Future<sio.Transaction?> _getUtxoRawTx({
+  Future<WalletTransaction?> _signUtxoTransaction(
+    String accountWalletId, {
     required int networkId,
-    required String amount,
+    required BigInt amount,
     required String toAddress,
-    required String feeAmount,
+    required BigInt feeAmount,
   }) async {
-    if (sio.utxoGroup.contains(networkId)) {
-      final utxos = await _getUtxo(networkId);
+    _checkInitializedAccountWallet(accountWalletId);
 
-      return sio.BuildTransaction.utxoCoin(
+    if (!sio.Cluster.utxo.contains(networkId)) return null;
+
+    final utxos = await _getUtxo(networkId: networkId);
+
+    return _makeTransaction(
+      networkId: networkId,
+      transaction: sio.BuildTransaction.utxoCoin(
         wallet: _wallet,
         coin: networkId,
         toAddress: toAddress,
         amount: amount,
         byteFee: feeAmount,
-        // TODO: If Mario return an error in Bitcoin Tx here we should look.
-        // If Bitcoin transaction test pass delete these comment.
-        utxo: [...utxos.map((utxo) => utxo.toJson())],
-      );
-    }
-    return null;
+        utxo: utxos.map((utxo) => utxo.toJson()).toList(),
+      ),
+    );
   }
 
-  Future<String> _getLatestBlockHash(int networkId) async {
-    final resp = await _blockchainUtilsService.solana(
-        walletAddress: _wallet.getAddressForCoin(networkId));
-    final respBody = resp.body;
+  Future<String> _getLatestBlockHash({
+    required int networkId,
+    required String walletAddress,
+  }) async {
+    final res = await _blockchainUtilsService.solana(
+      walletAddress: walletAddress,
+    );
 
-    if (!resp.isSuccessful || respBody == null) {
+    final body = res.body;
+
+    if (!res.isSuccessful || body == null) {
       throw Exception('LatestBlockHash fetching has failed!');
     }
 
-    if (respBody.success == false) {
-      throw Exception(respBody.errorMessage);
+    if (body.success == false) {
+      throw Exception(body.errorMessage);
     }
 
-    return respBody.lastBlockHash!;
+    return body.lastBlockHash ?? '';
   }
 
-  Future<sio.Transaction?> _getSolanaRawTx({
+  Future<WalletTransaction?> _signSolanaTransaction(
+    String accountWalletId, {
     required int networkId,
-    required String amount,
+    required BigInt amount,
     required String toAddress,
-    required String feeAmount,
-    required String? contractAddress,
+    required BigInt feeAmount,
     required int assetDecimals,
+    String contractAddress = '',
   }) async {
-    if (sio.solanaGroup.contains(networkId)) {
-      final latestBlockHash = await _getLatestBlockHash(networkId);
+    _checkInitializedAccountWallet(accountWalletId);
 
-      if (contractAddress == null || contractAddress == '') {
-        return sio.BuildTransaction.solana(
-          wallet: _wallet,
-          recipient: toAddress,
-          amount: amount,
-          latestBlockHash: latestBlockHash,
-          fee: feeAmount,
-        );
-      }
-      return sio.BuildTransaction.solanaToken(
-        wallet: _wallet,
-        recipientSolanaAddress: toAddress,
-        tokenMintAddress: contractAddress,
-        amount: amount,
-        decimals: assetDecimals,
-        latestBlockHash: latestBlockHash,
-        fee: feeAmount,
-      );
-    }
-    return null;
-  }
+    if (!sio.Cluster.solana.contains(networkId)) return null;
 
-  Future<String> _broadcastTransaction(
-    int networkId,
-    sio.Transaction rawTransaction,
-  ) async {
-    if (rawTransaction.rawTx == null || rawTransaction.rawTx == '') {
-      throw Exception('There is no rawTx to broadcast!');
-    }
-    final broadcast = await _broadcastService.transaction(
-      networkId.toString(),
-      rawTransaction.rawTx!,
+    final latestBlockHash = await _getLatestBlockHash(
+      networkId: networkId,
+      walletAddress: _wallet.getAddressForCoin(networkId),
     );
 
-    final broadcastBody = broadcast.body;
+    if (contractAddress.isEmpty) {
+      return _makeTransaction(
+          networkId: networkId,
+          transaction: sio.BuildTransaction.solanaToken(
+            wallet: _wallet,
+            recipientSolanaAddress: toAddress,
+            tokenMintAddress: contractAddress,
+            amount: amount,
+            decimals: assetDecimals,
+            latestBlockHash: latestBlockHash,
+            fee: feeAmount,
+          ));
+    }
+    return _makeTransaction(
+      networkId: networkId,
+      transaction: sio.BuildTransaction.solana(
+        wallet: _wallet,
+        recipient: toAddress,
+        amount: amount,
+        latestBlockHash: latestBlockHash,
+        fee: feeAmount,
+      ),
+    );
+  }
 
-    if (!broadcast.isSuccessful || broadcastBody == null) {
+  Future<String> broadcastTransaction(WalletTransaction transaction) async {
+    final res = await _broadcastService.transaction(
+      transaction.networkId.toString(),
+      transaction.raw,
+    );
+
+    final body = res.body;
+
+    if (!res.isSuccessful || body == null) {
       throw Exception('Broadcasting Transaction has failed!');
     }
-    if (!broadcastBody.success) {
-      throw Exception(broadcastBody.errorMessage);
-    }
-    if (broadcastBody.result == null) {
-      throw Exception('Broadcast result is null!');
+
+    if (!body.success) {
+      throw Exception(body.errorMessage);
     }
 
-    return broadcastBody.result!;
+    final result = body.result;
+    if (result != null) return result;
+
+    throw Exception('Broadcasted transaction does not exist');
   }
 
   void _checkInitializedAccountWallet(String accountWalletId) {
     if (_walletId == accountWalletId) return;
     throw Exception("Account wallet '$accountWalletId}' is not initialized");
   }
+
+  String signMessage({
+    required int networkId,
+    required String message,
+  }) {
+    try {
+      return sio.EthSign.message(
+          wallet: _wallet, networkId: networkId, message: message);
+    } catch (_) {
+      return sio.EthSign.personalMessage(
+          wallet: _wallet, networkId: networkId, message: message);
+    }
+  }
+
+  String signPersonalMessage({
+    required int networkId,
+    required String message,
+  }) {
+    try {
+      return sio.EthSign.personalMessage(
+          wallet: _wallet, networkId: networkId, message: message);
+    } catch (_) {
+      return '';
+    }
+  }
+
+  String signTypedData({
+    required int networkId,
+    required String jsonData,
+  }) {
+    try {
+      return sio.EthSign.typedData(
+          wallet: _wallet, networkId: networkId, jsonData: jsonData);
+    } catch (_) {
+      return '';
+    }
+  }
+}
+
+class WalletTransaction {
+  final int networkId;
+  String raw;
+
+  WalletTransaction({
+    required this.networkId,
+    required this.raw,
+  });
 }
 
 abstract class WalletDb {

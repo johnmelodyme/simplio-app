@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/data/model/validated_password.dart';
+import 'package:simplio_app/data/model/helpers/validated_password.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 
 part 'password_change_form_state.dart';

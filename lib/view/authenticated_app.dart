@@ -3,11 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
+import 'package:simplio_app/data/repositories/fee_repository.dart';
+import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
+import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/dark_mode.dart';
 import 'package:simplio_app/view/themes/light_mode.dart';
@@ -36,16 +39,37 @@ class AuthenticatedApp extends StatelessWidget {
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
           ),
         ),
+        BlocProvider(
+          create: (context) => WalletConnectCubit(
+            feeRepository: RepositoryProvider.of<FeeRepository>(context),
+            walletConnectRepository:
+                RepositoryProvider.of<WalletConnectRepository>(context),
+            walletRepository: RepositoryProvider.of<WalletRepository>(context),
+          ),
+        ),
         BlocProvider(create: (_) => TabBarCubit()),
       ],
-      child: BlocListener<AccountCubit, AccountState>(
-        listenWhen: (previous, current) => previous != current,
-        listener: (context, state) {
-          if (state is! AccountUnlocked) return;
-          context
-              .read<AccountWalletCubit>()
-              .loadWallet(state.account.id, key: state.secret);
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<AccountCubit, AccountState>(
+            listenWhen: (previous, current) => previous != current,
+            listener: (context, state) {
+              if (state is! AccountUnlocked) return;
+              context
+                  .read<AccountWalletCubit>()
+                  .loadWallet(state.account.id, key: state.secret);
+            },
+          ),
+          BlocListener<AccountWalletCubit, AccountWalletState>(
+            listener: (context, state) {
+              if (state is AccountWalletLoaded) {
+                context
+                    .read<WalletConnectCubit>()
+                    .loadSessions(state.wallet.uuid);
+              }
+            },
+          ),
+        ],
         child: Builder(
           builder: (context) {
             final r = AuthenticatedRouter.of(context).router;

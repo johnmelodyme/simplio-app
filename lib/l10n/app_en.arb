@@ -41,6 +41,9 @@
 
     "configuration_screen_switch_language": "Switch language",
     "configuration_screen_switch_themeMode": "Switch theme",
+    "configuration_screen_settings_title": "Settings",
+    "configuration_screen_change_password": "Change password",
+    "configuration_screen_sign_out": "Sign out",
 
     "welcome_screen_go_to_app_btn":"Go to app",
 

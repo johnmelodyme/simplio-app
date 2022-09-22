@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:simplio_app/data/mixins/aes_encryption_mixin.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
-import 'package:simplio_app/data/model/lockable_string.dart';
+import 'package:simplio_app/data/model/helpers/lockable_string.dart';
 import 'package:uuid/uuid.dart';
 import 'package:encrypt/encrypt.dart';
 

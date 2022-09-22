@@ -106,7 +106,7 @@ class CoinDetailBalance extends StatelessWidget {
               ],
             ),
             child: Center(
-              child: AvatarWithShadov(
+              child: AvatarWithShadow(
                 size: 40,
                 child: Container(color: assetDetail.style.primaryColor),
               ),

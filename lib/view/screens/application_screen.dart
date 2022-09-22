@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
+import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/widgets/bottom_tab_bar.dart';
 import 'package:simplio_app/view/widgets/tab_bar_item.dart';
+import 'package:simplio_app/view/widgets/wallet_connect_request_item.dart';
+import 'package:simplio_app/view/widgets/wallet_connect_request_list.dart';
 
 class ApplicationScreen extends StatefulWidget {
   final Widget child;
@@ -104,6 +108,61 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                   : const SizedBox.shrink();
             },
           ),
+          BlocBuilder<WalletConnectCubit, WalletConnectState>(
+            buildWhen: (prev, curr) => prev != curr,
+            builder: (context, state) => state.isModal
+                ? WalletConnectRequestList(
+                    children: state.requests.values
+                        .map<WalletConnectRequestItem>((r) {
+                      if (r is WalletConnectSessionRequest) {
+                        return WalletConnectSessionRequestItem(
+                          request: r,
+                          onApprove: (networkId) {
+                            context
+                                .read<WalletConnectCubit>()
+                                .approveSessionRequest(r, networkId: networkId);
+                          },
+                          onReject: () {
+                            context
+                                .read<WalletConnectCubit>()
+                                .rejectSessionRequest(r);
+                          },
+                        );
+                      }
+
+                      if (r is WalletConnectSignatureRequest) {
+                        return WalletConnectSignatureRequestItem(
+                          request: r,
+                          onApprove: () {
+                            context
+                                .read<WalletConnectCubit>()
+                                .approveSignatureRequest(r);
+                          },
+                          onReject: () {
+                            context.read<WalletConnectCubit>().rejectRequest(r);
+                          },
+                        );
+                      }
+
+                      if (r is WalletConnectTransactionRequest) {
+                        return WalletConnectTransactionRequestItem(
+                          request: r,
+                          onApprove: () async {
+                            await context
+                                .read<WalletConnectCubit>()
+                                .approveTransactionRequest(r);
+                          },
+                          onReject: () async {
+                            context.read<WalletConnectCubit>().rejectRequest(r);
+                          },
+                        );
+                      }
+
+                      return WalletConnectUnknownEventItem(request: r);
+                    }).toList(),
+                  )
+                : Container(),
+          )
         ],
       ),
     );
