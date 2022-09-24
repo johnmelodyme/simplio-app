@@ -2,6 +2,18 @@ import 'package:intl/intl.dart';
 
 enum CurrencySide { left, right }
 
+String getCurrencySymbol(String currency) {
+  switch (currency) {
+    case 'USD':
+      return '\$';
+    case 'EUR':
+      return '€';
+
+    default:
+      return throw Exception('No currency symbol defined');
+  }
+}
+
 extension DoubleParseExtension on double {
   String getThousandSeparatedValue() {
     NumberFormat numberFormat = NumberFormat("#,##0.00");
@@ -9,16 +21,16 @@ extension DoubleParseExtension on double {
   }
 
   String getThousandValueWithCurrency({
-    final String currencySymbol = '\$',
-    final CurrencySide currencySide = CurrencySide.left,
+    required final String currency,
+    required final String locale,
   }) {
-    String formattedValue = getThousandSeparatedValue();
+    final formattedValue = NumberFormat.currency(
+      decimalDigits: 2,
+      locale: locale,
+      symbol: getCurrencySymbol(currency),
+    ).format(this);
 
-    if (currencySide == CurrencySide.left) {
-      return '$currencySymbol$formattedValue';
-    } else {
-      return '$formattedValue$currencySymbol';
-    }
+    return formattedValue;
   }
 }
 
@@ -29,13 +41,13 @@ extension BigIntParseExtension on BigInt {
 
   String getFormattedPrice({
     final int decimalPlaces = 2,
-    final String? locale,
-    final String? symbol = '\$',
+    required final String locale,
+    required final String currency,
   }) {
     return format(
       digits: decimalPlaces,
       locale: locale,
-      symbol: symbol,
+      symbol: getCurrencySymbol(currency),
     );
   }
 

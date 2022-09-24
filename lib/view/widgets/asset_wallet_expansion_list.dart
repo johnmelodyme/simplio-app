@@ -75,7 +75,7 @@ class AssetWalletExpansionList extends StatelessWidget {
                   //TODO.. replace with real price,
                   volume: BigInt.from(123456).getFormattedPrice(
                     locale: Intl.getCurrentLocale(),
-                    symbol: '\$',
+                    currency: 'USD', //TODO.. add currency into asset
                   ),
                   backgroundAvatarColor: asset.style.primaryColor,
                   assetType: AssetType.wallet,
@@ -104,7 +104,7 @@ class AssetWalletExpansionList extends StatelessWidget {
                       //TODO.. replace with real price
                       volume: BigInt.from(123456).getFormattedPrice(
                         locale: Intl.getCurrentLocale(),
-                        symbol: '\$',
+                        currency: 'USD', //TODO.. add currency into network
                       ),
                       subTitle: network.ticker,
                       backgroundAvatarColor: asset.style.primaryColor,

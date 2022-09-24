@@ -53,15 +53,36 @@
     "application_screen_find_dapps_tabbar_label": "Find Dapps",
 
     "inventory_screen_inventory_balance": "Inventory balance",
-    "inventory_screen_seach_and_add_coins": "Search & add Coins",
-    "inventory_screen_seach_nft": "Search NFT",
-    "inventory_screen_seach_transactions": "Search Transactions",
-    "inventory_screen_seach_transactions_no_items_found": "You’ll see your transaction\nhistory here.",
+    "inventory_screen_search_and_add_coins": "Search & add Coins",
+    "inventory_screen_search_nft": "Search NFT",
+    "inventory_screen_search_transactions": "Search Transactions",
+    "inventory_screen_search_transactions_no_items_found": "You’ll see your transaction\nhistory here.",
     "inventory_screen_no_wallets_label": "You have no wallet",
 
     "inventory_tab_coins": "Coins",
     "inventory_tab_nft": "NFT",
     "inventory_tab_transactions": "Transactions",
+
+
+    "discovery_screen_search_and_add_games": "Search & add Games",
+    "discovery_screen_search_and_add_coins": "Search & add Coins",
+    "discovery_screen_search_nft": "Search NFT",
+    "discovery_tab_games": "Games",
+    "discovery_tab_coins": "Coins",
+    "discovery_tab_nft": "NFT",
+
+    "games_search_screen_search_and_add": "Search & Add",
+    "games_search_screen_games": "Games",
+    "games_search_screen_search": "Search",
+
+    "common_games_categories": "{categoryIndex, select, 0{Air Drops} 1{Free To Play} 2{NFT Included} 3{Play To Earn}}",
+    "@common_games_categories": {
+      "description": "Category of game",
+      "placeholders": {
+        "categoryIndex": {}
+      }
+    },
+    "game_item_coin_price_label": "Coin price: ",
 
     "sign_in_screen_title": "Enter Simplio.",
     "sign_in_screen_subtitle": "It's good to see you back.",
@@ -129,6 +150,10 @@
        }
     },
     "asset_send_summary_screen_swipe_up_button_label":"Swipe up to confirm",
+
+    "asset_search_screen_search_and_add": "Search & Add",
+    "asset_search_screen_coins": "Coins",
+    "asset_search_screen_search": "Search",
 
     "qr_code_scanner_screen_connect_title": "Connect",
     "qr_code_scanner_screen_wallet_title": "wallet",

@@ -5,11 +5,13 @@ import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
+import 'package:simplio_app/data/repositories/games_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
+import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';
 import 'package:simplio_app/view/routes/guards/protected_guard.dart';
@@ -20,12 +22,14 @@ import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
 import 'package:simplio_app/view/screens/asset_detail_screen.dart';
 import 'package:simplio_app/view/screens/asset_receive_screen.dart';
+import 'package:simplio_app/view/screens/asset_search_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_summary_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
 import 'package:simplio_app/view/screens/dapps_screen.dart';
 import 'package:simplio_app/view/screens/discovery_screen.dart';
 import 'package:simplio_app/view/screens/games_screen.dart';
+import 'package:simplio_app/view/screens/games_search_screen.dart';
 import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
@@ -35,6 +39,7 @@ import 'package:simplio_app/view/screens/transaction_success_screen.dart';
 class AuthenticatedRouter with PageBuilderMixin {
   static const String discovery = 'discovery';
   static const String games = 'games';
+  static const String gamesSearch = 'games-search';
   static const String inventory = 'inventory';
   static const String inventoryCoins = 'inventory-coins';
   static const String inventoryNft = 'inventory-nft';
@@ -45,6 +50,7 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String accountSetup = 'account-setup';
   static const String passwordChange = 'password-change';
   static const String assetDetail = 'asset-detail';
+  static const String assetSearch = 'asset-search';
   static const String assetSend = 'asset-send';
   static const String assetSendSummary = 'asset-send-summary';
   static const String assetSendSuccess = 'asset-send-success';
@@ -343,6 +349,42 @@ class AuthenticatedRouter with PageBuilderMixin {
                   ),
                 )
               ],
+            ),
+            GoRoute(
+              path: 'asset-search',
+              name: assetSearch,
+              pageBuilder: pageBuilder(
+                builder: (state) => BlocProvider(
+                  create: (context) => CryptoAssetCubit.builder(
+                    assetRepository:
+                        RepositoryProvider.of<AssetRepository>(context),
+                  ),
+                  child: Builder(
+                    builder: (context) {
+                      return AssetSearchScreen();
+                    },
+                  ),
+                ),
+                settings: const ApplicationSettings.hiddenTabBar(),
+              ),
+            ),
+            GoRoute(
+              path: 'games-search',
+              name: gamesSearch,
+              pageBuilder: pageBuilder(
+                builder: (state) => BlocProvider(
+                  create: (context) => GamesCubit.builder(
+                    gamesRepository:
+                        RepositoryProvider.of<GamesRepository>(context),
+                  ),
+                  child: Builder(
+                    builder: (context) {
+                      return const GamesSearchScreen();
+                    },
+                  ),
+                ),
+                settings: const ApplicationSettings.hiddenTabBar(),
+              ),
             ),
             GoRoute(
               path: 'qr-code-scanner',

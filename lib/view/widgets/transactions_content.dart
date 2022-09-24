@@ -72,7 +72,7 @@ class _TransactionsContentState extends State<TransactionsContent> {
                     const Gap(Dimensions.padding20),
                 noItemsFoundIndicatorBuilder: (_) => EmptyListPlaceholder(
                   label: context.locale
-                      .inventory_screen_seach_transactions_no_items_found,
+                      .inventory_screen_search_transactions_no_items_found,
                   child: Image.asset(
                     'assets/icon/empty_transactions_placeholder.png',
                   ),

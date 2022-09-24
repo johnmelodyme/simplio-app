@@ -1,6 +1,7 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
@@ -46,7 +47,10 @@ class CoinDetailBalance extends StatelessWidget {
                     .apply(color: Theme.of(context).colorScheme.onPrimary),
               ),
               Text(
-                networkWallet.balance.getFormattedPrice(),
+                networkWallet.balance.getFormattedPrice(
+                  locale: Intl.getCurrentLocale(),
+                  currency: 'USD', //TODO.. replace by real currency
+                ),
                 style: SioTextStyles.bodyPrimary
                     .apply(color: Theme.of(context).colorScheme.inverseSurface),
               ),

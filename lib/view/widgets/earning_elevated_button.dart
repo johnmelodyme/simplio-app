@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -98,7 +99,12 @@ class EarningElevatedButton extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                                 Text(
-                                  balance!.getFormattedPrice(decimalPlaces: 2),
+                                  balance!.getFormattedPrice(
+                                    decimalPlaces: 2,
+                                    locale: Intl.getCurrentLocale(),
+                                    currency:
+                                        'USD', //TODO.. replace by real currency
+                                  ),
                                   style: SioTextStyles.bodyL
                                       .apply(
                                         color: Theme.of(context)

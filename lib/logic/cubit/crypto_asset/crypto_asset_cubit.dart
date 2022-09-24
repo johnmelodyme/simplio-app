@@ -25,4 +25,22 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
       emit(CryptoAssetLoadedWithError(error: e));
     }
   }
+
+  Future<void> queryCryptoAsset({
+    required String query,
+    bool cache = true,
+  }) async {
+    try {
+      final assets = await _assetRepository.loadCryptoAssets(cache: cache).then(
+            (loadedAssets) => loadedAssets
+                .where((d) =>
+                    d.name.toLowerCase().contains(query.toLowerCase()) ||
+                    d.ticker.toLowerCase().contains(query.toLowerCase()))
+                .toList(),
+          );
+      emit(CryptoAssetLoaded(assets: assets));
+    } on Exception catch (e) {
+      emit(CryptoAssetLoadedWithError(error: e));
+    }
+  }
 }

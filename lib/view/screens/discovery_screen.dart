@@ -1,91 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/avatar_app_bar.dart';
-import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
+import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
+import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
 
 class DiscoveryScreen extends StatelessWidget {
   const DiscoveryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        SliverPersistentHeader(
-          pinned: true,
-          delegate: FixedHeightItemDelegate(
-            fixedHeight:
-                Constants.appBarHeight + MediaQuery.of(context).viewPadding.top,
-            child: AvatarAppBar(
-              title: 'Nickname',
-              userLevel: 1,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Theme.of(context).colorScheme.onPrimaryContainer,
+            Theme.of(context).colorScheme.background,
+          ],
+        ),
+      ),
+      child: NavigationTabBar(
+        tabs: [
+          NavigationBarTabItem(
+            label: context.locale.discovery_tab_games,
+            searchBar: SearchBarPlaceholder(
               onTap: () {
                 GoRouter.of(context).pushNamed(
-                  AuthenticatedRouter.configuration,
+                  AuthenticatedRouter.gamesSearch,
                 );
               },
+              label: context.locale.inventory_screen_search_and_add_coins,
             ),
+            iconData: Icons.sports_esports_outlined,
+            iconColor: Theme.of(context).colorScheme.onBackground,
+            topSlivers: [],
+            bottomSlivers: [],
           ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            height: 600,
-            padding: const EdgeInsets.all(
-              Dimensions.padding20,
+          NavigationBarTabItem(
+            label: context.locale.discovery_tab_coins,
+            searchBar: SearchBarPlaceholder(
+              label: context.locale.inventory_screen_search_and_add_coins,
             ),
-            decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(RadiusSize.radius20),
-                    topRight: Radius.circular(RadiusSize.radius20)),
-                color: Theme.of(context).colorScheme.background),
-            child: Column(
-              children: [
-                Material(
-                  color: Theme.of(context).colorScheme.secondary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiuses.radius12,
-                    side: BorderSide(
-                      width: 1,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      GoRouter.of(context)
-                          .goNamed(AuthenticatedRouter.inventory);
-                    },
-                    child: SizedBox(
-                      height: 200,
-                      child: Padding(
-                        padding: Paddings.all20,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              alignment: Alignment.bottomRight,
-                              child: Icon(
-                                Icons.sports_esports_outlined,
-                                size: 32.0,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.color,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            iconData: Icons.pie_chart_outline,
+            iconColor: Theme.of(context).colorScheme.surface,
+            topSlivers: [],
+            bottomSlivers: [],
           ),
-        )
-      ],
+          NavigationBarTabItem(
+            label: context.locale.discovery_tab_nft,
+            searchBar: SearchBarPlaceholder(
+              label: context.locale.inventory_screen_search_and_add_coins,
+            ),
+            iconData: Icons.pie_chart_outline,
+            iconColor: Theme.of(context).colorScheme.onSurface,
+            topSlivers: [],
+            bottomSlivers: [],
+          )
+        ],
+      ),
     );
   }
 }

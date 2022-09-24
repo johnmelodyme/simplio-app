@@ -6,6 +6,7 @@ import 'package:simplio_app/data/http/clients/secured_http_client.dart';
 import 'package:simplio_app/data/http/services/asset_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
+import 'package:simplio_app/data/http/services/games_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
@@ -13,15 +14,16 @@ import 'package:simplio_app/data/http/services/sign_in_service.dart';
 import 'package:simplio_app/data/http/services/sign_up_service.dart';
 import 'package:simplio_app/data/providers/account_db_provider.dart';
 import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
-import 'package:simplio_app/data/providers/wallet_db_provider.dart';
 import 'package:simplio_app/data/providers/wallet_connect_session_db_provider.dart';
+import 'package:simplio_app/data/providers/wallet_db_provider.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
+import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
+import 'package:simplio_app/data/repositories/games_repository.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
-import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/view/authenticated_app.dart';
 import 'package:simplio_app/view/routes/guards/auth_guard.dart';
@@ -51,6 +53,7 @@ class _SimplioAppState extends State<SimplioApp> {
   late WalletConnectRepository walletConnectRepository;
   late FeeRepository feeRepository;
   late TransactionRepository transactionRepository;
+  late GamesRepository gamesRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +75,7 @@ class _SimplioAppState extends State<SimplioApp> {
         RepositoryProvider.value(value: walletConnectRepository),
         RepositoryProvider.value(value: feeRepository),
         RepositoryProvider.value(value: transactionRepository),
+        RepositoryProvider.value(value: gamesRepository),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc.builder(
@@ -142,5 +146,9 @@ class _SimplioAppState extends State<SimplioApp> {
     );
 
     transactionRepository = TransactionRepository();
+
+    gamesRepository = GamesRepository.builder(
+      gamesService: securedApi.service<GamesService>(),
+    );
   }
 }

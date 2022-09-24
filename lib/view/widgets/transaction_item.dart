@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:simplio_app/data/model/transaction.dart';
-import 'package:simplio_app/view/extensions/date_extensions.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/date_extensions.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -92,7 +93,10 @@ class TransactionItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      transaction.price.getThousandValueWithCurrency(),
+                      transaction.price.getThousandValueWithCurrency(
+                        currency: 'USD', //TODO.. replace by real currency
+                        locale: Intl.getCurrentLocale(),
+                      ),
                       style: SioTextStyles.bodyS.apply(
                         color: Theme.of(context).colorScheme.shadow,
                       ),

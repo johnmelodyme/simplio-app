@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/asset_search_delegate.dart';
 import 'package:simplio_app/view/widgets/inventory_coins_content.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
-import 'package:simplio_app/view/widgets/search_bar.dart';
+import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
 import 'package:simplio_app/view/widgets/total_balance.dart';
 import 'package:simplio_app/view/widgets/transactions_content.dart';
 
@@ -39,9 +40,13 @@ class InventoryScreen extends StatelessWidget {
             tabs: [
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_coins,
-                  searchBar: SearchBar<String>(
-                    delegate: AssetSearchDelegate.of(context),
-                    label: context.locale.inventory_screen_seach_and_add_coins,
+                  searchBar: SearchBarPlaceholder(
+                    onTap: () {
+                      GoRouter.of(context).pushNamed(
+                        AuthenticatedRouter.assetSearch,
+                      );
+                    },
+                    label: context.locale.inventory_screen_search_and_add_coins,
                   ),
                   iconData: Icons.pie_chart_outline,
                   iconColor: Theme.of(context).colorScheme.surface,
@@ -57,10 +62,8 @@ class InventoryScreen extends StatelessWidget {
                   ]),
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_nft,
-                  searchBar: SearchBar<String>(
-                    delegate: AssetSearchDelegate.of(
-                        context), //TODO.. replace by other delegate
-                    label: context.locale.inventory_screen_seach_nft,
+                  searchBar: SearchBarPlaceholder(
+                    label: context.locale.inventory_screen_search_nft,
                   ),
                   iconData: Icons.pie_chart_outline,
                   iconColor: Theme.of(context).colorScheme.onSurface,
@@ -74,10 +77,8 @@ class InventoryScreen extends StatelessWidget {
                   ]),
               NavigationBarTabItem(
                   label: context.locale.inventory_tab_transactions,
-                  searchBar: SearchBar<String>(
-                    delegate: AssetSearchDelegate.of(
-                        context), //TODO.. replace by other delegate
-                    label: context.locale.inventory_screen_seach_transactions,
+                  searchBar: SearchBarPlaceholder(
+                    label: context.locale.inventory_screen_search_transactions,
                   ),
                   topSlivers: [
                     const SliverGap(Dimensions.padding16),

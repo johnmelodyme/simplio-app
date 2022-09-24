@@ -7,6 +7,8 @@ class Paddings {
       EdgeInsets.only(left: Dimensions.padding8);
   static const EdgeInsetsGeometry left10 =
       EdgeInsets.only(left: Dimensions.padding10);
+  static const EdgeInsetsGeometry left16 =
+      EdgeInsets.only(left: Dimensions.padding16);
   static const EdgeInsetsGeometry left20 =
       EdgeInsets.only(left: Dimensions.padding20);
   static const EdgeInsetsGeometry left32 =
@@ -33,6 +35,8 @@ class Paddings {
       EdgeInsets.only(top: Dimensions.padding8);
   static const EdgeInsetsGeometry top10 =
       EdgeInsets.only(top: Dimensions.padding10);
+  static const EdgeInsetsGeometry top16 =
+      EdgeInsets.only(top: Dimensions.padding16);
   static const EdgeInsetsGeometry top20 =
       EdgeInsets.only(top: Dimensions.padding20);
   static const EdgeInsetsGeometry top30 =
@@ -119,9 +123,11 @@ class Dimensions {
   static const double padding2 = 2;
   static const double padding4 = 4;
   static const double padding5 = 5;
+  static const double padding7 = 7;
   static const double padding8 = 8;
   static const double padding10 = 10;
   static const double padding16 = 16;
+  static const double padding17 = 17;
   static const double padding20 = 20;
   static const double padding30 = 30;
   static const double padding32 = 32;
@@ -145,10 +151,13 @@ class Constants {
   static const double appBarHeight = 75;
   static const double bottomTabBarHeight = 56;
   static const double navigationTabBarHeight = 45;
-  static const double searchBarHeight = 42;
+  static const double searchBarHeight = 44;
   static const double buttonHeight = 45;
+  static const double smallButtonHeight = 30;
   static const double earningButtonHeight = 49;
   static const double coinsBottomTabBarHeight = 131;
+  static const double colorizedAppBarHeight = 54;
 
   static const pageSizeTransactions = 7;
+  static const pageSizeGames = 7;
 }
