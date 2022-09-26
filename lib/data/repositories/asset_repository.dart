@@ -42,8 +42,10 @@ class AssetRepository {
           ),
         );
 
-  Future<List<CryptoAssetData>> loadCryptoAssets({bool cache = true}) async {
-    if (cache && _cryptoDataCache.isValid) return _cryptoDataCache.read();
+  Future<List<CryptoAssetData>> loadCryptoAssets({
+    bool readCache = true,
+  }) async {
+    if (readCache && _cryptoDataCache.isValid) return _cryptoDataCache.read();
 
     final response = await _assetService.crypto();
     final body = response.body;
@@ -57,8 +59,10 @@ class AssetRepository {
     throw Exception("Could not load 'crypto' assets");
   }
 
-  Future<List<FiatAssetData>> loadFiatAssets({bool cache = true}) async {
-    if (cache && _fiatDataCache.isValid) return _fiatDataCache.read();
+  Future<List<FiatAssetData>> loadFiatAssets({
+    bool readCache = true,
+  }) async {
+    if (readCache && _fiatDataCache.isValid) return _fiatDataCache.read();
 
     final response = await _assetService.fiat();
     final body = response.body;

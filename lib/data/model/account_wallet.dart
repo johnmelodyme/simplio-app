@@ -6,6 +6,8 @@ import 'package:uuid/uuid.dart';
 
 part 'account_wallet.g.dart';
 
+const accountWalletUpdateLifetimeInSeconds = 180;
+
 class AccountWallet extends Equatable {
   final String uuid;
   final String accountId;
@@ -64,10 +66,35 @@ class AccountWallet extends Equatable {
     return _wallets.containsKey(assetId);
   }
 
-  String? getAddress(int assetId, int? networkAssetId) {
-    return networkAssetId == null
-        ? getWallet(assetId)?.getWallet(assetId)?.address
-        : getWallet(assetId)?.getWallet(networkAssetId)?.address;
+  AccountWallet updateWalletsFromIterable(Iterable<AssetWallet> wallets) {
+    final Map<int, AssetWallet> walletsMap =
+        wallets.fold({}, (acc, curr) => acc..addAll({curr.assetId: curr}));
+
+    return updateWalletsFrom(walletsMap);
+  }
+
+  AccountWallet updateWalletsFrom(Map<int, AssetWallet> wallets) {
+    final Map<int, AssetWallet> walletsMap = Map.from(_wallets)
+      ..updateAll((assetId, assetWallet) {
+        final wallet = wallets[assetId] ?? assetWallet;
+        return findWallet(wallet.uuid) != null ? wallet : assetWallet;
+      });
+
+    return copyWith(wallets: walletsMap, updatedAt: DateTime.now());
+  }
+
+  AssetWallet? findWallet(String uuid) {
+    final res = _wallets.values.where((w) => w.uuid == uuid);
+    return res.isEmpty ? null : res.first;
+  }
+
+  bool get isNotValid => !isValid;
+
+  bool get isValid {
+    final expiresAt = updatedAt.microsecondsSinceEpoch +
+        (accountWalletUpdateLifetimeInSeconds * 1000);
+
+    return DateTime.now().microsecondsSinceEpoch <= expiresAt;
   }
 
   AccountWallet copyWith({

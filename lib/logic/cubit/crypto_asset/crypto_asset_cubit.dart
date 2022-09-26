@@ -15,11 +15,13 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
     required AssetRepository assetRepository,
   }) : this._(assetRepository);
 
-  Future<void> loadCryptoAsset({bool cache = true}) async {
+  Future<void> loadCryptoAsset({bool readCache = true}) async {
     emit(const CryptoAssetLoading());
 
     try {
-      final assets = await _assetRepository.loadCryptoAssets(cache: cache);
+      final assets = await _assetRepository.loadCryptoAssets(
+        readCache: readCache,
+      );
       emit(CryptoAssetLoaded(assets: assets));
     } on Exception catch (e) {
       emit(CryptoAssetLoadedWithError(error: e));
@@ -28,16 +30,17 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
 
   Future<void> queryCryptoAsset({
     required String query,
-    bool cache = true,
+    bool readCache = true,
   }) async {
     try {
-      final assets = await _assetRepository.loadCryptoAssets(cache: cache).then(
-            (loadedAssets) => loadedAssets
-                .where((d) =>
-                    d.name.toLowerCase().contains(query.toLowerCase()) ||
-                    d.ticker.toLowerCase().contains(query.toLowerCase()))
-                .toList(),
-          );
+      final assets =
+          await _assetRepository.loadCryptoAssets(readCache: readCache).then(
+                (loadedAssets) => loadedAssets
+                    .where((d) =>
+                        d.name.toLowerCase().contains(query.toLowerCase()) ||
+                        d.ticker.toLowerCase().contains(query.toLowerCase()))
+                    .toList(),
+              );
       emit(CryptoAssetLoaded(assets: assets));
     } on Exception catch (e) {
       emit(CryptoAssetLoadedWithError(error: e));

@@ -14,13 +14,13 @@ abstract class BalanceService extends ChopperService {
 
   @Get(path: '/balance')
   Future<Response<BalanceResponse>> coin(
-    @Query('network') String networkId,
+    @Query('network') int networkId,
     @Query('wallet') String walletAddress,
   );
 
   @Get(path: '/balance-for-token')
   Future<Response<BalanceResponse>> token(
-    @Query('network') String networkId,
+    @Query('network') int networkId,
     @Query('wallet') String walletAddress,
     @Query() String contractAddress,
   );
@@ -28,18 +28,14 @@ abstract class BalanceService extends ChopperService {
 
 @JsonSerializable()
 class BalanceResponse {
-  final String walletAddress;
-  final String? contractAddress;
-  final int balance;
+  final String balance;
   final bool success;
   final String? errorMessage;
 
   const BalanceResponse({
-    required this.walletAddress,
-    required this.contractAddress,
     required this.balance,
     required this.success,
-    required this.errorMessage,
+    this.errorMessage,
   });
 
   factory BalanceResponse.fromJson(Map<String, dynamic> json) =>

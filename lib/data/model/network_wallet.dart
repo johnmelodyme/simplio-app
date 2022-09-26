@@ -52,6 +52,21 @@ class NetworkWallet extends Equatable {
         balance,
         isEnabled,
       ];
+
+  NetworkWallet copyWith({
+    BigInt? balance,
+    bool? isEnabled,
+  }) {
+    return NetworkWallet(
+      uuid: uuid,
+      networkId: networkId,
+      address: address,
+      contractAddress: contractAddress,
+      balance: balance ?? this.balance,
+      decimalPlaces: decimalPlaces,
+      isEnabled: isEnabled ?? this.isEnabled,
+    );
+  }
 }
 
 @HiveType(typeId: 5)

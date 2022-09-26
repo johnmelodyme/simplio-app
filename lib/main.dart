@@ -4,6 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:simplio_app/data/http/clients/public_http_client.dart';
 import 'package:simplio_app/data/http/clients/secured_http_client.dart';
 import 'package:simplio_app/data/http/services/asset_service.dart';
+import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
 import 'package:simplio_app/data/http/services/games_service.dart';
@@ -130,10 +131,11 @@ class _SimplioAppState extends State<SimplioApp> {
     accountRepository = AccountRepository.builder(
       accountDb: accountDbProvider,
     );
-    walletRepository = WalletRepository.builder(
+    walletRepository = WalletRepository(
       walletDb: walletDbProvider,
       blockchainUtilsService: securedApi.service<BlockchainUtilsService>(),
       broadcastService: securedApi.service<BroadcastService>(),
+      balanceService: securedApi.service<BalanceService>(),
     );
     assetRepository = AssetRepository.builder(
       assetService: securedApi.service<AssetService>(),

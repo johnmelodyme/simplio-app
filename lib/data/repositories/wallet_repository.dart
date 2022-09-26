@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
 import 'package:simplio_app/data/model/account_wallet.dart';
@@ -11,6 +13,7 @@ class WalletRepository {
   final WalletDb _walletDb;
   final BlockchainUtilsService _blockchainUtilsService;
   final BroadcastService _broadcastService;
+  final BalanceService _balanceService;
 
   late String _walletId;
   late HDWallet _wallet;
@@ -19,16 +22,19 @@ class WalletRepository {
     this._walletDb,
     this._blockchainUtilsService,
     this._broadcastService,
+    this._balanceService,
   );
 
-  WalletRepository.builder({
+  WalletRepository({
     required WalletDb walletDb,
     required BlockchainUtilsService blockchainUtilsService,
     required BroadcastService broadcastService,
+    required BalanceService balanceService,
   }) : this._(
           walletDb,
           blockchainUtilsService,
           broadcastService,
+          balanceService,
         );
 
   Future<AccountWallet> loadAccountWallet(
@@ -463,6 +469,157 @@ class WalletRepository {
     } catch (_) {
       return '';
     }
+  }
+
+  Future<AccountWallet> refreshAccountWalletBalance(
+    AccountWallet accountWallet, {
+    bool save = true,
+  }) async {
+    try {
+      final wallet = await _updateAccountWalletBalance(accountWallet);
+
+      if (save) await _walletDb.save(wallet);
+
+      return wallet;
+    } catch (e) {
+      debugPrint(e.toString());
+      return accountWallet;
+    }
+  }
+
+  Future<AccountWallet> refreshAssetWalletBalance(
+    AccountWallet accountWallet, {
+    required AssetWallet assetWallet,
+    bool save = true,
+  }) async {
+    try {
+      final assWallet = await _updateAssetWalletBalance(assetWallet);
+      final accWallet = accountWallet.updateWalletsFromIterable([assWallet]);
+
+      if (save) await _walletDb.save(accWallet);
+
+      return accWallet;
+    } catch (e) {
+      debugPrint(e.toString());
+      return accountWallet;
+    }
+  }
+
+  Future<AccountWallet> refreshNetworkWalletBalance(
+    AccountWallet accountWallet, {
+    required NetworkWallet networkWallet,
+    bool save = true,
+  }) async {
+    try {
+      final netWallet = await _updateNetworkWalletBalance(networkWallet);
+      final assWallet = accountWallet.wallets.firstWhere(
+        (w) => w.findWallet(networkWallet.uuid) != null,
+      );
+      final accWallet = accountWallet.updateWalletsFromIterable([
+        assWallet.updateWalletsFromIterable([netWallet]),
+      ]);
+
+      if (save) await _walletDb.save(accWallet);
+
+      return accWallet;
+    } catch (e) {
+      debugPrint(e.toString());
+      return accountWallet;
+    }
+  }
+
+  Future<AccountWallet> _updateAccountWalletBalance(
+    AccountWallet accountWallet,
+  ) async {
+    try {
+      final updatedWallets = await Future.wait(accountWallet.wallets.map(
+        _updateAssetWalletBalance,
+      ));
+
+      return accountWallet.updateWalletsFromIterable(updatedWallets);
+    } catch (e) {
+      debugPrint(e.toString());
+      return accountWallet;
+    }
+  }
+
+  Future<AssetWallet> _updateAssetWalletBalance(
+    AssetWallet assetWallet,
+  ) async {
+    try {
+      final updatedWallets = await Future.wait(assetWallet.wallets.map(
+        _updateNetworkWalletBalance,
+      ));
+
+      return assetWallet.updateWalletsFromIterable(updatedWallets);
+    } catch (e) {
+      debugPrint(e.toString());
+      return assetWallet;
+    }
+  }
+
+  Future<NetworkWallet> _updateNetworkWalletBalance(
+    NetworkWallet networkWallet,
+  ) async {
+    try {
+      final BigInt balance = await (networkWallet.isToken
+          ? _getTokenBalance(networkWallet)
+          : _getCoinBalance(networkWallet));
+
+      return networkWallet.copyWith(balance: balance);
+    } catch (e) {
+      debugPrint(e.toString());
+      return networkWallet;
+    }
+  }
+
+  Future<BigInt> _getCoinBalance(NetworkWallet networkWallet) async {
+    final res = await _balanceService.coin(
+      networkWallet.networkId,
+      networkWallet.address,
+    );
+
+    final body = res.body;
+    final success = body?.success ?? false;
+
+    if (body != null && success) {
+      return BigInt.parse(body.balance);
+    }
+
+    if (!success) {
+      throw Exception(
+        "Fetching coin balance for ${networkWallet.address} address failed with ${body?.errorMessage}",
+      );
+    }
+
+    throw Exception(
+      "Fetching coin balance for ${networkWallet.address} address failed",
+    );
+  }
+
+  Future<BigInt> _getTokenBalance(NetworkWallet networkWallet) async {
+    final res = await _balanceService.token(
+      networkWallet.networkId,
+      networkWallet.address,
+      networkWallet.contractAddress!,
+    );
+
+    final body = res.body;
+    final success = body?.success ?? false;
+
+    if (body != null && success) {
+      return BigInt.parse(body.balance);
+    }
+
+    if (!success) {
+      throw Exception(
+        "Fetching token balance for ${networkWallet.address} address failed with ${body?.errorMessage}",
+      );
+    }
+
+    throw Exception(
+      "Fetching token balance for ${networkWallet.address} address failed",
+    );
   }
 }
 

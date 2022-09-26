@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account_wallet.dart';
+import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 
@@ -46,6 +47,46 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
       );
 
       emit(AccountWalletChanged(wallet: accountWallet));
+    } on Exception catch (e) {
+      emit(AccountWalletChangedWithError(wallet: s.wallet, error: e));
+    }
+  }
+
+  Future<void> refreshAccountWalletBalance({
+    bool forceUpdate = false,
+  }) async {
+    final s = state;
+    if (s is! AccountWalletProvided) return;
+
+    if (s.wallet.isValid && !forceUpdate) return;
+
+    try {
+      final wallet = await _walletRepository.refreshAccountWalletBalance(
+        s.wallet,
+      );
+
+      emit(AccountWalletChanged(wallet: wallet));
+    } on Exception catch (e) {
+      emit(AccountWalletChangedWithError(wallet: s.wallet, error: e));
+    }
+  }
+
+  Future<void> refreshNetworkWalletBalance(
+    NetworkWallet networkWallet, {
+    bool forceUpdate = false,
+  }) async {
+    final s = state;
+    if (s is! AccountWalletProvided) return;
+
+    if (s.wallet.isValid && !forceUpdate) return;
+
+    try {
+      final wallet = await _walletRepository.refreshNetworkWalletBalance(
+        s.wallet,
+        networkWallet: networkWallet,
+      );
+
+      emit(AccountWalletChanged(wallet: wallet));
     } on Exception catch (e) {
       emit(AccountWalletChangedWithError(wallet: s.wallet, error: e));
     }

@@ -53,6 +53,28 @@ class AssetWallet extends Equatable {
     return _wallets.containsKey(networkId);
   }
 
+  AssetWallet updateWalletsFromIterable(Iterable<NetworkWallet> wallets) {
+    final Map<int, NetworkWallet> walletsMap =
+        wallets.fold({}, (acc, curr) => acc..addAll({curr.networkId: curr}));
+
+    return updateWalletsFrom(walletsMap);
+  }
+
+  AssetWallet updateWalletsFrom(Map<int, NetworkWallet> wallets) {
+    final Map<int, NetworkWallet> walletsMap = Map.from(_wallets)
+      ..updateAll((networkId, networkWallet) {
+        final wallet = wallets[networkId] ?? networkWallet;
+        return findWallet(wallet.uuid) != null ? wallet : networkWallet;
+      });
+
+    return copyWith(wallets: walletsMap);
+  }
+
+  NetworkWallet? findWallet(String uuid) {
+    final res = _wallets.values.where((w) => w.uuid == uuid);
+    return res.isEmpty ? null : res.first;
+  }
+
   AssetWallet copyWith({
     bool? isEnabled,
     Map<int, NetworkWallet>? wallets,
