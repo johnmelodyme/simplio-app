@@ -64,6 +64,7 @@ class PinVerifyFormCubit extends Cubit<PinVerifyFormState> {
     }
 
     if (res.account.securityAttempts > 0) {
+      await _accountRepository.save(res.account);
       return emit(state.copyWith(
         account: res.account,
         pin: const ValidatedPin(),
