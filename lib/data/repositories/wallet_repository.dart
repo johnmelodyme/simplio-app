@@ -76,39 +76,58 @@ class WalletRepository {
     ));
   }
 
-  Future<AccountWallet> addNetworkWallet(
+  Future<AccountWallet> enableNetworkWallet(
     AccountWallet accountWallet, {
-    required NetworkData data,
+    required int assetId,
+    required int networkId,
+    required int decimalPlaces,
+    String? contractAddress,
   }) async {
     _checkInitializedAccountWallet(accountWallet.uuid);
 
-    /// Add [NetworkWallet] for already existing [AssetWallet].
-    final assetWallet = accountWallet.getWallet(data.assetId);
-    if (assetWallet != null) {
-      final w = _addNetworkWallet(assetWallet, data: data);
-      return _walletDb.save(accountWallet.addWallet(w));
-    }
+    final assetWallet = accountWallet.getWallet(assetId) ??
+        AssetWallet.builder(assetId: assetId);
 
-    /// Build a new [AssetWallet] and immediately add [NetworkWallet] to it.
-    final w = _addNetworkWallet(
-      AssetWallet.builder(assetId: data.assetId),
-      data: data,
+    final networkWallet =
+        assetWallet.getWallet(networkId)?.copyWith(isEnabled: true) ??
+            NetworkWallet.builder(
+              networkId: networkId,
+              address: _wallet.getAddressForCoin(networkId),
+              decimalPlaces: decimalPlaces,
+              isEnabled: true,
+            );
+
+    return await _walletDb.save(
+      accountWallet.addWallet(
+        assetWallet.addWallet(networkWallet),
+      ),
     );
-    return _walletDb.save(accountWallet.addWallet(w));
   }
 
-  AssetWallet _addNetworkWallet(
-    AssetWallet wallet, {
-    required NetworkData data,
-  }) {
-    if (wallet.containsWallet(data.networkId)) return wallet.copyWith();
+  Future<AccountWallet> disableNetworkWallet(
+    AccountWallet accountWallet, {
+    required int assetId,
+    required int networkId,
+  }) async {
+    final assetWallet = accountWallet.getWallet(assetId);
+    if (assetWallet == null) {
+      throw Exception("Asset Wallet '$assetId' was not found.");
+    }
 
-    return wallet.addWallet(NetworkWallet.builder(
-      networkId: data.networkId,
-      address: _wallet.getAddressForCoin(data.networkId),
-      decimalPlaces: data.decimalPlaces,
-      contractAddress: data.contractAddress,
-    ));
+    final networkWallet = assetWallet.getWallet(networkId);
+    if (networkWallet == null) {
+      throw Exception(
+        "Asset Wallet '$assetId' does not have network Wallet '$networkId'.",
+      );
+    }
+
+    return await _walletDb.save(
+      accountWallet.updateWalletsFromIterable([
+        assetWallet.updateWalletsFromIterable([
+          networkWallet.copyWith(isEnabled: false),
+        ])
+      ]),
+    );
   }
 
   String getMnemonic(String accountWalletId) {

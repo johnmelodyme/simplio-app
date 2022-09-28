@@ -8,25 +8,21 @@ part 'asset_wallet.g.dart';
 class AssetWallet extends Equatable {
   final String uuid;
   final int assetId;
-  final bool isEnabled;
   final Map<int, NetworkWallet> _wallets;
 
   const AssetWallet(
     this.uuid,
     this.assetId,
-    this.isEnabled,
     this._wallets,
   );
 
   AssetWallet.builder({
     String? uuid,
     required int assetId,
-    bool isEnabled = true,
     Map<int, NetworkWallet> wallets = const {},
   }) : this(
           uuid ?? const Uuid().v4(),
           assetId,
-          isEnabled,
           wallets,
         );
 
@@ -35,7 +31,6 @@ class AssetWallet extends Equatable {
   @override
   List<Object?> get props => [
         assetId,
-        isEnabled,
         wallets,
       ];
 
@@ -76,13 +71,11 @@ class AssetWallet extends Equatable {
   }
 
   AssetWallet copyWith({
-    bool? isEnabled,
     Map<int, NetworkWallet>? wallets,
   }) {
     return AssetWallet(
       uuid,
       assetId,
-      isEnabled ?? this.isEnabled,
       wallets ?? _wallets,
     );
   }
@@ -97,15 +90,11 @@ class AssetWalletLocal extends HiveObject {
   final int assetId;
 
   @HiveField(2)
-  final bool isEnabled;
-
-  @HiveField(3)
   final List<NetworkWalletLocal> wallets;
 
   AssetWalletLocal({
     required this.uuid,
     required this.assetId,
-    required this.isEnabled,
     required this.wallets,
   });
 }

@@ -40,7 +40,9 @@ class AssetSearchScreen extends StatelessWidget {
                 child: CryptoAssetExpansionList(
                   children: (state.assets),
                   onTap: (data) {
-                    context.read<AccountWalletCubit>().addNetworkWallet(data);
+                    context
+                        .read<AccountWalletCubit>()
+                        .enableNetworkWallet(data);
                   },
                 ),
               );

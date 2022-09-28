@@ -36,14 +36,37 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
     }
   }
 
-  Future<void> addNetworkWallet(NetworkData data) async {
+  Future<void> enableNetworkWallet(NetworkData data) async {
     final s = state;
     if (s is! AccountWalletProvided) return;
 
     try {
-      final accountWallet = await _walletRepository.addNetworkWallet(
+      final accountWallet = await _walletRepository.enableNetworkWallet(
         s.wallet,
-        data: data,
+        assetId: data.assetId,
+        networkId: data.networkId,
+        decimalPlaces: data.decimalPlaces,
+        contractAddress: data.contractAddress,
+      );
+
+      emit(AccountWalletChanged(wallet: accountWallet));
+    } on Exception catch (e) {
+      emit(AccountWalletChangedWithError(wallet: s.wallet, error: e));
+    }
+  }
+
+  Future<void> disableNetworkWallet({
+    required int assetId,
+    required int networkId,
+  }) async {
+    final s = state;
+    if (s is! AccountWalletProvided) return;
+
+    try {
+      final accountWallet = await _walletRepository.disableNetworkWallet(
+        s.wallet,
+        assetId: assetId,
+        networkId: networkId,
       );
 
       emit(AccountWalletChanged(wallet: accountWallet));

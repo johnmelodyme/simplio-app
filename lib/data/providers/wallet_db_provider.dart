@@ -73,7 +73,6 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
     return AssetWalletLocal(
       uuid: wallet.uuid,
       assetId: wallet.assetId,
-      isEnabled: wallet.isEnabled,
       wallets: wallet.wallets.map(_mapNetworkWalletTo).toList(),
     );
   }
@@ -114,7 +113,6 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
     return AssetWallet(
       local.uuid,
       local.assetId,
-      local.isEnabled,
       Map.fromEntries(local.wallets.map(
         (e) => MapEntry(
           e.networkId,
