@@ -5,9 +5,14 @@ class GamesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('GamesScreen screen placeholder'),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: const Scaffold(
+        body: Center(
+          child: Text('GamesScreen screen placeholder'),
+        ),
       ),
     );
   }

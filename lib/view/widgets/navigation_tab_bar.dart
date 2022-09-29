@@ -77,110 +77,116 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
 
     final topGap = MediaQuery.of(context).viewPadding.top;
 
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            controller: scrollController,
-            slivers: [
-              SliverGap(MediaQuery.of(context).viewPadding.top +
-                  Constants.appBarHeight),
-              if (widget.tabs[currentTab].topSlivers?.isNotEmpty == true)
-                ...widget.tabs[currentTab].topSlivers!,
-              SliverPadding(
-                padding: Paddings.horizontal16,
-                sliver: SliverPersistentHeader(
-                    pinned: true,
-                    delegate: FixedHeightItemDelegate(
-                        fixedHeight: Constants.navigationTabBarHeight,
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(RadiusSize.radius64),
-                          ),
-                          child: Container(
-                            height: Constants.navigationTabBarHeight,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
-                            ),
-                            width: double.infinity,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                ...widget.tabs
-                                    .map(
-                                      (tab) => Expanded(
-                                        child: NavigationTabChip(
-                                          label: tab.label,
-                                          iconData: tab.iconData,
-                                          iconColor: tab.iconColor,
-                                          isSelected: currentTab ==
-                                              widget.tabs.indexOf(tab),
-                                          onTap: () {
-                                            onTabTap(widget.tabs.indexOf(tab));
-                                          },
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ],
-                            ),
-                          ),
-                        ))),
-              ),
-              if (widget.tabs[currentTab].searchBar != null) ...[
-                const SliverGap(Dimensions.padding20),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              controller: scrollController,
+              slivers: [
+                SliverGap(MediaQuery.of(context).viewPadding.top +
+                    Constants.appBarHeight),
+                if (widget.tabs[currentTab].topSlivers?.isNotEmpty == true)
+                  ...widget.tabs[currentTab].topSlivers!,
                 SliverPadding(
                   padding: Paddings.horizontal16,
                   sliver: SliverPersistentHeader(
-                    floating: true,
-                    delegate: FixedHeightItemDelegate(
-                        fixedHeight: Constants.searchBarHeight,
-                        child: widget.tabs[currentTab].searchBar!),
-                  ),
-                )
+                      pinned: true,
+                      delegate: FixedHeightItemDelegate(
+                          fixedHeight: Constants.navigationTabBarHeight,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(RadiusSize.radius64),
+                            ),
+                            child: Container(
+                              height: Constants.navigationTabBarHeight,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                              ),
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  ...widget.tabs
+                                      .map(
+                                        (tab) => Expanded(
+                                          child: NavigationTabChip(
+                                            label: tab.label,
+                                            iconData: tab.iconData,
+                                            iconColor: tab.iconColor,
+                                            isSelected: currentTab ==
+                                                widget.tabs.indexOf(tab),
+                                            onTap: () {
+                                              onTabTap(
+                                                  widget.tabs.indexOf(tab));
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                ],
+                              ),
+                            ),
+                          ))),
+                ),
+                if (widget.tabs[currentTab].searchBar != null) ...[
+                  const SliverGap(Dimensions.padding20),
+                  SliverPadding(
+                    padding: Paddings.horizontal16,
+                    sliver: SliverPersistentHeader(
+                      floating: true,
+                      delegate: FixedHeightItemDelegate(
+                          fixedHeight: Constants.searchBarHeight,
+                          child: widget.tabs[currentTab].searchBar!),
+                    ),
+                  )
+                ],
+                ...widget.tabs[currentTab].bottomSlivers,
+                SliverGap(bottomGap)
               ],
-              ...widget.tabs[currentTab].bottomSlivers,
-              SliverGap(bottomGap)
-            ],
-          ),
-        ),
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: ClipRRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: SizedBox(height: topGap + Constants.appBarHeight),
             ),
           ),
-        ),
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: AppBarMask(
-            height: topGap + Constants.appBarHeight + Dimensions.padding20,
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: SizedBox(height: topGap + Constants.appBarHeight),
+              ),
+            ),
           ),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          top: 0,
-          child: AvatarAppBar(
-            title: 'Nick name',
-            userLevel: 1,
-            onTap: () {
-              GoRouter.of(context).pushNamed(
-                AuthenticatedRouter.configuration,
-              );
-            },
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AppBarMask(
+              height: topGap + Constants.appBarHeight + Dimensions.padding20,
+            ),
           ),
-        ),
-      ],
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            child: AvatarAppBar(
+              title: 'Nick name',
+              userLevel: 1,
+              onTap: () {
+                GoRouter.of(context).pushNamed(
+                  AuthenticatedRouter.configuration,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
