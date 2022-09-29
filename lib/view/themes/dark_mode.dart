@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/common_theme.dart';
-import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class DarkMode {
   DarkMode._();
 
-  static Color get backgroundColor => SioColors.black;
+  static Color get backgroundColor => SioColors.softBlack;
 
   static Color get buttonColor => SioColors.secondary1;
 
@@ -70,7 +70,7 @@ class DarkMode {
     textTheme: textTheme,
     appBarTheme: AppBarTheme(
       iconTheme: IconThemeData(color: colorScheme.onPrimary),
-      backgroundColor: colorScheme.primary,
+      backgroundColor: colorScheme.background,
       titleTextStyle: TextStyle(
         backgroundColor: colorScheme.primary,
         color: colorScheme.onPrimary,

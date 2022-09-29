@@ -64,8 +64,8 @@ class SearchBarPlaceholder extends StatelessWidget {
           ),
           const Gap(Dimensions.padding16),
           Container(
-            width: 41,
-            height: 41,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
               borderRadius:
                   const BorderRadius.all(Radius.circular(RadiusSize.radius10)),

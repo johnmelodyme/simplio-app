@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -23,17 +21,20 @@ class AvatarAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topGap = MediaQuery.of(context).viewPadding.top;
+
     return GestureDetector(
       onTap: () => onTap?.call(),
-      child: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Padding(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).viewPadding.top,
-                bottom: Dimensions.padding20,
-                left: Dimensions.padding16,
-              ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              top: topGap + Dimensions.padding16,
+              bottom: Dimensions.padding20,
+              left: Dimensions.padding16,
+            ),
+            child: SizedBox(
+              height: 40,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -85,8 +86,10 @@ class AvatarAppBar extends StatelessWidget {
                     ],
                   )
                 ],
-              )),
-        ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

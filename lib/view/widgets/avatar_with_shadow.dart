@@ -4,7 +4,7 @@ class AvatarWithShadow extends StatelessWidget {
   const AvatarWithShadow({
     Key? key,
     this.child,
-    this.size = 41,
+    this.size = 40,
   }) : super(key: key);
 
   final Widget? child;

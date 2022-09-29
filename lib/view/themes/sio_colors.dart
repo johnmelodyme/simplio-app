@@ -7,6 +7,7 @@ abstract class SioColors {
 
   static const black = Color(0xFF292E32);
   static const backGradient4Start = Color(0xFF062333);
+  static const appBarTop = Color(0xFF072536);
   static const softBlack = Color(0xFF031017);
   static const secondary0 = Color(0xFF343A3F);
   static const secondary1 = Color(0xFF041721);

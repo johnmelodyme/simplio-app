@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/app_bar_mask.dart';
 import 'package:simplio_app/view/widgets/avatar_app_bar.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_chip.dart';
@@ -72,42 +75,17 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
     final bottomGap = MediaQuery.of(context).viewPadding.bottom +
         Constants.bottomTabBarHeight;
 
+    final topGap = MediaQuery.of(context).viewPadding.top;
+
     return Stack(
       children: [
-        Positioned.fill(
-          top: MediaQuery.of(context).viewPadding.top + Constants.appBarHeight,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(
-                RadiusSize.radius20,
-              ),
-            ),
-            child: Container(
-              color: Theme.of(context).colorScheme.background,
-            ),
-          ),
-        ),
         Positioned.fill(
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             controller: scrollController,
             slivers: [
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: FixedHeightItemDelegate(
-                  fixedHeight: Constants.appBarHeight +
-                      MediaQuery.of(context).viewPadding.top,
-                  child: AvatarAppBar(
-                    title: 'Nick name',
-                    userLevel: 1,
-                    onTap: () {
-                      GoRouter.of(context).pushNamed(
-                        AuthenticatedRouter.configuration,
-                      );
-                    },
-                  ),
-                ),
-              ),
+              SliverGap(MediaQuery.of(context).viewPadding.top +
+                  Constants.appBarHeight),
               if (widget.tabs[currentTab].topSlivers?.isNotEmpty == true)
                 ...widget.tabs[currentTab].topSlivers!,
               SliverPadding(
@@ -115,19 +93,17 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
                 sliver: SliverPersistentHeader(
                     pinned: true,
                     delegate: FixedHeightItemDelegate(
-                        fixedHeight: Constants.navigationTabBarHeight +
-                            Dimensions.padding16,
-                        child: Padding(
-                          padding: Paddings.top16,
+                        fixedHeight: Constants.navigationTabBarHeight,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(RadiusSize.radius64),
+                          ),
                           child: Container(
                             height: Constants.navigationTabBarHeight,
                             decoration: BoxDecoration(
                               color: Theme.of(context)
                                   .colorScheme
                                   .onPrimaryContainer,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(RadiusSize.radius64),
-                              ),
                             ),
                             width: double.infinity,
                             child: Row(
@@ -169,6 +145,39 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
               ...widget.tabs[currentTab].bottomSlivers,
               SliverGap(bottomGap)
             ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: SizedBox(height: topGap + Constants.appBarHeight),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: AppBarMask(
+            height: topGap + Constants.appBarHeight + Dimensions.padding20,
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          top: 0,
+          child: AvatarAppBar(
+            title: 'Nick name',
+            userLevel: 1,
+            onTap: () {
+              GoRouter.of(context).pushNamed(
+                AuthenticatedRouter.configuration,
+              );
+            },
           ),
         ),
       ],

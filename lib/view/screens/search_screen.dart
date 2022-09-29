@@ -51,53 +51,58 @@ class _SearchScreenState extends State<SearchScreen> {
           ],
         ),
       ),
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: FixedHeightItemDelegate(
-              fixedHeight: Constants.appBarHeight +
-                  MediaQuery.of(context).viewPadding.top,
-              child: ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: widget.appBarStyle == AppBarStyle.twoLined
-                      ? TwoLinesAppBar(
-                          firstPart: widget.firstPart,
-                          secondPart: widget.secondPart,
-                          actionType: ActionType.close,
-                          onBackTap: () => Navigator.of(context).pop(),
-                        )
-                      : ColorizedAppBar(
-                          firstPart: widget.firstPart,
-                          secondPart: widget.secondPart,
-                          actionType: ActionType.close,
-                          onBackTap: () => Navigator.of(context).pop(),
-                        ),
-                ),
-              ),
-            ),
-          ),
-          const SliverGap(Dimensions.padding20),
-          SliverPadding(
-            padding: Paddings.horizontal16,
-            sliver: SliverPersistentHeader(
-              floating: true,
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        onVerticalDragDown: (_) =>
+            FocusManager.instance.primaryFocus?.unfocus(),
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverPersistentHeader(
+              pinned: true,
               delegate: FixedHeightItemDelegate(
-                fixedHeight: Constants.searchBarHeight,
-                child: SearchBar(
-                  searchHint: widget.searchHint,
-                  searchController: widget.searchController,
-                  autoFocus: widget.autoFocusSearch,
+                fixedHeight: Constants.appBarHeight +
+                    MediaQuery.of(context).viewPadding.top,
+                child: ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: widget.appBarStyle == AppBarStyle.twoLined
+                        ? TwoLinesAppBar(
+                            firstPart: widget.firstPart,
+                            secondPart: widget.secondPart,
+                            actionType: ActionType.close,
+                            onBackTap: () => Navigator.of(context).pop(),
+                          )
+                        : ColorizedAppBar(
+                            firstPart: widget.firstPart,
+                            secondPart: widget.secondPart,
+                            actionType: ActionType.close,
+                            onBackTap: () => Navigator.of(context).pop(),
+                          ),
+                  ),
                 ),
               ),
             ),
-          ),
-          SliverFillRemaining(
-            child: widget.child,
-          ),
-        ],
+            const SliverGap(Dimensions.padding20),
+            SliverPadding(
+              padding: Paddings.horizontal16,
+              sliver: SliverPersistentHeader(
+                floating: true,
+                delegate: FixedHeightItemDelegate(
+                  fixedHeight: Constants.searchBarHeight,
+                  child: SearchBar(
+                    searchHint: widget.searchHint,
+                    searchController: widget.searchController,
+                    autoFocus: widget.autoFocusSearch,
+                  ),
+                ),
+              ),
+            ),
+            SliverFillRemaining(
+              child: widget.child,
+            ),
+          ],
+        ),
       ),
     );
   }

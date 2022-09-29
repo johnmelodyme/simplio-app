@@ -93,6 +93,7 @@ class Paddings {
   static const EdgeInsetsGeometry vertical48 =
       EdgeInsets.symmetric(vertical: Dimensions.padding48);
 
+  static const EdgeInsetsGeometry all4 = EdgeInsets.all(Dimensions.padding4);
   static const EdgeInsetsGeometry all5 = EdgeInsets.all(Dimensions.padding5);
   static const EdgeInsetsGeometry all8 = EdgeInsets.all(Dimensions.padding8);
   static const EdgeInsetsGeometry all10 = EdgeInsets.all(Dimensions.padding10);
@@ -148,7 +149,7 @@ class RadiusSize {
 }
 
 class Constants {
-  static const double appBarHeight = 75;
+  static const double appBarHeight = 76;
   static const double bottomTabBarHeight = 56;
   static const double navigationTabBarHeight = 45;
   static const double searchBarHeight = 44;

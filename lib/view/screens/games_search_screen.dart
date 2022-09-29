@@ -76,6 +76,11 @@ class _GamesSearchScreenState extends State<GamesSearchScreen> {
                     padding: Paddings.horizontal16,
                     child: GameItem(
                       game: item,
+                      gameActions: const [
+                        GameAction.play,
+                        GameAction.addToMyGames,
+                      ],
+                      onActionPressed: (GameAction gameAction) {},
                       onTap: () {
                         //TODO.. open game detail
                       },

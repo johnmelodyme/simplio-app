@@ -4,6 +4,7 @@
       "description": "Simplio name"
     },
 
+  "common_top_uc": "TOP",
   "common_user_level": "User Level",
   "common_email":"Email",
   "common_retry": "Retry",
@@ -83,6 +84,14 @@
       }
     },
     "game_item_coin_price_label": "Coin price: ",
+
+    "game_item_action_types": "{actionType, select, play{Play} buyCoin{Buy Coin} remove{Remove} addToMyGames{Add to My Games}}",
+    "@game_item_action_types": {
+      "description": "Game Action type",
+      "placeholders": {
+        "actionType": {}
+      }
+    },
 
     "sign_in_screen_title": "Enter Simplio.",
     "sign_in_screen_subtitle": "It's good to see you back.",

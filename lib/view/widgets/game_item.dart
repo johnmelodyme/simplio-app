@@ -6,23 +6,74 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
-import 'package:simplio_app/view/widgets/small_bordered_button.dart';
-import 'package:simplio_app/view/widgets/small_solid_button.dart';
+import 'package:simplio_app/view/widgets/favourite_start.dart';
+import 'package:simplio_app/view/widgets/promoted_red_strip.dart';
+import 'package:simplio_app/view/widgets/small_button.dart';
 
 class GameItem extends StatelessWidget {
   const GameItem({
     super.key,
     required this.game,
     this.onTap,
+    required this.gameActions,
+    required this.onActionPressed,
+    this.isFavourite,
   });
 
   final Game game;
   final Function? onTap;
+  final List<GameAction> gameActions;
+  final Function(GameAction) onActionPressed;
+  final bool? isFavourite;
+
+  Color getTextColorByActionType(BuildContext context, GameAction gameAction) {
+    switch (gameAction) {
+      case GameAction.play:
+        return Theme.of(context).colorScheme.onPrimary;
+      case GameAction.buyCoin:
+        return Theme.of(context).colorScheme.background;
+      case GameAction.addToMyGames:
+        return Theme.of(context).colorScheme.shadow;
+      case GameAction.remove:
+        return Theme.of(context).colorScheme.onSecondaryContainer;
+    }
+  }
+
+  SmallButtonType getButtonStyleByActionType(
+      BuildContext context, GameAction gameAction) {
+    switch (gameAction) {
+      case GameAction.play:
+        return SmallButtonType.solid;
+      case GameAction.buyCoin:
+        return SmallButtonType.highlighted;
+      case GameAction.addToMyGames:
+      case GameAction.remove:
+        return SmallButtonType.bordered;
+    }
+  }
+
+  Color? getBorderColorByActionType(
+      BuildContext context, GameAction gameAction) {
+    if (gameAction == GameAction.addToMyGames) {
+      return Theme.of(context).colorScheme.shadow;
+    } else if (gameAction == GameAction.remove) {
+      return Theme.of(context).colorScheme.onSecondaryContainer;
+    } else {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadiuses.radius30,
+      borderRadius: game.isPromoted
+          ? const BorderRadius.only(
+              topLeft: Radius.circular(RadiusSize.radius30),
+              topRight: Radius.circular(RadiusSize.radius10),
+              bottomRight: Radius.circular(RadiusSize.radius30),
+              bottomLeft: Radius.circular(RadiusSize.radius30),
+            )
+          : BorderRadiuses.radius30,
       child: SizedBox(
         height: 160,
         child: Stack(
@@ -109,6 +160,7 @@ class GameItem extends StatelessWidget {
                         ),
                         const Spacer(),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -149,23 +201,24 @@ class GameItem extends StatelessWidget {
                               ],
                             ),
                             const Gap(Dimensions.padding8),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SmallSolidButton(
-                                  label: 'Play',
+                            Wrap(
+                              spacing: Dimensions.padding5,
+                              runSpacing: Dimensions.padding5,
+                              children: gameActions.map((gameAction) {
+                                return SmallButton(
+                                  label: context.locale
+                                      .game_item_action_types(gameAction.name),
                                   onPressed: () {
-                                    //TODO.. open game
+                                    onActionPressed.call(gameAction);
                                   },
-                                ),
-                                const Gap(Dimensions.padding5),
-                                SmallBorderedButton(
-                                  label: 'Add to My Games',
-                                  onPressed: () {
-                                    //TODO.. add to my games
-                                  },
-                                )
-                              ],
+                                  type: getButtonStyleByActionType(
+                                      context, gameAction),
+                                  labelColor: getTextColorByActionType(
+                                      context, gameAction),
+                                  borderColor: getBorderColorByActionType(
+                                      context, gameAction),
+                                );
+                              }).toList(),
                             ),
                           ],
                         ),
@@ -175,9 +228,23 @@ class GameItem extends StatelessWidget {
                 ),
               ),
             ),
+            if (isFavourite != null)
+              Align(
+                alignment: Alignment.topRight,
+                child: FavouriteStar(isFilled: isFavourite!),
+              )
+            else if (game.isPromoted)
+              Align(
+                alignment: Alignment.topRight,
+                child: PromotedRedStrip(
+                  label: context.locale.common_top_uc,
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 }
+
+enum GameAction { play, buyCoin, addToMyGames, remove }

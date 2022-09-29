@@ -16,45 +16,50 @@ class UserLevelBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          context.locale.common_user_level,
-          style: SioTextStyles.bodyDetail
-              .apply(color: Theme.of(context).colorScheme.secondaryContainer),
-        ),
-        const Gap(Dimensions.padding5),
-        Row(
-          children: Iterable<int>.generate(maxUserLevel).map((int level) {
-            final icon = Icon(
-              Icons.star,
-              size: 15,
-              color: userLevel <= level
-                  ? Theme.of(context).colorScheme.onTertiaryContainer
-                  : Theme.of(context).colorScheme.secondaryContainer,
-            );
-            if (userLevel <= level) {
-              return icon;
-            } else {
-              return Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .inverseSurface
-                            .withOpacity(0.15),
-                        spreadRadius: 1,
-                        blurRadius: 6,
-                        offset: const Offset(0, 0),
-                      ),
-                    ],
-                  ),
-                  child: icon);
-            }
-          }).toList(),
-        )
-      ],
+    return SizedBox(
+      height: 15,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            context.locale.common_user_level,
+            style: SioTextStyles.bodyDetail.copyWith(
+                height: 1,
+                color: Theme.of(context).colorScheme.secondaryContainer),
+          ),
+          const Gap(Dimensions.padding5),
+          Row(
+            children: Iterable<int>.generate(maxUserLevel).map((int level) {
+              final icon = Icon(
+                Icons.star,
+                size: 15,
+                color: userLevel <= level
+                    ? Theme.of(context).colorScheme.onTertiaryContainer
+                    : Theme.of(context).colorScheme.secondaryContainer,
+              );
+              if (userLevel <= level) {
+                return icon;
+              } else {
+                return Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .inverseSurface
+                              .withOpacity(0.15),
+                          spreadRadius: 1,
+                          blurRadius: 6,
+                          offset: Offset.zero,
+                        ),
+                      ],
+                    ),
+                    child: icon);
+              }
+            }).toList(),
+          )
+        ],
+      ),
     );
   }
 }

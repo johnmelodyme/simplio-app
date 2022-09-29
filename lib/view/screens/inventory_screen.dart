@@ -27,72 +27,63 @@ class InventoryScreen extends StatelessWidget {
     return BlocBuilder<AccountWalletCubit, AccountWalletState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Theme.of(context).colorScheme.onPrimaryContainer,
-                Theme.of(context).colorScheme.background,
-              ],
-            ),
-          ),
-          child: NavigationTabBar(
-            tabs: [
-              NavigationBarTabItem(
-                  label: context.locale.inventory_tab_coins,
-                  searchBar: SearchBarPlaceholder(
-                    onTap: () {
-                      GoRouter.of(context).pushNamed(
-                        AuthenticatedRouter.assetSearch,
-                      );
-                    },
-                    label: context.locale.inventory_screen_search_and_add_coins,
-                  ),
-                  iconData: Icons.pie_chart_outline,
-                  iconColor: Theme.of(context).colorScheme.surface,
-                  topSlivers: [
-                    const SliverGap(Dimensions.padding16),
-                    const TotalBalance(balance: 2402.7),
-                    const SliverGap(Dimensions.padding20),
-                  ],
-                  bottomSlivers: [
-                    const SliverGap(Dimensions.padding10),
-                    const InventoryCoinsContent(),
-                    const SliverGap(Dimensions.padding20),
-                  ]),
-              NavigationBarTabItem(
-                  label: context.locale.inventory_tab_nft,
-                  searchBar: SearchBarPlaceholder(
-                    label: context.locale.inventory_screen_search_nft,
-                  ),
-                  iconData: Icons.pie_chart_outline,
-                  iconColor: Theme.of(context).colorScheme.onSurface,
-                  topSlivers: [
-                    const SliverGap(Dimensions.padding16),
-                    const TotalBalance(balance: 2402.7),
-                    const SliverGap(Dimensions.padding20),
-                  ],
-                  bottomSlivers: [
-                    const SliverGap(100)
-                  ]),
-              NavigationBarTabItem(
-                  label: context.locale.inventory_tab_transactions,
-                  searchBar: SearchBarPlaceholder(
-                    label: context.locale.inventory_screen_search_transactions,
-                  ),
-                  topSlivers: [
-                    const SliverGap(Dimensions.padding16),
-                    const TotalBalance(balance: 2402.7),
-                    const SliverGap(Dimensions.padding20),
-                  ],
-                  bottomSlivers: [
-                    const SliverGap(Dimensions.padding20),
-                    const TransactionsContent(),
-                  ])
-            ],
-          ),
+        return NavigationTabBar(
+          tabs: [
+            NavigationBarTabItem(
+                label: context.locale.inventory_tab_coins,
+                searchBar: SearchBarPlaceholder(
+                  onTap: () {
+                    GoRouter.of(context).pushNamed(
+                      AuthenticatedRouter.assetSearch,
+                    );
+                  },
+                  label: context.locale.inventory_screen_search_and_add_coins,
+                ),
+                iconData: Icons.pie_chart_outline,
+                iconColor: Theme.of(context).colorScheme.surface,
+                topSlivers: [
+                  const SliverGap(Dimensions.padding16),
+                  //todo.. replace by real data
+                  const TotalBalance(balance: 2402.7),
+                  const SliverGap(Dimensions.padding20),
+                ],
+                bottomSlivers: [
+                  const SliverGap(Dimensions.padding10),
+                  const InventoryCoinsContent(),
+                  const SliverGap(Dimensions.padding20),
+                ]),
+            NavigationBarTabItem(
+                label: context.locale.inventory_tab_nft,
+                searchBar: SearchBarPlaceholder(
+                  label: context.locale.inventory_screen_search_nft,
+                ),
+                iconData: Icons.pie_chart_outline,
+                iconColor: Theme.of(context).colorScheme.onSurface,
+                topSlivers: [
+                  const SliverGap(Dimensions.padding16),
+                  //todo.. replace by real data
+                  const TotalBalance(balance: 2402.7),
+                  const SliverGap(Dimensions.padding20),
+                ],
+                bottomSlivers: [
+                  const SliverGap(100)
+                ]),
+            NavigationBarTabItem(
+                label: context.locale.inventory_tab_transactions,
+                searchBar: SearchBarPlaceholder(
+                  label: context.locale.inventory_screen_search_transactions,
+                ),
+                topSlivers: [
+                  const SliverGap(Dimensions.padding16),
+                  //todo.. replace by real data
+                  const TotalBalance(balance: 2402.7),
+                  const SliverGap(Dimensions.padding20),
+                ],
+                bottomSlivers: [
+                  const SliverGap(Dimensions.padding20),
+                  const TransactionsContent(),
+                ])
+          ],
         );
       },
     );
