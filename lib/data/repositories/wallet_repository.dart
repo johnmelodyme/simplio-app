@@ -93,6 +93,7 @@ class WalletRepository {
             NetworkWallet.builder(
               networkId: networkId,
               address: _wallet.getAddressForCoin(networkId),
+              contractAddress: contractAddress,
               decimalPlaces: decimalPlaces,
               isEnabled: true,
             );
