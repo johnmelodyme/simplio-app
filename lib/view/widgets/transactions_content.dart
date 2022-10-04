@@ -72,7 +72,7 @@ class _TransactionsContentState extends State<TransactionsContent> {
                   label: context.locale
                       .inventory_screen_search_transactions_no_items_found,
                   child: Image.asset(
-                    'assets/icon/empty_transactions_placeholder.png',
+                    'assets/images/empty_transactions_placeholder.png',
                   ),
                 ),
                 newPageErrorIndicatorBuilder: (_) => Padding(

@@ -74,7 +74,7 @@ class GameItem extends StatelessWidget {
             )
           : BorderRadii.radius30,
       child: SizedBox(
-        height: 160,
+        height: Constants.gameItemHeight,
         child: Stack(
           children: [
             Positioned.fill(

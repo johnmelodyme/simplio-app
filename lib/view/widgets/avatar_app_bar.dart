@@ -40,7 +40,7 @@ class AvatarAppBar extends StatelessWidget {
                 children: [
                   AvatarWithShadow(
                       child: Image.asset(
-                    'assets/icon/profile_avatar_pic.png',
+                    'assets/images/profile_avatar_pic.png',
                     width: 40,
                     height: 40,
                   )),

@@ -169,8 +169,10 @@ class RadiusSize {
 }
 
 class Constants {
+  //sizes
   static const double appBarHeight = 76;
   static const double bottomTabBarHeight = 56;
+  static const double gameItemHeight = 160;
   static const double navigationTabBarHeight = 45;
   static const double searchBarHeight = 44;
   static const double buttonHeight = 45;
@@ -182,9 +184,16 @@ class Constants {
   static const double coinsBottomTabBarHeight = 131;
   static const double colorizedAppBarHeight = 54;
   static const double panelKeyboardHeightWithButton = 357;
+  static const double slidableBannerHeight = 140;
+  static const double slidableBannerBulletSize = 4;
 
+  //counts
   static const pageSizeTransactions = 7;
   static const pageSizeGames = 7;
 
   static const keypadButtonSize = Size(100.0, 60.0);
+
+  //times
+  static const slidableBannerItemSwapTimeMillis = 3000;
+  static const slidableBannerSwapItemAnimationTimeTimeMillis = 500;
 }
