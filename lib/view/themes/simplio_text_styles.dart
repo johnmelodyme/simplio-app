@@ -115,4 +115,10 @@ class SioTextStyles {
     fontSize: 16,
     height: 1.5,
   );
+
+  static TextStyle numericKeyboard = bodyStyle.copyWith(
+    fontSize: 26,
+    height: 2.26,
+    fontWeight: FontWeight.w300,
+  );
 }

@@ -87,7 +87,7 @@ extension BigIntParseExtension on BigInt {
     String originalNumber = toString();
     String formattedNumber;
 
-    //pad with leading zerros if need
+    //pad with leading zeros if needed
     if (originalNumber.length <= decimalOffset) {
       int offset = decimalOffset + 1 - originalNumber.length;
       originalNumber = '${'0' * offset}$originalNumber';
@@ -97,6 +97,54 @@ extension BigIntParseExtension on BigInt {
         "${originalNumber.substring(0, originalNumber.length - decimalOffset)}."
         "${originalNumber.substring(originalNumber.length - decimalOffset, originalNumber.length)}";
 
-    return double.parse(formattedNumber).toStringAsFixed(maxDecimalPlaces);
+    formattedNumber = trimRight(
+        double.parse(formattedNumber).toStringAsFixed(maxDecimalPlaces), '0');
+
+    if (formattedNumber.split('').last == '.') {
+      formattedNumber = '${formattedNumber.replaceFirst('.', '')}.00';
+    }
+
+    return formattedNumber;
   }
+}
+
+String trimLeft(String from, String pattern) {
+  if (from.isEmpty || pattern.isEmpty || pattern.length > from.length) {
+    return from;
+  }
+
+  while (from.startsWith(pattern)) {
+    from = from.substring(pattern.length);
+  }
+  return from;
+}
+
+String trimRight(String from, String pattern) {
+  if (from.isEmpty || pattern.isEmpty || pattern.length > from.length) {
+    return from;
+  }
+
+  while (from.endsWith(pattern)) {
+    from = from.substring(0, from.length - pattern.length);
+  }
+  return from;
+}
+
+String trim(String from, String pattern) {
+  return trimLeft(trimRight(from, pattern), pattern);
+}
+
+BigInt doubleStringToBigInt(String number, int decimalPlaces) {
+  List<String> split = number.split('.');
+  if (split.length == 1) {
+    return BigInt.parse(
+        split.first.padRight(split.first.length + decimalPlaces, '0'));
+  }
+
+  if (split.length > 1) {
+    split.last = trimRight(split.last, '0').padRight(decimalPlaces, '0');
+    return BigInt.parse(split.join());
+  }
+
+  throw Exception('Unknown exception in toBigIntFromDoubleString function');
 }

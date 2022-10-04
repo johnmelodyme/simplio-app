@@ -9,7 +9,7 @@ mixin WalletUtilsMixin {
     BuildContext context,
     String assetId,
   ) {
-    var state = context.read<AccountWalletCubit>().state;
+    final state = context.read<AccountWalletCubit>().state;
     return state is AccountWalletProvided
         ? state.wallet.getWallet(int.parse(assetId))
         : throw Exception('No asset wallet found');

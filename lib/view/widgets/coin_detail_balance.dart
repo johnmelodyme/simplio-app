@@ -42,7 +42,8 @@ class CoinDetailBalance extends StatelessWidget {
             children: [
               const Gap(52),
               Text(
-                networkWallet.balance.getFormattedBalance(2),
+                networkWallet.balance
+                    .getFormattedBalance(networkWallet.decimalPlaces),
                 style: SioTextStyles.h1
                     .apply(color: Theme.of(context).colorScheme.onPrimary),
               ),
@@ -54,13 +55,13 @@ class CoinDetailBalance extends StatelessWidget {
                 style: SioTextStyles.bodyPrimary
                     .apply(color: Theme.of(context).colorScheme.inverseSurface),
               ),
-              const Gap(Dimensions.padding30),
+              Gaps.gap30,
               //todo.. show this earning button by some condition
               const EarningElevatedButton(
                 earningType: EarningType.startEarning,
                 apyPercentage: 4.75, //TODO.. use real data
               ),
-              const Gap(Dimensions.padding10),
+              Gaps.gap10,
               if (networkWallet.balance == BigInt.zero)
                 _isInInventory()
                     ? BorderedElevatedButton(

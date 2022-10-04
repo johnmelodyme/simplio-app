@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
@@ -62,7 +61,7 @@ class NavigationTabChip extends StatelessWidget {
                     ? Theme.of(context).colorScheme.primary
                     : iconColor ?? Theme.of(context).colorScheme.onPrimary,
               ),
-              const Gap(Dimensions.padding8),
+              Gaps.gap8,
             },
             Flexible(
               child: Text(

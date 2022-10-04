@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
-import 'package:simplio_app/view/screens/search_screen.dart';
+import 'package:simplio_app/view/widgets/search.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 
 class AssetSearchScreen extends StatelessWidget {
@@ -23,7 +23,7 @@ class AssetSearchScreen extends StatelessWidget {
       },
     );
 
-    return SearchScreen(
+    return Search(
       firstPart: context.locale.asset_search_screen_search_and_add,
       secondPart: context.locale.asset_search_screen_coins,
       searchHint: context.locale.asset_search_screen_search,

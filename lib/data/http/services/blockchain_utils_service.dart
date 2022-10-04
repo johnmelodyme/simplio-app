@@ -11,6 +11,7 @@ abstract class BlockchainUtilsService extends ChopperService {
   static FactoryConvertMap converter() => {
         EthereumUtilsResponse: EthereumUtilsResponse.fromJson,
         SolanaUtilsResponse: SolanaUtilsResponse.fromJson,
+        UtxoUtilsResponse: UtxoUtilsResponse.fromJson,
       };
 
   @Get(path: '/utils')
@@ -64,7 +65,7 @@ class UtxoUtilsResponse {
   const UtxoUtilsResponse({
     required this.items,
     required this.success,
-    required this.errorMessage,
+    this.errorMessage,
   });
 
   factory UtxoUtilsResponse.fromJson(Map<String, dynamic> json) =>
@@ -80,9 +81,9 @@ class SolanaUtilsResponse {
   final String? errorMessage;
 
   const SolanaUtilsResponse({
-    required this.lastBlockHash,
+    this.lastBlockHash,
     required this.success,
-    required this.errorMessage,
+    this.errorMessage,
   });
 
   factory SolanaUtilsResponse.fromJson(Map<String, dynamic> json) =>
@@ -93,16 +94,16 @@ class SolanaUtilsResponse {
 
 @JsonSerializable()
 class EthereumUtilsResponse {
-  final String address;
+  final String? address;
   final String? transactionCount;
   final bool success;
   final String? errorMessage;
 
   const EthereumUtilsResponse({
-    required this.address,
-    required this.transactionCount,
+    this.address,
+    this.transactionCount,
     required this.success,
-    required this.errorMessage,
+    this.errorMessage,
   });
 
   factory EthereumUtilsResponse.fromJson(Map<String, dynamic> json) =>

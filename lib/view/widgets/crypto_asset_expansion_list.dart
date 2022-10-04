@@ -2,6 +2,7 @@ import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
 
 class CryptoAssetExpansionList extends StatelessWidget {
   final List<CryptoAssetData> children;
@@ -15,8 +16,8 @@ class CryptoAssetExpansionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionPanelList.radio(
-      elevation: 0,
+    return SioExpansionRadioPanel(
+      animationDuration: const Duration(milliseconds: 500),
       children: children.map(
         (a) {
           final asset = Assets.getAssetDetail(a.assetId);

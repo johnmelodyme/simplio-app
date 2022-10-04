@@ -21,7 +21,7 @@ class FeeRepository {
     );
 
     final body = res.body;
-    if (res.isSuccessful && body != null) return body.first;
+    if (res.isSuccessful && body?.isNotEmpty == true) return body!.first;
 
     throw Exception(res.error);
   }
@@ -59,9 +59,9 @@ class FeeData {
 
   List<BigInt> get values => _values..sort((a, b) => a.compareTo(b));
 
-  BigInt? get lowFee => values.isNotEmpty ? values.first : null;
-  BigInt? get regularFee => values.length > 1 ? values[1] : null;
-  BigInt? get highFee => values.length > 2 ? values[2] : null;
+  BigInt get lowFee => values.isNotEmpty ? values.first : BigInt.zero;
+  BigInt get regularFee => values.length > 1 ? values[1] : BigInt.zero;
+  BigInt get highFee => values.length > 2 ? values[2] : BigInt.zero;
   BigInt get max => values.isNotEmpty ? values.last : BigInt.zero;
 
   int get length => _values.length;

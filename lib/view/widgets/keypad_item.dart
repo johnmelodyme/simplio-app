@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-const _keypadButtonDefaultSize = Size(100.0, 60.0);
+import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
 class KeypadItem extends StatelessWidget {
   const KeypadItem({
@@ -19,29 +19,34 @@ class KeypadItem extends StatelessWidget {
       value: value,
       onTap: onTap,
       isCircular: isCircular ?? true,
-      size: size ?? _keypadButtonDefaultSize,
+      size: size ?? Constants.keypadButtonSize,
     );
   }
 
   factory KeypadItem.decimal({
     key,
     required VoidCallback onTap,
+    required BuildContext context,
     bool? isCircular,
     Size? size,
   }) {
     return _ActionButton(
       key: key,
-      content: const Text('.', style: TextStyle(fontSize: 32)),
+      content: Text(
+        '.',
+        style: SioTextStyles.numericKeyboard
+            .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+      ),
       actionButtonType: ActionButtonType.flat,
       onTap: onTap,
       isCircular: isCircular ?? true,
-      size: size ?? _keypadButtonDefaultSize,
+      size: size ?? Constants.keypadButtonSize,
     );
   }
 
   factory KeypadItem.action({
     key,
-    required Icon content,
+    required Widget content,
     ActionButtonType? actionType,
     required VoidCallback onTap,
     bool? isCircular,
@@ -53,15 +58,15 @@ class KeypadItem extends StatelessWidget {
       actionButtonType: actionType ?? ActionButtonType.flat,
       onTap: onTap,
       isCircular: isCircular ?? true,
-      size: size ?? _keypadButtonDefaultSize,
+      size: size ?? Constants.keypadButtonSize,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: _keypadButtonDefaultSize.width,
-      height: _keypadButtonDefaultSize.height,
+      width: Constants.keypadButtonSize.width,
+      height: Constants.keypadButtonSize.height,
     );
   }
 }
@@ -82,8 +87,6 @@ class _KeypadButton<T> extends KeypadItem {
 
   @override
   Widget build(BuildContext context) {
-    final th = Theme.of(context).textTheme.headlineMedium;
-
     return SizedBox(
       width: size.width,
       height: size.height,
@@ -93,13 +96,9 @@ class _KeypadButton<T> extends KeypadItem {
         customBorder: isCircular ? const CircleBorder() : null,
         child: Container(
           alignment: Alignment.center,
-          child: Text(
-            value.toString(),
-            style: TextStyle(
-              fontSize: th?.fontSize,
-              fontWeight: th?.fontWeight,
-            ),
-          ),
+          child: Text(value.toString(),
+              style: SioTextStyles.numericKeyboard
+                  .copyWith(color: Theme.of(context).colorScheme.onPrimary)),
         ),
       ),
     );

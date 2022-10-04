@@ -21,7 +21,7 @@ abstract class SioColors {
   static const confirm = Color(0xFF3AF859);
 
   static const highlight1 = Color(0xFF4EFCCA);
-  static const highlight2 = Color(0xFF20AFFF);
+  static const highlight2 = Color(0xFF20AFFF); // vivid blue
 
   static const highlight = Color(0xFFDEEB4B);
   static const mentolGreen = Color(0xFF37FFC6);
@@ -36,6 +36,10 @@ abstract class SioColors {
   static const bottomTabBarStartColor = Color(0xFF172739);
   static const bottomTabBarEndColor = Color(0xFF091119);
 
+  static const blackGradient2 = Color(0xFF08293D);
+
   static const backGradient3Start = Color(0xFF082D42);
   static const backGradient3End = Color(0xFF0C4261);
+
+  static const attentionGradient = Color(0xFFEE733E);
 }

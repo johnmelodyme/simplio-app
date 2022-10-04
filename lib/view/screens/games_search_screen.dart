@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/http/services/games_service.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
-import 'package:simplio_app/view/screens/search_screen.dart';
+import 'package:simplio_app/view/widgets/search.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/game_item.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
@@ -46,7 +45,7 @@ class _GamesSearchScreenState extends State<GamesSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SearchScreen(
+    return Search(
       firstPart: context.locale.games_search_screen_search_and_add,
       secondPart: context.locale.games_search_screen_games,
       searchHint: context.locale.games_search_screen_search,
@@ -122,12 +121,10 @@ class _GamesSearchScreenState extends State<GamesSearchScreen> {
                     },
                   ),
                 ),
-                noMoreItemsIndicatorBuilder: (_) =>
-                    const Gap(Dimensions.padding20),
+                noMoreItemsIndicatorBuilder: (_) => Gaps.gap20,
                 noItemsFoundIndicatorBuilder: (_) => const SizedBox.shrink(),
               ),
-              separatorBuilder: (context, index) =>
-                  const Gap(Dimensions.padding10),
+              separatorBuilder: (context, index) => Gaps.gap10,
             );
           }
         },

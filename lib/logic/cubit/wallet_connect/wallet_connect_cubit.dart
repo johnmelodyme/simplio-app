@@ -164,7 +164,7 @@ class WalletConnectCubit extends Cubit<WalletConnectState> {
 
     if (request.type == TransactionRequestType.sign) {
       _walletConnectRepository.approveDataRequest(
-        request.copyWith(data: tx.raw),
+        request.copyWith(data: tx.rawTx),
       );
     }
 

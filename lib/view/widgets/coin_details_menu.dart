@@ -54,7 +54,7 @@ class CoinDetailsMenu extends StatelessWidget {
         itemBuilder: (_, index) {
           return Row(
             children: [
-              if (index == 0) const Gap(Dimensions.padding16),
+              if (index == 0) Gaps.gap16,
               CoinDetailsMenuButton(
                   key: ValueKey(coinMenuItems[index].actionType),
                   label: coinMenuItems[index].label,
@@ -62,8 +62,7 @@ class CoinDetailsMenu extends StatelessWidget {
                   onPressed: () {
                     onActionCallback.call(coinMenuItems[index].actionType);
                   }),
-              if (index == coinMenuItems.length - 1)
-                const Gap(Dimensions.padding16),
+              if (index == coinMenuItems.length - 1) Gaps.gap16,
             ],
           );
         },

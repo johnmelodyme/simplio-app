@@ -1,23 +1,26 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
 class SwipeUpButton extends StatefulWidget {
-  const SwipeUpButton({
+  static const double _defaultHeight = 400;
+  static const double _defaultSwipeHeight = 1000;
+  static const double _defaultSwipePercentageNeeded = 0.75;
+
+  const SwipeUpButton(
+    this.data, {
     super.key,
-    required this.child,
-    required this.height,
-    required this.swipeHeight,
+    this.height = _defaultHeight,
+    this.swipeHeight = _defaultSwipeHeight,
+    this.swipePercentageNeeded = _defaultSwipePercentageNeeded,
     required this.onSwipeCallback,
-    required this.onSwipeStartCallback,
-    this.swipePercentageNeeded = 0.75,
   });
 
-  final Widget child;
+  final String data;
   final double height;
   final double swipeHeight;
   final VoidCallback onSwipeCallback;
-  final Function(bool, double) onSwipeStartCallback;
   final double? swipePercentageNeeded;
 
   @override
@@ -29,8 +32,8 @@ class _SwipeUpButton extends State<SwipeUpButton>
   late AnimationController animationController;
   late double initControllerVal;
 
-  var startY = 0.0;
-  var endY = 0.0;
+  double startY = 0.0;
+  double endY = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +75,37 @@ class _SwipeUpButton extends State<SwipeUpButton>
           widthFactor: 1.0,
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSurface,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(RadiusSize.radius12),
+              gradient: LinearGradient(
+                begin: Alignment.centerRight,
+                end: Alignment.topLeft,
+                colors: [
+                  Theme.of(context).colorScheme.tertiary,
+                  Theme.of(context).colorScheme.inverseSurface,
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(RadiusSize.radius20),
+                topRight: Radius.circular(RadiusSize.radius20),
               ),
             ),
-            child: widget.child,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Gaps.gap10,
+                const Icon(
+                  Icons.rocket,
+                  size: 48,
+                ),
+                Gaps.gap10,
+                Text(
+                  widget.data,
+                  style: SioTextStyles.buttonLarge.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                Gaps.gap48,
+              ],
+            ),
           ),
         ),
       ),
@@ -95,12 +123,6 @@ class _SwipeUpButton extends State<SwipeUpButton>
         () {
           if (animationController.value > initControllerVal) {
             setState(() {});
-            widget.onSwipeStartCallback(
-                animationController.value > initControllerVal + 0.1,
-                animationController.value);
-          }
-          if (animationController.value == initControllerVal) {
-            widget.onSwipeStartCallback(false, 0);
           }
         },
       );

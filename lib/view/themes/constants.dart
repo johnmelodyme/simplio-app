@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class Paddings {
   static const EdgeInsetsGeometry left5 =
@@ -84,6 +85,8 @@ class Paddings {
       EdgeInsets.symmetric(vertical: Dimensions.padding8);
   static const EdgeInsetsGeometry vertical10 =
       EdgeInsets.symmetric(vertical: Dimensions.padding10);
+  static const EdgeInsetsGeometry vertical12 =
+      EdgeInsets.symmetric(vertical: Dimensions.padding12);
   static const EdgeInsetsGeometry vertical16 =
       EdgeInsets.symmetric(vertical: Dimensions.padding16);
   static const EdgeInsetsGeometry vertical20 =
@@ -97,13 +100,14 @@ class Paddings {
   static const EdgeInsetsGeometry all5 = EdgeInsets.all(Dimensions.padding5);
   static const EdgeInsetsGeometry all8 = EdgeInsets.all(Dimensions.padding8);
   static const EdgeInsetsGeometry all10 = EdgeInsets.all(Dimensions.padding10);
+  static const EdgeInsetsGeometry all12 = EdgeInsets.all(Dimensions.padding12);
   static const EdgeInsetsGeometry all16 = EdgeInsets.all(Dimensions.padding16);
   static const EdgeInsetsGeometry all20 = EdgeInsets.all(Dimensions.padding20);
   static const EdgeInsetsGeometry all32 = EdgeInsets.all(Dimensions.padding32);
   static const EdgeInsetsGeometry all48 = EdgeInsets.all(Dimensions.padding48);
 }
 
-class BorderRadiuses {
+class BorderRadii {
   static BorderRadius radius6 =
       const BorderRadius.all(Radius.circular(RadiusSize.radius6));
   static BorderRadius radius12 =
@@ -120,6 +124,21 @@ class BorderRadiuses {
       const BorderRadius.all(Radius.circular(RadiusSize.radius64));
 }
 
+class Gaps {
+  static Gap gap2 = const Gap(Dimensions.padding2);
+  static Gap gap4 = const Gap(Dimensions.padding4);
+  static Gap gap5 = const Gap(Dimensions.padding5);
+  static Gap gap7 = const Gap(Dimensions.padding7);
+  static Gap gap8 = const Gap(Dimensions.padding8);
+  static Gap gap10 = const Gap(Dimensions.padding10);
+  static Gap gap16 = const Gap(Dimensions.padding16);
+  static Gap gap17 = const Gap(Dimensions.padding17);
+  static Gap gap20 = const Gap(Dimensions.padding20);
+  static Gap gap30 = const Gap(Dimensions.padding30);
+  static Gap gap32 = const Gap(Dimensions.padding32);
+  static Gap gap48 = const Gap(Dimensions.padding48);
+}
+
 class Dimensions {
   static const double padding2 = 2;
   static const double padding4 = 4;
@@ -127,6 +146,7 @@ class Dimensions {
   static const double padding7 = 7;
   static const double padding8 = 8;
   static const double padding10 = 10;
+  static const double padding12 = 12;
   static const double padding16 = 16;
   static const double padding17 = 17;
   static const double padding20 = 20;
@@ -154,11 +174,17 @@ class Constants {
   static const double navigationTabBarHeight = 45;
   static const double searchBarHeight = 44;
   static const double buttonHeight = 45;
+  static const double toggleButtonHeight = 28;
+  static const double toggleButtonWidth = 90;
+  static const double singleToggleButtonWidth = 48;
   static const double smallButtonHeight = 30;
   static const double earningButtonHeight = 49;
   static const double coinsBottomTabBarHeight = 131;
   static const double colorizedAppBarHeight = 54;
+  static const double panelKeyboardHeightWithButton = 357;
 
   static const pageSizeTransactions = 7;
   static const pageSizeGames = 7;
+
+  static const keypadButtonSize = Size(100.0, 60.0);
 }

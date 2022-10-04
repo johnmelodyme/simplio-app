@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
@@ -33,7 +32,7 @@ class QrAddressField extends StatelessWidget {
                         : Theme.of(context).colorScheme.onSecondaryContainer),
               ),
             ),
-            const Gap(Dimensions.padding5),
+            Gaps.gap5,
             IconButton(
               onPressed: () {
                 if (address?.isNotEmpty == true) {

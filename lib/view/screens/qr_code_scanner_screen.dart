@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
@@ -97,7 +96,7 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
                     ],
                   ),
                 ),
-                const Gap(Dimensions.padding20),
+                Gaps.gap20,
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Dimensions.padding16,

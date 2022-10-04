@@ -13,8 +13,8 @@ enum AppBarStyle {
   multiColored,
 }
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({
+class Search extends StatefulWidget {
+  const Search({
     super.key,
     required this.firstPart,
     required this.secondPart,
@@ -34,10 +34,10 @@ class SearchScreen extends StatefulWidget {
   final bool autoFocusSearch;
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<Search> createState() => _SearchState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Container(

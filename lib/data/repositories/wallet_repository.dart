@@ -131,6 +131,7 @@ class WalletRepository {
     );
   }
 
+  // Might be used in the future.
   String getMnemonic(String accountWalletId) {
     _checkInitializedAccountWallet(accountWalletId);
     return _wallet.mnemonic();
@@ -152,7 +153,9 @@ class WalletRepository {
     required BigInt feeAmount,
     required BigInt gasLimit,
     required int assetDecimals,
-    String contractAddress = '',
+    String? contractAddress,
+    // TODO: change this to required after it is implemented in backend and
+    // we can fetch it from there.
     String maxInclusionFeePerGas = '2000000000',
     String? data,
   }) async {
@@ -223,7 +226,8 @@ class WalletRepository {
   }) {
     return WalletTransaction(
       networkId: networkId,
-      raw: transaction.rawTx,
+      rawTx: transaction.rawTx,
+      networkFee: transaction.networkFee,
     );
   }
 
@@ -234,11 +238,16 @@ class WalletRepository {
     required String toAddress,
     required BigInt feeAmount,
     required BigInt gasLimit,
-    String contractAddress = '',
+    String? contractAddress,
+    // TODO: change this to required after it is implemented in backend and
+    // we can fetch it from there.
     String maxInclusionFeePerGas = '2000000000',
     String? data,
   }) async {
     _checkInitializedAccountWallet(accountWalletId);
+
+    if (!(sio.Cluster.ethereumEIP1559.contains(networkId) ||
+        sio.Cluster.ethereumLegacy.contains(networkId))) return null;
 
     final nonce = await _getNonce(
       networkId: networkId,
@@ -248,7 +257,7 @@ class WalletRepository {
     WalletTransaction? transaction;
 
     if (sio.Cluster.ethereumLegacy.contains(networkId)) {
-      if (contractAddress.isNotEmpty) {
+      if (contractAddress != null) {
         transaction = _makeTransaction(
           networkId: networkId,
           transaction: sio.BuildTransaction.ethereumERC20TokenLegacy(
@@ -263,27 +272,28 @@ class WalletRepository {
             gasLimit: gasLimit,
           ),
         );
-        transaction.raw = '0x${transaction.raw}';
+        transaction.rawTx = '0x${transaction.rawTx}';
+      } else {
+        transaction = _makeTransaction(
+          networkId: networkId,
+          transaction: sio.BuildTransaction.ethereumLegacy(
+            wallet: _wallet,
+            amount: amount,
+            toAddress: toAddress,
+            nonce: nonce,
+            chainId: AssetRepository.chainId(networkId: networkId),
+            coinType: networkId,
+            gasPrice: feeAmount,
+            gasLimit: gasLimit,
+            data: data,
+          ),
+        );
+        transaction.rawTx = '0x${transaction.rawTx}';
       }
-      transaction = _makeTransaction(
-        networkId: networkId,
-        transaction: sio.BuildTransaction.ethereumLegacy(
-          wallet: _wallet,
-          amount: amount,
-          toAddress: toAddress,
-          nonce: nonce,
-          chainId: AssetRepository.chainId(networkId: networkId),
-          coinType: networkId,
-          gasPrice: feeAmount,
-          gasLimit: gasLimit,
-          data: data,
-        ),
-      );
-      transaction.raw = '0x${transaction.raw}';
     }
 
     if (sio.Cluster.ethereumEIP1559.contains(networkId)) {
-      if (contractAddress.isNotEmpty) {
+      if (contractAddress != null) {
         transaction = _makeTransaction(
           networkId: networkId,
           transaction: sio.BuildTransaction.ethereumERC20TokenEIP1559(
@@ -299,24 +309,25 @@ class WalletRepository {
             gasLimit: gasLimit,
           ),
         );
-        transaction.raw = '0x${transaction.raw}';
+        transaction.rawTx = '0x${transaction.rawTx}';
+      } else {
+        transaction = _makeTransaction(
+          networkId: networkId,
+          transaction: sio.BuildTransaction.ethereumEIP1559(
+            wallet: _wallet,
+            amount: amount,
+            toAddress: toAddress,
+            nonce: nonce,
+            chainId: AssetRepository.chainId(networkId: networkId),
+            coinType: networkId,
+            maxFeePerGas: feeAmount,
+            maxInclusionFeePerGas: maxInclusionFeePerGas,
+            gasLimit: gasLimit,
+            data: data,
+          ),
+        );
+        transaction.rawTx = '0x${transaction.rawTx}';
       }
-      transaction = _makeTransaction(
-        networkId: networkId,
-        transaction: sio.BuildTransaction.ethereumEIP1559(
-          wallet: _wallet,
-          amount: amount,
-          toAddress: toAddress,
-          nonce: nonce,
-          chainId: AssetRepository.chainId(networkId: networkId),
-          coinType: networkId,
-          maxFeePerGas: feeAmount,
-          maxInclusionFeePerGas: maxInclusionFeePerGas,
-          gasLimit: gasLimit,
-          data: data,
-        ),
-      );
-      transaction.raw = '0x${transaction.raw}';
     }
 
     return transaction;
@@ -391,7 +402,7 @@ class WalletRepository {
     required String toAddress,
     required BigInt feeAmount,
     required int assetDecimals,
-    String contractAddress = '',
+    String? contractAddress,
   }) async {
     _checkInitializedAccountWallet(accountWalletId);
 
@@ -402,7 +413,7 @@ class WalletRepository {
       walletAddress: _wallet.getAddressForCoin(networkId),
     );
 
-    if (contractAddress.isEmpty) {
+    if (contractAddress != null) {
       return _makeTransaction(
           networkId: networkId,
           transaction: sio.BuildTransaction.solanaToken(
@@ -430,7 +441,7 @@ class WalletRepository {
   Future<String> broadcastTransaction(WalletTransaction transaction) async {
     final res = await _broadcastService.transaction(
       transaction.networkId.toString(),
-      transaction.raw,
+      transaction.rawTx,
     );
 
     final body = res.body;
@@ -507,6 +518,7 @@ class WalletRepository {
     }
   }
 
+  // Might be used in the future
   Future<AccountWallet> refreshAssetWalletBalance(
     AccountWallet accountWallet, {
     required AssetWallet assetWallet,
@@ -645,11 +657,13 @@ class WalletRepository {
 
 class WalletTransaction {
   final int networkId;
-  String raw;
+  String rawTx;
+  final BigInt networkFee;
 
   WalletTransaction({
     required this.networkId,
-    required this.raw,
+    required this.rawTx,
+    required this.networkFee,
   });
 }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/data/http/services/games_service.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
@@ -73,7 +72,7 @@ class GameItem extends StatelessWidget {
               bottomRight: Radius.circular(RadiusSize.radius30),
               bottomLeft: Radius.circular(RadiusSize.radius30),
             )
-          : BorderRadiuses.radius30,
+          : BorderRadii.radius30,
       child: SizedBox(
         height: 160,
         child: Stack(
@@ -170,7 +169,7 @@ class GameItem extends StatelessWidget {
                                       .colorScheme
                                       .onBackground,
                                 ),
-                                const Gap(Dimensions.padding5),
+                                Gaps.gap5,
                                 RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
@@ -200,7 +199,7 @@ class GameItem extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const Gap(Dimensions.padding8),
+                            Gaps.gap8,
                             Wrap(
                               spacing: Dimensions.padding5,
                               runSpacing: Dimensions.padding5,

@@ -44,7 +44,7 @@ class AvatarAppBar extends StatelessWidget {
                     width: 40,
                     height: 40,
                   )),
-                  const Gap(Dimensions.padding10),
+                  Gaps.gap10,
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
@@ -31,7 +30,7 @@ class EarningElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadiuses.radius30,
+      borderRadius: BorderRadii.radius30,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -74,7 +73,7 @@ class EarningElevatedButton extends StatelessWidget {
                             height: 16,
                             padding: Paddings.horizontal4,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadiuses.radius6,
+                              borderRadius: BorderRadii.radius6,
                               gradient: LinearGradient(
                                 colors: [
                                   Theme.of(context)
@@ -126,7 +125,7 @@ class EarningElevatedButton extends StatelessWidget {
                                       .copyWith(height: 1.0),
                                 )
                               ]),
-                    const Gap(Dimensions.padding20),
+                    Gaps.gap20,
                     Icon(
                       Icons.arrow_forward_ios,
                       color: Theme.of(context).colorScheme.inverseSurface,

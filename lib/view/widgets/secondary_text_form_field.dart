@@ -12,6 +12,7 @@ class SecondaryTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final InputDecoration? decoration;
   final bool readOnly;
+  final GestureTapCallback? onTap;
 
   const SecondaryTextFormField({
     super.key,
@@ -24,11 +25,12 @@ class SecondaryTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.decoration,
     this.readOnly = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    var border = UnderlineInputBorder(
+    final border = UnderlineInputBorder(
       borderSide: BorderSide(
         color: Theme.of(context).colorScheme.primaryContainer,
         width: 2,
@@ -53,6 +55,7 @@ class SecondaryTextFormField extends StatelessWidget {
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,
+      onTap: onTap,
       maxLines: maxLines,
     );
   }

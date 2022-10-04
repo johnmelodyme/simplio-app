@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 
-// todo: change colors after proper color pallet is defined
 class Toggle extends StatefulWidget {
   const Toggle({
     super.key,
     required this.trueOption,
-    required this.falseOption,
-    required this.value,
-    required this.onChanged,
+    this.falseOption,
+    this.value = false,
+    this.onChanged,
   });
 
   final Widget trueOption;
-  final Widget falseOption;
+  final Widget? falseOption;
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
 
   @override
   State<StatefulWidget> createState() => _Toggle();
@@ -23,44 +22,62 @@ class Toggle extends StatefulWidget {
 class _Toggle extends State<Toggle> {
   @override
   Widget build(BuildContext context) {
-    var borderRadius = BorderRadiuses.radius64;
+    final borderRadius = BorderRadii.radius64;
 
     return Container(
+      height: Constants.toggleButtonHeight,
+      width: widget.falseOption != null
+          ? Constants.toggleButtonWidth
+          : Constants.singleToggleButtonWidth,
       decoration: BoxDecoration(
-        color: Colors.black38,
         borderRadius: borderRadius,
+        border: Border.all(
+          color: Theme.of(context).colorScheme.background,
+          width: 1,
+        ),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomLeft,
+          colors: [
+            Theme.of(context).colorScheme.onPrimaryContainer,
+            Theme.of(context).colorScheme.background.withOpacity(0),
+          ],
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () => widget.onChanged(true),
+              onTap: () =>
+                  widget.onChanged != null ? widget.onChanged!(true) : null,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: borderRadius,
                   color: widget.value
-                      ? Theme.of(context).colorScheme.surfaceTint
-                      : Colors.transparent,
+                      ? Theme.of(context).colorScheme.outline
+                      : null,
                 ),
                 child: Center(child: widget.trueOption),
               ),
             ),
           ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () => widget.onChanged(false),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  color: !widget.value
-                      ? Theme.of(context).colorScheme.surfaceTint
-                      : Colors.transparent,
+          if (widget.falseOption != null)
+            Expanded(
+              child: GestureDetector(
+                onTap: () =>
+                    widget.onChanged != null ? widget.onChanged!(false) : null,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: borderRadius,
+                    color: !widget.value
+                        ? Theme.of(context).colorScheme.outline
+                        : Colors.transparent,
+                  ),
+                  child: Center(child: widget.falseOption),
                 ),
-                child: Center(child: widget.falseOption),
               ),
             ),
-          ),
         ],
       ),
     );

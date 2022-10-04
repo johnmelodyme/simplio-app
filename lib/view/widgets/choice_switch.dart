@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class SwitchWidget {
   const SwitchWidget({
@@ -16,7 +16,6 @@ class SwitchWidget {
   final Color? defaultIconColor;
 }
 
-// todo: change colors after proper color pallet is defined
 class ChoiceSwitch extends StatefulWidget {
   const ChoiceSwitch({
     super.key,
@@ -36,11 +35,19 @@ class ChoiceSwitch extends StatefulWidget {
 class _Switch extends State<ChoiceSwitch> {
   @override
   Widget build(BuildContext context) {
-    var borderRadius = BorderRadiuses.radius64;
+    final borderRadius = BorderRadii.radius64;
 
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.center,
+          colors: [
+            Theme.of(context).colorScheme.onPrimaryContainer,
+            SioColors
+                .blackGradient2, // todo: replace with proper color when Theme refactoring is done
+          ],
+        ),
         borderRadius: borderRadius,
       ),
       child: Row(
@@ -58,7 +65,7 @@ class _Switch extends State<ChoiceSwitch> {
                       gradient: widget.value == e.key ? e.value.gradient : null,
                     ),
                     child: Padding(
-                      padding: Paddings.vertical10,
+                      padding: Paddings.vertical12,
                       child: Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -67,16 +74,17 @@ class _Switch extends State<ChoiceSwitch> {
                               e.value.text.data ?? '',
                               style: TextStyle(
                                 color: widget.value == e.key
-                                    ? Colors.black
-                                    : Colors.white,
+                                    ? Theme.of(context).colorScheme.background
+                                    : Theme.of(context).colorScheme.onPrimary,
                               ),
                             ),
-                            const Gap(Dimensions.padding8),
+                            Gaps.gap8,
                             Icon(
                               e.value.icon.icon,
                               color: widget.value == e.key
-                                  ? Colors.black
-                                  : e.value.defaultIconColor ?? Colors.white,
+                                  ? Theme.of(context).colorScheme.background
+                                  : e.value.defaultIconColor ??
+                                      Theme.of(context).colorScheme.onPrimary,
                             )
                           ],
                         ),

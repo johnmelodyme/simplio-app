@@ -21,7 +21,7 @@ void main() {
         () {
           AssetWallet assetWallet = AssetWallet.builder(assetId: 0);
 
-          for (var i = 0; i < 100; i++) {
+          for (int i = 0; i < 100; i++) {
             assetWallet = assetWallet.addWallet(
               NetworkWallet.builder(
                 networkId: i,

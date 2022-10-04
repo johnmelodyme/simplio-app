@@ -49,11 +49,22 @@ void main() {
     );
 
     test(
-      'BigInt with decimal offset 5 rounded on 10 decimal places',
+      'BigInt with decimal offset 5 rounded on 10 decimal places does not exist'
+      ' anymore - it rounds to 2 decimals only if more than 2 trailing zeros',
       () {
         final decimalString = BigInt.from(12345678)
             .toDecimalString(decimalOffset: 5, decimalPlaces: 10);
-        expect(decimalString, equals('123.4567800000'));
+        expect(decimalString, equals('123.45678'));
+      },
+    );
+
+    test(
+      'BigInt with decimal offset 5 rounded on 10 decimal places does not exist'
+      ' anymore - it rounds to 2 decimals only if more than 2 trailing zeros',
+      () {
+        final decimalString = BigInt.from(10000000)
+            .toDecimalString(decimalOffset: 5, decimalPlaces: 10);
+        expect(decimalString, equals('100.00'));
       },
     );
 
@@ -103,29 +114,38 @@ void main() {
     );
 
     test(
-      '1000000 with 1 decimal',
+      '1234567 with 1 decimal',
       () {
         final decimalString =
-            BigInt.from(1000000).toDecimalString(decimalOffset: 1);
-        expect(decimalString, equals('100000.0'));
+            BigInt.from(1234567).toDecimalString(decimalOffset: 1);
+        expect(decimalString, equals('123456.7'));
       },
     );
 
     test(
-      '10000000000 with 5 decimals',
+      '12345678901 with 5 decimals',
       () {
         final decimalString =
-            BigInt.from(10000000000).toDecimalString(decimalOffset: 5);
-        expect(decimalString, equals('100000.00000'));
+            BigInt.from(12345678901).toDecimalString(decimalOffset: 5);
+        expect(decimalString, equals('123456.78901'));
       },
     );
 
     test(
-      '5000000000000 with 5 decimals',
+      '12345678901234 with 5 decimals',
       () {
         final decimalString =
-            BigInt.from(5000000000000).toDecimalString(decimalOffset: 5);
-        expect(decimalString, equals('50000000.00000'));
+            BigInt.from(12345678901234).toDecimalString(decimalOffset: 5);
+        expect(decimalString, equals('123456789.01234'));
+      },
+    );
+
+    test(
+      '5000000000000 with 7 decimals will keep only 2 trailing zeros after shifting 7 places to the left',
+      () {
+        final decimalString =
+            BigInt.from(5000000000000).toDecimalString(decimalOffset: 7);
+        expect(decimalString, equals('500000.00'));
       },
     );
   });

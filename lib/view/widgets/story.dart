@@ -28,7 +28,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var bars = Padding(
+    final bars = Padding(
       padding: Paddings.horizontal20,
       child: Row(
         children: widget.items

@@ -1,9 +1,12 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
+import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
+import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -95,7 +98,14 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
                   // TODO: Handle this case.
                   break;
                 case ActionType.exchange:
-                  // TODO: Handle this case.
+                  context.read<AssetExchangeFormCubit>().clear();
+                  GoRouter.of(context).pushNamed(
+                    AuthenticatedRouter.assetExchange,
+                    params: {
+                      'assetId': assetId!,
+                      'networkId': networkId!,
+                    },
+                  );
                   break;
                 case ActionType.receive:
                   GoRouter.of(context).pushNamed(
@@ -107,6 +117,7 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
                   );
                   break;
                 case ActionType.send:
+                  context.read<AssetSendFormCubit>().clear();
                   GoRouter.of(context).pushNamed(
                     AuthenticatedRouter.assetSend,
                     params: {

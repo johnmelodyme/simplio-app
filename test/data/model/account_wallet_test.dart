@@ -69,7 +69,7 @@ void main() {
             mnemonic: mnemonic,
           );
 
-          for (var i = 0; i < 100; i++) {
+          for (int i = 0; i < 100; i++) {
             accountWallet = accountWallet.addWallet(
               AssetWallet.builder(assetId: i),
             );

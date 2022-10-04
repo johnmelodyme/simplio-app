@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -27,7 +26,7 @@ class UserLevelBar extends StatelessWidget {
                 height: 1,
                 color: Theme.of(context).colorScheme.secondaryContainer),
           ),
-          const Gap(Dimensions.padding5),
+          Gaps.gap5,
           Row(
             children: Iterable<int>.generate(maxUserLevel).map((int level) {
               final icon = Icon(

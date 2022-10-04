@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
@@ -24,7 +23,7 @@ class BorderedElevatedButton extends StatelessWidget {
         padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadiuses.radius30,
+            borderRadius: BorderRadii.radius30,
             side: BorderSide(
               color: Theme.of(context).colorScheme.onSecondaryContainer,
             ),
@@ -37,7 +36,7 @@ class BorderedElevatedButton extends StatelessWidget {
         children: [
           if (icon != null) ...[
             icon!,
-            const Gap(Dimensions.padding10),
+            Gaps.gap10,
           ],
           Text(
             label,

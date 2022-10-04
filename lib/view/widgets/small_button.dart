@@ -48,7 +48,7 @@ class SmallButton extends StatelessWidget {
               Theme.of(context).colorScheme.tertiary,
             ],
           ),
-          borderRadius: BorderRadiuses.radius30,
+          borderRadius: BorderRadii.radius30,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +74,7 @@ class SmallButton extends StatelessWidget {
           ),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-            borderRadius: BorderRadiuses.radius30,
+            borderRadius: BorderRadii.radius30,
             side: type == SmallButtonType.bordered
                 ? BorderSide(
                     width: 0.5,

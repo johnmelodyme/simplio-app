@@ -2,22 +2,22 @@ import 'dart:math';
 
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/asset_wallet_item.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
 
 class AssetWalletExpansionList extends StatelessWidget {
   final List<AssetWallet> assetWallets;
+  final Function(AssetWallet, NetworkWallet) onTap;
 
   const AssetWalletExpansionList({
     super.key,
     this.assetWallets = const <AssetWallet>[],
+    required this.onTap,
   });
 
   String getFormattedBalanceSum(final List<NetworkWallet> networkWallets) {
@@ -86,13 +86,7 @@ class AssetWalletExpansionList extends StatelessWidget {
               children: a.wallets.map((n) {
                 final network = Assets.getNetworkDetail(n.networkId);
                 return InkWell(
-                  onTap: () {
-                    GoRouter.of(context)
-                        .goNamed(AuthenticatedRouter.assetDetail, params: {
-                      'assetId': a.assetId.toString(),
-                      'networkId': n.networkId.toString(),
-                    });
-                  },
+                  onTap: () => onTap(a, n),
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: Dimensions.padding4,

@@ -60,7 +60,7 @@ void main() {
       );
 
       test(
-        "'highFee' is null when is not present.",
+        "'highFee' is zero when is not present.",
         () {
           final feeData = FeeData(
             gasLimit: BigInt.from(21000),
@@ -71,7 +71,7 @@ void main() {
             ],
           );
 
-          expect(feeData.highFee, isNull);
+          expect(feeData.highFee, BigInt.zero);
         },
       );
 

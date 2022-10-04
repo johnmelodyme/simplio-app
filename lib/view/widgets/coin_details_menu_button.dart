@@ -17,7 +17,7 @@ class CoinDetailsMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadiuses.radius15,
+      borderRadius: BorderRadii.radius15,
       child: Material(
         color: Theme.of(context).colorScheme.onPrimaryContainer,
         child: InkWell(

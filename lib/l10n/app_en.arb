@@ -23,6 +23,8 @@
   "common_min_label_uc": "MIN",
   "common_max_label_uc": "MAX",
   "common_done": "Done",
+  "common_search":"Search",
+  "common_loading_with_dots":"Loading...",
 
   "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
@@ -129,15 +131,44 @@
     "asset_send_screen_what_you_send_label": "What you send",
     "asset_send_screen_summary_btn_label": "Transaction summary",
 
+    "asset_exchange_screen_exchange_btn": "Exchange",
+    "asset_exchange_screen_coin_label_lc": "coin",
+    "asset_exchange_screen_exchange_summary": "Exchange summary",
+    "asset_exchange_screen_exchange_from": "Exchange from",
+    "asset_exchange_screen_exchange_to": "Exchange to",
+    "asset_exchange_screen_choose": "Choose",
+
+    "asset_exchange_summary_screen_choose_from": "Exchange from",
+    "asset_exchange_summary_screen_choose_fee": "Fee",
+    "asset_exchange_summary_screen_choose_source_fee": "Source transaction fee",
+    "asset_exchange_summary_screen_choose_target_fee": "Target transaction fee",
+    "asset_exchange_summary_screen_choose_swap_fee": "Swap fee",
+    "asset_exchange_summary_screen_confirm_btn": "Swipe up to confirm exchange",
+    "asset_exchange_success_screen_verification":"Verification",
+    "asset_exchange_success_screen_exchanging":"Exchanging",
+    "asset_exchange_success_screen_paying_out":"Paying out",
+    "asset_exchange_success_screen_finished":"Finished",
+
     "asset_screens_address_copied": "Address copied!",
 
     "asset_send_summary_screen_transaction_summary_headline_first": "Transaction",
     "asset_send_summary_screen_transaction_summary_headline_second": "Summary",
     "asset_send_summary_screen_transaction_summary_amount_to_send": "Amount to send",
     "asset_send_summary_screen_transaction_includes_fees_warning": "The transaction includes fees.",
+    "asset_send_summary_screen_low_fees_warning": "Adjusting too low value can be a vessel for extremely long time to confirm.",
 
     "asset_send_success_screen_transaction_success":"Done!\nYour transaction\nis in process.",
     "asset_send_success_screen_transaction_success_option":"or view transaction details",
+    "asset_send_success_screen_verification":"Verification",
+    "asset_send_success_screen_sending":"Sending",
+    "asset_send_success_screen_paying_out":"Paying out",
+    "asset_send_success_screen_finished":"Finished",
+
+
+    "asset_buy_success_screen_verification":"Verification",
+    "asset_buy_success_screen_buying":"Buying",
+    "asset_buy_success_screen_paying_out":"Paying out",
+    "asset_buy_success_screen_finished":"Finished",
 
     "asset_send_summary_screen_transaction_fee":"Fee",
     "asset_send_summary_screen_set_transaction_priority": "Set Priority",

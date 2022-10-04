@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
@@ -83,7 +82,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                             Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
                 ),
-                const Gap(Dimensions.padding5),
+                Gaps.gap5,
                 Text(
                   widget.balance.getThousandValueWithCurrency(
                     currency: 'USD', //TODO.. replace by real currency
@@ -92,7 +91,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                   style: SioTextStyles.h1.apply(
                       color: Theme.of(context).colorScheme.inverseSurface),
                 ),
-                const Gap(Dimensions.padding5),
+                Gaps.gap5,
                 SizedBox(
                   width: 160.0,
                   child: DropdownButtonHideUnderline(

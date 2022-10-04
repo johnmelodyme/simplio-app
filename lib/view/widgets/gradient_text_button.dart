@@ -1,58 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/themed_text.dart';
 
 // todo: correct background from design needs to be applied
 class GradientTextButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final Widget child;
-  final bool highlighted;
-  final ButtonStyle? style;
+  final String text;
+  final bool enabled;
 
-  const GradientTextButton({
+  const GradientTextButton(
+    this.text, {
     super.key,
     required this.onPressed,
-    required this.child,
-    required this.highlighted,
-    this.style,
+    this.enabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: enabled ? onPressed : () => {},
       child: Stack(
         alignment: AlignmentDirectional.center,
         children: [
-          Opacity(
-            opacity: 0.2,
-            child: Container(
-              height: 30,
-              width: 55,
-              decoration: highlighted
-                  ? BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.tertiary,
-                        ],
-                      ),
-                      borderRadius: BorderRadiuses.radius12,
-                    )
-                  : null,
-            ),
-          ),
-          TextButton(
-            onPressed: onPressed,
-            style: style ??
-                ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadiuses.radius12,
+          Container(
+            height: Constants.buttonHeight,
+            width: double.infinity,
+            decoration: enabled
+                ? BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.tertiary,
+                      ],
+                    ),
+                    borderRadius: BorderRadii.radius30,
+                  )
+                : BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadii.radius30,
                   ),
-                )),
-            child: child,
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadii.radius12,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ThemedText(
+                  text,
+                  inverseColor: enabled,
+                  style: TextStyle(
+                    color: !enabled
+                        ? Theme.of(context).colorScheme.onSecondaryContainer
+                        : null,
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),

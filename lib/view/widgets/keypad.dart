@@ -43,11 +43,11 @@ class _KeypadGrid extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            for (var row in rows)
+            for (final row in rows)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  for (var item in row.children)
+                  for (final item in row.children)
                     Expanded(
                       flex: stretchItems ? 1 : 0,
                       child: item,
@@ -84,7 +84,7 @@ class Numpad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var iconColor = Theme.of(context).colorScheme.onPrimary;
+    final iconColor = Theme.of(context).colorScheme.onPrimary;
 
     return _KeypadGrid.builder(
       rows: [
@@ -151,6 +151,7 @@ class Numpad extends StatelessWidget {
                   KeypadItem.decimal(
                     key: const Key('numpad-button-decimal-dot'),
                     onTap: onDecimalDotTap!,
+                    context: context,
                   ),
                   KeypadItem.number(
                     key: const Key('numpad-button-0'),
@@ -159,7 +160,10 @@ class Numpad extends StatelessWidget {
                   ),
                   KeypadItem.action(
                     key: const Key('numpad-action-erase'),
-                    content: Icon(Icons.backspace_outlined, color: iconColor),
+                    content: Padding(
+                      padding: Paddings.top8,
+                      child: Icon(Icons.backspace_outlined, color: iconColor),
+                    ),
                     onTap: () => onErase?.call(),
                   ),
                 ],

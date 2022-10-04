@@ -75,7 +75,7 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                     child: FractionallySizedBox(
                       widthFactor: 0.7,
                       child: ClipRRect(
-                        borderRadius: BorderRadiuses.radius6,
+                        borderRadius: BorderRadii.radius6,
                         child: QrImage(
                           data: address,
                           foregroundColor:
@@ -105,7 +105,7 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                           padding: Paddings.all20,
                           decoration: BoxDecoration(
                             color: Theme.of(context).highlightColor,
-                            borderRadius: BorderRadiuses.radius12,
+                            borderRadius: BorderRadii.radius12,
                           ),
                           child: Row(
                             children: [

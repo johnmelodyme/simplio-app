@@ -102,7 +102,7 @@ class DarkMode {
                   : buttonColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadiuses.radius6,
+              borderRadius: BorderRadii.radius6,
             ),
           ),
         ),

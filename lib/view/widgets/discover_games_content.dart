@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/http/services/games_service.dart';
 import 'package:simplio_app/data/repositories/games_repository.dart';
@@ -73,8 +72,7 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
                     cubit.reloadGames();
                   },
                 ),
-                noMoreItemsIndicatorBuilder: (_) =>
-                    const Gap(Dimensions.padding20),
+                noMoreItemsIndicatorBuilder: (_) => Gaps.gap20,
                 noItemsFoundIndicatorBuilder: (_) => const SizedBox.shrink(),
                 newPageErrorIndicatorBuilder: (_) => Padding(
                   padding: Paddings.bottom32,
@@ -92,8 +90,7 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
                   ),
                 ),
               ),
-              separatorBuilder: (context, index) =>
-                  const Gap(Dimensions.padding10),
+              separatorBuilder: (context, index) => Gaps.gap10,
             );
           },
         ),

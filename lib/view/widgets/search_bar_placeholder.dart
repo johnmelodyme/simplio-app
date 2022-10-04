@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 
@@ -62,7 +61,7 @@ class SearchBarPlaceholder extends StatelessWidget {
               ),
             ),
           ),
-          const Gap(Dimensions.padding16),
+          Gaps.gap16,
           Container(
             width: 40,
             height: 40,

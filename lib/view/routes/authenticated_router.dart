@@ -9,7 +9,6 @@ import 'package:simplio_app/data/repositories/games_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
 import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
@@ -21,9 +20,14 @@ import 'package:simplio_app/view/routes/settings/application_settings.dart';
 import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
 import 'package:simplio_app/view/screens/asset_detail_screen.dart';
+import 'package:simplio_app/view/screens/asset_exchange_search_screen.dart';
+import 'package:simplio_app/view/screens/asset_exchange_success_screen.dart';
+import 'package:simplio_app/view/screens/asset_exchange_summary_screen.dart';
 import 'package:simplio_app/view/screens/asset_receive_screen.dart';
 import 'package:simplio_app/view/screens/asset_search_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_screen.dart';
+import 'package:simplio_app/view/screens/asset_send_search_screen.dart';
+import 'package:simplio_app/view/screens/asset_send_success_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_summary_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
 import 'package:simplio_app/view/screens/dapps_screen.dart';
@@ -34,7 +38,7 @@ import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
 import 'package:simplio_app/view/screens/qr_code_scanner_screen.dart';
-import 'package:simplio_app/view/screens/transaction_success_screen.dart';
+import 'package:simplio_app/view/screens/asset_exchange_screen.dart';
 
 class AuthenticatedRouter with PageBuilderMixin {
   static const String discovery = 'discovery';
@@ -52,9 +56,16 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String assetDetail = 'asset-detail';
   static const String assetSearch = 'asset-search';
   static const String assetSend = 'asset-send';
+  static const String assetSendSearch = 'asset-send-search';
   static const String assetSendSummary = 'asset-send-summary';
   static const String assetSendSuccess = 'asset-send-success';
   static const String assetReceive = 'asset-receive';
+  static const String assetExchange = 'asset-exchange';
+  static const String assetExchangeSearchFrom = 'asset-exchange-search-from';
+  static const String assetExchangeSearchTarget =
+      'asset-exchange-search-target';
+  static const String assetExchangeSummary = 'asset-exchange-summary';
+  static const String assetExchangeSuccess = 'asset-exchange-success';
   static const String qrCodeScanner = 'qr-code-scanner';
 
   final BuildContext context;
@@ -211,24 +222,6 @@ class AuthenticatedRouter with PageBuilderMixin {
                         ),
                       ),
                     ),
-                    routes: [
-                      GoRoute(
-                        path: 'success',
-                        name: assetSendSuccess,
-                        pageBuilder: pageBuilder(
-                          builder: (state) => BlocProvider(
-                            create: (context) => AssetSendFormCubit.builder(
-                              initialState: state.extra as AssetSendFormState,
-                            ),
-                            child: Builder(
-                              builder: (context) =>
-                                  const TransactionSuccessScreen(),
-                            ),
-                          ),
-                          settings: const ApplicationSettings.hiddenTabBar(),
-                        ),
-                      ),
-                    ],
                   ),
                   GoRoute(
                     path: ':assetId/:networkId/detail',
@@ -245,32 +238,102 @@ class AuthenticatedRouter with PageBuilderMixin {
                     path: ':assetId/:networkId/send',
                     name: assetSend,
                     pageBuilder: pageBuilder(
-                      builder: (state) => BlocProvider(
-                        create: (context) => AssetSendFormCubit.builder(
-                            initialState: state.extra as AssetSendFormState?),
-                        child: Builder(
-                          builder: (context) => AssetSendScreen(
-                            assetId: state.params['assetId'],
-                            networkId: state.params['networkId'],
-                          ),
+                      builder: (state) => Builder(
+                        builder: (context) => AssetSendScreen(
+                          assetId: state.params['assetId'],
+                          networkId: state.params['networkId'],
                         ),
                       ),
                       settings: const ApplicationSettings.hiddenTabBar(),
                     ),
                     routes: [
                       GoRoute(
+                        path: 'asset-search-from',
+                        name: assetSendSearch,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => AssetSendSearchScreen(
+                            assetId: state.params['assetId']!,
+                            networkId: state.params['networkId']!,
+                          ),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
                         path: 'summary',
                         name: assetSendSummary,
                         pageBuilder: pageBuilder(
-                          builder: (state) => BlocProvider(
-                            create: (context) => AssetSendFormCubit.builder(
-                              initialState: state.extra as AssetSendFormState,
-                            ),
-                            child: Builder(
-                              builder: (context) =>
-                                  const AssetSendSummaryScreen(),
-                            ),
+                          builder: (state) => Builder(
+                            builder: (context) =>
+                                const AssetSendSummaryScreen(),
                           ),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'success',
+                        name: assetSendSuccess,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => Builder(
+                            builder: (context) =>
+                                const AssetSendSuccessScreen(),
+                          ),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: ':assetId/:networkId/exchange',
+                    name: assetExchange,
+                    pageBuilder: pageBuilder(
+                      builder: (state) => AssetExchangeScreen(
+                        assetId: state.params['assetId'],
+                        networkId: state.params['networkId'],
+                      ),
+                      settings: const ApplicationSettings.hiddenTabBar(),
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'asset-search-from',
+                        name: assetExchangeSearchFrom,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => AssetExchangeSearchScreen(
+                            assetId: state.params['assetId']!,
+                            networkId: state.params['networkId']!,
+                            fromSearch: true,
+                            targetSearch: false,
+                          ),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'asset-search-target',
+                        name: assetExchangeSearchTarget,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => AssetExchangeSearchScreen(
+                            assetId: state.params['assetId']!,
+                            networkId: state.params['networkId']!,
+                            fromSearch: false,
+                            targetSearch: true,
+                          ),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'summary',
+                        name: assetExchangeSummary,
+                        pageBuilder: pageBuilder(
+                          builder: (state) =>
+                              const AssetExchangeSummaryScreen(),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'success',
+                        name: assetExchangeSuccess,
+                        pageBuilder: pageBuilder(
+                          builder: (state) =>
+                              const AssetExchangeSuccessScreen(),
                           settings: const ApplicationSettings.hiddenTabBar(),
                         ),
                       ),

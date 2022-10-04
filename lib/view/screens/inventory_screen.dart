@@ -22,7 +22,9 @@ class InventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AccountWalletCubit>().refreshAccountWalletBalance();
+    context
+        .read<AccountWalletCubit>()
+        .refreshAccountWalletBalance(forceUpdate: true);
 
     return BlocBuilder<AccountWalletCubit, AccountWalletState>(
       buildWhen: (previous, current) => previous != current,

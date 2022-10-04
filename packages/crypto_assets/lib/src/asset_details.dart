@@ -1,5 +1,4 @@
 import 'package:crypto_assets/crypto_assets.dart';
-import 'package:crypto_assets/src/model/asset_style.dart';
 import 'package:flutter/material.dart';
 
 class AssetDetails {

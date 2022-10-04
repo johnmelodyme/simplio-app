@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/data/model/transaction.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
@@ -64,7 +63,7 @@ class TransactionItem extends StatelessWidget {
             color:
                 getColorByTransactionType(context, transaction.transactionType),
           ),
-          const Gap(Dimensions.padding10),
+          Gaps.gap10,
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +103,7 @@ class TransactionItem extends StatelessWidget {
                   ],
                 ),
                 if (transaction.transactionStatus != null) ...[
-                  const Gap(Dimensions.padding2),
+                  Gaps.gap2,
                   Text(
                     context.locale.common_transaction_type(
                       transaction.transactionStatus!.name,
