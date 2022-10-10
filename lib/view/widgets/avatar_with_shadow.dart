@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class AvatarWithShadow extends StatelessWidget {
   const AvatarWithShadow({
@@ -19,8 +20,7 @@ class AvatarWithShadow extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(size / 2)),
         boxShadow: [
           BoxShadow(
-            color:
-                Theme.of(context).colorScheme.inverseSurface.withOpacity(0.2),
+            color: SioColors.mentolGreen.withOpacity(0.2),
             spreadRadius: size / 6,
             blurRadius: size / 2,
             offset: const Offset(0, 0),

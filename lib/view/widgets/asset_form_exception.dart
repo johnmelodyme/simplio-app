@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class AssetFormException<B extends StateStreamable<S>,
     S extends AssetFormExceptions> extends StatelessWidget {
@@ -33,7 +34,7 @@ class AssetFormException<B extends StateStreamable<S>,
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: Theme.of(context).colorScheme.onTertiary,
+                          color: SioColors.highlight,
                           size: Dimensions.padding16,
                         ),
                         Gaps.gap10,
@@ -42,7 +43,7 @@ class AssetFormException<B extends StateStreamable<S>,
                           child: Text(
                             state.warnings(context)[formElementIndex],
                             style: SioTextStyles.bodyS.copyWith(
-                              color: Theme.of(context).colorScheme.onTertiary,
+                              color: SioColors.highlight,
                             ),
                           ),
                         )
@@ -69,14 +70,14 @@ class AssetFormException<B extends StateStreamable<S>,
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: Theme.of(context).colorScheme.error,
+                          color: SioColors.attention,
                           size: Dimensions.padding16,
                         ),
                         Gaps.gap5,
                         Text(
                           state.errors(context)[formElementIndex],
                           style: SioTextStyles.bodyS.copyWith(
-                            color: Theme.of(context).colorScheme.error,
+                            color: SioColors.attention,
                           ),
                         ),
                       ],

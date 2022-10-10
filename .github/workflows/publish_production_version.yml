@@ -8,7 +8,7 @@ on:
 jobs:
   run-tests:
     if: github.ref == 'refs/heads/master'
-    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@master
+    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@task/236-colors-refactoring
     with:
       e2e: true
       unitTests: true
@@ -47,7 +47,7 @@ jobs:
 
   build-ios:
     needs: [set-version]
-    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@master
+    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@task/236-colors-refactoring
     with:
       environment: 'production'
       testBuild: false

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 import 'package:simplio_app/view/widgets/search_bar.dart';
@@ -46,8 +47,8 @@ class _SearchState extends State<Search> {
           begin: Alignment.topRight,
           end: Alignment.center,
           colors: [
-            Theme.of(context).colorScheme.onPrimaryContainer,
-            Theme.of(context).colorScheme.background,
+            SioColors.backGradient4Start,
+            SioColors.softBlack,
           ],
         ),
       ),

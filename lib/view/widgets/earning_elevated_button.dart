@@ -4,6 +4,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/gradient_text.dart';
 import 'package:simplio_app/view/widgets/outlined_container.dart';
 
@@ -42,8 +43,8 @@ class EarningElevatedButton extends StatelessWidget {
               radius: RadiusSize.radius30,
               gradient: LinearGradient(
                 colors: [
-                  Theme.of(context).colorScheme.surface,
-                  Theme.of(context).colorScheme.onError,
+                  SioColors.coins,
+                  SioColors.earningStart,
                 ],
               ),
               child: Padding(
@@ -57,13 +58,12 @@ class EarningElevatedButton extends StatelessWidget {
                           : context
                               .locale.coin_detail_screen_start_earning_label,
                       style: SioTextStyles.bodyPrimary.apply(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: SioColors.secondary6,
                       ),
                       gradient: LinearGradient(
                         colors: [
-                          Theme.of(context).colorScheme.surface,
-                          Theme.of(context).colorScheme.onError,
+                          SioColors.coins,
+                          SioColors.earningStart,
                         ],
                       ),
                     ),
@@ -76,12 +76,8 @@ class EarningElevatedButton extends StatelessWidget {
                               borderRadius: BorderRadii.radius6,
                               gradient: LinearGradient(
                                 colors: [
-                                  Theme.of(context)
-                                      .colorScheme
-                                      .onErrorContainer,
-                                  Theme.of(context)
-                                      .colorScheme
-                                      .onInverseSurface,
+                                  SioColors.backGradient3Start,
+                                  SioColors.backGradient3End,
                                 ],
                               ),
                             ),
@@ -89,7 +85,7 @@ class EarningElevatedButton extends StatelessWidget {
                               context.locale.coin_detail_screen_apy_percentage(
                                   apyPercentage!),
                               style: SioTextStyles.bodyDetail.apply(
-                                color: Theme.of(context).colorScheme.onPrimary,
+                                color: SioColors.whiteBlue,
                               ),
                             ),
                           )
@@ -105,11 +101,7 @@ class EarningElevatedButton extends StatelessWidget {
                                         'USD', //TODO.. replace by real currency
                                   ),
                                   style: SioTextStyles.bodyL
-                                      .apply(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary,
-                                      )
+                                      .apply(color: SioColors.whiteBlue)
                                       .copyWith(height: 1.0),
                                 ),
                                 Text(
@@ -117,18 +109,14 @@ class EarningElevatedButton extends StatelessWidget {
                                       .coin_detail_screen_earning_last_week_increment(
                                           increment!),
                                   style: SioTextStyles.bodyL
-                                      .apply(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .inverseSurface,
-                                      )
+                                      .apply(color: SioColors.mentolGreen)
                                       .copyWith(height: 1.0),
                                 )
                               ]),
                     Gaps.gap20,
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: Theme.of(context).colorScheme.inverseSurface,
+                      color: SioColors.mentolGreen,
                     ),
                   ],
                 ),

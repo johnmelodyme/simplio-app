@@ -29,6 +29,7 @@ import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/view/authenticated_app.dart';
 import 'package:simplio_app/view/routes/guards/auth_guard.dart';
 import 'package:simplio_app/view/screens/splash_screen.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/unauthenticated_app.dart';
 
 Future<void> main() async {
@@ -84,11 +85,13 @@ class _SimplioAppState extends State<SimplioApp> {
         )..add(GotLastAuthenticated()),
         child: AuthGuard(
           onAuthenticated: (context, authState) {
+            isAuthenticated = true;
             return AuthenticatedApp(
               accountId: authState.accountId,
             )..init();
           },
           onUnauthenticated: (context) {
+            isAuthenticated = false;
             return const UnauthenticatedApp();
           },
         ),

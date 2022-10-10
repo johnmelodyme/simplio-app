@@ -1,45 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
+import 'package:simplio_app/view/themes/sio_colors_light.dart';
+
+bool? isAuthenticated;
+ThemeMode? globalThemeMode;
 
 abstract class SioColors {
-  static const white = Color(0xFFFFFFFF);
-  static const whiteBlue = Color(0xFFF1F7FA);
-  static const transparent = Color(0x00000000);
+  static bool isDarkMode() {
+    final isDarkMode =
+        isAuthenticated != true || globalThemeMode != ThemeMode.light;
+    return isDarkMode;
+  }
 
-  static const black = Color(0xFF292E32);
-  static const backGradient4Start = Color(0xFF062333);
-  static const appBarTop = Color(0xFF072536);
-  static const softBlack = Color(0xFF031017);
-  static const secondary0 = Color(0xFF343A3F);
-  static const secondary1 = Color(0xFF041721);
-  static const secondary2 = Color(0xFF061F2E);
-  static const secondary4 = Color(0xFF194963);
-  static const secondary5 = Color(0xFF43738F);
-  static const secondary6 = Color(0xFF5387A6);
-  static const secondary7 = Color(0xFF8BB3CC);
+  static Color get white =>
+      isDarkMode() ? SioColorsDark.white : SioColorsLight.white;
+  static Color get whiteBlue =>
+      isDarkMode() ? const Color(0xFFF1F7FA) : const Color(0xFF000000);
+  static Color get transparent => Colors.transparent;
 
-  static const attention = Color(0xFFEE3E3E);
-  static const confirm = Color(0xFF3AF859);
+  static Color get black =>
+      isDarkMode() ? SioColorsDark.black : SioColorsLight.black;
+  static Color get backGradient4Start => isDarkMode()
+      ? SioColorsDark.backGradient4Start
+      : SioColorsLight.backGradient4Start;
+  static Color get appBarTop =>
+      isDarkMode() ? SioColorsDark.appBarTop : SioColorsLight.appBarTop;
+  static Color get softBlack =>
+      isDarkMode() ? SioColorsDark.softBlack : SioColorsLight.softBlack;
+  static Color get secondary0 =>
+      isDarkMode() ? SioColorsDark.secondary0 : SioColorsLight.secondary0;
+  static Color get secondary1 =>
+      isDarkMode() ? SioColorsDark.secondary1 : SioColorsLight.secondary1;
+  static Color get secondary2 =>
+      isDarkMode() ? SioColorsDark.secondary2 : SioColorsLight.secondary2;
+  static Color get secondary4 =>
+      isDarkMode() ? SioColorsDark.secondary4 : SioColorsLight.secondary4;
+  static Color get secondary5 =>
+      isDarkMode() ? SioColorsDark.secondary5 : SioColorsLight.secondary5;
+  static Color get secondary6 =>
+      isDarkMode() ? SioColorsDark.secondary6 : SioColorsLight.secondary6;
+  static Color get secondary7 =>
+      isDarkMode() ? SioColorsDark.secondary7 : SioColorsLight.secondary7;
 
-  static const highlight1 = Color(0xFF4EFCCA);
-  static const highlight2 = Color(0xFF20AFFF); // vivid blue
+  static Color get attention =>
+      isDarkMode() ? SioColorsDark.attention : SioColorsLight.attention;
+  static Color get confirm =>
+      isDarkMode() ? SioColorsDark.confirm : SioColorsLight.confirm;
 
-  static const highlight = Color(0xFFDEEB4B);
-  static const mentolGreen = Color(0xFF37FFC6);
-  static const coins = Color(0xFFFFA02C);
-  static const nft = Color(0xFFBC88FF);
-  static const games = Color(0xFF2AE4F0);
-  static const earningStart = Color(0XFFFFE454);
+  static Color get highlight1 =>
+      isDarkMode() ? SioColorsDark.highlight1 : SioColorsLight.highlight1;
+  static Color get highlight2 =>
+      isDarkMode() ? SioColorsDark.highlight2 : SioColorsLight.highlight2;
 
-  static const appBarStartColor = Color(0xFF0C2639);
-  static const appBarEndColor = Color(0xFF101E2E);
+  static Color get highlight =>
+      isDarkMode() ? SioColorsDark.highlight : SioColorsLight.highlight;
+  static Color get mentolGreen =>
+      isDarkMode() ? SioColorsDark.mentolGreen : SioColorsLight.mentolGreen;
+  static Color get coins =>
+      isDarkMode() ? SioColorsDark.coins : SioColorsLight.coins;
+  static Color get nft => isDarkMode() ? SioColorsDark.nft : SioColorsLight.nft;
+  static Color get games =>
+      isDarkMode() ? SioColorsDark.games : SioColorsLight.games;
+  static Color get earningStart =>
+      isDarkMode() ? SioColorsDark.earningStart : SioColorsLight.earningStart;
 
-  static const bottomTabBarStartColor = Color(0xFF172739);
-  static const bottomTabBarEndColor = Color(0xFF091119);
+  static Color get vividBlue =>
+      isDarkMode() ? SioColorsDark.vividBlue : SioColorsLight.vividBlue;
 
-  static const blackGradient2 = Color(0xFF08293D);
+  static Color get appBarStartColor => isDarkMode()
+      ? SioColorsDark.appBarStartColor
+      : SioColorsLight.appBarStartColor;
+  static Color get appBarEndColor => isDarkMode()
+      ? SioColorsDark.appBarEndColor
+      : SioColorsLight.appBarEndColor;
 
-  static const backGradient3Start = Color(0xFF082D42);
-  static const backGradient3End = Color(0xFF0C4261);
+  static Color get bottomTabBarStartColor => isDarkMode()
+      ? SioColorsDark.bottomTabBarStartColor
+      : SioColorsLight.bottomTabBarStartColor;
+  static Color get bottomTabBarEndColor => isDarkMode()
+      ? SioColorsDark.bottomTabBarEndColor
+      : SioColorsLight.bottomTabBarEndColor;
 
-  static const attentionGradient = Color(0xFFEE733E);
+  static Color get blackGradient2 => isDarkMode()
+      ? SioColorsDark.blackGradient2
+      : SioColorsLight.blackGradient2;
+
+  static Color get backGradient3Start => isDarkMode()
+      ? SioColorsDark.backGradient3Start
+      : SioColorsLight.backGradient3Start;
+  static Color get backGradient3End => isDarkMode()
+      ? SioColorsDark.backGradient3End
+      : SioColorsLight.backGradient3End;
+
+  static Color get attentionGradient => isDarkMode()
+      ? SioColorsDark.attentionGradient
+      : SioColorsLight.attentionGradient;
+
+  static Color get gameItemStartGradient => isDarkMode()
+      ? SioColorsDark.gameItemStartGradient
+      : SioColorsLight.gameItemStartGradient;
+
+  static Color get gameItemEndGradient => isDarkMode()
+      ? SioColorsDark.gameItemEndGradient
+      : SioColorsLight.gameItemEndGradient;
 }

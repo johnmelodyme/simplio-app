@@ -4,6 +4,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/headline_text.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 
 class AccountSetupSuccessScreen extends StatelessWidget {
   const AccountSetupSuccessScreen({super.key});
@@ -13,7 +14,7 @@ class AccountSetupSuccessScreen extends StatelessWidget {
     return WillPopScope(
       key: const ValueKey('account-setup-success-screen'),
       onWillPop: () async => false,
-      child: Scaffold(
+      child: SioScaffold(
           body: SafeArea(
         child: Column(
           children: [

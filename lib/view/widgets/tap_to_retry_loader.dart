@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class TapToRetryLoader extends StatefulWidget {
   const TapToRetryLoader({
@@ -44,10 +46,12 @@ class _TapToRetryLoaderState extends State<TapToRetryLoader> {
                 Text(
                   widget.label ?? context.locale.common_retry,
                   textAlign: TextAlign.center,
+                  style: SioTextStyles.bodyPrimary
+                      .apply(color: SioColors.whiteBlue),
                 ),
                 Icon(
                   Icons.refresh,
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: SioColors.whiteBlue,
                 )
               ],
             ));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class ThemedLinearProgressIndicator extends StatelessWidget {
   final double? value;
@@ -8,8 +9,8 @@ class ThemedLinearProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LinearProgressIndicator(
-      color: Theme.of(context).colorScheme.onPrimary,
-      backgroundColor: Theme.of(context).highlightColor,
+      color: SioColors.whiteBlue,
+      backgroundColor: SioColors.secondary1,
       value: value,
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class HighlightedTextFormField extends StatefulWidget {
   final TextEditingController controller;
@@ -45,18 +46,17 @@ class _HighlightedTextFormField extends State<HighlightedTextFormField> {
   Widget build(BuildContext context) {
     final border = UnderlineInputBorder(
       borderSide: BorderSide(
-        color: widget.highlighted
-            ? Theme.of(context).colorScheme.inverseSurface
-            : Theme.of(context).colorScheme.outline,
+        color:
+            widget.highlighted ? SioColors.mentolGreen : SioColors.secondary4,
       ),
     );
 
-    final style = SioTextStyles.bodyPrimary;
-
     return TextFormField(
       focusNode: widget.focusNode,
-      style: style,
-      cursorColor: Theme.of(context).colorScheme.inverseSurface,
+      style: SioTextStyles.bodyPrimary.apply(
+        color: SioColors.whiteBlue,
+      ),
+      cursorColor: SioColors.mentolGreen,
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
           fillColor: Colors.transparent,

@@ -16,7 +16,7 @@ class AppBarMask extends StatelessWidget {
       height: height,
       child: CustomPaint(
         painter: AppBarMaskPainter(
-          startColor: Theme.of(context).colorScheme.background.withOpacity(0.8),
+          startColor: SioColors.softBlack.withOpacity(0.8),
           endColor: SioColors.appBarTop.withOpacity(0.8),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class KeypadItem extends StatelessWidget {
   const KeypadItem({
@@ -34,8 +35,8 @@ class KeypadItem extends StatelessWidget {
       key: key,
       content: Text(
         '.',
-        style: SioTextStyles.numericKeyboard
-            .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+        style:
+            SioTextStyles.numericKeyboard.copyWith(color: SioColors.whiteBlue),
       ),
       actionButtonType: ActionButtonType.flat,
       onTap: onTap,
@@ -98,7 +99,7 @@ class _KeypadButton<T> extends KeypadItem {
           alignment: Alignment.center,
           child: Text(value.toString(),
               style: SioTextStyles.numericKeyboard
-                  .copyWith(color: Theme.of(context).colorScheme.onPrimary)),
+                  .copyWith(color: SioColors.whiteBlue)),
         ),
       ),
     );

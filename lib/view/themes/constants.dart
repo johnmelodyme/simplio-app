@@ -76,6 +76,8 @@ class Paddings {
       EdgeInsets.symmetric(horizontal: Dimensions.padding32);
   static const EdgeInsetsGeometry horizontal48 =
       EdgeInsets.symmetric(horizontal: Dimensions.padding48);
+  static const EdgeInsetsGeometry horizontal64 =
+      EdgeInsets.symmetric(horizontal: Dimensions.padding64);
 
   static const EdgeInsetsGeometry vertical4 =
       EdgeInsets.symmetric(vertical: Dimensions.padding4);
@@ -104,6 +106,7 @@ class Paddings {
   static const EdgeInsetsGeometry all16 = EdgeInsets.all(Dimensions.padding16);
   static const EdgeInsetsGeometry all20 = EdgeInsets.all(Dimensions.padding20);
   static const EdgeInsetsGeometry all32 = EdgeInsets.all(Dimensions.padding32);
+  static const EdgeInsetsGeometry all30 = EdgeInsets.all(Dimensions.padding30);
   static const EdgeInsetsGeometry all48 = EdgeInsets.all(Dimensions.padding48);
 }
 
@@ -131,12 +134,15 @@ class Gaps {
   static Gap gap7 = const Gap(Dimensions.padding7);
   static Gap gap8 = const Gap(Dimensions.padding8);
   static Gap gap10 = const Gap(Dimensions.padding10);
+  static Gap gap12 = const Gap(Dimensions.padding12);
   static Gap gap16 = const Gap(Dimensions.padding16);
   static Gap gap17 = const Gap(Dimensions.padding17);
   static Gap gap20 = const Gap(Dimensions.padding20);
   static Gap gap30 = const Gap(Dimensions.padding30);
   static Gap gap32 = const Gap(Dimensions.padding32);
+  static Gap gap35 = const Gap(Dimensions.padding35);
   static Gap gap48 = const Gap(Dimensions.padding48);
+  static Gap gap60 = const Gap(Dimensions.padding60);
 }
 
 class Dimensions {
@@ -152,7 +158,10 @@ class Dimensions {
   static const double padding20 = 20;
   static const double padding30 = 30;
   static const double padding32 = 32;
+  static const double padding35 = 35;
   static const double padding48 = 48;
+  static const double padding60 = 60;
+  static const double padding64 = 64;
 }
 
 class RadiusSize {

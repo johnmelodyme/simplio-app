@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
+import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -15,7 +16,6 @@ import 'package:simplio_app/view/widgets/asset_form_gradient_label.dart';
 import 'package:simplio_app/view/widgets/choice_switch.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/swipe_up_button.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 
 class AssetSendSummaryScreen extends StatefulWidget with WalletUtilsMixin {
   const AssetSendSummaryScreen({super.key});
@@ -53,8 +53,8 @@ class _AssetSendSummaryScreen extends State<AssetSendSummaryScreen> {
             begin: Alignment.topRight,
             end: Alignment.center,
             colors: [
-              Theme.of(context).colorScheme.onPrimaryContainer,
-              Theme.of(context).colorScheme.background,
+              SioColors.backGradient4Start,
+              SioColors.softBlack,
             ],
           ),
         ),
@@ -103,7 +103,7 @@ class _TotalAmount extends StatelessWidget {
           Text(
             context.locale.asset_send_screen_total_to_send,
             style: SioTextStyles.bodyPrimary.copyWith(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              color: SioColors.secondary6,
             ),
           ),
           Gaps.gap2,
@@ -119,16 +119,19 @@ class _TotalAmount extends StatelessWidget {
                         text:
                             '${state.totalAmount} ${Assets.getAssetDetail(state.assetId).ticker}',
                         style: SioTextStyles.h4.apply(
-                          color: Theme.of(context).colorScheme.inverseSurface,
+                          color: SioColors.mentolGreen,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: Text(
                     '\$327.08', // todo: calculate correct fiat value
                     textAlign: TextAlign.right,
+                    style: SioTextStyles.bodyPrimary.apply(
+                      color: SioColors.whiteBlue,
+                    ),
                   ),
                 )
               ],
@@ -155,7 +158,7 @@ class _Fee extends StatelessWidget {
           Text(
             context.locale.asset_send_summary_screen_transaction_fee,
             style: SioTextStyles.bodyPrimary.copyWith(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              color: SioColors.secondary6,
             ),
           ),
           Gaps.gap2,
@@ -164,7 +167,7 @@ class _Fee extends StatelessWidget {
               Text(
                 '${state.networkFee} ${Assets.getAssetDetail(state.networkId).ticker}',
                 style: SioTextStyles.bodyPrimary.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: SioColors.whiteBlue,
                 ),
               ),
               Expanded(
@@ -174,8 +177,7 @@ class _Fee extends StatelessWidget {
                     Text(
                       '\$170.54', // todo: calculate correct fiat value
                       style: SioTextStyles.bodyPrimary.copyWith(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: SioColors.secondary6,
                       ),
                       textAlign: TextAlign.right,
                     ),
@@ -202,12 +204,13 @@ class _Amount extends StatelessWidget {
           fee = Text(
             context.locale.common_loading_with_dots,
             style: SioTextStyles.bodyS.copyWith(
-              color: Theme.of(context).colorScheme.inverseSurface,
+              color: SioColors.mentolGreen,
             ),
           );
         } else {
           fee = Text(
             '${state.networkWallet.contractAddress == null ? state.amountToSend(state.networkWallet.decimalPlaces).getFormattedBalance(state.networkWallet.decimalPlaces).toString() : state.amount} ${Assets.getAssetDetail(state.assetId).ticker}',
+            style: SioTextStyles.bodyPrimary.apply(color: SioColors.whiteBlue),
           );
         }
 
@@ -218,7 +221,7 @@ class _Amount extends StatelessWidget {
               context.locale
                   .asset_send_summary_screen_transaction_summary_amount_to_send,
               style: SioTextStyles.bodyPrimary.copyWith(
-                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                color: SioColors.secondary6,
               ),
             ),
             Gaps.gap2,
@@ -229,7 +232,7 @@ class _Amount extends StatelessWidget {
                   child: Text(
                     '\$156.54', // todo: calculate correct fiat value
                     style: SioTextStyles.bodyPrimary.copyWith(
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      color: SioColors.secondary6,
                     ),
                     textAlign: TextAlign.right,
                   ),
@@ -262,7 +265,7 @@ class _Priority extends StatelessWidget {
           Text(
             context.locale.asset_send_summary_screen_set_transaction_priority,
             style: SioTextStyles.bodyPrimary.copyWith(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              color: SioColors.secondary6,
             ),
           ),
           Gaps.gap2,
@@ -284,8 +287,8 @@ class _Priority extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomRight,
                     colors: [
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.tertiary,
+                      SioColors.highlight1,
+                      SioColors.highlight2,
                     ],
                   ),
                   text: Text(
@@ -294,16 +297,15 @@ class _Priority extends StatelessWidget {
                   ),
                   icon: const Icon(
                       Icons.coffee), // todo: replace with correct icon
-                  defaultIconColor:
-                      Theme.of(context).colorScheme.inverseSurface,
+                  defaultIconColor: SioColors.mentolGreen,
                 ),
                 SwitchWidget(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomRight,
                     colors: [
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.tertiary,
+                      SioColors.highlight1,
+                      SioColors.highlight2,
                     ],
                   ),
                   text: Text(
@@ -312,7 +314,7 @@ class _Priority extends StatelessWidget {
                   ),
                   icon: const Icon(Icons
                       .access_time_sharp), // todo: replace with correct icon
-                  defaultIconColor: Theme.of(context).colorScheme.tertiary,
+                  defaultIconColor: SioColors.highlight2,
                 ),
                 SwitchWidget(
                   gradient: LinearGradient(
@@ -321,7 +323,7 @@ class _Priority extends StatelessWidget {
                     colors: [
                       SioColors
                           .attentionGradient, // todo: replace with correct color when refactoring of Theme is finished
-                      Theme.of(context).colorScheme.error,
+                      SioColors.attention,
                     ],
                   ),
                   text: Text(
@@ -330,7 +332,7 @@ class _Priority extends StatelessWidget {
                   ),
                   icon: const Icon(Icons
                       .local_fire_department), // todo: replace with correct icon
-                  defaultIconColor: Theme.of(context).colorScheme.error,
+                  defaultIconColor: SioColors.attention,
                 ),
               ],
             ),

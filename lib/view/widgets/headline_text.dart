@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 enum HeadlineSize { large, medium, small }
 
+//TODO.. remove this class and using text style from SioTextStyles
 class HeadlineText extends StatelessWidget {
   final String data;
   final HeadlineSize headlineSize;
@@ -34,7 +36,7 @@ class HeadlineText extends StatelessWidget {
       child: Text(
         data,
         key: key,
-        style: style,
+        style: style?.apply(color: SioColors.whiteBlue),
         textAlign: TextAlign.center,
       ),
     );

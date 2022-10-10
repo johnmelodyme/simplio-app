@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/app_bar_mask.dart';
 import 'package:simplio_app/view/widgets/avatar_app_bar.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
@@ -98,40 +99,35 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
                       pinned: true,
                       delegate: FixedHeightItemDelegate(
                           fixedHeight: Constants.navigationTabBarHeight,
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(RadiusSize.radius64),
+                          child: Container(
+                            height: Constants.navigationTabBarHeight,
+                            decoration: BoxDecoration(
+                              color: SioColors.backGradient4Start,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(RadiusSize.radius64),
+                              ),
                             ),
-                            child: Container(
-                              height: Constants.navigationTabBarHeight,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
-                              ),
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  ...widget.tabs
-                                      .map(
-                                        (tab) => Expanded(
-                                          child: NavigationTabChip(
-                                            label: tab.label,
-                                            iconData: tab.iconData,
-                                            iconColor: tab.iconColor,
-                                            isSelected: currentTab ==
-                                                widget.tabs.indexOf(tab),
-                                            onTap: () {
-                                              onTabTap(
-                                                  widget.tabs.indexOf(tab));
-                                            },
-                                          ),
+                            width: double.infinity,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                ...widget.tabs
+                                    .map(
+                                      (tab) => Expanded(
+                                        child: NavigationTabChip(
+                                          label: tab.label,
+                                          iconData: tab.iconData,
+                                          iconColor: tab.iconColor,
+                                          isSelected: currentTab ==
+                                              widget.tabs.indexOf(tab),
+                                          onTap: () {
+                                            onTabTap(widget.tabs.indexOf(tab));
+                                          },
                                         ),
-                                      )
-                                      .toList(),
-                                ],
-                              ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ],
                             ),
                           ))),
                 ),

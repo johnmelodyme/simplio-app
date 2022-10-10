@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/extensions/input_decoration_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class SecondaryTextFormField extends StatelessWidget {
   final TextEditingController? controller;
@@ -32,17 +33,17 @@ class SecondaryTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     final border = UnderlineInputBorder(
       borderSide: BorderSide(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: SioColors.secondary1,
         width: 2,
       ),
     );
 
     return TextFormField(
-      style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+      style: TextStyle(color: SioColors.whiteBlue),
       textAlignVertical: TextAlignVertical.center,
       readOnly: readOnly,
       decoration: InputDecoration(
-              fillColor: Theme.of(context).colorScheme.primary,
+              fillColor: SioColors.black,
               contentPadding: contentPadding,
               enabledBorder: border,
               focusedBorder: border,

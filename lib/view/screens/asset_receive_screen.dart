@@ -9,7 +9,10 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/headline_text.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 
 class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
   final String? assetId;
@@ -44,95 +47,92 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
 
         final address = getAddress(context, assetId!, networkId) ?? '';
         final assetDetail = Assets.getAssetDetail(assetWallet.assetId);
-        final networkDetail = Assets.getNetworkDetail(networkWallet.networkId);
 
-        return Scaffold(
-          appBar: AppBar(
-            title: HeadlineText(
-              '${context.locale.asset_receive_screen_receive_coins_btn} ${assetDetail.name}',
-              headlineSize: HeadlineSize.small,
-            ),
-            elevation: 0,
-          ),
-          body: SafeArea(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+        return SioScaffold(
+          body: CustomScrollView(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(
+                child: ColorizedAppBar(
+                  firstPart:
+                      context.locale.asset_receive_screen_receive_coins_btn,
+                  secondPart: assetDetail.name,
+                  actionType: ActionType.close,
+                  onBackTap: () => Navigator.pop(context),
+                  onShareTap: () {},
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Stack(children: [
                   Padding(
-                    padding: Paddings.bottom20,
-                    child: Text(
-                      '(${networkDetail.name} ${context.locale.asset_receive_screen_network})',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Icon(
-                    assetDetail.style.icon,
-                    size: 40,
-                    color: assetDetail.style.primaryColor,
-                  ),
-                  Padding(
-                    padding: Paddings.vertical20,
-                    child: FractionallySizedBox(
-                      widthFactor: 0.7,
-                      child: ClipRRect(
-                        borderRadius: BorderRadii.radius6,
-                        child: QrImage(
-                          data: address,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: Paddings.vertical20,
-                    child: Text(
-                      context.locale.asset_receive_screen_your_crypto_address(
-                          assetDetail.name),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Padding(
-                    padding: Paddings.horizontal20,
+                    padding: Paddings.horizontal16,
                     child: GestureDetector(
                         onTap: () {
                           Clipboard.setData(ClipboardData(text: address));
                           // todo: add notification for the user when the snackbar task is done
                         },
                         child: Container(
-                          padding: Paddings.all20,
+                          margin: Paddings.top30,
+                          padding: Paddings.all30,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).highlightColor,
-                            borderRadius: BorderRadii.radius12,
+                            color: SioColors.secondary1,
+                            borderRadius: BorderRadii.radius20,
                           ),
-                          child: Row(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: Text(
-                                  address,
-                                  style: TextStyle(
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.fontSize,
+                              Gaps.gap30,
+                              FractionallySizedBox(
+                                widthFactor: 0.7,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadii.radius20,
+                                  child: QrImage(
+                                    data: address,
+                                    foregroundColor: SioColors.black,
+                                    backgroundColor: SioColors.whiteBlue,
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: Paddings.left10,
-                                child: Icon(
-                                  Icons.copy_outlined,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
+                              Gaps.gap35,
+                              Text(
+                                context.locale
+                                    .asset_receive_screen_your_crypto_address(
+                                  assetDetail.name,
                                 ),
+                                style: SioTextStyles.bodyL.apply(
+                                  color: SioColors.secondary7,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Gaps.gap12,
+                              Text(
+                                address,
+                                textAlign: TextAlign.center,
+                                style: SioTextStyles.bodyPrimary.apply(
+                                  color: SioColors.mentolGreen,
+                                ),
+                              ),
+                              Gaps.gap17,
+                              Icon(
+                                Icons.copy_outlined,
+                                color: SioColors.vividBlue,
                               ),
                             ],
                           ),
                         )),
                   ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Icon(
+                      assetDetail.style.icon,
+                      size: 60,
+                      color: assetDetail.style.primaryColor,
+                    ),
+                  )
                 ]),
+              ),
+            ],
           ),
         );
       },

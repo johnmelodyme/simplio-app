@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/password_reset_form/password_reset_form_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/text_header.dart';
 import 'package:simplio_app/view/widgets/themed_text_form_field.dart';
 
@@ -13,7 +14,7 @@ class PasswordResetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    return Scaffold(
+    return SioScaffold(
       appBar: AppBar(
         key: const Key('reset-screen-app-bar'),
         elevation: 0,

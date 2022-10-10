@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class HighlightedNumFormField extends StatefulWidget {
   final TextEditingController controller;
@@ -47,16 +48,13 @@ class _HighlightedNumFormField extends State<HighlightedNumFormField> {
   Widget build(BuildContext context) {
     final border = UnderlineInputBorder(
       borderSide: BorderSide(
-        color: widget.highlighted
-            ? Theme.of(context).colorScheme.inverseSurface
-            : Theme.of(context).colorScheme.outline,
+        color:
+            widget.highlighted ? SioColors.mentolGreen : SioColors.secondary4,
       ),
     );
 
     final style = SioTextStyles.h3.copyWith(
-      color: widget.highlighted
-          ? Theme.of(context).colorScheme.inverseSurface
-          : Theme.of(context).colorScheme.surfaceTint,
+      color: widget.highlighted ? SioColors.mentolGreen : SioColors.secondary5,
     );
 
     return TextFormField(
@@ -66,10 +64,12 @@ class _HighlightedNumFormField extends State<HighlightedNumFormField> {
       ],
       focusNode: widget.focusNode,
       style: style,
-      cursorColor: Theme.of(context).colorScheme.inverseSurface,
+      cursorColor: SioColors.mentolGreen,
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
-          label: !widget.loading
+          label: !widget.loading &&
+                  !widget.highlighted &&
+                  widget.controller.text.isEmpty
               ? const Padding(padding: Paddings.top10, child: Text('0'))
               : const SizedBox.shrink(),
           labelStyle: style,
@@ -90,14 +90,14 @@ class _HighlightedNumFormField extends State<HighlightedNumFormField> {
                       height: 18,
                       width: 18,
                       child: CircularProgressIndicator(
-                        color: Theme.of(context).colorScheme.inverseSurface,
+                        color: SioColors.mentolGreen,
                       ),
                     ),
                     Gaps.gap8,
                     Text(
                       context.locale.common_loading_with_dots,
                       style: SioTextStyles.bodyS.copyWith(
-                        color: Theme.of(context).colorScheme.inverseSurface,
+                        color: SioColors.mentolGreen,
                       ),
                     )
                   ],

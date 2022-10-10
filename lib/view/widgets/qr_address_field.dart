@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class QrAddressField extends StatelessWidget {
   const QrAddressField({
@@ -19,7 +20,7 @@ class QrAddressField extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius:
               const BorderRadius.all(Radius.circular(RadiusSize.radius20)),
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          color: SioColors.backGradient4Start,
         ),
         child: Row(
           children: [
@@ -28,8 +29,8 @@ class QrAddressField extends StatelessWidget {
                 address ?? '-',
                 style: SioTextStyles.bodyL.apply(
                     color: address?.isNotEmpty == true
-                        ? Theme.of(context).colorScheme.onPrimary
-                        : Theme.of(context).colorScheme.onSecondaryContainer),
+                        ? SioColors.whiteBlue
+                        : SioColors.secondary6),
               ),
             ),
             Gaps.gap5,
@@ -44,8 +45,8 @@ class QrAddressField extends StatelessWidget {
               icon: Icon(
                 Icons.copy,
                 color: address?.isNotEmpty == true
-                    ? Theme.of(context).colorScheme.tertiary
-                    : Theme.of(context).colorScheme.onSecondaryContainer,
+                    ? SioColors.highlight2
+                    : SioColors.secondary6,
               ),
             )
           ],

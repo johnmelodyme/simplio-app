@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class CoinDetailsMenuButton extends StatelessWidget {
   const CoinDetailsMenuButton({
@@ -19,7 +20,7 @@ class CoinDetailsMenuButton extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadii.radius15,
       child: Material(
-        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        color: SioColors.backGradient4Start,
         child: InkWell(
           onTap: onPressed.call,
           child: AspectRatio(
@@ -32,12 +33,12 @@ class CoinDetailsMenuButton extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
-                    color: Theme.of(context).colorScheme.inverseSurface,
+                    color: SioColors.mentolGreen,
                   ),
                   Text(
                     label,
-                    style: SioTextStyles.buttonSmall.apply(
-                        color: Theme.of(context).colorScheme.inverseSurface),
+                    style: SioTextStyles.buttonSmall
+                        .apply(color: SioColors.mentolGreen),
                   )
                 ],
               ),

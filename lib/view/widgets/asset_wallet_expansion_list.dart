@@ -7,6 +7,7 @@ import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_wallet_item.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
 
@@ -53,14 +54,14 @@ class AssetWalletExpansionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SioExpansionRadioPanel(
       animationDuration: const Duration(milliseconds: 500),
-      dividerColor: Theme.of(context).colorScheme.background,
+      dividerColor: SioColors.softBlack,
       children: assetWallets.map(
         (a) {
           final asset = Assets.getAssetDetail(a.assetId);
 
           return ExpansionPanelRadio(
             value: UniqueKey(),
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: SioColors.softBlack,
             canTapOnHeader: true,
             headerBuilder: (context, isExpanded) {
               return Padding(

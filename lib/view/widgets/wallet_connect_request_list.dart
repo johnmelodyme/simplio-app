@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/wallet_connect_request_item.dart';
 
 class WalletConnectRequestList extends StatelessWidget {
@@ -13,7 +14,7 @@ class WalletConnectRequestList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(220, 0, 0, 0),
+      color: SioColors.black.withAlpha(220),
       width: double.infinity,
       height: double.infinity,
       child: SafeArea(

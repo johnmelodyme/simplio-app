@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/discover_games_content.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
@@ -27,7 +28,7 @@ class DiscoveryScreen extends StatelessWidget {
             label: context.locale.discovery_screen_search_and_add_games,
           ),
           iconData: Icons.sports_esports_outlined,
-          iconColor: Theme.of(context).colorScheme.onBackground,
+          iconColor: SioColors.games,
           topSlivers: [
             const SliverGap(Dimensions.padding16),
             const SlidableBanner(),
@@ -44,7 +45,7 @@ class DiscoveryScreen extends StatelessWidget {
             label: context.locale.discovery_screen_search_and_add_coins,
           ),
           iconData: Icons.pie_chart_outline,
-          iconColor: Theme.of(context).colorScheme.surface,
+          iconColor: SioColors.coins,
           topSlivers: [
             const SliverGap(Dimensions.padding16),
             const SlidableBanner(),
@@ -58,7 +59,7 @@ class DiscoveryScreen extends StatelessWidget {
             label: context.locale.discovery_screen_search_nft,
           ),
           iconData: Icons.pie_chart_outline,
-          iconColor: Theme.of(context).colorScheme.onSurface,
+          iconColor: SioColors.nft,
           topSlivers: [
             const SliverGap(Dimensions.padding16),
             const SlidableBanner(),

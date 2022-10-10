@@ -5,6 +5,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/favourite_start.dart';
 import 'package:simplio_app/view/widgets/promoted_red_strip.dart';
 import 'package:simplio_app/view/widgets/small_button.dart';
@@ -28,13 +29,13 @@ class GameItem extends StatelessWidget {
   Color getTextColorByActionType(BuildContext context, GameAction gameAction) {
     switch (gameAction) {
       case GameAction.play:
-        return Theme.of(context).colorScheme.onPrimary;
+        return SioColors.whiteBlue;
       case GameAction.buyCoin:
-        return Theme.of(context).colorScheme.background;
+        return SioColors.softBlack;
       case GameAction.addToMyGames:
-        return Theme.of(context).colorScheme.shadow;
+        return SioColors.secondary7;
       case GameAction.remove:
-        return Theme.of(context).colorScheme.onSecondaryContainer;
+        return SioColors.secondary6;
     }
   }
 
@@ -54,9 +55,9 @@ class GameItem extends StatelessWidget {
   Color? getBorderColorByActionType(
       BuildContext context, GameAction gameAction) {
     if (gameAction == GameAction.addToMyGames) {
-      return Theme.of(context).colorScheme.shadow;
+      return SioColors.secondary7;
     } else if (gameAction == GameAction.remove) {
-      return Theme.of(context).colorScheme.onSecondaryContainer;
+      return SioColors.secondary6;
     } else {
       return null;
     }
@@ -79,17 +80,16 @@ class GameItem extends StatelessWidget {
           children: [
             Positioned.fill(
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.centerRight,
                     colors: [
-                      //TODO.. reach out of colors => should be refactored by using ColorProvider
-                      Color(0xFF092F45),
-                      Color(0xFF0B3B57),
-                      Color(0xFF0B3B57),
+                      SioColors.gameItemStartGradient,
+                      SioColors.gameItemEndGradient,
+                      SioColors.gameItemEndGradient,
                     ],
-                    stops: [0, 0.33, 1],
+                    stops: const [0, 0.33, 1],
                   ),
                 ),
               ),
@@ -111,12 +111,11 @@ class GameItem extends StatelessWidget {
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: [
-                      //TODO.. reach out of colors => should be refactored by using ColorProvider
-                      const Color(0xFF092F45),
-                      const Color(0xFF0B3B57),
-                      const Color(0xFF0B3B57).withOpacity(0.73),
-                      const Color(0xFF0B3B57).withOpacity(0.0),
-                      const Color(0xFF0B3B57).withOpacity(0.0)
+                      SioColors.gameItemStartGradient,
+                      SioColors.gameItemEndGradient,
+                      SioColors.gameItemEndGradient.withOpacity(0.73),
+                      SioColors.gameItemEndGradient.withOpacity(0.0),
+                      SioColors.gameItemEndGradient.withOpacity(0.0)
                     ],
                     stops: const [0, 0.37, 0.45, 0.66, 1.0],
                   ),
@@ -127,7 +126,8 @@ class GameItem extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  highlightColor: const Color(0xFF0B3B57).withOpacity(0.73),
+                  highlightColor:
+                      SioColors.gameItemEndGradient.withOpacity(0.73),
                   onTap: () => onTap?.call(),
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -145,14 +145,14 @@ class GameItem extends StatelessWidget {
                             Text(
                               game.name,
                               style: SioTextStyles.h4.apply(
-                                color: Theme.of(context).colorScheme.onPrimary,
+                                color: SioColors.whiteBlue,
                               ),
                             ),
                             Text(
                               context.locale
                                   .common_games_categories(game.category),
                               style: SioTextStyles.bodyL.apply(
-                                color: Theme.of(context).colorScheme.shadow,
+                                color: SioColors.secondary7,
                               ),
                             ),
                           ],
@@ -165,9 +165,7 @@ class GameItem extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.sports_esports_outlined,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
+                                  color: SioColors.games,
                                 ),
                                 Gaps.gap5,
                                 RichText(
@@ -178,9 +176,7 @@ class GameItem extends StatelessWidget {
                                         text: context
                                             .locale.game_item_coin_price_label,
                                         style: SioTextStyles.bodyDetail.apply(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .shadow,
+                                          color: SioColors.secondary7,
                                         ),
                                       ),
                                       TextSpan(
@@ -189,10 +185,8 @@ class GameItem extends StatelessWidget {
                                           currency: game.assetEmbedded.currency,
                                           locale: Intl.getCurrentLocale(),
                                         ),
-                                        style: SioTextStyles.bodyDetail.apply(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary),
+                                        style: SioTextStyles.bodyDetail
+                                            .apply(color: SioColors.whiteBlue),
                                       ),
                                     ],
                                   ),

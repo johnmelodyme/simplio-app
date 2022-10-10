@@ -5,6 +5,7 @@ import 'package:simplio_app/view/routes/unauthenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/bordered_elevated_button.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/story.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SioScaffold(
       body: SafeArea(
         child: Story(
           repeat: !const bool.fromEnvironment('TEST_RUN'),

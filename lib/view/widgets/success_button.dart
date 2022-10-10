@@ -27,7 +27,7 @@ class SuccessButton extends StatelessWidget {
               colors: [
                 SioColors
                     .blackGradient2, // todo: replace with proper color when Theme refactoring is done
-                Theme.of(context).colorScheme.onPrimaryContainer,
+                SioColors.backGradient4Start,
               ],
             )),
         child: Padding(
@@ -40,7 +40,7 @@ class SuccessButton extends StatelessWidget {
                   Text(
                     text,
                     style: SioTextStyles.buttonLarge.apply(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: SioColors.highlight1,
                     ),
                   )
                 ],
@@ -50,7 +50,7 @@ class SuccessButton extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.check,
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: SioColors.highlight1,
                   )
                 ],
               ),

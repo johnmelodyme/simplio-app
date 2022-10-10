@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/success_button.dart';
 
 class SuccessPage extends StatelessWidget {
@@ -19,8 +21,8 @@ class SuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+    return SioScaffold(
+      backgroundColor: SioColors.mentolGreen,
       body: Container(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
         height: double.infinity,
@@ -30,8 +32,8 @@ class SuccessPage extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomRight,
             colors: [
-              Theme.of(context).colorScheme.secondary,
-              Theme.of(context).colorScheme.tertiary,
+              SioColors.highlight1,
+              SioColors.highlight2,
             ],
           ),
         ),

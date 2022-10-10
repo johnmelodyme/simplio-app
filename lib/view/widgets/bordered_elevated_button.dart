@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class BorderedElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -16,17 +17,15 @@ class BorderedElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all<Size>(
-            const Size.fromHeight(Constants.buttonHeight)),
-        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadii.radius30,
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
-            ),
+    return TextButton(
+      style: TextButton.styleFrom(
+        minimumSize: const Size.fromHeight(Constants.buttonHeight),
+        backgroundColor: SioColors.transparent,
+        padding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadii.radius30,
+          side: BorderSide(
+            color: SioColors.secondary6,
           ),
         ),
       ),
@@ -41,7 +40,7 @@ class BorderedElevatedButton extends StatelessWidget {
           Text(
             label,
             style: SioTextStyles.buttonLarge.apply(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              color: SioColors.secondary6,
             ),
           ),
         ],

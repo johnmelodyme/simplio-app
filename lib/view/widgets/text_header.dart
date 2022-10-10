@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class TextHeader extends StatelessWidget {
   final String title;
@@ -23,13 +25,16 @@ class TextHeader extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 6.0),
                 child: Text(
                   title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 24.0,
+                  style: SioTextStyles.h1.apply(
+                    color: SioColors.whiteBlue,
                   ),
                 ),
               ),
-            if (subtitle.isNotEmpty) Text(subtitle),
+            if (subtitle.isNotEmpty)
+              Text(subtitle,
+                  style: SioTextStyles.bodyPrimary.apply(
+                    color: SioColors.whiteBlue,
+                  )),
           ],
         ),
       ],

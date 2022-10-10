@@ -95,6 +95,14 @@
       }
     },
 
+    "common_configuration_dark_mode": "{isDarkMode, select, true{Dark Mode} false{Light Mode}}",
+    "@common_configuration_dark_mode": {
+      "description": "Category of game",
+      "placeholders": {
+        "isDarkMode": {}
+      }
+    },
+
     "sign_in_screen_title": "Enter Simplio.",
     "sign_in_screen_subtitle": "It's good to see you back.",
     "sign_in_screen_forgot_password_button_label":"Forgot password?",

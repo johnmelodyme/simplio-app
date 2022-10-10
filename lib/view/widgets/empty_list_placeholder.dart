@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class EmptyListPlaceholder extends StatelessWidget {
   const EmptyListPlaceholder({
@@ -32,10 +33,7 @@ class EmptyListPlaceholder extends StatelessWidget {
                       Radius.circular(RadiusSize.radius186)),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .tertiary
-                          .withOpacity(0.1),
+                      color: SioColors.highlight2.withOpacity(0.1),
                       spreadRadius: RadiusSize.radius186 / 2,
                       blurRadius: RadiusSize.radius186,
                       offset: const Offset(0, 0),
@@ -60,7 +58,7 @@ class EmptyListPlaceholder extends StatelessWidget {
             label!,
             textAlign: TextAlign.center,
             style: SioTextStyles.bodyPrimary.apply(
-              color: Theme.of(context).colorScheme.shadow,
+              color: SioColors.secondary7,
             ),
           ),
         }

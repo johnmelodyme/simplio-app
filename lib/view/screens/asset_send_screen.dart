@@ -14,17 +14,19 @@ import 'package:simplio_app/view/screens/mixins/scroll_mixin.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_form_asset_item.dart';
 import 'package:simplio_app/view/widgets/asset_form_exception.dart';
 import 'package:simplio_app/view/widgets/asset_min_max_button.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
+import 'package:simplio_app/view/widgets/gradient_text_button.dart';
 import 'package:simplio_app/view/widgets/highlighted_form_element.dart';
 import 'package:simplio_app/view/widgets/highlighted_num_form_filed.dart';
 import 'package:simplio_app/view/widgets/highlighted_text_form_filed.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/qr_code_scanner.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/toggle.dart';
-import 'package:simplio_app/view/widgets/gradient_text_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class AssetSendScreen extends StatefulWidget with WalletUtilsMixin {
@@ -140,8 +142,8 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
             begin: Alignment.topRight,
             end: Alignment.center,
             colors: [
-              Theme.of(context).colorScheme.onPrimaryContainer,
-              Theme.of(context).colorScheme.background,
+              SioColors.backGradient4Start,
+              SioColors.softBlack,
             ],
           ),
         ),
@@ -167,7 +169,7 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
               FocusManager.instance.primaryFocus?.unfocus();
               scrollTo(addressKey, 50);
             },
-            child: Scaffold(
+            child: SioScaffold(
               backgroundColor: Colors.transparent,
               bottomNavigationBar: _NextButton(
                 assetId: widget.assetId!,
@@ -329,8 +331,8 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
                 colors: [
-                  Theme.of(context).colorScheme.background,
-                  Theme.of(context).colorScheme.onPrimaryContainer,
+                  SioColors.softBlack,
+                  SioColors.backGradient4Start,
                 ],
               ),
             ),
@@ -411,9 +413,7 @@ class _AddressField extends StatelessWidget {
           Text(
             context.locale.asset_send_screen_send_to_label,
             style: SioTextStyles.bodyL.apply(
-              color: highlighted
-                  ? Theme.of(context).colorScheme.inverseSurface
-                  : Theme.of(context).colorScheme.shadow,
+              color: highlighted ? SioColors.mentolGreen : SioColors.secondary7,
             ),
           ),
           Gaps.gap5,
@@ -441,7 +441,7 @@ class _AddressField extends StatelessWidget {
                             IconButton(
                               icon: Icon(
                                 Icons.copy_outlined,
-                                color: Theme.of(context).colorScheme.tertiary,
+                                color: SioColors.highlight2,
                                 size: 24,
                               ),
                               onPressed: () async {
@@ -456,7 +456,7 @@ class _AddressField extends StatelessWidget {
                             IconButton(
                               icon: Icon(
                                 Icons.qr_code_scanner,
-                                color: Theme.of(context).colorScheme.tertiary,
+                                color: SioColors.highlight2,
                                 size: 24,
                               ),
                               onPressed: qrCodeIconPressed,
@@ -469,7 +469,7 @@ class _AddressField extends StatelessWidget {
                         child: IconButton(
                           icon: Icon(
                             Icons.clear_outlined,
-                            color: Theme.of(context).colorScheme.tertiary,
+                            color: SioColors.highlight2,
                             size: 24,
                           ),
                           onPressed: () {
@@ -532,13 +532,13 @@ class _AmountFormField extends StatelessWidget {
                     trueOption: Text(
                       Assets.getAssetDetail(assetId).ticker,
                       style: SioTextStyles.bodyS.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: SioColors.whiteBlue,
                       ),
                     ),
                     falseOption: Text(
                       'USD', // todo: use correct currency
                       style: SioTextStyles.bodyS.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: SioColors.whiteBlue,
                       ),
                     ),
                     value: state.amountUnit == AmountUnit.crypto,

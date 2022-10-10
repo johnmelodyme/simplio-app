@@ -6,6 +6,7 @@ import 'package:simplio_app/logic/cubit/sign_up_form/sign_up_form_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/text_header.dart';
 import 'package:simplio_app/view/widgets/themed_text_form_field.dart';
 
@@ -31,7 +32,7 @@ class SignUpScreen extends StatelessWidget {
         }
       },
       // TODO - FIX - There is constrains when keyboard is on.
-      child: Scaffold(
+      child: SioScaffold(
         appBar: AppBar(
           key: const Key('sign-up-screen-app-bar-button'),
           elevation: 0.0,

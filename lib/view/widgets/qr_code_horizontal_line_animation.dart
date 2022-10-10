@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class QrCodeHorizontalLineAnimation extends StatefulWidget {
   const QrCodeHorizontalLineAnimation({
@@ -47,23 +48,17 @@ class _QrCodeHorizontalLineAnimationState
               child: Container(
                 height: 1,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: SioColors.whiteBlue,
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .inverseSurface
-                          .withOpacity(0.5),
+                      color: SioColors.mentolGreen.withOpacity(0.5),
                       spreadRadius: 20,
                       blurRadius: 20,
                       offset: const Offset(1, 1),
                     ),
                     BoxShadow(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .inverseSurface
-                          .withOpacity(0.5),
+                      color: SioColors.mentolGreen.withOpacity(0.5),
                       spreadRadius: 3,
                       blurRadius: 3,
                       offset: const Offset(0, 0),

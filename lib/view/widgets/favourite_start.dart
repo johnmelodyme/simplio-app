@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class FavouriteStar extends StatelessWidget {
   const FavouriteStar({
@@ -15,7 +16,7 @@ class FavouriteStar extends StatelessWidget {
       height: 30,
       width: 30,
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: SioColors.softBlack,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(
               RadiusSize.radius10,
@@ -28,7 +29,7 @@ class FavouriteStar extends StatelessWidget {
         padding: Paddings.all4,
         child: Icon(
           isFilled ? Icons.star : Icons.star_border_outlined,
-          color: Theme.of(context).colorScheme.inverseSurface,
+          color: SioColors.mentolGreen,
         ),
       ),
     );

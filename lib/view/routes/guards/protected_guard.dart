@@ -6,8 +6,12 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_verify_form/pin_verify_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/pin_digits.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 
 typedef BuildContextCallback = void Function(BuildContext context);
 
@@ -79,7 +83,7 @@ class _Protection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SioScaffold(
       body: SafeArea(
         child: Column(
           children: [
@@ -88,7 +92,10 @@ class _Protection extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(context.locale.protected_guard_enter_pin_code),
+                  Text(context.locale.protected_guard_enter_pin_code,
+                      style: SioTextStyles.bodyPrimary.apply(
+                        color: SioColorsDark.whiteBlue,
+                      )),
                   Padding(
                     padding: Paddings.vertical20,
                     child: BlocConsumer<PinVerifyFormCubit, PinVerifyFormState>(
@@ -130,8 +137,7 @@ class _Protection extends StatelessWidget {
                           attempts > 1
                               ? "${context.locale.protected_guard_remaining_attempts} $attempts"
                               : context.locale.protected_guard_last_chance,
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.error),
+                          style: TextStyle(color: SioColors.attention),
                         ),
                       );
                     },

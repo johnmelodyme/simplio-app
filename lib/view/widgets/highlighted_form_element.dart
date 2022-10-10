@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class HighlightedFormElement extends StatefulWidget {
   final List<Widget> children;
@@ -60,8 +61,8 @@ class _HighlightedFormElement extends State<HighlightedFormElement> {
                   ? RadialGradient(
                       radius: 10,
                       colors: [
-                        Theme.of(context).colorScheme.onPrimaryContainer,
-                        Theme.of(context).colorScheme.onSecondaryContainer,
+                        SioColors.backGradient4Start,
+                        SioColors.secondary6,
                       ],
                     )
                   : null,

@@ -121,18 +121,58 @@ class AuthenticatedRouter with PageBuilderMixin {
           },
           routes: [
             GoRoute(
-              path: 'discovery',
-              name: discovery,
-              pageBuilder: pageBuilder(
-                builder: (state) => const DiscoveryScreen(),
-                withTransition: false,
-                settings: const ApplicationSettings(
-                  tabBar: TabBarRouteSettings(
-                    selectedKey: ValueKey(discovery),
+                path: 'discovery',
+                name: discovery,
+                pageBuilder: pageBuilder(
+                  builder: (state) => const DiscoveryScreen(),
+                  withTransition: false,
+                  settings: const ApplicationSettings(
+                    tabBar: TabBarRouteSettings(
+                      selectedKey: ValueKey(discovery),
+                    ),
                   ),
                 ),
-              ),
-            ),
+                routes: [
+                  GoRoute(
+                    path: 'configuration',
+                    name: configuration,
+                    pageBuilder: pageBuilder(
+                      builder: (state) => const ConfigurationScreen(
+                        key: ValueKey(configuration),
+                      ),
+                      withTransition: false,
+                      settings: const ApplicationSettings.hiddenTabBar(),
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'password-change',
+                        name: passwordChange,
+                        pageBuilder: pageBuilder(
+                          settings: const ApplicationSettings(
+                            tabBar: TabBarRouteSettings(
+                              selectedKey: ValueKey(configuration),
+                              isVisible: false,
+                            ),
+                          ),
+                          builder: (state) => BlocProvider(
+                            create: (context) =>
+                                PasswordChangeFormCubit.builder(
+                              authRepository:
+                                  RepositoryProvider.of<AuthRepository>(
+                                      context),
+                            ),
+                            child: ProtectedGuard(
+                              protectedBuilder: (_) =>
+                                  const PasswordChangeScreen(),
+                              onPrevent: (context) =>
+                                  context.goNamed(configuration),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ]),
             GoRoute(
                 path: 'inventory',
                 name: inventory,
@@ -375,43 +415,6 @@ class AuthenticatedRouter with PageBuilderMixin {
                   ),
                 ),
               ),
-            ),
-            GoRoute(
-              path: 'configuration',
-              name: configuration,
-              pageBuilder: pageBuilder(
-                builder: (state) => const ConfigurationScreen(),
-                withTransition: false,
-                settings: const ApplicationSettings(
-                  tabBar: TabBarRouteSettings(
-                    selectedKey: ValueKey(configuration),
-                  ),
-                ),
-              ),
-              routes: [
-                GoRoute(
-                  path: 'password-change',
-                  name: passwordChange,
-                  pageBuilder: pageBuilder(
-                    settings: const ApplicationSettings(
-                      tabBar: TabBarRouteSettings(
-                        selectedKey: ValueKey(configuration),
-                        isVisible: false,
-                      ),
-                    ),
-                    builder: (state) => BlocProvider(
-                      create: (context) => PasswordChangeFormCubit.builder(
-                        authRepository:
-                            RepositoryProvider.of<AuthRepository>(context),
-                      ),
-                      child: ProtectedGuard(
-                        protectedBuilder: (_) => const PasswordChangeScreen(),
-                        onPrevent: (context) => context.goNamed(configuration),
-                      ),
-                    ),
-                  ),
-                )
-              ],
             ),
             GoRoute(
               path: 'asset-search',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 const int maxUserLevel = 4;
 
@@ -22,9 +23,8 @@ class UserLevelBar extends StatelessWidget {
         children: [
           Text(
             context.locale.common_user_level,
-            style: SioTextStyles.bodyDetail.copyWith(
-                height: 1,
-                color: Theme.of(context).colorScheme.secondaryContainer),
+            style: SioTextStyles.bodyDetail
+                .copyWith(height: 1, color: SioColors.confirm),
           ),
           Gaps.gap5,
           Row(
@@ -33,8 +33,8 @@ class UserLevelBar extends StatelessWidget {
                 Icons.star,
                 size: 15,
                 color: userLevel <= level
-                    ? Theme.of(context).colorScheme.onTertiaryContainer
-                    : Theme.of(context).colorScheme.secondaryContainer,
+                    ? SioColors.backGradient3End
+                    : SioColors.confirm,
               );
               if (userLevel <= level) {
                 return icon;
@@ -43,10 +43,7 @@ class UserLevelBar extends StatelessWidget {
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .inverseSurface
-                              .withOpacity(0.15),
+                          color: SioColors.mentolGreen.withOpacity(0.15),
                           spreadRadius: 1,
                           blurRadius: 6,
                           offset: Offset.zero,

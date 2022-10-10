@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/keypad_item.dart';
 
 class _KeypadRow {
@@ -84,7 +85,7 @@ class Numpad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = Theme.of(context).colorScheme.onPrimary;
+    final iconColor = SioColors.whiteBlue;
 
     return _KeypadGrid.builder(
       rows: [

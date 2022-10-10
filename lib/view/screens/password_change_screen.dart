@@ -5,6 +5,7 @@ import 'package:simplio_app/logic/cubit/password_change_form/password_change_for
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 
 class PasswordChangeScreen extends StatelessWidget {
   const PasswordChangeScreen({super.key});
@@ -17,7 +18,7 @@ class PasswordChangeScreen extends StatelessWidget {
       listener: (context, state) {
         // TODO: handle responses
       },
-      child: Scaffold(
+      child: SioScaffold(
         appBar: AppBar(
           title:
               Text(context.locale.password_change_change_password_page_title),

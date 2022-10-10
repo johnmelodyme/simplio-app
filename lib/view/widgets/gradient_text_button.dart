@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/themed_text.dart';
 
 // todo: correct background from design needs to be applied
@@ -31,14 +32,14 @@ class GradientTextButton extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomRight,
                       colors: [
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.tertiary,
+                        SioColors.highlight1,
+                        SioColors.highlight2,
                       ],
                     ),
                     borderRadius: BorderRadii.radius30,
                   )
                 : BoxDecoration(
-                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                    color: SioColors.backGradient3Start,
                     borderRadius: BorderRadii.radius30,
                   ),
           ),
@@ -56,9 +57,7 @@ class GradientTextButton extends StatelessWidget {
                   text,
                   inverseColor: enabled,
                   style: TextStyle(
-                    color: !enabled
-                        ? Theme.of(context).colorScheme.onSecondaryContainer
-                        : null,
+                    color: !enabled ? SioColors.secondary6 : null,
                   ),
                 )
               ],

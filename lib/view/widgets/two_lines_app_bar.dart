@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 
 class TwoLinesAppBar extends ColorizedAppBar {
@@ -40,7 +41,7 @@ class TwoLinesAppBar extends ColorizedAppBar {
                       onBackTap?.call();
                     },
                     padding: const EdgeInsets.all(Dimensions.padding16),
-                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    color: SioColors.secondary6,
                     icon: actionType == ActionType.back
                         ? const Icon(Icons.arrow_back_ios)
                         : const Icon(Icons.close),
@@ -56,15 +57,13 @@ class TwoLinesAppBar extends ColorizedAppBar {
                         children: [
                           TextSpan(
                             text: '$firstPart\n',
-                            style: SioTextStyles.h4.apply(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .inverseSurface),
+                            style: SioTextStyles.h4
+                                .apply(color: SioColors.mentolGreen),
                           ),
                           TextSpan(
                             text: secondPart,
                             style: SioTextStyles.bodyPrimary.apply(
-                              color: Theme.of(context).colorScheme.shadow,
+                              color: SioColors.secondary7,
                             ),
                           ),
                         ],

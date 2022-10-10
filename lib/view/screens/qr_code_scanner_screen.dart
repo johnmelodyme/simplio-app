@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
@@ -10,7 +11,7 @@ import 'package:simplio_app/view/widgets/qr_code_horizontal_line_animation.dart'
 import 'package:simplio_app/view/widgets/qr_code_mask.dart';
 import 'package:simplio_app/view/widgets/qr_code_mask_painter.dart';
 import 'package:simplio_app/view/widgets/qr_code_scanner.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 
 class QrCodeScannerScreen extends StatefulWidget {
   const QrCodeScannerScreen({
@@ -26,15 +27,15 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SioScaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Theme.of(context).colorScheme.onPrimaryContainer,
-              Theme.of(context).colorScheme.background,
+              SioColors.backGradient4Start,
+              SioColors.softBlack,
             ],
           ),
         ),

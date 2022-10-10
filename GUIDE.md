@@ -10,6 +10,9 @@ flutter packages pub run build_runner build
 ```
 
 ### Available parameters
+
+### 'IS_PROD' - Apps running with all features which should or shouldn't be in production
+* --dart-define=IS_PROD=true / false 
 * --dart-define=API_URL=PLACEHOLDER_URL
 * --dart-define=API_KEY=PLACEHOLDER_KEY
 * --dart-define=TEST_RUN=true / false

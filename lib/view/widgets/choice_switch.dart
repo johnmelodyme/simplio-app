@@ -43,9 +43,8 @@ class _Switch extends State<ChoiceSwitch> {
           begin: Alignment.topRight,
           end: Alignment.center,
           colors: [
-            Theme.of(context).colorScheme.onPrimaryContainer,
-            SioColors
-                .blackGradient2, // todo: replace with proper color when Theme refactoring is done
+            SioColors.backGradient4Start,
+            SioColors.blackGradient2,
           ],
         ),
         borderRadius: borderRadius,
@@ -74,17 +73,17 @@ class _Switch extends State<ChoiceSwitch> {
                               e.value.text.data ?? '',
                               style: TextStyle(
                                 color: widget.value == e.key
-                                    ? Theme.of(context).colorScheme.background
-                                    : Theme.of(context).colorScheme.onPrimary,
+                                    ? SioColors.softBlack
+                                    : SioColors.whiteBlue,
                               ),
                             ),
                             Gaps.gap8,
                             Icon(
                               e.value.icon.icon,
                               color: widget.value == e.key
-                                  ? Theme.of(context).colorScheme.background
+                                  ? SioColors.softBlack
                                   : e.value.defaultIconColor ??
-                                      Theme.of(context).colorScheme.onPrimary,
+                                      SioColors.whiteBlue,
                             )
                           ],
                         ),

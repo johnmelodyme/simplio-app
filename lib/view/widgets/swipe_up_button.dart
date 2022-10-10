@@ -1,7 +1,9 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class SwipeUpButton extends StatefulWidget {
   static const double _defaultHeight = 400;
@@ -79,8 +81,8 @@ class _SwipeUpButton extends State<SwipeUpButton>
                 begin: Alignment.centerRight,
                 end: Alignment.topLeft,
                 colors: [
-                  Theme.of(context).colorScheme.tertiary,
-                  Theme.of(context).colorScheme.inverseSurface,
+                  SioColors.highlight2,
+                  SioColors.mentolGreen,
                 ],
               ),
               borderRadius: const BorderRadius.only(
@@ -100,7 +102,7 @@ class _SwipeUpButton extends State<SwipeUpButton>
                 Text(
                   widget.data,
                   style: SioTextStyles.buttonLarge.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: SioColors.black,
                   ),
                 ),
                 Gaps.gap48,

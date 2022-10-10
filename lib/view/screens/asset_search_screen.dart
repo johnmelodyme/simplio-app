@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
-import 'package:simplio_app/view/widgets/search.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
+import 'package:simplio_app/view/widgets/list_loading.dart';
+import 'package:simplio_app/view/widgets/search.dart';
 
 class AssetSearchScreen extends StatelessWidget {
   AssetSearchScreen({super.key});
@@ -51,11 +52,8 @@ class AssetSearchScreen extends StatelessWidget {
             // TODO - implement logic with error
             if (state is CryptoAssetLoadedWithError) {}
 
-            return Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2.0,
-                backgroundColor: Theme.of(context).indicatorColor,
-              ),
+            return const Center(
+              child: ListLoading(),
             );
           },
         ),

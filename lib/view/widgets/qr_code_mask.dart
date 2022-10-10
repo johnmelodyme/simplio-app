@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/qr_code_mask_painter.dart';
 
 class QrCodeMask extends StatelessWidget {
@@ -17,7 +18,7 @@ class QrCodeMask extends StatelessWidget {
       width: width,
       child: CustomPaint(
         painter: QrCodeMaskPainter(
-          borderColor: Theme.of(context).colorScheme.inverseSurface,
+          borderColor: SioColors.mentolGreen,
           maskSide: maskSide,
         ),
       ),

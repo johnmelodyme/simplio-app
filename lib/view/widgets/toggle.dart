@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class Toggle extends StatefulWidget {
   const Toggle({
@@ -32,15 +33,15 @@ class _Toggle extends State<Toggle> {
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         border: Border.all(
-          color: Theme.of(context).colorScheme.background,
+          color: SioColors.softBlack,
           width: 1,
         ),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomLeft,
           colors: [
-            Theme.of(context).colorScheme.onPrimaryContainer,
-            Theme.of(context).colorScheme.background.withOpacity(0),
+            SioColors.backGradient4Start,
+            SioColors.softBlack.withOpacity(0),
           ],
         ),
       ),
@@ -54,9 +55,7 @@ class _Toggle extends State<Toggle> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: borderRadius,
-                  color: widget.value
-                      ? Theme.of(context).colorScheme.outline
-                      : null,
+                  color: widget.value ? SioColors.secondary4 : null,
                 ),
                 child: Center(child: widget.trueOption),
               ),
@@ -71,7 +70,7 @@ class _Toggle extends State<Toggle> {
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
                     color: !widget.value
-                        ? Theme.of(context).colorScheme.outline
+                        ? SioColors.secondary4
                         : Colors.transparent,
                   ),
                   child: Center(child: widget.falseOption),

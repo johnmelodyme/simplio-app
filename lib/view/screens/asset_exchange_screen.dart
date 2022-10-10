@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 import 'package:simplio_app/view/helpers/thousand_separator_input_formatter.dart';
@@ -11,6 +12,7 @@ import 'package:simplio_app/view/screens/mixins/scroll_mixin.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_form_asset_item.dart';
 import 'package:simplio_app/view/widgets/asset_form_exception.dart';
 import 'package:simplio_app/view/widgets/asset_min_max_button.dart';
@@ -20,7 +22,6 @@ import 'package:simplio_app/view/widgets/highlighted_form_element.dart';
 import 'package:simplio_app/view/widgets/highlighted_num_form_filed.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/toggle.dart';
-import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class AssetExchangeScreen extends StatefulWidget with WalletUtilsMixin {
@@ -106,8 +107,8 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
           begin: Alignment.topRight,
           end: Alignment.center,
           colors: [
-            Theme.of(context).colorScheme.onPrimaryContainer,
-            Theme.of(context).colorScheme.background,
+            SioColors.backGradient4Start,
+            SioColors.softBlack,
           ],
         ),
       ),
@@ -287,8 +288,8 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                Theme.of(context).colorScheme.background,
-                Theme.of(context).colorScheme.onPrimaryContainer,
+                SioColors.softBlack,
+                SioColors.backGradient4Start,
               ],
             ),
           ),
@@ -398,13 +399,13 @@ class _FromAmountFormField extends StatelessWidget {
                     trueOption: Text(
                       Assets.getAssetDetail(assetId).ticker,
                       style: SioTextStyles.bodyS.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: SioColors.whiteBlue,
                       ),
                     ),
                     falseOption: Text(
                       'USD', // todo: use correct currency
                       style: SioTextStyles.bodyS.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: SioColors.whiteBlue,
                       ),
                     ),
                     value: state.amountUnit == AmountUnit.crypto,
@@ -477,7 +478,7 @@ class _TargetAmountFormField extends StatelessWidget {
                   padding: Paddings.all8,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiaryContainer,
+                      color: SioColors.backGradient3Start,
                       borderRadius: BorderRadii.radius64,
                     ),
                     child: Row(
@@ -488,29 +489,23 @@ class _TargetAmountFormField extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadii.radius64,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.background,
+                                color: SioColors.softBlack,
                               ),
                               gradient: LinearGradient(
                                 begin: Alignment.bottomRight,
                                 end: Alignment.center,
                                 colors: [
-                                  Theme.of(context).colorScheme.background,
-                                  Theme.of(context)
-                                      .colorScheme
-                                      .onPrimaryContainer
-                                      .withOpacity(0),
+                                  SioColors.softBlack,
+                                  SioColors.backGradient4Start.withOpacity(0),
                                 ],
                               ),
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer,
+                              color: SioColors.backGradient3Start,
                             ),
                             child: Toggle(
                               trueOption: Text(
                                 Assets.getAssetDetail(assetId).ticker,
                                 style: SioTextStyles.bodyS.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
+                                  color: SioColors.whiteBlue,
                                 ),
                               ),
                             ),

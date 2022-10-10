@@ -4,6 +4,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class TotalBalance extends StatefulWidget {
   const TotalBalance({
@@ -64,13 +65,13 @@ class _TotalBalanceState extends State<TotalBalance> {
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(
                     Radius.circular(RadiusSize.radius20)),
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                color: SioColors.backGradient4Start,
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Theme.of(context).colorScheme.onPrimaryContainer,
-                      Theme.of(context).colorScheme.background
+                      SioColors.backGradient4Start,
+                      SioColors.softBlack
                     ])),
             child: Padding(
               padding: Paddings.vertical16,
@@ -78,8 +79,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                 Text(
                   context.locale.inventory_screen_inventory_balance,
                   style: SioTextStyles.bodyPrimary.copyWith(height: 1.0).apply(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: SioColors.secondary6,
                       ),
                 ),
                 Gaps.gap5,
@@ -88,8 +88,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                     currency: 'USD', //TODO.. replace by real currency
                     locale: Intl.getCurrentLocale(),
                   ),
-                  style: SioTextStyles.h1.apply(
-                      color: Theme.of(context).colorScheme.inverseSurface),
+                  style: SioTextStyles.h1.apply(color: SioColors.mentolGreen),
                 ),
                 Gaps.gap5,
                 SizedBox(
@@ -100,17 +99,15 @@ class _TotalBalanceState extends State<TotalBalance> {
                       child: DropdownButton<PeriodType>(
                         isDense: true,
                         isExpanded: true,
-                        focusColor: Theme.of(context).colorScheme.onPrimary,
-                        dropdownColor:
-                            Theme.of(context).colorScheme.primaryContainer,
+                        focusColor: SioColors.whiteBlue,
+                        dropdownColor: SioColors.secondary1,
                         value: _periodType,
                         elevation: 0,
                         iconSize: 20,
                         style: SioTextStyles.bodyPrimary.apply(
-                          color: Theme.of(context).colorScheme.inverseSurface,
+                          color: SioColors.mentolGreen,
                         ),
-                        iconEnabledColor:
-                            Theme.of(context).colorScheme.inverseSurface,
+                        iconEnabledColor: SioColors.mentolGreen,
                         icon: const SizedBox
                             .shrink(), // const Icon(Icons.expand_more),
                         selectedItemBuilder: (context) {
@@ -123,14 +120,10 @@ class _TotalBalanceState extends State<TotalBalance> {
                                 children: [
                                   Text(_getPeriodTimeValue(),
                                       style: SioTextStyles.bodyPrimary.apply(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary,
+                                        color: SioColors.whiteBlue,
                                       )),
                                   Icon(Icons.expand_more,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary)
+                                      color: SioColors.whiteBlue)
                                 ],
                               ),
                             );
@@ -149,10 +142,8 @@ class _TotalBalanceState extends State<TotalBalance> {
                                 periodName,
                                 style: SioTextStyles.bodyPrimary.apply(
                                   color: periodType == _periodType
-                                      ? Theme.of(context)
-                                          .colorScheme
-                                          .inverseSurface
-                                      : Theme.of(context).colorScheme.onPrimary,
+                                      ? SioColors.mentolGreen
+                                      : SioColors.whiteBlue,
                                 ),
                               ),
                             ),
@@ -165,14 +156,10 @@ class _TotalBalanceState extends State<TotalBalance> {
                             children: [
                               Text(_getPeriodTimeValue(),
                                   style: SioTextStyles.bodyPrimary.apply(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inverseSurface,
+                                    color: SioColors.mentolGreen,
                                   )),
                               Icon(Icons.expand_more,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .inverseSurface)
+                                  color: SioColors.mentolGreen)
                             ],
                           ),
                         ),

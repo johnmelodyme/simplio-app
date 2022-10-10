@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 enum SmallButtonType { solid, highlighted, bordered }
 
@@ -44,8 +45,8 @@ class SmallButton extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Theme.of(context).colorScheme.secondary,
-              Theme.of(context).colorScheme.tertiary,
+              SioColors.highlight1,
+              SioColors.highlight2,
             ],
           ),
           borderRadius: BorderRadii.radius30,
@@ -67,7 +68,7 @@ class SmallButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all<Color>(
             type == SmallButtonType.bordered
                 ? Colors.transparent
-                : Theme.of(context).colorScheme.primaryContainer,
+                : SioColors.secondary1,
           ),
           padding: MaterialStateProperty.all<EdgeInsets>(
             EdgeInsets.zero,

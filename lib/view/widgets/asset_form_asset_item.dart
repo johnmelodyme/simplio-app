@@ -9,6 +9,7 @@ import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_wallet_item.dart';
 
 class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
@@ -42,9 +43,7 @@ class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
           Text(
             label,
             style: SioTextStyles.bodyL.apply(
-              color: highlighted
-                  ? Theme.of(context).colorScheme.inverseSurface
-                  : Theme.of(context).colorScheme.shadow,
+              color: highlighted ? SioColors.mentolGreen : SioColors.secondary7,
             ),
           ),
           Gaps.gap5,

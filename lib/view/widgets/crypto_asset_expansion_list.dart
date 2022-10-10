@@ -2,6 +2,8 @@ import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
 
 class CryptoAssetExpansionList extends StatelessWidget {
@@ -23,7 +25,7 @@ class CryptoAssetExpansionList extends StatelessWidget {
           final asset = Assets.getAssetDetail(a.assetId);
 
           return ExpansionPanelRadio(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            backgroundColor: SioColors.softBlack,
             value: UniqueKey(),
             canTapOnHeader: true,
             headerBuilder: (context, _) {
@@ -33,7 +35,10 @@ class CryptoAssetExpansionList extends StatelessWidget {
                   leading: CircleAvatar(
                     backgroundColor: asset.style.primaryColor,
                   ),
-                  title: Text(a.name),
+                  title: Text(
+                    a.name,
+                    style: SioTextStyles.h5.apply(color: SioColors.whiteBlue),
+                  ),
                 ),
               );
             },
@@ -41,11 +46,18 @@ class CryptoAssetExpansionList extends StatelessWidget {
               children: a.networks.map((n) {
                 final network = Assets.getNetworkDetail(n.networkId);
                 return ListTile(
-                  title: Text(network.name),
-                  subtitle: Text(network.ticker),
+                  title: Text(network.name,
+                      style: SioTextStyles.h5.apply(
+                        color: SioColors.whiteBlue,
+                      )),
+                  subtitle: Text(
+                    network.ticker,
+                    style:
+                        SioTextStyles.bodyS.apply(color: SioColors.secondary7),
+                  ),
                   trailing: IconButton(
                     icon: const Icon(Icons.add),
-                    color: Theme.of(context).primaryColor,
+                    color: SioColors.whiteBlue,
                     onPressed: () => onTap(n),
                   ),
                 );

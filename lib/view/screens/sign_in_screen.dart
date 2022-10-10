@@ -6,7 +6,11 @@ import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/sign_in_form/sign_in_form_cubit.dart';
 import 'package:simplio_app/view/routes/unauthenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
+import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/text_header.dart';
 import 'package:simplio_app/view/widgets/themed_text_form_field.dart';
 
@@ -31,192 +35,205 @@ class SignInScreen extends StatelessWidget {
           //  TODO: Implement logic for failure.
         }
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          key: const Key('sign-in-screen-app-bar-button'),
-          elevation: 0.0,
-        ),
+      child: SioScaffold(
         body: SafeArea(
           top: true,
-          child: Column(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: Paddings.horizontal20,
-                    child: TextHeader(
-                      title: context.locale.sign_in_screen_title,
-                      subtitle: context.locale.sign_in_screen_subtitle,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const ColorizedAppBar(
+                    key: Key('sign-in-screen-app-bar-button'),
+                    firstPart: '',
+                    secondPart: ''),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: Paddings.horizontal20,
+                      child: TextHeader(
+                        title: context.locale.sign_in_screen_title,
+                        subtitle: context.locale.sign_in_screen_subtitle,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: Paddings.horizontal20,
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: Paddings.vertical20,
-                            child: ThemedTextFormField(
-                              key: const Key('sign-in-screen-email-text-field'),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (email) => context
+                    Padding(
+                      padding: Paddings.horizontal20,
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: Paddings.vertical20,
+                              child: ThemedTextFormField(
+                                key: const Key(
+                                    'sign-in-screen-email-text-field'),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (email) => context
+                                    .read<SignInFormCubit>()
+                                    .state
+                                    .login
+                                    .emailValidator(
+                                      email,
+                                      errorMessage: context
+                                          .locale.common_email_validation_error,
+                                    ),
+                                style: TextStyle(color: SioColors.whiteBlue),
+                                decoration: InputDecoration(
+                                  labelText: context.locale.common_email,
+                                  hintText: context.locale.common_email,
+                                  fillColor: SioColors.whiteBlue,
+                                  labelStyle:
+                                      TextStyle(color: SioColors.whiteBlue),
+                                  iconColor: SioColors.black,
+                                  hintStyle: TextStyle(
+                                      fontSize: 16.0, color: SioColors.black),
+                                  border: InputBorder.none,
+                                  errorStyle: TextStyle(
+                                    color: SioColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                onChanged: (String? email) {
+                                  context
+                                      .read<SignInFormCubit>()
+                                      .changeFormValue(login: email);
+                                },
+                                onFocusChange: (focused) => focused
+                                    ? null
+                                    : formKey.currentState?.validate(),
+                              ),
+                            ),
+                            PasswordTextField(
+                              key: const Key(
+                                  'sign-in-screen-password-text-field'),
+                              validator: (pass) => context
                                   .read<SignInFormCubit>()
                                   .state
-                                  .login
-                                  .emailValidator(
-                                    email,
-                                    errorMessage: context
-                                        .locale.common_email_validation_error,
+                                  .password
+                                  .passwordValidator(
+                                    pass,
+                                    errorMsg: context.locale
+                                        .common_password_validation_error,
                                   ),
-                              decoration: InputDecoration(
-                                labelText: context.locale.common_email,
-                                hintText: context.locale.common_email,
-                              ),
-                              onChanged: (String? email) {
+                              passwordComplexityCondition: (_) => context
+                                  .read<SignInFormCubit>()
+                                  .state
+                                  .password
+                                  .isValid,
+                              onChanged: (password) {
                                 context
                                     .read<SignInFormCubit>()
-                                    .changeFormValue(login: email);
+                                    .changeFormValue(password: password);
                               },
-                              onFocusChange: (focused) => focused
-                                  ? null
-                                  : formKey.currentState?.validate(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 10, right: 20, bottom: 10),
+                      child: GestureDetector(
+                        onTap: () {
+                          final res =
+                              context.read<SignInFormCubit>().state.response;
+                          if (res is! SignInFormPending) {
+                            GoRouter.of(context).pushNamed('password-reset');
+                          }
+                        },
+                        child: Text(
+                          key:
+                              const Key('sign-in-screen-reset-password-button'),
+                          context.locale
+                              .sign_in_screen_forgot_password_button_label,
+                          style: TextStyle(color: SioColors.highlight1),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: Paddings.horizontal20,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child:
+                                BlocBuilder<SignInFormCubit, SignInFormState>(
+                              builder: (context, state) {
+                                if (state.response != null) {
+                                  final res = state.response;
+                                  if (res is SignInFormPending) {
+                                    return OutlinedButton(
+                                      key: const Key(
+                                          'sign-in-screen-progress-indicator'),
+                                      onPressed: () {},
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const SizedBox(
+                                            width: 20.0,
+                                            height: 20.0,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2.0,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: Paddings.all20,
+                                            child: Text(
+                                              context.locale
+                                                  .sign_in_screen_signing_in_label,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                }
+                                return HighlightedElevatedButton(
+                                    key: const Key(
+                                        'sign-in-screen-sign-in-button'),
+                                    onPressed: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        await context
+                                            .read<SignInFormCubit>()
+                                            .submitForm();
+                                      }
+                                    },
+                                    label: context
+                                        .locale.common_sign_in_button_label);
+                              },
                             ),
                           ),
-                          PasswordTextField(
-                            key:
-                                const Key('sign-in-screen-password-text-field'),
-                            validator: (pass) => context
-                                .read<SignInFormCubit>()
-                                .state
-                                .password
-                                .passwordValidator(
-                                  pass,
-                                  errorMsg: context
-                                      .locale.common_password_validation_error,
-                                ),
-                            passwordComplexityCondition: (_) => context
-                                .read<SignInFormCubit>()
-                                .state
-                                .password
-                                .isValid,
-                            onChanged: (password) {
-                              context
-                                  .read<SignInFormCubit>()
-                                  .changeFormValue(password: password);
-                            },
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              child: Text(
+                                key: const Key(
+                                    'sign-in-screen-create-account-button'),
+                                context.locale
+                                    .sign_in_screen_or_create_account_button_label,
+                                style: TextStyle(color: SioColors.highlight1),
+                              ),
+                              onTap: () {
+                                final res = context
+                                    .read<SignInFormCubit>()
+                                    .state
+                                    .response;
+                                if (res is! SignInFormPending) {
+                                  GoRouter.of(context)
+                                      .pushNamed(UnauthenticatedRouter.signUp);
+                                }
+                              },
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 10, right: 20, bottom: 10),
-                    child: GestureDetector(
-                      onTap: () {
-                        final res =
-                            context.read<SignInFormCubit>().state.response;
-                        if (res is! SignInFormPending) {
-                          GoRouter.of(context).pushNamed('password-reset');
-                        }
-                      },
-                      child: Text(
-                        key: const Key('sign-in-screen-reset-password-button'),
-                        context
-                            .locale.sign_in_screen_forgot_password_button_label,
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: Paddings.horizontal20,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: BlocBuilder<SignInFormCubit, SignInFormState>(
-                            builder: (context, state) {
-                              if (state.response != null) {
-                                final res = state.response;
-                                if (res is SignInFormPending) {
-                                  return OutlinedButton(
-                                    key: const Key(
-                                        'sign-in-screen-progress-indicator'),
-                                    onPressed: () {},
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const SizedBox(
-                                          width: 20.0,
-                                          height: 20.0,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2.0,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: Paddings.all20,
-                                          child: Text(
-                                            context.locale
-                                                .sign_in_screen_signing_in_label,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }
-                              return ElevatedButton(
-                                key: const Key('sign-in-screen-sign-in-button'),
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    await context
-                                        .read<SignInFormCubit>()
-                                        .submitForm();
-                                  }
-                                },
-                                child: Text(
-                                    context.locale.common_sign_in_button_label),
-                              );
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: GestureDetector(
-                            child: Text(
-                              key: const Key(
-                                  'sign-in-screen-create-account-button'),
-                              context.locale
-                                  .sign_in_screen_or_create_account_button_label,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
-                            ),
-                            onTap: () {
-                              final res = context
-                                  .read<SignInFormCubit>()
-                                  .state
-                                  .response;
-                              if (res is! SignInFormPending) {
-                                GoRouter.of(context)
-                                    .pushNamed(UnauthenticatedRouter.signUp);
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

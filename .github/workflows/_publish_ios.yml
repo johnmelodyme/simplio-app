@@ -85,11 +85,11 @@ jobs:
 
       - name: Generate ios/Flutter/Generated.xcconfig - PRODUCTION
         if: ${{ inputs.environment == 'production' }}
-        run: flutter build ios --config-only --release --no-codesign --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_PROD }} --dart-define=API_KEY=${{ secrets.DART_DEFINE_API_KEY_PROD }}
+        run: flutter build ios --config-only --release --no-codesign --dart-define=IS_PROD=true --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_PROD }} --dart-define=API_KEY=${{ secrets.DART_DEFINE_API_KEY_PROD }}
 
       - name: Generate ios/Flutter/Generated.xcconfig - DEVELOPMENT
         if: ${{ inputs.environment != 'production' }}
-        run: flutter build ios --config-only --release --no-codesign --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }} --dart-define=API_KEY=${{ secrets.DART_DEFINE_API_KEY_DEV }}
+        run: flutter build ios --config-only --release --no-codesign --dart-define=IS_PROD=false --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }} --dart-define=API_KEY=${{ secrets.DART_DEFINE_API_KEY_DEV }}
 
       - name: Run Fastlane
         if: ${{ inputs.testBuild == true }}

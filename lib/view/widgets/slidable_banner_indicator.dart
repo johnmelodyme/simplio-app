@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class SlidableBannerIndicator extends StatelessWidget {
   const SlidableBannerIndicator({
@@ -22,8 +23,8 @@ class SlidableBannerIndicator extends StatelessWidget {
           height: Constants.slidableBannerBulletSize,
           decoration: BoxDecoration(
             color: currentPage == index
-                ? Theme.of(context).colorScheme.onPrimary
-                : Theme.of(context).colorScheme.primaryContainer,
+                ? SioColors.whiteBlue
+                : SioColors.secondary1,
             shape: BoxShape.circle,
           ),
         );

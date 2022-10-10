@@ -9,6 +9,7 @@ import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/widgets/headline_text.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/pin_digits.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 
 class PinSetupScreen extends StatelessWidget {
   const PinSetupScreen({super.key});
@@ -18,7 +19,7 @@ class PinSetupScreen extends StatelessWidget {
     return WillPopScope(
       key: const ValueKey('pin-setup-screen'),
       onWillPop: () async => false,
-      child: Scaffold(
+      child: SioScaffold(
         body: SafeArea(
           child: Column(children: [
             Expanded(

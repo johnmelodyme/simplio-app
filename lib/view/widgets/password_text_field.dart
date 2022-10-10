@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class PasswordTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
@@ -45,9 +46,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         }
       },
       style: TextStyle(
-        color: isComplexitySatisfied
-            ? Theme.of(context).colorScheme.tertiary
-            : Theme.of(context).colorScheme.error,
+        color:
+            isComplexitySatisfied ? SioColors.attention : SioColors.whiteBlue,
       ),
       obscuringCharacter: '⦁',
       // obscuringCharacter: '●',
@@ -58,8 +58,16 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             widget.labelText ?? context.locale.common_password_input_label,
         hintText:
             widget.labelText ?? context.locale.common_password_input_label,
+        fillColor: SioColors.whiteBlue,
+        labelStyle: TextStyle(color: SioColors.whiteBlue),
+        iconColor: SioColors.black,
+        hintStyle: TextStyle(fontSize: 16.0, color: SioColors.black),
+        border: InputBorder.none,
         suffixIcon: IconButton(
-            icon: Icon(_isDisplayed ? widget.displayedIcon : widget.icon),
+            icon: Icon(
+              _isDisplayed ? widget.displayedIcon : widget.icon,
+              color: SioColors.whiteBlue,
+            ),
             onPressed: () {
               setState(() {
                 _isDisplayed = !_isDisplayed;

@@ -7,6 +7,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 import 'package:simplio_app/view/widgets/bordered_elevated_button.dart';
 import 'package:simplio_app/view/widgets/earning_elevated_button.dart';
@@ -36,7 +37,7 @@ class CoinDetailBalance extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius:
                 const BorderRadius.all(Radius.circular(RadiusSize.radius20)),
-            color: Theme.of(context).colorScheme.primaryContainer,
+            color: SioColors.secondary1,
           ),
           child: Column(
             children: [
@@ -44,8 +45,7 @@ class CoinDetailBalance extends StatelessWidget {
               Text(
                 networkWallet.balance
                     .getFormattedBalance(networkWallet.decimalPlaces),
-                style: SioTextStyles.h1
-                    .apply(color: Theme.of(context).colorScheme.onPrimary),
+                style: SioTextStyles.h1.apply(color: SioColors.whiteBlue),
               ),
               Text(
                 networkWallet.balance.getFormattedPrice(
@@ -53,7 +53,7 @@ class CoinDetailBalance extends StatelessWidget {
                   currency: 'USD', //TODO.. replace by real currency
                 ),
                 style: SioTextStyles.bodyPrimary
-                    .apply(color: Theme.of(context).colorScheme.inverseSurface),
+                    .apply(color: SioColors.mentolGreen),
               ),
               Gaps.gap30,
               //todo.. show this earning button by some condition
@@ -72,9 +72,7 @@ class CoinDetailBalance extends StatelessWidget {
                             .coin_detail_screen_remove_from_inventory_button,
                         icon: Icon(
                           Icons.cancel_outlined,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
+                          color: SioColors.secondary6,
                         ),
                       )
                     : HighlightedElevatedButton(
@@ -85,7 +83,7 @@ class CoinDetailBalance extends StatelessWidget {
                             .locale.coin_detail_screen_add_to_inventory_button,
                         icon: Icon(
                           Icons.add_circle_outline,
-                          color: Theme.of(context).colorScheme.background,
+                          color: SioColors.softBlack,
                         ),
                       ),
             ],
@@ -99,11 +97,10 @@ class CoinDetailBalance extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius:
                   const BorderRadius.all(Radius.circular(RadiusSize.radius50)),
-              color: Theme.of(context).colorScheme.background,
+              color: SioColors.softBlack,
               boxShadow: [
                 BoxShadow(
-                  color:
-                      Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                  color: SioColors.highlight2.withOpacity(0.1),
                   spreadRadius: RadiusSize.radius140 / 2,
                   blurRadius: RadiusSize.radius140,
                   offset: const Offset(0, 4),

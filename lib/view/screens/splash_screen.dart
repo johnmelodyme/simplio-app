@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/themes/dark_mode.dart';
-import 'package:simplio_app/view/themes/light_mode.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 
 class SplashScreen extends StatelessWidget {
   final Future<void> Function() loadingFunction;
@@ -28,10 +29,9 @@ class SplashScreen extends StatelessWidget {
           return MaterialApp(
             title: 'Simplio',
             themeMode: defaultThemeMode,
-            theme: LightMode.theme,
-            darkTheme: DarkMode.theme,
             home: Builder(
-              builder: (context) => Scaffold(
+              builder: (context) => SioScaffold(
+                backgroundColor: SioColorsDark.whiteBlue,
                 body: SafeArea(
                   child: Column(
                     children: [
@@ -70,9 +70,8 @@ class SplashScreen extends StatelessWidget {
                               height: 3,
                               width: 220,
                               child: LinearProgressIndicator(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                backgroundColor:
-                                    Theme.of(context).highlightColor,
+                                color: SioColors.whiteBlue,
+                                backgroundColor: SioColors.secondary1,
                               ),
                             ),
                           ],

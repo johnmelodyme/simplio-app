@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class SearchBarPlaceholder extends StatelessWidget {
   final String label;
@@ -26,14 +27,11 @@ class SearchBarPlaceholder extends StatelessWidget {
                 borderRadius: BorderRadius.circular(RadiusSize.radius50),
                 border: Border.all(
                   width: 1,
-                  color: Theme.of(context).colorScheme.outline,
+                  color: SioColors.secondary4,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .inverseSurface
-                        .withOpacity(0.1),
+                    color: SioColors.mentolGreen.withOpacity(0.1),
                     blurRadius: 15,
                     spreadRadius: 1,
                     blurStyle: BlurStyle.outer,
@@ -48,14 +46,14 @@ class SearchBarPlaceholder extends StatelessWidget {
                     child: Icon(
                       Icons.search,
                       size: 20.0,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      color: SioColors.secondary6,
                     ),
                   ),
                   Text(
                     label,
                     style: SioTextStyles.bodyPrimary
                         .copyWith(height: 1.0)
-                        .apply(color: Theme.of(context).colorScheme.shadow),
+                        .apply(color: SioColors.secondary7),
                   ),
                 ],
               ),
@@ -68,14 +66,11 @@ class SearchBarPlaceholder extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius:
                   const BorderRadius.all(Radius.circular(RadiusSize.radius10)),
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              color: SioColors.backGradient4Start,
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Theme.of(context).colorScheme.onPrimaryContainer,
-                  Theme.of(context).colorScheme.background
-                ],
+                colors: [SioColors.backGradient4Start, SioColors.softBlack],
               ),
             ),
             child: IconButton(
@@ -85,7 +80,7 @@ class SearchBarPlaceholder extends StatelessWidget {
                 icon: Center(
                   child: Icon(
                     Icons.tune,
-                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    color: SioColors.secondary6,
                   ),
                 )),
           )

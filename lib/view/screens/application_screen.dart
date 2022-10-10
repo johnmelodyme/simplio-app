@@ -7,7 +7,10 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/bottom_tab_bar.dart';
+import 'package:simplio_app/view/widgets/list_loading.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 import 'package:simplio_app/view/widgets/wallet_connect_request_item.dart';
 import 'package:simplio_app/view/widgets/wallet_connect_request_list.dart';
@@ -37,7 +40,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
+    return SioScaffold(
       body: Stack(
         alignment: AlignmentDirectional.bottomCenter,
         children: [
@@ -55,8 +58,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               key:
                                   const ValueKey(AuthenticatedRouter.discovery),
                               tabBarItemType: TabItemType.button,
-                              selectedColor:
-                                  Theme.of(context).colorScheme.inverseSurface,
+                              selectedColor: SioColors.mentolGreen,
                               icon: Icons.assistant_navigation,
                               label: context.locale
                                   .application_screen_discovery_tabbar_label,
@@ -67,8 +69,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                           TabBarItem(
                               key: const ValueKey(AuthenticatedRouter.games),
                               tabBarItemType: TabItemType.button,
-                              selectedColor:
-                                  Theme.of(context).colorScheme.onBackground,
+                              selectedColor: SioColors.games,
                               icon: Icons.sports_esports_outlined,
                               label: context
                                   .locale.application_screen_games_tabbar_label,
@@ -80,8 +81,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               key:
                                   const ValueKey(AuthenticatedRouter.inventory),
                               tabBarItemType: TabItemType.button,
-                              selectedColor:
-                                  Theme.of(context).colorScheme.surface,
+                              selectedColor: SioColors.coins,
                               icon: Icons.pie_chart_outline,
                               label: context.locale
                                   .application_screen_inventory_tabbar_label,
@@ -93,8 +93,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               key:
                                   const ValueKey(AuthenticatedRouter.findDapps),
                               tabBarItemType: TabItemType.button,
-                              selectedColor:
-                                  Theme.of(context).colorScheme.surface,
+                              selectedColor: SioColors.coins,
                               icon: Icons.language,
                               label: context.locale
                                   .application_screen_find_dapps_tabbar_label,
@@ -174,7 +173,7 @@ class ApplicationLoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SioScaffold(
       body: Column(
         children: [
           Expanded(
@@ -185,13 +184,10 @@ class ApplicationLoadingScreen extends StatelessWidget {
                   if (state is AccountWalletLoadedWithError) {
                     return Text(
                       state.error.toString(),
-                      style: TextStyle(color: Theme.of(context).errorColor),
+                      style: TextStyle(color: SioColors.attention),
                     );
                   }
-                  return CircularProgressIndicator(
-                    strokeWidth: 2.0,
-                    backgroundColor: Theme.of(context).indicatorColor,
-                  );
+                  return const ListLoading();
                 },
               ),
             ),

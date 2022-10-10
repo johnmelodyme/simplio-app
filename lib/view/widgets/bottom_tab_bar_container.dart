@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class BottomTabBarContainer extends StatelessWidget {
   const BottomTabBarContainer({
@@ -32,8 +33,8 @@ class BottomTabBarContainer extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
-                Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
+                SioColors.bottomTabBarStartColor.withOpacity(0.5),
+                SioColors.bottomTabBarEndColor.withOpacity(0.5),
               ],
             ),
           ),

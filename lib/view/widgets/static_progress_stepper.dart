@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/helpers/custom_painters.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 const double _firstStepRadius = 15.5;
 const double _otherStepRadius = 12;
@@ -96,7 +97,7 @@ class StaticProgressStepper extends StatelessWidget {
           painter: CirclePainter(
             center: _circle(1),
             radius: _firstStepRadius,
-            color: Theme.of(context).colorScheme.onPrimary,
+            color: SioColors.whiteBlue,
           ),
         ),
         CustomPaint(
@@ -104,7 +105,7 @@ class StaticProgressStepper extends StatelessWidget {
             text: '1',
             offset: _stepNumber(1),
             style: SioTextStyles.h5.copyWith(
-              color: Theme.of(context).colorScheme.background,
+              color: SioColors.softBlack,
             ),
           ),
         ),
@@ -113,13 +114,13 @@ class StaticProgressStepper extends StatelessWidget {
             text: _getLabel(context, 1),
             offset: _label(1),
             style: SioTextStyles.bodyLargeBold.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: SioColors.whiteBlue,
             ),
           ),
         ),
         CustomPaint(
           painter: LinePainter(
-            color: Theme.of(context).colorScheme.outline,
+            color: SioColors.secondary4,
             start: _lineStart(1),
             end: _lineEnd(1),
           ),
@@ -128,7 +129,7 @@ class StaticProgressStepper extends StatelessWidget {
           painter: CirclePainter(
             center: _circle(2),
             radius: _otherStepRadius,
-            color: Theme.of(context).colorScheme.outline,
+            color: SioColors.secondary4,
           ),
         ),
         CustomPaint(
@@ -136,7 +137,7 @@ class StaticProgressStepper extends StatelessWidget {
             text: '2',
             offset: _stepNumber(2),
             style: SioTextStyles.h5.copyWith(
-              color: Theme.of(context).colorScheme.inverseSurface,
+              color: SioColors.mentolGreen,
             ),
           ),
         ),
@@ -145,13 +146,13 @@ class StaticProgressStepper extends StatelessWidget {
             text: _getLabel(context, 2),
             offset: _label(2),
             style: SioTextStyles.bodyDetail.copyWith(
-              color: Theme.of(context).colorScheme.surfaceTint,
+              color: SioColors.secondary5,
             ),
           ),
         ),
         CustomPaint(
           painter: LinePainter(
-            color: Theme.of(context).colorScheme.outline,
+            color: SioColors.secondary4,
             start: _lineStart(2),
             end: _lineEnd(2),
           ),
@@ -160,7 +161,7 @@ class StaticProgressStepper extends StatelessWidget {
           painter: CirclePainter(
             center: _circle(3),
             radius: _otherStepRadius,
-            color: Theme.of(context).colorScheme.outline,
+            color: SioColors.secondary4,
           ),
         ),
         CustomPaint(
@@ -168,7 +169,7 @@ class StaticProgressStepper extends StatelessWidget {
             text: '3',
             offset: _stepNumber(3),
             style: SioTextStyles.h5.copyWith(
-              color: Theme.of(context).colorScheme.inverseSurface,
+              color: SioColors.mentolGreen,
             ),
           ),
         ),
@@ -177,13 +178,13 @@ class StaticProgressStepper extends StatelessWidget {
             text: _getLabel(context, 3),
             offset: _label(3),
             style: SioTextStyles.bodyDetail.copyWith(
-              color: Theme.of(context).colorScheme.surfaceTint,
+              color: SioColors.secondary5,
             ),
           ),
         ),
         CustomPaint(
           painter: LinePainter(
-            color: Theme.of(context).colorScheme.outline,
+            color: SioColors.secondary4,
             start: _lineStart(3),
             end: _lineEnd(3),
           ),
@@ -192,7 +193,7 @@ class StaticProgressStepper extends StatelessWidget {
           painter: CirclePainter(
             center: _circle(4),
             radius: _otherStepRadius,
-            color: Theme.of(context).colorScheme.outline,
+            color: SioColors.secondary4,
           ),
         ),
         CustomPaint(
@@ -200,7 +201,7 @@ class StaticProgressStepper extends StatelessWidget {
             text: '4',
             offset: _stepNumber(4),
             style: SioTextStyles.h5.copyWith(
-              color: Theme.of(context).colorScheme.inverseSurface,
+              color: SioColors.mentolGreen,
             ),
           ),
         ),
@@ -209,7 +210,7 @@ class StaticProgressStepper extends StatelessWidget {
             text: _getLabel(context, 4),
             offset: _label(4),
             style: SioTextStyles.bodyDetail.copyWith(
-              color: Theme.of(context).colorScheme.surfaceTint,
+              color: SioColors.secondary5,
             ),
           ),
         ),

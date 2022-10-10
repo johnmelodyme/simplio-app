@@ -6,6 +6,7 @@ import 'package:simplio_app/view/extensions/date_extensions.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class TransactionItem extends StatelessWidget {
   TransactionItem({
@@ -27,15 +28,15 @@ class TransactionItem extends StatelessWidget {
       BuildContext context, TransactionType transactionType) {
     switch (transactionType) {
       case TransactionType.send:
-        return Theme.of(context).colorScheme.onTertiary;
+        return SioColors.highlight;
       case TransactionType.receive:
-        return Theme.of(context).colorScheme.onSurface;
+        return SioColors.nft;
       case TransactionType.swap:
-        return Theme.of(context).colorScheme.secondaryContainer;
+        return SioColors.confirm;
       case TransactionType.purchase:
-        return Theme.of(context).colorScheme.onBackground;
+        return SioColors.games;
       case TransactionType.earning:
-        return Theme.of(context).colorScheme.onError;
+        return SioColors.earningStart;
     }
   }
 
@@ -47,14 +48,11 @@ class TransactionItem extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius:
               const BorderRadius.all(Radius.circular(RadiusSize.radius20)),
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          color: SioColors.backGradient4Start,
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Theme.of(context).colorScheme.onPrimaryContainer,
-                Theme.of(context).colorScheme.background
-              ])),
+              colors: [SioColors.backGradient4Start, SioColors.softBlack])),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -74,11 +72,13 @@ class TransactionItem extends StatelessWidget {
                   children: [
                     Text(
                       transaction.name,
-                      style: SioTextStyles.bodyL,
+                      style:
+                          SioTextStyles.bodyL.apply(color: SioColors.whiteBlue),
                     ),
                     Text(
                       transaction.volume.getThousandSeparatedValue(),
-                      style: SioTextStyles.bodyL,
+                      style:
+                          SioTextStyles.bodyL.apply(color: SioColors.whiteBlue),
                     ),
                   ],
                 ),
@@ -88,7 +88,7 @@ class TransactionItem extends StatelessWidget {
                     Text(
                       transaction.datetime.getDateFormatShort(),
                       style: SioTextStyles.bodyS.apply(
-                        color: Theme.of(context).colorScheme.shadow,
+                        color: SioColors.secondary7,
                       ),
                     ),
                     Text(
@@ -97,7 +97,7 @@ class TransactionItem extends StatelessWidget {
                         locale: Intl.getCurrentLocale(),
                       ),
                       style: SioTextStyles.bodyS.apply(
-                        color: Theme.of(context).colorScheme.shadow,
+                        color: SioColors.secondary7,
                       ),
                     ),
                   ],

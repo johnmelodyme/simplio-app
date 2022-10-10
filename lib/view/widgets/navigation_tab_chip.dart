@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class NavigationTabChip extends StatelessWidget {
   const NavigationTabChip({
@@ -20,13 +21,8 @@ class NavigationTabChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onTap,
-      style: ElevatedButton.styleFrom(
-          elevation: 0,
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(RadiusSize.radius64))),
+    return InkWell(
+      onTap: onTap,
       child: Container(
         height: double.infinity,
         padding: const EdgeInsets.symmetric(
@@ -38,16 +34,13 @@ class NavigationTabChip extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.tertiary,
+                    SioColors.highlight1,
+                    SioColors.highlight2,
                   ],
                 )
               : null,
-          borderRadius:
-              const BorderRadius.all(Radius.circular(RadiusSize.radius64)),
-          color: isSelected
-              ? null
-              : Theme.of(context).colorScheme.onPrimaryContainer,
+          color: isSelected ? null : SioColors.backGradient4Start,
+          borderRadius: BorderRadii.radius64,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,8 +51,8 @@ class NavigationTabChip extends StatelessWidget {
                 iconData,
                 size: 16,
                 color: isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : iconColor ?? Theme.of(context).colorScheme.onPrimary,
+                    ? SioColors.black
+                    : iconColor ?? SioColors.whiteBlue,
               ),
               Gaps.gap8,
             },
@@ -68,9 +61,7 @@ class NavigationTabChip extends StatelessWidget {
                 label,
                 maxLines: 1,
                 style: SioTextStyles.bodyLargeBold.apply(
-                  color: isSelected
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.onPrimary,
+                  color: isSelected ? SioColors.black : SioColors.whiteBlue,
                 ),
               ),
             ),

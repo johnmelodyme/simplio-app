@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/unauthenticated_router.dart';
-import 'package:simplio_app/view/themes/dark_mode.dart';
-import 'package:simplio_app/view/themes/light_mode.dart';
 
 class UnauthenticatedApp extends StatelessWidget {
   const UnauthenticatedApp({
@@ -24,8 +22,6 @@ class UnauthenticatedApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: defaultLocale,
       themeMode: defaultThemeMode,
-      theme: LightMode.theme,
-      darkTheme: DarkMode.theme,
       routeInformationParser: r.routeInformationParser,
       routeInformationProvider: r.routeInformationProvider,
       routerDelegate: r.routerDelegate,

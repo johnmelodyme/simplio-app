@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/bottom_tab_bar_container.dart';
 import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 
@@ -31,8 +32,6 @@ class BottomTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return BottomTabBarContainer(
       height: height,
       borderRadius: borderRadius,
@@ -59,11 +58,11 @@ class BottomTabBar extends StatelessWidget {
                           key: e.key,
                           flex: spacerRatio,
                           child: _TabBarItem(
-                              isActive: activeItem == e.key,
-                              tabBarItem: e,
-                              selectedColor: e.selectedColor,
-                              unselectedColor: theme.bottomNavigationBarTheme
-                                  .unselectedItemColor!));
+                            isActive: activeItem == e.key,
+                            tabBarItem: e,
+                            selectedColor: e.selectedColor,
+                            unselectedColor: SioColors.whiteBlue,
+                          ));
                     }).toList());
               },
             ),

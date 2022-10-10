@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class PromotedRedStrip extends StatelessWidget {
   const PromotedRedStrip({
@@ -15,7 +16,7 @@ class PromotedRedStrip extends StatelessWidget {
     return Container(
       height: 20,
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.error,
+          color: SioColors.attention,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(
               RadiusSize.radius10,
@@ -29,7 +30,9 @@ class PromotedRedStrip extends StatelessWidget {
         child: Text(
           label,
           textAlign: TextAlign.center,
-          style: SioTextStyles.bodyLargeBold,
+          style: SioTextStyles.bodyLargeBold.apply(
+            color: SioColors.whiteBlue,
+          ),
         ),
       ),
     );

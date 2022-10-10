@@ -2,6 +2,7 @@ import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 
 class AssetWalletItem extends StatelessWidget {
@@ -52,14 +53,8 @@ class AssetWalletItem extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Theme.of(context)
-                    .colorScheme
-                    .tertiaryContainer
-                    .withOpacity(0.5),
-                Theme.of(context)
-                    .colorScheme
-                    .onTertiaryContainer
-                    .withOpacity(0.5),
+                SioColors.backGradient3Start.withOpacity(0.5),
+                SioColors.backGradient3End.withOpacity(0.5),
               ],
             ),
             borderRadius: BorderRadius.circular(RadiusSize.radius20)),
@@ -86,14 +81,13 @@ class AssetWalletItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: getTextStyle()
-                        .apply(color: Theme.of(context).colorScheme.onPrimary),
+                    style: getTextStyle().apply(color: SioColors.whiteBlue),
                   ),
                   if (subTitle?.isNotEmpty == true) ...{
                     Text(
                       subTitle!,
                       style: SioTextStyles.bodyS
-                          .apply(color: Theme.of(context).colorScheme.shadow),
+                          .apply(color: SioColors.secondary7),
                     ),
                   }
                 ],
@@ -105,13 +99,13 @@ class AssetWalletItem extends StatelessWidget {
                 children: [
                   Text(
                     balance,
-                    style: SioTextStyles.bodyS
-                        .apply(color: Theme.of(context).colorScheme.onPrimary),
+                    style:
+                        SioTextStyles.bodyS.apply(color: SioColors.whiteBlue),
                   ),
                   Text(
                     volume,
-                    style: SioTextStyles.bodyS.apply(
-                        color: Theme.of(context).colorScheme.inverseSurface),
+                    style:
+                        SioTextStyles.bodyS.apply(color: SioColors.mentolGreen),
                   ),
                 ]),
           ]),

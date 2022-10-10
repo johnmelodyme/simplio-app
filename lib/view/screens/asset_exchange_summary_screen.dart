@@ -8,6 +8,7 @@ import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_form_gradient_label.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
@@ -24,8 +25,8 @@ class AssetExchangeSummaryScreen extends StatelessWidget with WalletUtilsMixin {
           begin: Alignment.topRight,
           end: Alignment.center,
           colors: [
-            Theme.of(context).colorScheme.onPrimaryContainer,
-            Theme.of(context).colorScheme.background,
+            SioColors.backGradient4Start,
+            SioColors.softBlack,
           ],
         ),
       ),
@@ -71,8 +72,8 @@ class _ExchangeTo extends StatelessWidget {
         children: [
           Text(
             context.locale.asset_exchange_screen_exchange_to,
-            style: SioTextStyles.bodyPrimary.copyWith(
-                color: Theme.of(context).colorScheme.onSecondaryContainer),
+            style:
+                SioTextStyles.bodyPrimary.copyWith(color: SioColors.secondary6),
           ),
           Gaps.gap2,
           AssetFormGradientLabel(
@@ -87,7 +88,7 @@ class _ExchangeTo extends StatelessWidget {
                         text:
                             '${state.totalAmount} ${Assets.getAssetDetail(state.assetId).ticker}',
                         style: SioTextStyles.h4.apply(
-                          color: Theme.of(context).colorScheme.inverseSurface,
+                          color: SioColors.mentolGreen,
                         ),
                       ),
                     ],
@@ -97,9 +98,8 @@ class _ExchangeTo extends StatelessWidget {
                   child: Text(
                     state.totalAmount, // todo: calculate correct fiat value
                     textAlign: TextAlign.right,
-                    style: SioTextStyles.bodyPrimary.copyWith(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer),
+                    style: SioTextStyles.bodyPrimary
+                        .copyWith(color: SioColors.secondary6),
                   ),
                 )
               ],
@@ -122,12 +122,12 @@ class _Fee extends StatelessWidget {
         children: [
           Text(
             context.locale.asset_send_summary_screen_transaction_fee,
-            style: SioTextStyles.bodyPrimary.copyWith(
-                color: Theme.of(context).colorScheme.onSecondaryContainer),
+            style:
+                SioTextStyles.bodyPrimary.copyWith(color: SioColors.secondary6),
           ),
           SioExpansionRadioPanel(
             animationDuration: const Duration(milliseconds: 500),
-            dividerColor: Theme.of(context).colorScheme.background,
+            dividerColor: SioColors.softBlack,
             children: [
               ExpansionPanelRadio(
                 value: UniqueKey(),
@@ -137,6 +137,9 @@ class _Fee extends StatelessWidget {
                     children: [
                       Text(
                         '${state.totalSwapFee} ${Assets.getAssetDetail(state.assetId).ticker}',
+                        style: SioTextStyles.bodyPrimary.apply(
+                          color: SioColors.whiteBlue,
+                        ),
                       ),
                       Expanded(
                         child: Row(
@@ -145,16 +148,12 @@ class _Fee extends StatelessWidget {
                             isExpanded
                                 ? Icon(
                                     Icons.keyboard_arrow_up,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inverseSurface,
+                                    color: SioColors.mentolGreen,
                                     size: 24,
                                   )
                                 : Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inverseSurface,
+                                    color: SioColors.mentolGreen,
                                     size: 24,
                                   ),
                             Gaps.gap10,
@@ -162,10 +161,8 @@ class _Fee extends StatelessWidget {
                               state
                                   .totalSwapFee, // todo: calculate correct fiat value
                               textAlign: TextAlign.right,
-                              style: SioTextStyles.bodyPrimary.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer),
+                              style: SioTextStyles.bodyPrimary
+                                  .copyWith(color: SioColors.secondary6),
                             ),
                           ],
                         ),
@@ -180,8 +177,8 @@ class _Fee extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         // todo: change colors when color refactoring is finished
-                        Theme.of(context).colorScheme.primaryContainer,
-                        Theme.of(context).colorScheme.tertiaryContainer,
+                        SioColors.secondary1,
+                        SioColors.backGradient3Start,
                       ],
                     ),
                     borderRadius: BorderRadiusDirectional.only(
@@ -202,13 +199,16 @@ class _Fee extends StatelessWidget {
                               context.locale
                                   .asset_exchange_summary_screen_choose_target_fee,
                               style: SioTextStyles.bodyPrimary.copyWith(
-                                color: Theme.of(context).colorScheme.shadow,
+                                color: SioColors.secondary7,
                               ),
                             ),
                             Expanded(
                               child: Text(
                                 state
                                     .targetTransactionFee, // todo: calculate correct fiat value
+                                style: SioTextStyles.bodyPrimary.copyWith(
+                                  color: SioColors.whiteBlue,
+                                ),
                                 textAlign: TextAlign.right,
                               ),
                             )
@@ -223,13 +223,16 @@ class _Fee extends StatelessWidget {
                               context.locale
                                   .asset_exchange_summary_screen_choose_source_fee,
                               style: SioTextStyles.bodyPrimary.copyWith(
-                                color: Theme.of(context).colorScheme.shadow,
+                                color: SioColors.secondary7,
                               ),
                             ),
                             Expanded(
                               child: Text(
                                 state
                                     .sourceTransactionFee, // todo: calculate correct fiat value
+                                style: SioTextStyles.bodyPrimary.copyWith(
+                                  color: SioColors.whiteBlue,
+                                ),
                                 textAlign: TextAlign.right,
                               ),
                             )
@@ -244,13 +247,16 @@ class _Fee extends StatelessWidget {
                               context.locale
                                   .asset_exchange_summary_screen_choose_swap_fee,
                               style: SioTextStyles.bodyPrimary.copyWith(
-                                color: Theme.of(context).colorScheme.shadow,
+                                color: SioColors.secondary7,
                               ),
                             ),
                             Expanded(
                               child: Text(
                                 state
                                     .swapFee, // todo: calculate correct fiat value
+                                style: SioTextStyles.bodyPrimary.copyWith(
+                                  color: SioColors.whiteBlue,
+                                ),
                                 textAlign: TextAlign.right,
                               ),
                             )
@@ -283,7 +289,7 @@ class _ExchangeFrom extends StatelessWidget {
           Text(
             context.locale.asset_exchange_screen_exchange_from,
             style: SioTextStyles.bodyPrimary.copyWith(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              color: SioColors.secondary6,
             ),
           ),
           Gaps.gap2,
@@ -292,15 +298,14 @@ class _ExchangeFrom extends StatelessWidget {
               Text(
                 '${state.amountFrom} ${Assets.getAssetDetail(state.assetId).ticker}',
                 style: SioTextStyles.bodyPrimary
-                    .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                    .copyWith(color: SioColors.whiteBlue),
               ),
               Expanded(
                 child: Text(
                   state.amountFrom, // todo: calculate correct fiat value
                   textAlign: TextAlign.right,
-                  style: SioTextStyles.bodyPrimary.copyWith(
-                      color:
-                          Theme.of(context).colorScheme.onSecondaryContainer),
+                  style: SioTextStyles.bodyPrimary
+                      .copyWith(color: SioColors.secondary6),
                 ),
               )
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class ThemedTextFormField extends StatelessWidget {
   final bool autofocus;
@@ -41,7 +42,7 @@ class ThemedTextFormField extends StatelessWidget {
         maxLines: maxLines,
         textAlignVertical: textAlignVertical,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
+          color: SioColors.black,
         ).merge(style),
       ),
     );

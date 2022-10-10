@@ -1,10 +1,10 @@
+import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
-import 'package:crypto_assets/crypto_assets.dart';
 
 abstract class WalletConnectRequestItem<T extends WalletConnectRequest>
     extends Widget {
@@ -78,7 +78,7 @@ class _WalletConnectTransactionRequestItemState
                     ),
                     child: Text(
                       "${widget.request.peer.name} requests a transaction",
-                      style: const TextStyle(
+                      style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         color: SioColors.highlight1,
                         fontSize: 14,
@@ -88,7 +88,7 @@ class _WalletConnectTransactionRequestItemState
                   ),
                   Material(
                     borderRadius: BorderRadius.circular(RadiusSize.radius20),
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: SioColors.secondary1,
                     child: Padding(
                       padding: const EdgeInsets.all(Dimensions.padding10),
                       child: Row(
@@ -215,8 +215,8 @@ class _WalletConnectSignatureRequestItemState
                     style: SioTextStyles.h2,
                     textAlign: TextAlign.center,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
                       vertical: Dimensions.padding10,
                     ),
                     // TODO - When widgets will be redesigned, add translations.
@@ -231,7 +231,7 @@ class _WalletConnectSignatureRequestItemState
                   ),
                   Material(
                     borderRadius: BorderRadius.circular(RadiusSize.radius20),
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: SioColors.secondary1,
                     child: Padding(
                       padding: const EdgeInsets.all(Dimensions.padding10),
                       child: Row(
@@ -354,8 +354,8 @@ class _WalletConnectSessionRequestItemState
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
                       vertical: Dimensions.padding10,
                     ),
                     child: Text(
@@ -369,7 +369,7 @@ class _WalletConnectSessionRequestItemState
                   ),
                   Material(
                     borderRadius: BorderRadius.circular(RadiusSize.radius20),
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: SioColors.secondary1,
                     child: Padding(
                       padding: const EdgeInsets.all(Dimensions.padding10),
                       child: Row(
@@ -458,7 +458,7 @@ class _ItemCard extends StatelessWidget {
         elevation: 20.0,
         clipBehavior: Clip.hardEdge,
         borderRadius: BorderRadius.circular(RadiusSize.radius20),
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: SioColors.secondary1,
         child: child,
       ),
     );

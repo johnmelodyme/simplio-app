@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class AssetFormGradientLabel extends StatelessWidget {
   final Widget child;
@@ -13,8 +14,8 @@ class AssetFormGradientLabel extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(context).colorScheme.onPrimaryContainer,
-              Theme.of(context).colorScheme.background,
+              SioColors.backGradient4Start,
+              SioColors.softBlack,
             ],
           ),
           borderRadius: BorderRadii.radius20,

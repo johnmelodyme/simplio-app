@@ -6,6 +6,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/inventory_coins_content.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
@@ -42,7 +43,7 @@ class InventoryScreen extends StatelessWidget {
                   label: context.locale.inventory_screen_search_and_add_coins,
                 ),
                 iconData: Icons.pie_chart_outline,
-                iconColor: Theme.of(context).colorScheme.surface,
+                iconColor: SioColors.coins,
                 topSlivers: [
                   const SliverGap(Dimensions.padding16),
                   //todo.. replace by real data
@@ -60,7 +61,7 @@ class InventoryScreen extends StatelessWidget {
                   label: context.locale.inventory_screen_search_nft,
                 ),
                 iconData: Icons.pie_chart_outline,
-                iconColor: Theme.of(context).colorScheme.onSurface,
+                iconColor: SioColors.nft,
                 topSlivers: [
                   const SliverGap(Dimensions.padding16),
                   //todo.. replace by real data

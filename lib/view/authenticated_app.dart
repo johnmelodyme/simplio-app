@@ -14,8 +14,7 @@ import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.da
 import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/themes/dark_mode.dart';
-import 'package:simplio_app/view/themes/light_mode.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 class AuthenticatedApp extends StatelessWidget {
@@ -91,8 +90,6 @@ class AuthenticatedApp extends StatelessWidget {
                   supportedLocales: context.supportedLocales,
                   locale: _setLocale(context),
                   themeMode: _setThemeMode(context),
-                  theme: LightMode.theme,
-                  darkTheme: DarkMode.theme,
                   routeInformationParser: r.routeInformationParser,
                   routeInformationProvider: r.routeInformationProvider,
                   routerDelegate: r.routerDelegate,
@@ -121,14 +118,18 @@ class AuthenticatedApp extends StatelessWidget {
   }
 
   ThemeMode _setThemeMode(BuildContext context) {
+    final ThemeMode themeMode;
     final s = context.watch<AccountCubit>().state;
 
     if (s is AccountProvided) {
       _setSystemUIOverlayStyle(s.account.settings.themeMode);
-      return s.account.settings.themeMode;
+      themeMode = s.account.settings.themeMode;
+    } else {
+      themeMode = const AccountSettings.builder().themeMode;
     }
 
-    return const AccountSettings.builder().themeMode;
+    globalThemeMode = themeMode;
+    return themeMode;
   }
 
   void init() {

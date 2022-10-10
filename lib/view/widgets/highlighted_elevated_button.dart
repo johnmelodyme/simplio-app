@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class HighlightedElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -29,8 +30,8 @@ class HighlightedElevatedButton extends StatelessWidget {
         height: Constants.buttonHeight,
         decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
-            Theme.of(context).colorScheme.secondary,
-            Theme.of(context).colorScheme.tertiary,
+            SioColors.highlight1,
+            SioColors.highlight2,
           ]),
           borderRadius: BorderRadii.radius30,
         ),
@@ -44,7 +45,7 @@ class HighlightedElevatedButton extends StatelessWidget {
             Text(
               label,
               style: SioTextStyles.buttonLarge.apply(
-                color: Theme.of(context).colorScheme.background,
+                color: SioColors.softBlack,
               ),
             ),
           ],

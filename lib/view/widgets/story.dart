@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/themed_linear_progress_indicator.dart';
 
 class Story extends StatefulWidget {
@@ -49,7 +50,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
       ),
     );
 
-    return Scaffold(
+    return SioScaffold(
       body: Column(
         children: [
           Padding(

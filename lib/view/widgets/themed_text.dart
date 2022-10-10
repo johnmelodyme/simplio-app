@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class ThemedText extends StatelessWidget {
   final String text;
@@ -18,9 +19,7 @@ class ThemedText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-              color: inverseColor
-                  ? Theme.of(context).colorScheme.background
-                  : Theme.of(context).colorScheme.onPrimary)
+              color: inverseColor ? SioColors.softBlack : SioColors.whiteBlue)
           .merge(SioTextStyles.buttonStyle)
           .merge(style),
     );

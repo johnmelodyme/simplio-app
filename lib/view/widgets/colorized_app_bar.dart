@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class ColorizedAppBar extends StatelessWidget {
   const ColorizedAppBar({
@@ -9,12 +10,14 @@ class ColorizedAppBar extends StatelessWidget {
     required this.secondPart,
     this.actionType = ActionType.back,
     this.onBackTap,
+    this.onShareTap,
   }) : super(key: key);
 
   final String firstPart;
   final String secondPart;
   final ActionType actionType;
   final Function()? onBackTap;
+  final Function()? onShareTap;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,7 @@ class ColorizedAppBar extends StatelessWidget {
                   onBackTap?.call();
                 },
                 padding: const EdgeInsets.all(Dimensions.padding16),
-                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                color: SioColors.secondary6,
                 icon: actionType == ActionType.back
                     ? const Icon(Icons.arrow_back_ios)
                     : const Icon(Icons.close),
@@ -50,20 +53,31 @@ class ColorizedAppBar extends StatelessWidget {
                       TextSpan(
                         text: '$firstPart ',
                         style: SioTextStyles.h4.apply(
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: SioColors.whiteBlue,
                         ),
                       ),
                       TextSpan(
                         text: secondPart,
-                        style: SioTextStyles.h4.apply(
-                            color:
-                                Theme.of(context).colorScheme.inverseSurface),
+                        style: SioTextStyles.h4
+                            .apply(color: SioColors.mentolGreen),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
+            if (onShareTap != null)
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () {
+                    onShareTap?.call();
+                  },
+                  padding: const EdgeInsets.all(Dimensions.padding16),
+                  color: SioColors.secondary6,
+                  icon: const Icon(Icons.share),
+                ),
+              ),
           ],
         ),
       ),
