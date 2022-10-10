@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_svg: ^1.1.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -20,6 +22,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/svg_icons/
 
   # To add assets to your package, add an assets section, like this:
   # assets:

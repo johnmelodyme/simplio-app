@@ -61,7 +61,7 @@ class _WalletConnectTransactionRequestItemState
                         color: asset.style.foregroundColor,
                         elevation: 4.0,
                         shape: const CircleBorder(),
-                        child: Icon(asset.style.icon),
+                        child: asset.style.icon,
                       ),
                     ),
                   ),
@@ -377,10 +377,7 @@ class _WalletConnectSessionRequestItemState
                           CircleAvatar(
                             maxRadius: 14.0,
                             backgroundColor: network.style.primaryColor,
-                            child: Icon(
-                              network.style.icon,
-                              color: network.style.foregroundColor,
-                            ),
+                            child: network.style.icon,
                           ),
                           Expanded(
                             child: Padding(

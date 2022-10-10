@@ -8,7 +8,7 @@ class SystemAssetDetails {
     name: '',
     ticker: '',
     style: AssetStyle(
-      icon: Icons.question_mark_outlined,
+      icon: Icon(Icons.question_mark_outlined),
       primaryColor: Colors.black12,
       foregroundColor: Colors.white,
     ),

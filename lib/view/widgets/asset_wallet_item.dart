@@ -11,20 +11,17 @@ class AssetWalletItem extends StatelessWidget {
     required this.volume,
     required this.balance,
     this.subTitle,
-    this.backgroundAvatarColor,
-    this.assetStyle,
+    required this.assetStyle,
     required this.assetType,
     this.onTap,
     super.key,
-  }) : assert(assetStyle != null || backgroundAvatarColor != null,
-            'assetStyle or backgroundAvatarColor needs to be set');
+  });
 
   final String title;
   final String volume;
   final String balance;
   final String? subTitle;
-  final Color? backgroundAvatarColor;
-  final AssetStyle? assetStyle;
+  final AssetStyle assetStyle;
   final GestureTapCallback? onTap;
   final AssetType assetType;
 
@@ -63,15 +60,7 @@ class AssetWalletItem extends StatelessWidget {
           child: Row(children: [
             AvatarWithShadow(
               size: getAvatarSize(),
-              child: assetStyle == null
-                  ? Container(color: backgroundAvatarColor)
-                  : Container(
-                      color: assetStyle!.foregroundColor,
-                      child: Icon(
-                        assetStyle!.icon,
-                        color: assetStyle!.primaryColor,
-                      ),
-                    ),
+              child: assetStyle.icon,
             ),
             Gaps.gap10,
             Expanded(

@@ -1,175 +1,176 @@
 import 'package:crypto_assets/crypto_assets.dart';
+import 'package:crypto_assets/crypto_icons.dart';
 import 'package:flutter/material.dart';
 
 class AssetDetails {
   const AssetDetails._();
 
-  static const AssetDetail simplio = AssetDetail(
+  static AssetDetail simplio = AssetDetail(
     name: 'Simplio',
     ticker: 'SIO',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
+      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
       primaryColor: Colors.blue,
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail bitcoin = AssetDetail(
+  static AssetDetail bitcoin = AssetDetail(
     name: 'Bitcoin',
     ticker: 'BTC',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xffff9900),
+      icon: CryptoIcon.btc,
+      primaryColor: const Color(0xffff9900),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail solana = AssetDetail(
+  static AssetDetail solana = AssetDetail(
     name: 'Solana',
     ticker: 'SOL',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xff411e7d),
+      icon: CryptoIcon.sol,
+      primaryColor: const Color(0xff411e7d),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail usdCoin = AssetDetail(
+  static AssetDetail usdCoin = AssetDetail(
     name: 'USD Coin',
     ticker: 'USDC',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xff2775ca),
+      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      primaryColor: const Color(0xff2775ca),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail tether = AssetDetail(
+  static AssetDetail tether = AssetDetail(
     name: 'Tether',
     ticker: 'USDT',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xff26a17b),
+      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      primaryColor: const Color(0xff26a17b),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail bnb = AssetDetail(
+  static AssetDetail bnb = AssetDetail(
     name: 'BNB',
     ticker: 'BNB',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xfff0b909),
+      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      primaryColor: const Color(0xfff0b909),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail bnbSmartChain = AssetDetail(
+  static AssetDetail bnbSmartChain = AssetDetail(
     name: 'BNB Smart Chain',
     ticker: 'BSC',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xfff0b909),
+      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      primaryColor: const Color(0xfff0b909),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail ethereum = AssetDetail(
+  static AssetDetail ethereum = AssetDetail(
     name: 'Ethereum',
     ticker: 'ETH',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
+      icon: CryptoIcon.eth,
       primaryColor: Colors.black12,
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail chainlink = AssetDetail(
+  static AssetDetail chainlink = AssetDetail(
     name: 'Chainlink',
     ticker: 'CHAIN',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
+      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
       primaryColor: Colors.black12,
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail bitcoinCash = AssetDetail(
+  static AssetDetail bitcoinCash = AssetDetail(
     name: 'Bitcoin Cash',
     ticker: 'BCH',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xff8dc351),
+      icon: CryptoIcon.bch,
+      primaryColor: const Color(0xff8dc351),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail flux = AssetDetail(
+  static AssetDetail flux = AssetDetail(
     name: 'Flux',
     ticker: 'FLUX',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xff2a60d0),
+      icon: CryptoIcon.zelFlux,
+      primaryColor: const Color(0xff2a60d0),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail dogecoin = AssetDetail(
+  static AssetDetail dogecoin = AssetDetail(
     name: 'Dogecoin',
     ticker: 'DOGE',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xffffe4a4),
+      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      primaryColor: const Color(0xffffe4a4),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail dash = AssetDetail(
+  static AssetDetail dash = AssetDetail(
     name: 'Dash',
     ticker: 'DASH',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xff008be6),
+      icon: CryptoIcon.dash,
+      primaryColor: const Color(0xff008be6),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail digibyte = AssetDetail(
+  static AssetDetail digibyte = AssetDetail(
     name: 'Digibyte',
     ticker: 'DGB',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xff006ad2),
+      icon: CryptoIcon.dgb,
+      primaryColor: const Color(0xff006ad2),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail litecoin = AssetDetail(
+  static AssetDetail litecoin = AssetDetail(
     name: 'Litecoin',
     ticker: 'LTC',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xffeaeaea),
+      icon: CryptoIcon.ltc,
+      primaryColor: const Color(0xffeaeaea),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail binanceUSD = AssetDetail(
+  static AssetDetail binanceUSD = AssetDetail(
     name: 'Binance USD',
     ticker: 'BUSD',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xfff3ba2f),
+      icon: CryptoIcon.bch, //TODO.. missing icon
+      primaryColor: const Color(0xfff3ba2f),
       foregroundColor: Colors.white,
     ),
   );
 
-  static const AssetDetail zcash = AssetDetail(
+  static AssetDetail zcash = AssetDetail(
     name: 'Zcash',
     ticker: 'ZEC',
     style: AssetStyle(
-      icon: Icons.wb_sunny_outlined,
-      primaryColor: Color(0xfff5df97),
+      icon: CryptoIcon.zcashZec,
+      primaryColor: const Color(0xfff5df97),
       foregroundColor: Colors.white,
     ),
   );

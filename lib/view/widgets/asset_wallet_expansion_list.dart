@@ -78,7 +78,7 @@ class AssetWalletExpansionList extends StatelessWidget {
                     locale: Intl.getCurrentLocale(),
                     currency: 'USD', //TODO.. add currency into asset
                   ),
-                  backgroundAvatarColor: asset.style.primaryColor,
+                  assetStyle: asset.style,
                   assetType: AssetType.wallet,
                 ),
               );
@@ -102,7 +102,7 @@ class AssetWalletExpansionList extends StatelessWidget {
                         currency: 'USD', //TODO.. add currency into network
                       ),
                       subTitle: network.ticker,
-                      backgroundAvatarColor: asset.style.primaryColor,
+                      assetStyle: asset.style,
                       assetType: AssetType.network,
                     ),
                   ),

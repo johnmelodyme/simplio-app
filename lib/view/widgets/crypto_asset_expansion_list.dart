@@ -32,9 +32,7 @@ class CryptoAssetExpansionList extends StatelessWidget {
               return Padding(
                 padding: Paddings.vertical20,
                 child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: asset.style.primaryColor,
-                  ),
+                  leading: asset.style.icon,
                   title: Text(
                     a.name,
                     style: SioTextStyles.h5.apply(color: SioColors.whiteBlue),

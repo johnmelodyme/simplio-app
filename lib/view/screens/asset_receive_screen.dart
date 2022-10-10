@@ -122,14 +122,11 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                           ),
                         )),
                   ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Icon(
-                      assetDetail.style.icon,
-                      size: 60,
-                      color: assetDetail.style.primaryColor,
-                    ),
-                  )
+                  SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: assetDetail.style.icon,
+                  ),
                 ]),
               ),
             ],
