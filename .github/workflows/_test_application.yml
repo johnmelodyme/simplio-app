@@ -124,36 +124,37 @@ jobs:
           path: recording.mp4
           retention-days : 3 # days for automatic deletion
 
-  drive_android:
-    runs-on: macos-latest
-    #creates a build matrix for your jobs
-    strategy:
-      #set of different configurations of the virtual environment.
-      matrix:
-        api-level: [ 32, 33 ]
-        target: [ google_apis ]
-    needs: run-e2e-tests
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - uses: actions/download-artifact@v3
-        with:
-          name: generated-files-and-packages
-      - name: Run Flutter Driver Android tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          disk-size: 4096M
-          heap-size: 1024M
-          sdcard-path-or-size: 1000M
-          target: ${{ matrix.target }}
-          arch: x86_64
-          profile: Nexus 6
-          script: flutter test integration_test --reporter expanded --flavor dev --dart-define=TEST_RUN=true
+#DISABLING ANDROID PART TO AVIOD RERUN FLOWS BECAUSE OF LONG STARTUP OF EMULATOR
+#  drive_android:
+#    runs-on: macos-latest
+#    #creates a build matrix for your jobs
+#    strategy:
+#      #set of different configurations of the virtual environment.
+#      matrix:
+#        api-level: [ 32, 33 ]
+#        target: [ google_apis ]
+#    needs: run-e2e-tests
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Setup Java
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '11'
+#          distribution: 'temurin'
+#      - uses: subosito/flutter-action@v2
+#        with:
+#          channel: 'stable'
+#      - uses: actions/download-artifact@v3
+#        with:
+#          name: generated-files-and-packages
+#      - name: Run Flutter Driver Android tests
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: ${{ matrix.api-level }}
+#          disk-size: 4096M
+#          heap-size: 1024M
+#          sdcard-path-or-size: 1000M
+#          target: ${{ matrix.target }}
+#          arch: x86_64
+#          profile: Nexus 6
+#          script: flutter test integration_test --reporter expanded --flavor dev --dart-define=TEST_RUN=true
