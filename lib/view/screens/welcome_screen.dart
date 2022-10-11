@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/unauthenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/bordered_elevated_button.dart';
+import 'package:simplio_app/view/widgets/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/story.dart';
@@ -75,7 +75,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: BorderedElevatedButton(
+                  child: BorderedTextButton(
                     onPressed: () {
                       GoRouter.of(context)
                           .pushNamed(UnauthenticatedRouter.signIn);

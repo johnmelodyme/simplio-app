@@ -8,8 +8,8 @@ import 'package:simplio_app/view/widgets/static_progress_stepper.dart';
 import 'package:simplio_app/view/widgets/success_check_icon.dart';
 import 'package:simplio_app/view/widgets/success_page.dart';
 
-class AssetExchangeSuccessScreen extends StatelessWidget {
-  const AssetExchangeSuccessScreen({super.key});
+class AssetBuySuccessScreen extends StatelessWidget {
+  const AssetBuySuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class AssetExchangeSuccessScreen extends StatelessWidget {
           ),
           Gaps.gap32,
           const StaticProgressStepper(
-            progressBarType: ProgressBarType.exchanging,
+            progressBarType: ProgressBarType.buying,
           )
         ],
       ),

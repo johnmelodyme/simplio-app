@@ -62,6 +62,9 @@ class _SwipeUpButton extends State<SwipeUpButton>
               duration: const Duration(milliseconds: 300),
               curve: Curves.fastOutSlowIn);
           widget.onSwipeCallback();
+          animationController.animateTo(initControllerVal,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.fastOutSlowIn);
         } else {
           animationController.animateTo(initControllerVal,
               duration: const Duration(milliseconds: 300),
@@ -74,7 +77,7 @@ class _SwipeUpButton extends State<SwipeUpButton>
         child: FractionallySizedBox(
           alignment: Alignment.bottomCenter,
           heightFactor: animationController.value,
-          widthFactor: 1.0,
+          widthFactor: 1,
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(

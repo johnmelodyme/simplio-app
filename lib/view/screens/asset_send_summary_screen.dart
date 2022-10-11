@@ -40,7 +40,6 @@ class _AssetSendSummaryScreen extends State<AssetSendSummaryScreen> {
     return BlocListener<AssetSendFormCubit, AssetSendFormState>(
       listenWhen: (prev, curr) => curr.response is AssetSendFormPending,
       listener: (context, state) {
-        GoRouter.of(context).pop();
         GoRouter.of(context)
             .replaceNamed(AuthenticatedRouter.assetSendSuccess, params: {
           'assetId': state.assetId.toString(),

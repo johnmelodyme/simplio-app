@@ -33,7 +33,7 @@ class SmallButton extends StatelessWidget {
         label,
         textAlign: TextAlign.center,
         style: SioTextStyles.buttonSmall.copyWith(
-          height: 1.0,
+          height: 1,
           color: labelColor,
         ),
       ),

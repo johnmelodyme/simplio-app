@@ -19,6 +19,12 @@ import 'package:simplio_app/view/routes/observers/tab_bar_observer.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
 import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
+import 'package:simplio_app/view/screens/asset_buy_confirmation_screen.dart';
+import 'package:simplio_app/view/screens/asset_buy_payment_gateway_screen.dart';
+import 'package:simplio_app/view/screens/asset_buy_screen.dart';
+import 'package:simplio_app/view/screens/asset_buy_search_screen.dart';
+import 'package:simplio_app/view/screens/asset_buy_success_screen.dart';
+import 'package:simplio_app/view/screens/asset_buy_summary_screen.dart';
 import 'package:simplio_app/view/screens/asset_detail_screen.dart';
 import 'package:simplio_app/view/screens/asset_exchange_search_screen.dart';
 import 'package:simplio_app/view/screens/asset_exchange_success_screen.dart';
@@ -55,17 +61,28 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String passwordChange = 'password-change';
   static const String assetDetail = 'asset-detail';
   static const String assetSearch = 'asset-search';
+
   static const String assetSend = 'asset-send';
   static const String assetSendSearch = 'asset-send-search';
   static const String assetSendSummary = 'asset-send-summary';
   static const String assetSendSuccess = 'asset-send-success';
+
   static const String assetReceive = 'asset-receive';
+
   static const String assetExchange = 'asset-exchange';
   static const String assetExchangeSearchFrom = 'asset-exchange-search-from';
   static const String assetExchangeSearchTarget =
       'asset-exchange-search-target';
   static const String assetExchangeSummary = 'asset-exchange-summary';
   static const String assetExchangeSuccess = 'asset-exchange-success';
+
+  static const String assetBuy = 'asset-buy';
+  static const String assetBuySearch = 'asset-buy-search';
+  static const String assetBuySummary = 'asset-buy-summary';
+  static const String assetBuyConfirmation = 'asset-buy-confirmation';
+  static const String assetBuyPaymentGateway = 'asset-buy-payment-gateway';
+  static const String assetBuySuccess = 'asset-buy-success';
+
   static const String qrCodeScanner = 'qr-code-scanner';
 
   final BuildContext context;
@@ -288,7 +305,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     ),
                     routes: [
                       GoRoute(
-                        path: 'asset-search-from',
+                        path: 'search',
                         name: assetSendSearch,
                         pageBuilder: pageBuilder(
                           builder: (state) => AssetSendSearchScreen(
@@ -334,7 +351,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     ),
                     routes: [
                       GoRoute(
-                        path: 'asset-search-from',
+                        path: 'search-from',
                         name: assetExchangeSearchFrom,
                         pageBuilder: pageBuilder(
                           builder: (state) => AssetExchangeSearchScreen(
@@ -347,7 +364,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                         ),
                       ),
                       GoRoute(
-                        path: 'asset-search-target',
+                        path: 'search-target',
                         name: assetExchangeSearchTarget,
                         pageBuilder: pageBuilder(
                           builder: (state) => AssetExchangeSearchScreen(
@@ -374,6 +391,64 @@ class AuthenticatedRouter with PageBuilderMixin {
                         pageBuilder: pageBuilder(
                           builder: (state) =>
                               const AssetExchangeSuccessScreen(),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: ':assetId/:networkId/buy',
+                    name: assetBuy,
+                    pageBuilder: pageBuilder(
+                      builder: (state) => AssetBuyScreen(
+                        assetId: state.params['assetId'],
+                        networkId: state.params['networkId'],
+                      ),
+                      settings: const ApplicationSettings.hiddenTabBar(),
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'search',
+                        name: assetBuySearch,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => AssetBuySearchScreen(
+                            assetId: state.params['assetId']!,
+                            networkId: state.params['networkId']!,
+                          ),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'summary',
+                        name: assetBuySummary,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => const AssetBuySummaryScreen(),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'confirmation',
+                        name: assetBuyConfirmation,
+                        pageBuilder: pageBuilder(
+                          builder: (state) =>
+                              const AssetBuyConfirmationScreen(),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'payment-gateway',
+                        name: assetBuyPaymentGateway,
+                        pageBuilder: pageBuilder(
+                          builder: (state) =>
+                              const AssetBuyPaymentGateWayScreen(),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'success',
+                        name: assetBuySuccess,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => const AssetBuySuccessScreen(),
                           settings: const ApplicationSettings.hiddenTabBar(),
                         ),
                       ),

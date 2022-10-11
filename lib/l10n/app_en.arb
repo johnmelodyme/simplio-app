@@ -25,6 +25,7 @@
   "common_done": "Done",
   "common_search":"Search",
   "common_loading_with_dots":"Loading...",
+  "common_go_back":"Go back",
 
   "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
@@ -172,6 +173,28 @@
     "asset_send_success_screen_paying_out":"Paying out",
     "asset_send_success_screen_finished":"Finished",
 
+    "asset_buy_screen_what_you_buy":"What you buy",
+    "asset_buy_screen_buy":"Buy",
+    "asset_buy_screen_choose_payment_method":"Choose payment method",
+    "asset_buy_screen_use_debit_card":"Use debit card",
+    "asset_buy_confirmation_screen_accept_new_price":"Accept new price",
+
+    "asset_buy_summary_screen_what_you_buy":"What you buy",
+    "asset_buy_summary_screen_estimate_buy_price":"Estimate buy price",
+    "asset_buy_summary_screen_payment_method":"Payment method",
+    "asset_buy_summary_screen_fee":"Fee",
+    "asset_buy_summary_screen_in_total_to_buy":"In total to buy",
+    "asset_buy_summary_screen_confirm_buy":"Swipe up to confirm buy",
+    "asset_buy_summary_screen_debit_card":"Debit card",
+    "asset_buy_summary_screen_paypal":"PayPal",
+    "asset_buy_summary_screen_apple_pay":"Apple Pay",
+    "asset_buy_summary_screen_google_pay":"Google Pay",
+
+    "asset_buy_payment_gateway_screen_payment":"Payment",
+    "asset_buy_payment_gateway_screen_gateway_lc":"gateway",
+
+    "asset_buy_confirmation_screen_price_update":"Price update",
+    "asset_buy_confirmation_screen_price_has_changed":"Price has changed due to marget conditions.\nDo you agree with the new price?",
 
     "asset_buy_success_screen_verification":"Verification",
     "asset_buy_success_screen_buying":"Buying",

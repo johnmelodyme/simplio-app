@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
+import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
@@ -96,7 +97,14 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
             onActionCallback: (actionType) {
               switch (actionType) {
                 case ActionType.buy:
-                  // TODO: Handle this case.
+                  context.read<AssetBuyFormCubit>().clear();
+                  GoRouter.of(context).pushNamed(
+                    AuthenticatedRouter.assetBuy,
+                    params: {
+                      'assetId': assetId!,
+                      'networkId': networkId!,
+                    },
+                  );
                   break;
                 case ActionType.exchange:
                   context.read<AssetExchangeFormCubit>().clear();

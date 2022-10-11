@@ -9,7 +9,7 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
-import 'package:simplio_app/view/widgets/bordered_elevated_button.dart';
+import 'package:simplio_app/view/widgets/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/earning_elevated_button.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
 
@@ -64,7 +64,7 @@ class CoinDetailBalance extends StatelessWidget {
               Gaps.gap10,
               if (networkWallet.balance == BigInt.zero)
                 _isInInventory()
-                    ? BorderedElevatedButton(
+                    ? BorderedTextButton(
                         onPressed: () {
                           //TODO.. CTA for network wallet removal and refresh state
                         },

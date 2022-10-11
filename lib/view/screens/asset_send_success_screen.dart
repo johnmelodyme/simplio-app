@@ -31,10 +31,10 @@ class AssetSendSuccessScreen extends StatelessWidget {
           )
         ],
       ),
-      doneAction: () => GoRouter.of(context).pop(),
+      successAction: () => GoRouter.of(context).pop(),
       option: Text(
         context.locale.asset_send_success_screen_transaction_success_option,
-        style: TextStyle(
+        style: SioTextStyles.bodyPrimary.copyWith(
           color: SioColors.softBlack,
         ),
       ),
