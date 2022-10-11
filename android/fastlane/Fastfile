@@ -8,7 +8,7 @@ platform :android do
   lane :apply_new_version do
     flutter_version_manager(
       arguments: "-apply",
-      yml: "../version.yml",
+      yml: "./../version.yml",
       pubspec: "../pubspec.yaml",
       git_repo: "..")
   end

@@ -12,7 +12,7 @@ jobs:
 
   build-ios:
     needs: [run-tests]
-    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@master
+    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@infrastructure/194-release_version_from_tag
     with:
       environment: 'dev'
       testBuild: true

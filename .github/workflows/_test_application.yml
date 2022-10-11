@@ -124,7 +124,7 @@ jobs:
           path: recording.mp4
           retention-days : 3 # days for automatic deletion
 
-#DISABLING ANDROID PART TO AVIOD RERUN FLOWS BECAUSE OF LONG STARTUP OF EMULATOR
+#DISABLING ANDROID PART TO AVOID RERUN FLOWS BECAUSE OF LONG STARTUP OF EMULATOR
 #  drive_android:
 #    runs-on: macos-latest
 #    #creates a build matrix for your jobs

@@ -2,8 +2,8 @@ name: Deploy test version of Simplio app v2 to AppStore and GooglePlay
 
 on:
   push:
-    branches:
-      - 'master'
+    tags:
+      - 'dev*'
 
 jobs:
   run-tests:
@@ -12,19 +12,48 @@ jobs:
       e2e: true
       unitTests: true
 
-#  increase-version:
-#    needs: [run-tests]
-#    uses: SimplioOfficial/simplio-app/.github/workflows/_increase_version.yml@master
-#    secrets:
-#      GIT_TOKEN: '${{ secrets.GIT_TOKEN }}'
+  set-version:
+    needs: [run-tests]
+    runs-on: ubuntu-latest
+    outputs:
+      major: ${{ steps.output-data.outputs.major }}
+      minor: ${{ steps.output-data.outputs.minor }}
+      patch: ${{ steps.output-data.outputs.patch }}
+    steps:
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Get version from tag
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}
+          prefix='dev'
+          tag_version=${RELEASE_VERSION#$prefix};
+          IFS='.'
+          read -ra parsed_versions <<< "$tag_version"
+          echo "RELEASE_VERSIONS=$parsed_versions" >> $GITHUB_ENV
+          MAJOR=${parsed_versions[0]}
+          MINOR=${parsed_versions[1]}
+          PATCH=${parsed_versions[2]}
+          echo "MAJOR=${parsed_versions[0]}" >> $GITHUB_ENV
+          echo "MINOR=${parsed_versions[1]}" >> $GITHUB_ENV
+          echo "PATCH=${parsed_versions[2]}" >> $GITHUB_ENV
+          echo "::set-output name=major::$MAJOR"
+          echo "::set-output name=minor::$MINOR"
+          echo "::set-output name=patch::$PATCH"
+          echo $MAJOR $MINOR $PATCH
+        id: output-data
 
 
   build-ios:
-    needs: [run-tests]
-    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@task/236-colors-refactoring
+    needs: [set-version]
+    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@infrastructure/194-release_version_from_tag
     with:
       environment: 'dev'
       testBuild: false
+      major: ${{ needs.set-version.outputs.major }}
+      minor: ${{needs.set-version.outputs.minor}}
+      patch: ${{needs.set-version.outputs.patch}}
     secrets:
       APP_STORE_CONNECT_TEAM_ID: '${{ secrets.APP_STORE_CONNECT_TEAM_ID }}'
       DEVELOPER_APP_ID: '${{ secrets.DEVELOPER_APP_ID }}'
@@ -42,8 +71,8 @@ jobs:
       DART_DEFINE_API_URL_PROD: ${{ secrets.DART_DEFINE_API_URL_PROD }}
 
   build-android:
-    needs: [run-tests]
-    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_android.yml@task/236-colors-refactoring
+    needs: [set-version]
+    uses: SimplioOfficial/simplio-app/.github/workflows/_publish_android.yml@infrastructure/194-release_version_from_tag
     secrets:
       ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
       DART_DEFINE_API_KEY_DEV: ${{ secrets.DART_DEFINE_API_KEY_DEV }}
@@ -53,3 +82,6 @@ jobs:
     with:
       environment: 'dev'
       testBuild: false
+      major: ${{ needs.set-version.outputs.major }}
+      minor: ${{needs.set-version.outputs.minor}}
+      patch: ${{needs.set-version.outputs.patch}}

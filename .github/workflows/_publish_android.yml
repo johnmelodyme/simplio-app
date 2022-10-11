@@ -63,7 +63,7 @@ jobs:
           name: generated-files-and-packages
 
       - name: Write version to the version.yml
-        if: ${{ inputs.environment == 'production' }}
+        if: ${{ inputs.testBuild == false }}
         run: |
           echo "---" > ./version.yml
           echo "major: ${{ inputs.major }}" >> ./version.yml
@@ -72,7 +72,7 @@ jobs:
           tail ./version.yml
 
       - name: Set version
-        if: ${{ inputs.environment == 'production' }}
+        if: ${{ inputs.testBuild == false }}
         uses: maierj/fastlane-action@v2.2.0
         with:
           lane: apply_new_version

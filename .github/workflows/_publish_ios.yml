@@ -67,8 +67,12 @@ jobs:
         with:
           name: generated-files-and-packages
 
+      - name: Echo application list for selecting xcode version
+        run: |
+          ls -la /Applications/
+
       - name: Write version to the version.yml
-        if: ${{ inputs.environment == 'production' }}
+        if: ${{ inputs.testBuild == false }}
         run: |
           echo "---" > ./version.yml
           echo "major: ${{ inputs.major }}" >> ./version.yml
@@ -77,7 +81,7 @@ jobs:
           tail ./version.yml
 
       - name: Set version
-        if: ${{ inputs.environment == 'production' }}
+        if: ${{ inputs.testBuild == false }}
         uses: maierj/fastlane-action@v2.2.0
         with:
           lane: apply_new_version
@@ -93,7 +97,7 @@ jobs:
 
       - name: Run Fastlane
         if: ${{ inputs.testBuild == true }}
-        uses: maierj/fastlane-action@v2.2.0
+        uses: maierj/fastlane-action@v2.2.1
         with:
           lane: build
           subdirectory: ios
@@ -111,9 +115,12 @@ jobs:
           TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
           GIT_BRANCH: '${{ github.event.head_commit.message }}'
 
+      - name: Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_14.1.app/Contents/Developer'
+
       - name: Run Fastlane
         if: ${{ inputs.testBuild == false }}
-        uses: maierj/fastlane-action@v2.2.0
+        uses: maierj/fastlane-action@v2.2.1
         with:
           lane: build_and_deploy
           subdirectory: ios

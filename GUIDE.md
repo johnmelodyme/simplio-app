@@ -3,6 +3,12 @@
 * Use autoformatting tools. See `pre-commit` file in `.github` folder and copy it into your 
 `.git/hooks` folder.
 
+## Releasing new version
+For new development version deployed in app stores
+developer needs to create new tag with preposition
+`dev` (e.g. `dev0.0.5`). Similarly for production version
+use tag with preposition `v` (e.g. `v1.0.1`).
+
 ### Generating code
 
 ```bash
