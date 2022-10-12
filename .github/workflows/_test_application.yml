@@ -4,6 +4,11 @@ env:
 
 on:
   workflow_call:
+    secrets:
+      DART_DEFINE_API_KEY_DEV:
+        required: true
+      DART_DEFINE_API_URL_DEV:
+        required: true
     inputs:
       e2e:
         description: 'Boolean value which trigger running e2e tests'
@@ -18,7 +23,7 @@ on:
 
 jobs:
   generate-code:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     name: Generate code
     steps:
       - uses: actions/checkout@v3
@@ -66,7 +71,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: generated-files-and-packages
-      - run: flutter test
+      - run: flutter test tests/unit_tests/ --reporter expanded
 
   run-e2e-tests:
     if: ${{ inputs.e2e }}
@@ -85,7 +90,7 @@ jobs:
     strategy:
       matrix:
         device:
-          - "iPhone 13 Pro Simulator"
+           - "iPhone 13 Pro Simulator"
 #          - "iPhone 11 Pro Max Simulator"
 #          - "iPhone 12 Pro Simulator"
       fail-fast: false
@@ -94,11 +99,12 @@ jobs:
     steps:
       - name: List all simulators
         run: xcrun xctrace list devices
-      # get UUID  simulator and boot a simulator on mac from  command line
+      # get UUID simulator and boot a simulator on mac from  command line
       - name: Start Simulator
         run: |
           UDID=$(xcrun xctrace list devices | awk '!/Watch/ && /${{ matrix.device }}/{gsub( /\(|\)/ , "" );print $NF}')
           xcrun simctl boot ${UDID}
+          echo running on branch ${GITHUB_REF##*/}
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
@@ -107,21 +113,38 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: generated-files-and-packages
-      - name: Run Flutter Driver tests - screen recording test
+      - name: Start recording video
         run: |
           xcrun simctl io booted recordVideo --codec=h264 recording.mp4 &
-          sleep 3
-          export RECORDING_PID=${!}
-          flutter test integration_test --reporter expanded --dart-define=TEST_RUN=true
-          sleep 3
-          kill -SIGINT $RECORDING_PID
           sleep 5
+          export RECORDING_PID=${!}
+          echo "RECORDING_PID=${RECORDING_PID}" >> $GITHUB_ENV
+      - name: Run Application UI Tests on iOS
+        run: |
+          export API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }}
+          export API_KEY=${{ secrets.DART_DEFINE_API_KEY_DEV }}
+          flutter pub get
+          dart tests/app_tests/test_config_ios.dart
       # Upload Recordings As Artifact
-      - name: upload recordedVideo
+      - name: Stop recording
+        if: success() || failure()
+        run: |
+          echo ${{env.RECORDING_PID}}
+          kill -SIGINT ${RECORDING_PID}
+          sleep 10
+      - name: Upload recordedVideo
+        if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: recorded_video_${{ matrix.device }}
           path: recording.mp4
+          retention-days : 3 # days for automatic deletion
+      - name: Upload Cucmber json report
+        if: failure() || success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Cucumber_report_${{ matrix.device }}
+          path: tests/app_tests/cucumber-report-ios.json
           retention-days : 3 # days for automatic deletion
 
 #DISABLING ANDROID PART TO AVOID RERUN FLOWS BECAUSE OF LONG STARTUP OF EMULATOR
@@ -131,8 +154,9 @@ jobs:
 #    strategy:
 #      #set of different configurations of the virtual environment.
 #      matrix:
-#        api-level: [ 32, 33 ]
+#        api-level: [ 33 ]
 #        target: [ google_apis ]
+#      fail-fast: false
 #    needs: run-e2e-tests
 #    steps:
 #      - uses: actions/checkout@v3
@@ -147,14 +171,23 @@ jobs:
 #      - uses: actions/download-artifact@v3
 #        with:
 #          name: generated-files-and-packages
-#      - name: Run Flutter Driver Android tests
+#      - run: |
+#           flutter pub get
+#      - name: Run Application UI Tests on Android
 #        uses: reactivecircus/android-emulator-runner@v2
 #        with:
 #          api-level: ${{ matrix.api-level }}
-#          disk-size: 4096M
-#          heap-size: 1024M
-#          sdcard-path-or-size: 1000M
+#          disk-size: 8192M
+#          heap-size: 2048M
+#          sdcard-path-or-size: 4096M
 #          target: ${{ matrix.target }}
 #          arch: x86_64
 #          profile: Nexus 6
-#          script: flutter test integration_test --reporter expanded --flavor dev --dart-define=TEST_RUN=true
+#          script:  dart tests/app_tests/test_config_android.dart
+#      - name: Upload Cucmber json report
+#        if: failure() || success()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: Cucumber_report_${{ matrix.api-level }}
+#          path: tests/app_tests/cucumber-report-android.json
+#          retention-days : 3 # days for automatic deletion

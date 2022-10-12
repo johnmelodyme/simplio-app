@@ -32,7 +32,7 @@ class ThemedTextFormField extends StatelessWidget {
     return Focus(
       onFocusChange: onFocusChange,
       child: TextFormField(
-        key: key,
+        key: const Key('themed-text-form-field'),
         controller: controller,
         autofocus: autofocus,
         validator: validator,

@@ -9,7 +9,10 @@ on:
 
 jobs:
   run-tests:
-    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@master
+    uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@test/192_tests_preparation
     with:
       e2e: false
       unitTests: true
+    secrets:
+      DART_DEFINE_API_KEY_DEV: ${{ secrets.DART_DEFINE_API_KEY_DEV }}
+      DART_DEFINE_API_URL_DEV: ${{ secrets.DART_DEFINE_API_URL_DEV }}
