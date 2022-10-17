@@ -20,7 +20,7 @@ class PasswordRulesRow extends StatelessWidget {
                 child: Icon(
                   passed ? Icons.check_outlined : Icons.clear_outlined,
                   size: 24,
-                  color: passed ? SioColors.highlight2 : SioColors.attention,
+                  color: passed ? SioColors.vividBlue : SioColors.attention,
                 ),
               ),
             ),

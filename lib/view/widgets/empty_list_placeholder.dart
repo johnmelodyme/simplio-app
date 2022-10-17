@@ -33,7 +33,7 @@ class EmptyListPlaceholder extends StatelessWidget {
                       Radius.circular(RadiusSize.radius186)),
                   boxShadow: [
                     BoxShadow(
-                      color: SioColors.highlight2.withOpacity(0.1),
+                      color: SioColors.vividBlue.withOpacity(0.1),
                       spreadRadius: RadiusSize.radius186 / 2,
                       blurRadius: RadiusSize.radius186,
                       offset: const Offset(0, 0),

@@ -45,7 +45,7 @@ class QrAddressField extends StatelessWidget {
               icon: Icon(
                 Icons.copy,
                 color: address?.isNotEmpty == true
-                    ? SioColors.highlight2
+                    ? SioColors.vividBlue
                     : SioColors.secondary6,
               ),
             )

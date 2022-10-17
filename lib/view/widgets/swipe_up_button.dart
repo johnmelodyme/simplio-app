@@ -84,7 +84,7 @@ class _SwipeUpButton extends State<SwipeUpButton>
                 begin: Alignment.centerRight,
                 end: Alignment.topLeft,
                 colors: [
-                  SioColors.highlight2,
+                  SioColors.vividBlue,
                   SioColors.mentolGreen,
                 ],
               ),

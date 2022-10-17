@@ -46,7 +46,7 @@ class SmallButton extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               SioColors.highlight1,
-              SioColors.highlight2,
+              SioColors.vividBlue,
             ],
           ),
           borderRadius: BorderRadii.radius30,

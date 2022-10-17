@@ -100,7 +100,7 @@ class CoinDetailBalance extends StatelessWidget {
               color: SioColors.softBlack,
               boxShadow: [
                 BoxShadow(
-                  color: SioColors.highlight2.withOpacity(0.1),
+                  color: SioColors.vividBlue.withOpacity(0.1),
                   spreadRadius: RadiusSize.radius140 / 2,
                   blurRadius: RadiusSize.radius140,
                   offset: const Offset(0, 4),

@@ -49,8 +49,6 @@ abstract class SioColors {
 
   static Color get highlight1 =>
       isDarkMode() ? SioColorsDark.highlight1 : SioColorsLight.highlight1;
-  static Color get highlight2 =>
-      isDarkMode() ? SioColorsDark.highlight2 : SioColorsLight.highlight2;
 
   static Color get highlight =>
       isDarkMode() ? SioColorsDark.highlight : SioColorsLight.highlight;

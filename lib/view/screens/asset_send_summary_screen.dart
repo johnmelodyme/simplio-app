@@ -287,7 +287,7 @@ class _Priority extends StatelessWidget {
                     end: Alignment.bottomRight,
                     colors: [
                       SioColors.highlight1,
-                      SioColors.highlight2,
+                      SioColors.vividBlue,
                     ],
                   ),
                   text: Text(
@@ -304,7 +304,7 @@ class _Priority extends StatelessWidget {
                     end: Alignment.bottomRight,
                     colors: [
                       SioColors.highlight1,
-                      SioColors.highlight2,
+                      SioColors.vividBlue,
                     ],
                   ),
                   text: Text(
@@ -313,7 +313,7 @@ class _Priority extends StatelessWidget {
                   ),
                   icon: const Icon(Icons
                       .access_time_sharp), // todo: replace with correct icon
-                  defaultIconColor: SioColors.highlight2,
+                  defaultIconColor: SioColors.vividBlue,
                 ),
                 SwitchWidget(
                   gradient: LinearGradient(

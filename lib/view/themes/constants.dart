@@ -177,6 +177,7 @@ class RadiusSize {
   static const double radius30 = 30;
   static const double radius50 = 50;
   static const double radius64 = 64;
+  static const double radius120 = 120;
   static const double radius140 = 140;
   static const double radius186 = 186;
 }

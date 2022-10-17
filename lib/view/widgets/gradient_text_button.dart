@@ -33,7 +33,7 @@ class GradientTextButton extends StatelessWidget {
                       end: Alignment.bottomRight,
                       colors: [
                         SioColors.highlight1,
-                        SioColors.highlight2,
+                        SioColors.vividBlue,
                       ],
                     ),
                     borderRadius: BorderRadii.radius30,

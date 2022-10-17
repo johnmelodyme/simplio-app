@@ -441,7 +441,7 @@ class _AddressField extends StatelessWidget {
                             IconButton(
                               icon: Icon(
                                 Icons.copy_outlined,
-                                color: SioColors.highlight2,
+                                color: SioColors.vividBlue,
                                 size: 24,
                               ),
                               onPressed: () async {
@@ -456,7 +456,7 @@ class _AddressField extends StatelessWidget {
                             IconButton(
                               icon: Icon(
                                 Icons.qr_code_scanner,
-                                color: SioColors.highlight2,
+                                color: SioColors.vividBlue,
                                 size: 24,
                               ),
                               onPressed: qrCodeIconPressed,
@@ -469,7 +469,7 @@ class _AddressField extends StatelessWidget {
                         child: IconButton(
                           icon: Icon(
                             Icons.clear_outlined,
-                            color: SioColors.highlight2,
+                            color: SioColors.vividBlue,
                             size: 24,
                           ),
                           onPressed: () {

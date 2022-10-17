@@ -40,7 +40,7 @@ class SuccessPage extends StatelessWidget {
             end: Alignment.centerLeft,
             colors: [
               SioColors.highlight1,
-              SioColors.highlight2,
+              SioColors.vividBlue,
             ],
             stops: const [0, 1],
           ),

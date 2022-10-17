@@ -13,6 +13,7 @@ const Map<String, String> assetNames = {
   'osmo': 'assets/svg_icons/osmo.svg',
   'polygon_matic': 'assets/svg_icons/polygon-matic.svg',
   'sol': 'assets/svg_icons/solana-sol.svg',
+  'sio': 'assets/svg_icons/simplio.svg',
   'zcash_zec': 'assets/svg_icons/zcash-zec.svg',
   'zel_flux': 'assets/svg_icons/zel-flux.svg',
 };
@@ -52,6 +53,9 @@ class CryptoIcon {
 
   static Widget get sol =>
       SvgPicture.asset(assetNames['sol']!, package: 'crypto_assets');
+
+  static Widget get sio =>
+      SvgPicture.asset(assetNames['sio']!, package: 'crypto_assets');
 
   static Widget get zcashZec =>
       SvgPicture.asset(assetNames['zcash_zec']!, package: 'crypto_assets');

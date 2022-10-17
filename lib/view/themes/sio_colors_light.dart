@@ -22,7 +22,6 @@ abstract class SioColorsLight {
   static const confirm = Color(0xFF3AF859);
 
   static const highlight1 = Color(0xFF4EFCCA);
-  static const highlight2 = Color(0xFF20AFFF);
 
   static const highlight = Color(0xFFDEEB4B);
   static const mentolGreen = Color(0xFF37FFC6);
