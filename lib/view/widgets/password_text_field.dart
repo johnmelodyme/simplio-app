@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/decorations/underlined_text_form_field_decoration.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class PasswordTextField extends StatefulWidget {
@@ -32,11 +35,13 @@ class PasswordTextField extends StatefulWidget {
 class _PasswordTextFieldState extends State<PasswordTextField> {
   bool _isDisplayed = true;
   bool isComplexitySatisfied = false;
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       key: const Key('password-text-field'),
+      controller: controller,
       obscureText: _isDisplayed,
       autofocus: widget.autofocus,
       validator: widget.validator,
@@ -49,26 +54,25 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       },
       style: TextStyle(
         color:
-            isComplexitySatisfied ? SioColors.attention : SioColors.whiteBlue,
+            isComplexitySatisfied ? SioColors.whiteBlue : SioColors.attention,
       ),
       obscuringCharacter: '⦁',
-      // obscuringCharacter: '●',
-      // obscuringCharacter: '﹡',
-      // obscuringCharacter: '⁕',
-      decoration: InputDecoration(
+      cursorColor: SioColorsDark.whiteBlue,
+      decoration: UnderLinedTextFormFieldDecoration(
+        errorStyle: const TextStyle(height: 0),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         labelText:
             widget.labelText ?? context.locale.common_password_input_label,
         hintText:
             widget.labelText ?? context.locale.common_password_input_label,
-        fillColor: SioColors.whiteBlue,
-        labelStyle: TextStyle(color: SioColors.whiteBlue),
-        iconColor: SioColors.black,
-        hintStyle: TextStyle(fontSize: 16.0, color: SioColors.black),
-        border: InputBorder.none,
+        iconColor: SioColorsDark.black,
         suffixIcon: IconButton(
+            padding: Paddings.top20,
             icon: Icon(
               _isDisplayed ? widget.displayedIcon : widget.icon,
-              color: SioColors.whiteBlue,
+              color: controller.text.isNotEmpty
+                  ? SioColorsDark.whiteBlue
+                  : SioColorsDark.secondary5,
             ),
             onPressed: () {
               setState(() {

@@ -80,7 +80,7 @@ class WelcomeScreen extends StatelessWidget {
                       GoRouter.of(context)
                           .pushNamed(UnauthenticatedRouter.signIn);
                     },
-                    label: context.locale.common_sign_in_button_label,
+                    label: context.locale.common_log_in_button_label,
                   ),
                 ),
               ],

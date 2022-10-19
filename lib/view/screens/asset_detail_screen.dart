@@ -11,7 +11,7 @@ import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.da
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/back_gradient4.dart';
 import 'package:simplio_app/view/widgets/coin_detail_balance.dart';
 import 'package:simplio_app/view/widgets/coin_details_menu.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
@@ -50,17 +50,7 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
 
     return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.center,
-              colors: [
-                SioColors.backGradient4Start,
-                SioColors.softBlack,
-              ],
-            ),
-          ),
+        BackGradient4(
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [

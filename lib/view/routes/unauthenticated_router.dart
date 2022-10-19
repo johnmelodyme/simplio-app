@@ -34,7 +34,7 @@ class UnauthenticatedRouter {
               create: (context) => SignInFormCubit.builder(
                 authRepository: RepositoryProvider.of<AuthRepository>(context),
               ),
-              child: const SignInScreen(),
+              child: SignInScreen(),
             ),
           ),
           GoRoute(
