@@ -33,6 +33,7 @@ class CoinDetailsMenuButton extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
+                    size: 20,
                     color: SioColors.mentolGreen,
                   ),
                   Text(

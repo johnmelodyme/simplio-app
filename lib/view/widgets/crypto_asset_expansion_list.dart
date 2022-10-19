@@ -5,6 +5,7 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class CryptoAssetExpansionList extends StatelessWidget {
   final List<CryptoAssetData> children;
@@ -54,7 +55,10 @@ class CryptoAssetExpansionList extends StatelessWidget {
                         SioTextStyles.bodyS.apply(color: SioColors.secondary7),
                   ),
                   trailing: IconButton(
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(
+                      SioIcons.plus,
+                      size: 20,
+                    ),
                     color: SioColors.whiteBlue,
                     onPressed: () => onTap(n),
                   ),

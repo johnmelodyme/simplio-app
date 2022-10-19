@@ -9,7 +9,7 @@ class AssetDetails {
     name: 'Simplio',
     ticker: 'SIO',
     style: AssetStyle(
-      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      icon: CryptoIcon.sio,
       primaryColor: Colors.blue,
       foregroundColor: Colors.white,
     ),
@@ -39,7 +39,7 @@ class AssetDetails {
     name: 'USD Coin',
     ticker: 'USDC',
     style: AssetStyle(
-      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      icon: CryptoIcon.usdc,
       primaryColor: const Color(0xff2775ca),
       foregroundColor: Colors.white,
     ),
@@ -49,7 +49,7 @@ class AssetDetails {
     name: 'Tether',
     ticker: 'USDT',
     style: AssetStyle(
-      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      icon: CryptoIcon.tetherUsdt,
       primaryColor: const Color(0xff26a17b),
       foregroundColor: Colors.white,
     ),
@@ -59,7 +59,7 @@ class AssetDetails {
     name: 'BNB',
     ticker: 'BNB',
     style: AssetStyle(
-      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      icon: CryptoIcon.bnb,
       primaryColor: const Color(0xfff0b909),
       foregroundColor: Colors.white,
     ),
@@ -69,7 +69,7 @@ class AssetDetails {
     name: 'BNB Smart Chain',
     ticker: 'BSC',
     style: AssetStyle(
-      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      icon: CryptoIcon.bsc,
       primaryColor: const Color(0xfff0b909),
       foregroundColor: Colors.white,
     ),
@@ -89,7 +89,7 @@ class AssetDetails {
     name: 'Chainlink',
     ticker: 'CHAIN',
     style: AssetStyle(
-      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      icon: CryptoIcon.chain,
       primaryColor: Colors.black12,
       foregroundColor: Colors.white,
     ),
@@ -119,7 +119,7 @@ class AssetDetails {
     name: 'Dogecoin',
     ticker: 'DOGE',
     style: AssetStyle(
-      icon: CryptoIcon.cosmosAtom, //TODO.. missing icon
+      icon: CryptoIcon.doge,
       primaryColor: const Color(0xffffe4a4),
       foregroundColor: Colors.white,
     ),
@@ -159,7 +159,7 @@ class AssetDetails {
     name: 'Binance USD',
     ticker: 'BUSD',
     style: AssetStyle(
-      icon: CryptoIcon.bch, //TODO.. missing icon
+      icon: CryptoIcon.busd,
       primaryColor: const Color(0xfff3ba2f),
       foregroundColor: Colors.white,
     ),

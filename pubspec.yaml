@@ -39,6 +39,8 @@ dependencies:
   mobile_scanner: ^2.0.0
   crypto_assets:
     path: packages/crypto_assets
+  sio_glyphs:
+    path: packages/sio_glyphs
   gap: ^2.0.0
   url_launcher: ^6.1.5
   wallet_connect: ^1.0.2

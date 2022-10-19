@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
@@ -21,7 +22,7 @@ import 'package:simplio_app/view/widgets/highlighted_num_form_filed.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/sio_dropdown.dart';
 import 'package:simplio_app/view/widgets/toggle.dart';
-import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class AssetBuyScreen extends StatefulWidget {
@@ -219,11 +220,11 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
                             placeholder: Row(
                               children: [
                                 Icon(
-                                  Icons.credit_card,
+                                  SioIcons.credit_card,
                                   size: 35,
                                   color: SioColors.secondary7,
                                 ),
-                                Gaps.gap10,
+                                Gaps.gap12,
                                 Text(
                                   context
                                       .locale.asset_buy_screen_use_debit_card,

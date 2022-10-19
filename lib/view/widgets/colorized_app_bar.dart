@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class ColorizedAppBar extends StatelessWidget {
   const ColorizedAppBar({
@@ -33,13 +34,14 @@ class ColorizedAppBar extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: IconButton(
                 onPressed: () {
+                  Navigator.of(context).pop();
                   onBackTap?.call();
                 },
                 padding: const EdgeInsets.all(Dimensions.padding16),
                 color: SioColors.secondary6,
                 icon: actionType == ActionType.back
-                    ? const Icon(Icons.arrow_back_ios)
-                    : const Icon(Icons.close),
+                    ? const Icon(SioIcons.arrow_left, size: 20)
+                    : const Icon(SioIcons.cancel, size: 20),
               ),
             ),
             Positioned.fill(
@@ -75,7 +77,7 @@ class ColorizedAppBar extends StatelessWidget {
                   },
                   padding: const EdgeInsets.all(Dimensions.padding16),
                   color: SioColors.secondary6,
-                  icon: const Icon(Icons.share),
+                  icon: const Icon(SioIcons.share),
                 ),
               ),
           ],

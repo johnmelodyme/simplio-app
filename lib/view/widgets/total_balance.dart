@@ -5,6 +5,7 @@ import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class TotalBalance extends StatefulWidget {
   const TotalBalance({
@@ -108,8 +109,7 @@ class _TotalBalanceState extends State<TotalBalance> {
                           color: SioColors.mentolGreen,
                         ),
                         iconEnabledColor: SioColors.mentolGreen,
-                        icon: const SizedBox
-                            .shrink(), // const Icon(Icons.expand_more),
+                        icon: const SizedBox.shrink(),
                         selectedItemBuilder: (context) {
                           return PeriodType.values
                               .map<Widget>((PeriodType periodType) {
@@ -122,8 +122,12 @@ class _TotalBalanceState extends State<TotalBalance> {
                                       style: SioTextStyles.bodyPrimary.apply(
                                         color: SioColors.whiteBlue,
                                       )),
-                                  Icon(Icons.expand_more,
-                                      color: SioColors.whiteBlue)
+                                  Gaps.gap2,
+                                  Icon(
+                                    SioIcons.arrow_bottom,
+                                    color: SioColors.whiteBlue,
+                                    size: 12,
+                                  )
                                 ],
                               ),
                             );
@@ -158,8 +162,12 @@ class _TotalBalanceState extends State<TotalBalance> {
                                   style: SioTextStyles.bodyPrimary.apply(
                                     color: SioColors.mentolGreen,
                                   )),
-                              Icon(Icons.expand_more,
-                                  color: SioColors.mentolGreen)
+                              Gaps.gap2,
+                              Icon(
+                                SioIcons.arrow_bottom,
+                                color: SioColors.mentolGreen,
+                                size: 12,
+                              )
                             ],
                           ),
                         ),

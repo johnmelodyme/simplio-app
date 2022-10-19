@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class PasswordTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
@@ -18,7 +19,7 @@ class PasswordTextField extends StatefulWidget {
     this.onChanged,
     this.autofocus = false,
     this.labelText,
-    this.displayedIcon = Icons.visibility_outlined,
+    this.displayedIcon = SioIcons.eye,
     this.icon = Icons.visibility_off_outlined,
     this.onTap,
     this.validator,

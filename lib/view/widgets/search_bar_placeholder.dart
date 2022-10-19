@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class SearchBarPlaceholder extends StatelessWidget {
   final String label;
@@ -44,7 +45,7 @@ class SearchBarPlaceholder extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Icon(
-                      Icons.search,
+                      SioIcons.search,
                       size: 20.0,
                       color: SioColors.secondary6,
                     ),
@@ -79,7 +80,7 @@ class SearchBarPlaceholder extends StatelessWidget {
                 },
                 icon: Center(
                   child: Icon(
-                    Icons.tune,
+                    SioIcons.tune,
                     color: SioColors.secondary6,
                   ),
                 )),

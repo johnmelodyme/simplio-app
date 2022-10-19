@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({
@@ -63,7 +63,7 @@ class _SearchBarState extends State<SearchBar> {
         prefix: Padding(
           padding: Paddings.left16,
           child: Icon(
-            Icons.search,
+            SioIcons.search,
             size: 20.0,
             color: SioColors.secondary6,
           ),

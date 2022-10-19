@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class QrAddressField extends StatelessWidget {
   const QrAddressField({
@@ -43,7 +44,7 @@ class QrAddressField extends StatelessWidget {
                 }
               },
               icon: Icon(
-                Icons.copy,
+                SioIcons.copy,
                 color: address?.isNotEmpty == true
                     ? SioColors.vividBlue
                     : SioColors.secondary6,

@@ -19,7 +19,7 @@ class PasswordResetFormState extends Equatable {
   }) {
     return PasswordResetFormState(
       ValidatedEmail(value: email ?? this.email.toString()),
-      response ?? this.response,
+      response,
     );
   }
 }
@@ -36,10 +36,12 @@ class PasswordResetFormPending extends PasswordResetFormResponse {
 }
 
 class PasswordResetFormSuccess extends PasswordResetFormResponse {
-  const PasswordResetFormSuccess();
+  const PasswordResetFormSuccess(this.resend);
+
+  final bool resend;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [resend];
 }
 
 class PasswordResetFormFailure extends PasswordResetFormResponse {

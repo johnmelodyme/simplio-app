@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/helpers/custom_painters.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class SuccessCheckIcon extends StatelessWidget {
   final double _innerRadius = 45;
@@ -28,8 +29,8 @@ class SuccessCheckIcon extends StatelessWidget {
         ),
       ),
       Icon(
-        Icons.check,
-        size: 24,
+        SioIcons.done,
+        size: 20,
         color: SioColors.whiteBlue,
       ),
       CustomPaint(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/highlighted_form_element.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class SioDropdown extends StatefulWidget {
   final HighlightController highlightController;
@@ -229,13 +230,13 @@ class _SioDropdown extends State<SioDropdown> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 20,
+                  SioIcons.arrow_bottom,
+                  size: 16,
                   color: SioColors.mentolGreen,
                 ),
               ),
             ),
-            Gaps.gap10,
+            Gaps.gap14,
           ]),
         ]),
       ),

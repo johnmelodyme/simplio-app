@@ -13,6 +13,7 @@ import 'package:simplio_app/view/widgets/asset_form_gradient_label.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
 import 'package:simplio_app/view/widgets/swipe_up_button.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class AssetExchangeSummaryScreen extends StatelessWidget with WalletUtilsMixin {
   const AssetExchangeSummaryScreen({super.key});
@@ -147,14 +148,14 @@ class _Fee extends StatelessWidget {
                           children: [
                             isExpanded
                                 ? Icon(
-                                    Icons.keyboard_arrow_up,
+                                    SioIcons.arrow_top,
                                     color: SioColors.mentolGreen,
-                                    size: 24,
+                                    size: 16,
                                   )
                                 : Icon(
-                                    Icons.keyboard_arrow_down,
+                                    SioIcons.arrow_bottom,
                                     color: SioColors.mentolGreen,
-                                    size: 24,
+                                    size: 16,
                                   ),
                             Gaps.gap10,
                             Text(

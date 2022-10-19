@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class PasswordRulesRow extends StatelessWidget {
   final String text;
@@ -18,8 +19,8 @@ class PasswordRulesRow extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Icon(
-                  passed ? Icons.check_outlined : Icons.clear_outlined,
-                  size: 24,
+                  passed ? SioIcons.done : SioIcons.cancel,
+                  size: 20,
                   color: passed ? SioColors.vividBlue : SioColors.attention,
                 ),
               ),

@@ -7,6 +7,7 @@ import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class TransactionItem extends StatelessWidget {
   TransactionItem({
@@ -17,11 +18,11 @@ class TransactionItem extends StatelessWidget {
   final Transaction transaction;
 
   final Map<TransactionType, IconData> transactionIcons = {
-    TransactionType.send: Icons.east,
-    TransactionType.receive: Icons.west,
-    TransactionType.swap: Icons.swap_horiz,
-    TransactionType.purchase: Icons.arrow_downward,
-    TransactionType.earning: Icons.north_east,
+    TransactionType.send: SioIcons.east,
+    TransactionType.receive: SioIcons.west,
+    TransactionType.swap: SioIcons.swap,
+    TransactionType.purchase: SioIcons.south,
+    TransactionType.earning: SioIcons.north_east,
   };
 
   Color getColorByTransactionType(
@@ -32,7 +33,7 @@ class TransactionItem extends StatelessWidget {
       case TransactionType.receive:
         return SioColors.nft;
       case TransactionType.swap:
-        return SioColors.confirm;
+        return SioColors.mentolGreen;
       case TransactionType.purchase:
         return SioColors.games;
       case TransactionType.earning:
@@ -58,6 +59,7 @@ class TransactionItem extends StatelessWidget {
         children: [
           Icon(
             transactionIcons[transaction.transactionType],
+            size: 16,
             color:
                 getColorByTransactionType(context, transaction.transactionType),
           ),

@@ -4,6 +4,7 @@ import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class AssetFormException<B extends StateStreamable<S>,
     S extends AssetFormExceptions> extends StatelessWidget {
@@ -33,7 +34,7 @@ class AssetFormException<B extends StateStreamable<S>,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Icon(
-                          Icons.info_outline,
+                          SioIcons.info_outline,
                           color: SioColors.highlight,
                           size: Dimensions.padding16,
                         ),
@@ -69,7 +70,7 @@ class AssetFormException<B extends StateStreamable<S>,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Icon(
-                          Icons.info_outline,
+                          SioIcons.info_outline,
                           color: SioColors.attention,
                           size: Dimensions.padding16,
                         ),

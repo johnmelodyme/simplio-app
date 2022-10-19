@@ -11,6 +11,7 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class ConfigurationScreen extends StatelessWidget {
   const ConfigurationScreen({super.key});
@@ -26,7 +27,7 @@ class ConfigurationScreen extends StatelessWidget {
             child: ColorizedAppBar(
               firstPart: context.locale.configuration_screen_settings_title,
               secondPart: '',
-              actionType: ActionType.back,
+              actionType: ActionType.close,
               onBackTap: () => Navigator.pop(context),
             ),
           ),
@@ -50,7 +51,7 @@ class ConfigurationScreen extends StatelessWidget {
                                 .read<WalletConnectCubit>()
                                 .closeSession(e.key);
                           },
-                          child: const Icon(Icons.link_off),
+                          child: const Icon(SioIcons.link_broken),
                         ),
                       ),
                     )

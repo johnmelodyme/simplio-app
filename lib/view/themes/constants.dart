@@ -133,16 +133,19 @@ class Gaps {
   static Gap gap2 = const Gap(Dimensions.padding2);
   static Gap gap4 = const Gap(Dimensions.padding4);
   static Gap gap5 = const Gap(Dimensions.padding5);
+  static Gap gap6 = const Gap(Dimensions.padding6);
   static Gap gap7 = const Gap(Dimensions.padding7);
   static Gap gap8 = const Gap(Dimensions.padding8);
   static Gap gap10 = const Gap(Dimensions.padding10);
   static Gap gap12 = const Gap(Dimensions.padding12);
+  static Gap gap14 = const Gap(Dimensions.padding14);
   static Gap gap16 = const Gap(Dimensions.padding16);
   static Gap gap17 = const Gap(Dimensions.padding17);
   static Gap gap20 = const Gap(Dimensions.padding20);
   static Gap gap30 = const Gap(Dimensions.padding30);
   static Gap gap32 = const Gap(Dimensions.padding32);
   static Gap gap35 = const Gap(Dimensions.padding35);
+  static Gap gap40 = const Gap(Dimensions.padding35);
   static Gap gap48 = const Gap(Dimensions.padding48);
   static Gap gap60 = const Gap(Dimensions.padding60);
 }
@@ -151,6 +154,7 @@ class Dimensions {
   static const double padding2 = 2;
   static const double padding4 = 4;
   static const double padding5 = 5;
+  static const double padding6 = 6;
   static const double padding7 = 7;
   static const double padding8 = 8;
   static const double padding10 = 10;
@@ -162,6 +166,7 @@ class Dimensions {
   static const double padding30 = 30;
   static const double padding32 = 32;
   static const double padding35 = 35;
+  static const double padding40 = 40;
   static const double padding48 = 48;
   static const double padding60 = 60;
   static const double padding64 = 64;

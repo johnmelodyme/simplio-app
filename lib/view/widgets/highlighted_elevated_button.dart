@@ -30,8 +30,10 @@ class HighlightedElevatedButton extends StatelessWidget {
         height: Constants.buttonHeight,
         decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
-            SioColors.highlight1,
-            SioColors.vividBlue,
+            onPressed != null
+                ? SioColors.highlight1
+                : SioColors.backGradient4Start,
+            onPressed != null ? SioColors.vividBlue : SioColors.blackGradient2,
           ]),
           borderRadius: BorderRadii.radius30,
         ),
@@ -45,7 +47,9 @@ class HighlightedElevatedButton extends StatelessWidget {
             Text(
               label,
               style: SioTextStyles.buttonLarge.apply(
-                color: SioColors.softBlack,
+                color: onPressed != null
+                    ? SioColors.softBlack
+                    : SioColors.secondary6,
               ),
             ),
           ],

@@ -7,6 +7,7 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/gradient_text.dart';
 import 'package:simplio_app/view/widgets/outlined_container.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class EarningElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -115,7 +116,8 @@ class EarningElevatedButton extends StatelessWidget {
                               ]),
                     Gaps.gap20,
                     Icon(
-                      Icons.arrow_forward_ios,
+                      SioIcons.arrow_right,
+                      size: 10,
                       color: SioColors.mentolGreen,
                     ),
                   ],

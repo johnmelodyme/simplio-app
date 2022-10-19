@@ -27,6 +27,7 @@ import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/qr_code_scanner.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/toggle.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class AssetSendScreen extends StatefulWidget with WalletUtilsMixin {
@@ -440,9 +441,9 @@ class _AddressField extends StatelessWidget {
                           children: [
                             IconButton(
                               icon: Icon(
-                                Icons.copy_outlined,
+                                SioIcons.copy_dash,
                                 color: SioColors.vividBlue,
-                                size: 24,
+                                size: 28,
                               ),
                               onPressed: () async {
                                 ClipboardData? copiedAddress =
@@ -455,9 +456,9 @@ class _AddressField extends StatelessWidget {
                             ),
                             IconButton(
                               icon: Icon(
-                                Icons.qr_code_scanner,
+                                SioIcons.qr_code,
                                 color: SioColors.vividBlue,
-                                size: 24,
+                                size: 28,
                               ),
                               onPressed: qrCodeIconPressed,
                             ),
@@ -468,9 +469,9 @@ class _AddressField extends StatelessWidget {
                         padding: Paddings.bottom5,
                         child: IconButton(
                           icon: Icon(
-                            Icons.clear_outlined,
+                            SioIcons.cancel_outline,
                             color: SioColors.vividBlue,
-                            size: 24,
+                            size: 28,
                           ),
                           onPressed: () {
                             assetFormCubit.changeFormValue(toAddress: '');

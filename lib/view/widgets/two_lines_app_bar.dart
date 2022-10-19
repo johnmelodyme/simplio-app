@@ -5,6 +5,7 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class TwoLinesAppBar extends ColorizedAppBar {
   const TwoLinesAppBar({
@@ -43,8 +44,8 @@ class TwoLinesAppBar extends ColorizedAppBar {
                     padding: const EdgeInsets.all(Dimensions.padding16),
                     color: SioColors.secondary6,
                     icon: actionType == ActionType.back
-                        ? const Icon(Icons.arrow_back_ios)
-                        : const Icon(Icons.close),
+                        ? const Icon(SioIcons.arrow_left)
+                        : const Icon(SioIcons.cancel, size: 20),
                   ),
                 ),
                 Positioned.fill(

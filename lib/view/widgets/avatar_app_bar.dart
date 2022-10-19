@@ -7,6 +7,7 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 import 'package:simplio_app/view/widgets/user_level_bar.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class AvatarAppBar extends StatelessWidget {
   const AvatarAppBar({
@@ -76,14 +77,14 @@ class AvatarAppBar extends StatelessWidget {
                             },
                             padding: EdgeInsets.zero,
                             icon: Icon(
-                              Icons.qr_code,
+                              SioIcons.qr_code,
                               color: SioColors.mentolGreen,
                             )),
                         IconButton(
                           onPressed: () {},
                           padding: EdgeInsets.zero,
                           icon: Icon(
-                            Icons.notifications_none,
+                            SioIcons.bell,
                             color: SioColors.secondary5,
                           ),
                         ),

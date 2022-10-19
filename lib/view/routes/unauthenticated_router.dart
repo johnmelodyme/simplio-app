@@ -4,10 +4,10 @@ import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/logic/cubit/password_reset_form/password_reset_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/sign_in_form/sign_in_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/sign_up_form/sign_up_form_cubit.dart';
-import 'package:simplio_app/view/screens/welcome_screen.dart';
 import 'package:simplio_app/view/screens/password_reset_screen.dart';
 import 'package:simplio_app/view/screens/sign_in_screen.dart';
 import 'package:simplio_app/view/screens/sign_up_screen.dart';
+import 'package:simplio_app/view/screens/welcome_screen.dart';
 
 class UnauthenticatedRouter {
   static const String home = 'home';

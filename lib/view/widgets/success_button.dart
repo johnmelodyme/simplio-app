@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class SuccessButton extends StatelessWidget {
   final String text;
@@ -49,9 +50,11 @@ class SuccessButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Icon(
-                    Icons.check,
+                    SioIcons.done,
                     color: SioColors.highlight1,
-                  )
+                    size: 20,
+                  ),
+                  Gaps.gap6
                 ],
               ),
             ],

@@ -12,6 +12,7 @@ import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 import 'package:simplio_app/view/widgets/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/earning_elevated_button.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class CoinDetailBalance extends StatelessWidget {
   const CoinDetailBalance({
@@ -71,7 +72,7 @@ class CoinDetailBalance extends StatelessWidget {
                         label: context.locale
                             .coin_detail_screen_remove_from_inventory_button,
                         icon: Icon(
-                          Icons.cancel_outlined,
+                          SioIcons.cancel_outline,
                           color: SioColors.secondary6,
                         ),
                       )
@@ -82,7 +83,7 @@ class CoinDetailBalance extends StatelessWidget {
                         label: context
                             .locale.coin_detail_screen_add_to_inventory_button,
                         icon: Icon(
-                          Icons.add_circle_outline,
+                          SioIcons.plus_rounded,
                           color: SioColors.softBlack,
                         ),
                       ),
@@ -103,14 +104,14 @@ class CoinDetailBalance extends StatelessWidget {
                   color: SioColors.vividBlue.withOpacity(0.1),
                   spreadRadius: RadiusSize.radius140 / 2,
                   blurRadius: RadiusSize.radius140,
-                  offset: const Offset(0, 4),
+                  offset: const Offset(0, 0),
                 ),
               ],
             ),
             child: Center(
               child: AvatarWithShadow(
                 size: 40,
-                child: Container(color: assetDetail.style.primaryColor),
+                child: assetDetail.style.icon,
               ),
             ),
           ),

@@ -15,6 +15,7 @@
   "common_password_rule_num_char":"Must include number",
   "common_password_rule_upper_char":"Must include upper case character",
   "common_submit_btn_label":"Submit",
+  "common_send_btn_label":"Send",
   "common_email_validation_error":"Please enter valid email address",
   "common_password_validation_error":"Please enter valid password",
   "common_priority_low":"Low",
@@ -117,7 +118,30 @@
     "password_change_screen_old_password_input_label":"Old password",
     "password_change_change_password_page_title":"Change password",
 
-    "password_reset_screen_forgot_password_label": "Forgot password",
+    "password_reset_screen_forgot_password_label1": "Forgot",
+    "password_reset_screen_forgot_password_label2": "password",
+    "password_reset_screen_forgot_password_hint": "Please enter your email address associated with your account to receive a link for resetting your password.",
+    "password_reset_screen_did_not_receive_link_label": "Didn't receive a link?",
+    "password_reset_screen_resend_label": " Resend",
+    "password_reset_screen_link_sent": "“Link was sent to {email}”",
+    "@password_reset_screen_link_sent": {
+       "placeholders": {
+          "email": {
+             "type": "String"
+          }
+       }
+    },
+    "password_reset_screen_link_resent": "“We resend a link to {email}”",
+    "@password_reset_screen_link_resent": {
+       "placeholders": {
+          "email": {
+             "type": "String"
+          }
+       }
+    },
+
+   
+
 
     "pin_setup_screen_account_creation_before_pin_setup":"Done! \n One last thing to do",
     "pin_setup_screen_set_pin_label":"Set your security code to keep your account secure",

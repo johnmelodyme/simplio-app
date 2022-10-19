@@ -5,6 +5,7 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 abstract class WalletConnectRequestItem<T extends WalletConnectRequest>
     extends Widget {
@@ -103,7 +104,7 @@ class _WalletConnectTransactionRequestItemState
                             ),
                           ),
                           Icon(
-                            Icons.arrow_forward_ios,
+                            SioIcons.arrow_right,
                             size: 14.0,
                           ),
                         ],
@@ -245,7 +246,7 @@ class _WalletConnectSignatureRequestItemState
                               child: Text('Detail'),
                             ),
                           ),
-                          Icon(Icons.arrow_forward_ios, size: 14.0),
+                          Icon(SioIcons.arrow_right, size: 14.0),
                         ],
                       ),
                     ),
@@ -391,7 +392,7 @@ class _WalletConnectSessionRequestItemState
                             ),
                           ),
                           const Icon(
-                            Icons.arrow_forward_ios,
+                            SioIcons.arrow_right,
                             size: 14.0,
                           ),
                         ],

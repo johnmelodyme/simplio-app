@@ -13,6 +13,7 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
   final String? assetId;
@@ -115,17 +116,20 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                               ),
                               Gaps.gap17,
                               Icon(
-                                Icons.copy_outlined,
+                                SioIcons.copy,
                                 color: SioColors.vividBlue,
                               ),
                             ],
                           ),
                         )),
                   ),
-                  SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: assetDetail.style.icon,
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: assetDetail.style.icon,
+                    ),
                   ),
                 ]),
               ),

@@ -320,8 +320,7 @@ class _Priority extends StatelessWidget {
                     begin: Alignment.centerLeft,
                     end: Alignment.bottomCenter,
                     colors: [
-                      SioColors
-                          .attentionGradient, // todo: replace with correct color when refactoring of Theme is finished
+                      SioColors.attentionGradient,
                       SioColors.attention,
                     ],
                   ),

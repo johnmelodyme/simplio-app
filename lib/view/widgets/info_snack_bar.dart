@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class InfoSnackBar extends StatelessWidget {
   final String text;
@@ -23,7 +24,7 @@ class InfoSnackBar extends StatelessWidget {
           ),
           Icon(
             color: SioColors.highlight1,
-            Icons.info_outline,
+            SioIcons.info_outline,
           )
         ],
       ),

@@ -12,6 +12,7 @@ import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
 import 'package:simplio_app/view/widgets/total_balance.dart';
 import 'package:simplio_app/view/widgets/transactions_content.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({
@@ -42,7 +43,7 @@ class InventoryScreen extends StatelessWidget {
                   },
                   label: context.locale.inventory_screen_search_and_add_coins,
                 ),
-                iconData: Icons.pie_chart_outline,
+                iconData: SioIcons.coins,
                 iconColor: SioColors.coins,
                 topSlivers: [
                   const SliverGap(Dimensions.padding16),
@@ -60,7 +61,7 @@ class InventoryScreen extends StatelessWidget {
                 searchBar: SearchBarPlaceholder(
                   label: context.locale.inventory_screen_search_nft,
                 ),
-                iconData: Icons.pie_chart_outline,
+                iconData: SioIcons.nft,
                 iconColor: SioColors.nft,
                 topSlivers: [
                   const SliverGap(Dimensions.padding16),

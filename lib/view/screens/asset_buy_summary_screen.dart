@@ -14,6 +14,7 @@ import 'package:simplio_app/view/widgets/asset_form_gradient_label.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/swipe_up_button.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class AssetBuySummaryScreen extends StatelessWidget {
   const AssetBuySummaryScreen({super.key});
@@ -300,7 +301,7 @@ class _PaymentMethod extends StatelessWidget {
   IconData getPaymentMethodIcon(BuildContext context) {
     switch (context.read<AssetBuyFormCubit>().state.paymentMethod) {
       case PaymentMethod.debitCard:
-        return Icons.credit_card;
+        return SioIcons.credit_card;
       case PaymentMethod.payPal:
         return Icons.paypal;
       case PaymentMethod.applePay:

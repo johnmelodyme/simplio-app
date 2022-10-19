@@ -104,12 +104,10 @@ class _TabBarItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 2.0),
-              child: Icon(
-                tabBarItem.icon,
-                color: isActive ? selectedColor : unselectedColor,
-              ),
+            Icon(
+              tabBarItem.icon,
+              size: 30,
+              color: isActive ? selectedColor : unselectedColor,
             ),
             Text(
               tabBarItem.label ?? '',

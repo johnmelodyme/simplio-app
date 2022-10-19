@@ -14,6 +14,7 @@ import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/tab_bar_item.dart';
 import 'package:simplio_app/view/widgets/wallet_connect_request_item.dart';
 import 'package:simplio_app/view/widgets/wallet_connect_request_list.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class ApplicationScreen extends StatefulWidget {
   final Widget child;
@@ -59,7 +60,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                                   const ValueKey(AuthenticatedRouter.discovery),
                               tabBarItemType: TabItemType.button,
                               selectedColor: SioColors.mentolGreen,
-                              icon: Icons.assistant_navigation,
+                              icon: SioIcons.gridview,
                               label: context.locale
                                   .application_screen_discovery_tabbar_label,
                               onTap: (context, key) {
@@ -70,7 +71,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               key: const ValueKey(AuthenticatedRouter.games),
                               tabBarItemType: TabItemType.button,
                               selectedColor: SioColors.games,
-                              icon: Icons.sports_esports_outlined,
+                              icon: SioIcons.sports_esports,
                               label: context
                                   .locale.application_screen_games_tabbar_label,
                               onTap: (context, key) {
@@ -82,7 +83,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                                   const ValueKey(AuthenticatedRouter.inventory),
                               tabBarItemType: TabItemType.button,
                               selectedColor: SioColors.coins,
-                              icon: Icons.pie_chart_outline,
+                              icon: SioIcons.inventory,
                               label: context.locale
                                   .application_screen_inventory_tabbar_label,
                               onTap: (context, key) {
@@ -94,7 +95,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                                   const ValueKey(AuthenticatedRouter.findDapps),
                               tabBarItemType: TabItemType.button,
                               selectedColor: SioColors.coins,
-                              icon: Icons.language,
+                              icon: SioIcons.world,
                               label: context.locale
                                   .application_screen_find_dapps_tabbar_label,
                               onTap: (context, key) {

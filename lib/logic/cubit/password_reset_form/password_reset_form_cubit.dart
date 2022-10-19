@@ -19,10 +19,11 @@ class PasswordResetFormCubit extends Cubit<PasswordResetFormState> {
   void changeFormValue({String? email}) {
     emit(state.copyWith(
       email: email,
+      response: null,
     ));
   }
 
-  Future<void> submitForm() async {
+  Future<void> submitForm({bool resend = false}) async {
     emit(state.copyWith(
       response: const PasswordResetFormPending(),
     ));
@@ -35,7 +36,7 @@ class PasswordResetFormCubit extends Cubit<PasswordResetFormState> {
       );
 
       emit(state.copyWith(
-        response: const PasswordResetFormSuccess(),
+        response: PasswordResetFormSuccess(resend),
       ));
     } on Exception catch (e) {
       emit(state.copyWith(

@@ -12,6 +12,7 @@ class ThemedTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final int? maxLines;
   final TextAlignVertical? textAlignVertical;
+  final Color? cursorColor;
 
   const ThemedTextFormField({
     super.key,
@@ -25,6 +26,7 @@ class ThemedTextFormField extends StatelessWidget {
     this.controller,
     this.maxLines,
     this.textAlignVertical,
+    this.cursorColor,
   });
 
   @override
@@ -41,6 +43,7 @@ class ThemedTextFormField extends StatelessWidget {
         keyboardType: keyboardType,
         maxLines: maxLines,
         textAlignVertical: textAlignVertical,
+        cursorColor: cursorColor,
         style: TextStyle(
           color: SioColors.black,
         ).merge(style),

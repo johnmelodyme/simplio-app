@@ -46,22 +46,23 @@ class NavigationTabChip extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (iconData != null) ...{
+            if (iconData != null) ...[
               Icon(
                 iconData,
-                size: 16,
+                size: 24,
                 color: isSelected
                     ? SioColors.black
                     : iconColor ?? SioColors.whiteBlue,
               ),
-              Gaps.gap8,
-            },
+              Gaps.gap7,
+            ],
             Flexible(
               child: Text(
                 label,
                 maxLines: 1,
-                style: SioTextStyles.bodyLargeBold.apply(
+                style: SioTextStyles.bodyLargeBold.copyWith(
                   color: isSelected ? SioColors.black : SioColors.whiteBlue,
+                  height: 1.0,
                 ),
               ),
             ),

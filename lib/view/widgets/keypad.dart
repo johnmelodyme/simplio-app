@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/keypad_item.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class _KeypadRow {
   final List<KeypadItem> children;
@@ -188,7 +189,7 @@ class Numpad extends StatelessWidget {
                       ? KeypadItem.action(
                           key: const Key('numpad-action-proceed'),
                           actionType: ActionButtonType.elevated,
-                          content: Icon(Icons.check, color: iconColor),
+                          content: Icon(SioIcons.done, color: iconColor),
                           onTap: () => onProceed?.call(),
                         )
                       : const KeypadItem(),

@@ -9,6 +9,7 @@ import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/favourite_start.dart';
 import 'package:simplio_app/view/widgets/promoted_red_strip.dart';
 import 'package:simplio_app/view/widgets/small_button.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class GameItem extends StatelessWidget {
   const GameItem({
@@ -163,9 +164,11 @@ class GameItem extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Icon(
-                                  Icons.sports_esports_outlined,
-                                  color: SioColors.games,
+                                Flexible(
+                                  child: Icon(
+                                    SioIcons.sports_esports,
+                                    color: SioColors.games,
+                                  ),
                                 ),
                                 Gaps.gap5,
                                 RichText(

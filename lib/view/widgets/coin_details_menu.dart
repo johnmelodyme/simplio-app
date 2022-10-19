@@ -4,6 +4,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/bottom_tab_bar_container.dart';
 import 'package:simplio_app/view/widgets/coin_details_menu_button.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 typedef CoinDetailsMenuCallback = void Function(ActionType actioType);
 
@@ -21,27 +22,27 @@ class CoinDetailsMenu extends StatelessWidget {
       CoinDetailMenuItem(
         actionType: ActionType.buy,
         label: context.locale.coin_detail_screen_menu_buy,
-        icon: Icons.shopping_basket,
+        icon: SioIcons.basket,
       ),
       CoinDetailMenuItem(
         actionType: ActionType.exchange,
         label: context.locale.coin_detail_screen_menu_exchange,
-        icon: Icons.swap_horiz,
+        icon: SioIcons.swap,
       ),
       CoinDetailMenuItem(
         actionType: ActionType.receive,
         label: context.locale.coin_detail_screen_menu_receive,
-        icon: Icons.vertical_align_bottom,
+        icon: SioIcons.vertical_align_bottom,
       ),
       CoinDetailMenuItem(
         actionType: ActionType.send,
         label: context.locale.coin_detail_screen_menu_send,
-        icon: Icons.vertical_align_top,
+        icon: SioIcons.vertical_align_top,
       ),
       CoinDetailMenuItem(
         actionType: ActionType.earn,
         label: context.locale.coin_detail_screen_menu_earn,
-        icon: Icons.north_east,
+        icon: SioIcons.north_east,
       ),
     ];
 
