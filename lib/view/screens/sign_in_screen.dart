@@ -15,7 +15,7 @@ import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
-import 'package:simplio_app/view/widgets/themed_text_form_field.dart';
+import 'package:simplio_app/view/widgets/sio_text_form_field.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -62,7 +62,7 @@ class SignInScreen extends StatelessWidget {
                             children: [
                               Padding(
                                 padding: Paddings.vertical20,
-                                child: ThemedTextFormField(
+                                child: SioTextFormField(
                                   key: const Key(
                                       'sign-in-screen-email-text-field'),
                                   keyboardType: TextInputType.emailAddress,
@@ -75,14 +75,17 @@ class SignInScreen extends StatelessWidget {
                                         errorMessage: context.locale
                                             .common_email_validation_error,
                                       ),
-                                  style: const TextStyle(
-                                      color: SioColorsDark.whiteBlue),
+                                  focusedStyle: SioTextStyles.bodyPrimary
+                                      .apply(color: SioColorsDark.whiteBlue),
+                                  unfocusedStyle: SioTextStyles.bodyPrimary
+                                      .apply(color: SioColorsDark.secondary7),
                                   decoration: UnderLinedTextFormFieldDecoration(
                                     labelText: context.locale.common_email,
                                     hintText: context.locale.common_email,
                                   ),
                                   cursorColor: SioColorsDark.whiteBlue,
                                   onChanged: (String? email) {
+                                    formKey.currentState?.validate();
                                     context
                                         .read<SignInFormCubit>()
                                         .changeFormValue(login: email);
@@ -110,6 +113,7 @@ class SignInScreen extends StatelessWidget {
                                     .password
                                     .isValid,
                                 onChanged: (password) {
+                                  formKey.currentState?.validate();
                                   context
                                       .read<SignInFormCubit>()
                                       .changeFormValue(password: password);

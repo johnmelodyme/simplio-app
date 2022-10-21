@@ -46,14 +46,14 @@ class FeeRepository {
 
 class FeeData {
   final BigInt gasLimit;
-  final String unit;
+  final String? unit;
   final List<BigInt> _values;
 
   const FeeData._(this.gasLimit, this.unit, this._values);
 
   const FeeData({
     required BigInt gasLimit,
-    required String unit,
+    required String? unit,
     List<BigInt> values = const [],
   }) : this._(gasLimit, unit, values);
 

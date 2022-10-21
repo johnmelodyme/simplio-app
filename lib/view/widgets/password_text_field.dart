@@ -23,7 +23,7 @@ class PasswordTextField extends StatefulWidget {
     this.autofocus = false,
     this.labelText,
     this.displayedIcon = SioIcons.eye,
-    this.icon = Icons.visibility_off_outlined,
+    this.icon = SioIcons.eye_filled,
     this.onTap,
     this.validator,
   });
@@ -71,7 +71,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             icon: Icon(
               _isDisplayed ? widget.displayedIcon : widget.icon,
               color: controller.text.isNotEmpty
-                  ? SioColorsDark.whiteBlue
+                  ? SioColorsDark.mentolGreen
                   : SioColorsDark.secondary5,
             ),
             onPressed: () {

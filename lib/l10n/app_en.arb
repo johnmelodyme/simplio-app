@@ -23,6 +23,7 @@
   "common_priority_high":"High",
   "common_min_label_uc": "MIN",
   "common_max_label_uc": "MAX",
+  "common_continue": "Continue",
   "common_done": "Done",
   "common_search":"Search",
   "common_loading_with_dots":"Loading...",
@@ -113,8 +114,11 @@
     "sign_in_screen_signing_in_label":"Signing in...",
     "sign_in_screen_or_create_account_button_label":"or Create account",
 
-    "sign_up_screen_create_new_account_title":"Create a new account",
-    "sign_up_screen_create_account_btn_label":"Create account",
+    "sign_up_screen_create_new_account_sign_up":"Sign up",
+    "sign_up_screen_create_new_account_with_email":"with Email",
+    "sign_up_screen_create_account_your_email_label":"Your email",
+    "sign_up_screen_create_account_choose_new_password":"Choose new password",
+    "sign_up_screen_create_account_already_have_account":"Already have an account?",
 
     "password_change_screen_new_password_input_label":"New password",
     "password_change_screen_old_password_input_label":"Old password",
