@@ -24,7 +24,6 @@ import 'package:simplio_app/view/widgets/highlighted_form_element.dart';
 import 'package:simplio_app/view/widgets/highlighted_num_form_filed.dart';
 import 'package:simplio_app/view/widgets/highlighted_text_form_filed.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
-import 'package:simplio_app/view/widgets/qr_code_scanner.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/toggle.dart';
 import 'package:sio_glyphs/sio_icons.dart';
@@ -45,8 +44,6 @@ class AssetSendScreen extends StatefulWidget with WalletUtilsMixin {
 }
 
 class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
-  bool displayQrCode = false;
-
   late AssetWallet? assetWallet;
   late NetworkWallet? networkWallet;
 
@@ -196,7 +193,6 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                         secondPart:
                             context.locale.asset_exchange_screen_coin_label_lc,
                         actionType: ActionType.close,
-                        onBackTap: () => GoRouter.of(context).pop(),
                       ),
                       HighlightedFormElement(
                           key: assetKey,
@@ -244,7 +240,13 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                               highlighted:
                                   addressHighlightController.highlighted,
                               qrCodeIconPressed: () =>
-                                  setState(() => displayQrCode = true),
+                                  GoRouter.of(context).pushNamed(
+                                AuthenticatedRouter.assetSendQrScanner,
+                                params: {
+                                  'assetId': widget.assetId!,
+                                  'networkId': widget.networkId!,
+                                },
+                              ),
                               onTap: () {
                                 setState(() {
                                   panelController.close();
@@ -261,47 +263,38 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                             Gaps.gap20,
                           ]),
                       HighlightedFormElement(
-                          key: amountKey,
-                          controller: amountHighlightController,
-                          clickableHeight: 90,
-                          onTap: () => setState(() {
-                                amountHighlightController.deselectConcurrent();
-                                FocusManager.instance.primaryFocus?.unfocus();
-                              }),
-                          children: [
-                            BlocBuilder<AssetSendFormCubit, AssetSendFormState>(
-                              buildWhen: (prev, curr) =>
-                                  prev.assetId != curr.assetId,
-                              builder: (context, state) => _AmountFormField(
-                                amountFromController: amountController,
-                                highlightController: amountHighlightController,
-                                networkWallet: networkWallet!,
-                                scrollController: scrollController,
-                                onTap: () {
-                                  setState(() {
-                                    panelController.open();
-                                    _isPanelOpen = true;
+                        key: amountKey,
+                        controller: amountHighlightController,
+                        clickableHeight: 90,
+                        onTap: () => setState(() {
+                          amountHighlightController.deselectConcurrent();
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        }),
+                        children: [
+                          BlocBuilder<AssetSendFormCubit, AssetSendFormState>(
+                            buildWhen: (prev, curr) =>
+                                prev.assetId != curr.assetId,
+                            builder: (context, state) => _AmountFormField(
+                              amountFromController: amountController,
+                              highlightController: amountHighlightController,
+                              networkWallet: networkWallet!,
+                              scrollController: scrollController,
+                              onTap: () {
+                                setState(() {
+                                  panelController.open();
+                                  _isPanelOpen = true;
 
-                                    amountController.text = '';
-                                  });
+                                  amountController.text = '';
+                                });
 
-                                  scrollTo(amountKey, 0);
-                                },
-                                assetId: state.assetId,
-                              ),
+                                scrollTo(amountKey, 0);
+                              },
+                              assetId: state.assetId,
                             ),
-                            Gaps.gap10,
-                          ]),
-                      if (displayQrCode)
-                        QrCodeScanner(
-                          errorCallback: () => {
-                            // todo: add error message to the user
-                          },
-                          qrCodeCallback: (String value) =>
-                              assetSendCubit.changeFormValue(toAddress: value),
-                          closedCallback: () =>
-                              setState(() => displayQrCode = false),
-                        ),
+                          ),
+                          Gaps.gap10,
+                        ],
+                      ),
                       if (amountHighlightController.highlighted)
                         Container(
                           padding: Paddings.left16,

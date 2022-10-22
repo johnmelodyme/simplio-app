@@ -5,7 +5,7 @@ Feature: Main Page
   Scenario: Checking Creation of New Account
 
     Given I wait 10 seconds
-    When I tap the label that contains the text 'Sign in'
+    When I tap the label that contains the text 'Log in'
     And I expect the text 'Enter Simplio.' to be present
     And I tap the button with the key: 'sign-in-screen-create-account-button'
     And I expect the text 'Create a new account' to be present within 10 seconds

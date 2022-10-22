@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
+import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
+import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
+
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/qr_address_field.dart';
 import 'package:simplio_app/view/widgets/qr_code_horizontal_line_animation.dart';
@@ -12,17 +15,18 @@ import 'package:simplio_app/view/widgets/qr_code_mask.dart';
 import 'package:simplio_app/view/widgets/qr_code_mask_painter.dart';
 import 'package:simplio_app/view/widgets/qr_code_scanner.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
-class QrCodeScannerScreen extends StatefulWidget {
-  const QrCodeScannerScreen({
-    super.key,
-  });
+class AssetSendQrScannerScreen extends StatefulWidget {
+  const AssetSendQrScannerScreen({super.key});
 
   @override
-  State<QrCodeScannerScreen> createState() => _QrCodeScannerScreenState();
+  State<AssetSendQrScannerScreen> createState() =>
+      _AssetSendQrScannerScreenState();
 }
 
-class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
+class _AssetSendQrScannerScreenState extends State<AssetSendQrScannerScreen>
+    with PopupDialogMixin {
   String? address;
 
   @override
@@ -42,10 +46,10 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
         child: Column(
           children: [
             ColorizedAppBar(
-              firstPart: context.locale.qr_code_scanner_screen_connect_title,
-              secondPart: context.locale.qr_code_scanner_screen_wallet_title,
+              firstPart: context.locale.asset_send_qr_scanner_screen_scan,
+              secondPart:
+                  context.locale.asset_send_qr_scanner_screen_address_lc,
               actionType: ActionType.close,
-              onBackTap: () => Navigator.pop(context),
             ),
             Column(
               children: [
@@ -58,21 +62,32 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
                           color: SioColors.secondary5,
                           child: QrCodeScanner(
                             qrCodeCallback: (String value) async {
-                              final s =
-                                  context.read<AccountWalletCubit>().state;
-                              if (s is AccountWalletProvided) {
-                                context.read<WalletConnectCubit>().openSession(
-                                      s.wallet.uuid,
-                                      uri: value,
-                                    );
-                              }
+                              context
+                                  .read<AssetSendFormCubit>()
+                                  .changeFormValue(toAddress: value);
 
                               setState(() {
                                 address = value;
                               });
+
+                              showPopup(
+                                context,
+                                message:
+                                    context.locale.asset_screens_address_copied,
+                                icon: const Icon(
+                                  SioIcons.verified,
+                                  size: 50,
+                                  color: SioColorsDark.softBlack,
+                                ),
+                                hideAfter: const Duration(milliseconds: 1500),
+                                afterHideAction: () =>
+                                    GoRouter.of(context).pop(),
+                              );
                             },
                             closedCallback: () {},
-                            errorCallback: () {},
+                            errorCallback: () {
+                              // todo: display error for the user
+                            },
                           ),
                         ),
                       ),

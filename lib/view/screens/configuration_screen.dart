@@ -28,7 +28,6 @@ class ConfigurationScreen extends StatelessWidget {
               firstPart: context.locale.configuration_screen_settings_title,
               secondPart: '',
               actionType: ActionType.close,
-              onBackTap: () => Navigator.pop(context),
             ),
           ),
           SliverToBoxAdapter(

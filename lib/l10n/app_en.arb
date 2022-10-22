@@ -28,6 +28,7 @@
   "common_search":"Search",
   "common_loading_with_dots":"Loading...",
   "common_go_back":"Go back",
+  "common_unknown_error":"Unknown error happened!",
 
   "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
@@ -202,6 +203,8 @@
     "asset_send_success_screen_sending":"Sending",
     "asset_send_success_screen_paying_out":"Paying out",
     "asset_send_success_screen_finished":"Finished",
+    "asset_send_qr_scanner_screen_scan":"Scan",
+    "asset_send_qr_scanner_screen_address_lc":"address",
 
     "asset_buy_screen_what_you_buy":"What you buy",
     "asset_buy_screen_buy":"Buy",

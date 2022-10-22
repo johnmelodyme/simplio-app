@@ -31,6 +31,7 @@ import 'package:simplio_app/view/screens/asset_exchange_success_screen.dart';
 import 'package:simplio_app/view/screens/asset_exchange_summary_screen.dart';
 import 'package:simplio_app/view/screens/asset_receive_screen.dart';
 import 'package:simplio_app/view/screens/asset_search_screen.dart';
+import 'package:simplio_app/view/screens/asset_send_qr_scanner_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_search_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_success_screen.dart';
@@ -43,8 +44,8 @@ import 'package:simplio_app/view/screens/games_search_screen.dart';
 import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
-import 'package:simplio_app/view/screens/qr_code_scanner_screen.dart';
 import 'package:simplio_app/view/screens/asset_exchange_screen.dart';
+import 'package:simplio_app/view/screens/wallet_connect_qr_code_scanner_screen.dart';
 
 class AuthenticatedRouter with PageBuilderMixin {
   static const String discovery = 'discovery';
@@ -63,6 +64,7 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String assetSearch = 'asset-search';
 
   static const String assetSend = 'asset-send';
+  static const String assetSendQrScanner = 'asset-send-qr-scanner';
   static const String assetSendSearch = 'asset-send-search';
   static const String assetSendSummary = 'asset-send-summary';
   static const String assetSendSuccess = 'asset-send-success';
@@ -83,7 +85,8 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String assetBuyPaymentGateway = 'asset-buy-payment-gateway';
   static const String assetBuySuccess = 'asset-buy-success';
 
-  static const String qrCodeScanner = 'qr-code-scanner';
+  static const String walletConnectQrCodeScanner =
+      'wallet-connect-qr-code-scanner';
 
   final BuildContext context;
 
@@ -316,6 +319,14 @@ class AuthenticatedRouter with PageBuilderMixin {
                         ),
                       ),
                       GoRoute(
+                        path: 'qr-scanner',
+                        name: assetSendQrScanner,
+                        pageBuilder: pageBuilder(
+                          builder: (state) => const AssetSendQrScannerScreen(),
+                          settings: const ApplicationSettings.hiddenTabBar(),
+                        ),
+                      ),
+                      GoRoute(
                         path: 'summary',
                         name: assetSendSummary,
                         pageBuilder: pageBuilder(
@@ -528,10 +539,10 @@ class AuthenticatedRouter with PageBuilderMixin {
               ),
             ),
             GoRoute(
-              path: 'qr-code-scanner',
-              name: qrCodeScanner,
+              path: 'wallet-connect-qr-code-scanner',
+              name: walletConnectQrCodeScanner,
               pageBuilder: pageBuilder(
-                builder: (state) => const QrCodeScannerScreen(),
+                builder: (state) => const WalletConnectQrCodeScannerScreen(),
               ),
             ),
           ],

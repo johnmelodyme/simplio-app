@@ -72,8 +72,8 @@ class AvatarAppBar extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: () {
-                              GoRouter.of(context)
-                                  .pushNamed(AuthenticatedRouter.qrCodeScanner);
+                              GoRouter.of(context).pushNamed(AuthenticatedRouter
+                                  .walletConnectQrCodeScanner);
                             },
                             padding: EdgeInsets.zero,
                             icon: Icon(

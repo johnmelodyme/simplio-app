@@ -32,6 +32,7 @@ Future<void> main() {
     ..dartDefineArgs = ['TEST_RUN=true', 'API_URL=$apiUrl', 'API_KEY=$apiKey']
     ..hooks = [AttachScreenshotOnFailedStepHook()]
     ..tagExpression = "not @blockedByBug"
+    // ..tagExpression = "@smoke"
     ..restartAppBetweenScenarios =
         true // set to false if debugging to exit cleanly
     ..order = ExecutionOrder.alphabetical

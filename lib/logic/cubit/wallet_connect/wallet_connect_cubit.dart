@@ -63,6 +63,7 @@ class WalletConnectCubit extends Cubit<WalletConnectState> {
       );
     } catch (e) {
       debugPrint(e.toString());
+      rethrow;
     }
   }
 

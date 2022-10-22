@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QrCodeScanner extends StatelessWidget {
@@ -16,17 +17,19 @@ class QrCodeScanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MobileScanner(
-      allowDuplicates: false,
       controller: MobileScannerController(
-          facing: CameraFacing.back, torchEnabled: true),
+        torchEnabled: false,
+      ),
       onDetect: (barcode, args) {
         if (barcode.rawValue == null) {
           debugPrint('Failed to scan Barcode');
           errorCallback();
         } else {
           final String code = barcode.rawValue!;
-          qrCodeCallback(code);
+          HapticFeedback.vibrate();
           debugPrint('Barcode found! $code');
+
+          qrCodeCallback(code);
         }
       },
     );

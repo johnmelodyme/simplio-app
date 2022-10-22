@@ -5,8 +5,9 @@ import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-class PopupDialog extends StatelessWidget {
-  const PopupDialog({
+// todo: change this when design for errors is done
+class PopupError extends StatelessWidget {
+  const PopupError({
     Key? key,
     required this.message,
     required this.icon,
@@ -36,8 +37,8 @@ class PopupDialog extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    SioColors.highlight1,
-                    SioColors.vividBlue,
+                    SioColors.attentionGradient,
+                    SioColors.attention,
                   ],
                 ),
               ),
@@ -47,19 +48,22 @@ class PopupDialog extends StatelessWidget {
                   Gaps.gap10,
                   Expanded(
                     child: Text(
-                      key: const Key('send_forgot_password_popup'),
                       message,
                       style: SioTextStyles.h5
-                          .apply(color: SioColorsDark.softBlack),
+                          .apply(color: SioColorsDark.whiteBlue),
                     ),
                   ),
                   Gaps.gap10,
                   IconButton(
-                      onPressed: () {
-                        onCancel?.call();
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(SioIcons.cancel)),
+                    onPressed: () {
+                      onCancel?.call();
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      SioIcons.cancel,
+                      color: SioColorsDark.whiteBlue,
+                    ),
+                  ),
                 ],
               ),
             )
