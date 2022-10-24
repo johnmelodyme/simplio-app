@@ -17,12 +17,14 @@ class PasswordChangeFormCubit extends Cubit<PasswordChangeFormState> {
   }) : this._(authRepository);
 
   void changeFormValue({
-    String? newPassword,
     String? oldPassword,
+    String? newPassword,
+    String? newConfirmedPassword,
   }) {
     emit(state.copyWith(
-      newPassword: newPassword,
       oldPassword: oldPassword,
+      newPassword: newPassword,
+      newConfirmedPassword: newConfirmedPassword,
     ));
   }
 

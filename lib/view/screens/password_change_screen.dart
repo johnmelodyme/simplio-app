@@ -3,144 +3,221 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
+import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
-class PasswordChangeScreen extends StatelessWidget {
+class PasswordChangeScreen extends StatefulWidget {
   const PasswordChangeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
+  State<PasswordChangeScreen> createState() => _PasswordChangeScreenState();
+}
 
-    return BlocListener<PasswordChangeFormCubit, PasswordChangeFormState>(
-      listener: (context, state) {
-        // TODO: handle responses
-      },
-      child: SioScaffold(
-        appBar: AppBar(
-          title:
-              Text(context.locale.password_change_change_password_page_title),
-          elevation: 0,
-        ),
-        body: SafeArea(
-          top: true,
-          child: Column(
-            children: [
-              Expanded(
-                child: Column(
+class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
+  final formKey = GlobalKey<FormState>();
+  final oldPasswordKey = const Key('old-password.key');
+  final newPasswordKey = const Key('new-password-key');
+  final confirmPasswordKey = const Key('confirm-password-key');
+
+  @override
+  Widget build(BuildContext context) {
+    PasswordChangeFormCubit cubit = context.read<PasswordChangeFormCubit>();
+
+    return SioScaffold(
+      body: SafeArea(
+        top: true,
+        child: SingleChildScrollView(
+          child: BlocListener<PasswordChangeFormCubit, PasswordChangeFormState>(
+            listener: (context, state) {
+              // TODO: handle responses
+            },
+            child: Column(
+              children: [
+                const ColorizedAppBar(
+                    key: Key('update-password-screen-app-bar'),
+                    firstPart: '',
+                    secondPart: ''),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                          color: SioColors.mentolGreen.withOpacity(0.1),
+                          spreadRadius: 70 / 6,
+                          blurRadius: 70 / 2,
+                          offset: const Offset(0, 0),
+                        ),
+                      ]),
+                      child: Stack(
+                        children: [
+                          Icon(
+                            Icons.lock_outline_rounded, //TODO.. change icon
+                            color: SioColors.mentolGreen,
+                            size: 70,
+                          ),
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 10,
+                            child: Icon(
+                              SioIcons.refresh,
+                              color: SioColors.highlight,
+                              size: 30,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Gaps.gap14,
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text:
+                            '${context.locale.password_change_screen_update_label} ',
+                        style: SioTextStyles.h1.apply(
+                          color: SioColors.whiteBlue,
+                        ),
+                      ),
+                      TextSpan(
+                        text: context
+                            .locale.password_change_screen_password_label,
+                        style: SioTextStyles.h1
+                            .apply(color: SioColors.mentolGreen),
+                      ),
+                    ],
+                  ),
+                ),
+                Gaps.gap10,
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: Paddings.horizontal20,
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          children: [
-                            PasswordTextField(
-                              key: UniqueKey(),
-                              labelText: context.locale
-                                  .password_change_screen_old_password_input_label,
-                              validator: (pass) => context
-                                  .read<PasswordChangeFormCubit>()
-                                  .state
-                                  .newPassword
-                                  .passwordValidator(pass,
-                                      errorMsg: context.locale
-                                          .common_password_validation_error),
-                              passwordComplexityCondition: (pass) => context
-                                  .read<PasswordChangeFormCubit>()
-                                  .state
-                                  .oldPassword
-                                  .isValid,
-                              onChanged: (password) {
-                                context
-                                    .read<PasswordChangeFormCubit>()
-                                    .changeFormValue(
-                                      oldPassword: password,
-                                    );
-                              },
-                            ),
-                            Padding(
-                              padding: Paddings.vertical20,
-                              child: PasswordTextField(
-                                key: UniqueKey(),
+                        padding: Paddings.horizontal16,
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              PasswordTextField(
+                                key: oldPasswordKey,
                                 labelText: context.locale
-                                    .password_change_screen_new_password_input_label,
-                                passwordComplexityCondition: (pass) => context
-                                    .read<PasswordChangeFormCubit>()
-                                    .state
-                                    .newPassword
-                                    .isValid,
+                                    .password_change_screen_current_password_input_label,
+                                validator: (pass) => cubit.state.oldPassword
+                                    .passwordValidator(pass,
+                                        errorMsg: context.locale
+                                            .common_password_validation_error),
+                                passwordComplexityCondition: (pass) =>
+                                    cubit.state.oldPassword.isValid,
                                 onChanged: (password) {
-                                  context
-                                      .read<PasswordChangeFormCubit>()
-                                      .changeFormValue(
-                                        newPassword: password,
-                                      );
+                                  cubit.changeFormValue(
+                                    oldPassword: password,
+                                  );
                                 },
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                              Gaps.gap10,
+                              PasswordTextField(
+                                key: newPasswordKey,
+                                labelText: context.locale
+                                    .password_change_screen_new_password_input_label,
+                                validator: (pass) => cubit.state.newPassword
+                                    .passwordValidator(pass,
+                                        errorMsg: context.locale
+                                            .password_change_screen_enter_new_password_label),
+                                passwordComplexityCondition: (pass) =>
+                                    cubit.state.newPassword.isValid,
+                                onChanged: (password) {
+                                  cubit.changeFormValue(
+                                    newPassword: password,
+                                  );
+                                },
+                              ),
+                              Gaps.gap10,
+                              PasswordTextField(
+                                key: confirmPasswordKey,
+                                labelText: context.locale
+                                    .password_change_screen_confirm_new_password_input_label,
+                                validator: (pass) => cubit
+                                    .state.newConfirmedPassword
+                                    .passworMatchValidator(
+                                        pass, cubit.state.newPassword.value,
+                                        errorMsg: context.locale
+                                            .password_change_screen_confirm_new_password_label),
+                                passwordComplexityCondition: (pass) =>
+                                    cubit.state.newConfirmedPassword.isValid &&
+                                    cubit.state.newPassword.value ==
+                                        cubit.state.newConfirmedPassword.value,
+                                onChanged: (password) {
+                                  cubit.changeFormValue(
+                                    newConfirmedPassword: password,
+                                  );
+                                },
+                              ),
+                              if (cubit.state.newPassword.value.isNotEmpty &&
+                                  !cubit.state.newPassword.isValid) ...[
+                                Gaps.gap20,
+                                Column(
+                                  children: [
+                                    PasswordRulesRow(
+                                        text: context.locale
+                                            .common_password_rule_atleast_8_chars,
+                                        passed: cubit.state.newPassword
+                                                .missingValue['length'] ??
+                                            false),
+                                    PasswordRulesRow(
+                                        text: context.locale
+                                            .common_password_rule_num_char,
+                                        passed: cubit.state.newPassword
+                                                .missingValue['numberChar'] ??
+                                            false),
+                                    PasswordRulesRow(
+                                        text: context.locale
+                                            .common_password_rule_special_char,
+                                        passed: cubit.state.newPassword
+                                                .missingValue['specialChar'] ??
+                                            false),
+                                    PasswordRulesRow(
+                                        text: context.locale
+                                            .common_password_rule_upper_char,
+                                        passed: cubit.state.newPassword
+                                                .missingValue['upperChar'] ??
+                                            false),
+                                  ],
+                                )
+                              ],
+                            ],
+                          ),
+                        )),
                     Padding(
-                      padding: Paddings.horizontal20,
-                      child: BlocBuilder<PasswordChangeFormCubit,
-                          PasswordChangeFormState>(
-                        buildWhen: (previous, current) => previous != current,
-                        builder: (context, state) => Column(
-                          children: [
-                            PasswordRulesRow(
-                                text: context.locale
-                                    .common_password_rule_atleast_8_chars,
-                                passed:
-                                    state.newPassword.missingValue['length'] ??
-                                        false),
-                            PasswordRulesRow(
-                                text: context
-                                    .locale.common_password_rule_num_char,
-                                passed: state.newPassword
-                                        .missingValue['numberChar'] ??
-                                    false),
-                            PasswordRulesRow(
-                                text: context
-                                    .locale.common_password_rule_special_char,
-                                passed: state.newPassword
-                                        .missingValue['specialChar'] ??
-                                    false),
-                            PasswordRulesRow(
-                                text: context
-                                    .locale.common_password_rule_upper_char,
-                                passed: state.newPassword
-                                        .missingValue['upperChar'] ??
-                                    false),
-                          ],
+                      padding: const EdgeInsets.all(20.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: HighlightedElevatedButton(
+                          onPressed: () {
+                            setState(() {});
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            if (formKey.currentState!.validate()) {
+                              cubit.submitForm();
+                            }
+                          },
+                          label: context
+                              .locale.password_change_screen_sumbit_button,
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        await context
-                            .read<PasswordChangeFormCubit>()
-                            .submitForm();
-                      }
-                    },
-                    child: Text(context.locale.common_submit_btn_label),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

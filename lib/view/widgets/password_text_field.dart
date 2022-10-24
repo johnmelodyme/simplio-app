@@ -8,6 +8,7 @@ import 'package:sio_glyphs/sio_icons.dart';
 
 class PasswordTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
+  final ValueChanged<bool>? onFocusChange;
   final GestureTapCallback? onTap;
   final bool Function(String password) passwordComplexityCondition;
   final bool autofocus;
@@ -20,6 +21,7 @@ class PasswordTextField extends StatefulWidget {
     super.key,
     required this.passwordComplexityCondition,
     this.onChanged,
+    this.onFocusChange,
     this.autofocus = false,
     this.labelText,
     this.displayedIcon = SioIcons.eye,
@@ -39,48 +41,53 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      key: const Key('password-text-field'),
-      controller: controller,
-      obscureText: _isDisplayed,
-      autofocus: widget.autofocus,
-      validator: widget.validator,
-      onChanged: (String? password) {
-        if (password != null) {
-          widget.onChanged?.call(password);
-          setState(() => isComplexitySatisfied =
-              widget.passwordComplexityCondition(password));
-        }
+    return Focus(
+      onFocusChange: (focused) {
+        widget.onFocusChange?.call(focused);
+        setState(() {});
       },
-      style: TextStyle(
-        color:
-            isComplexitySatisfied ? SioColors.whiteBlue : SioColors.attention,
+      child: TextFormField(
+        controller: controller,
+        obscureText: _isDisplayed,
+        autofocus: widget.autofocus,
+        validator: widget.validator,
+        onChanged: (String? password) {
+          if (password != null) {
+            widget.onChanged?.call(password);
+            setState(() => isComplexitySatisfied =
+                widget.passwordComplexityCondition(password));
+          }
+        },
+        style: TextStyle(
+          color:
+              isComplexitySatisfied ? SioColors.whiteBlue : SioColors.attention,
+        ),
+        obscuringCharacter: '⦁',
+        cursorColor: SioColorsDark.whiteBlue,
+        decoration: UnderLinedTextFormFieldDecoration(
+          errorStyle: const TextStyle(height: 0),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText:
+              widget.labelText ?? context.locale.common_password_input_label,
+          hintText:
+              widget.labelText ?? context.locale.common_password_input_label,
+          iconColor: SioColorsDark.black,
+          suffixIcon: IconButton(
+              padding: Paddings.top20,
+              icon: Icon(
+                _isDisplayed ? widget.displayedIcon : widget.icon,
+                color: controller.text.isNotEmpty
+                    ? SioColorsDark.mentolGreen
+                    : SioColorsDark.secondary5,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isDisplayed = !_isDisplayed;
+                });
+              }),
+        ),
+        onTap: widget.onTap,
       ),
-      obscuringCharacter: '⦁',
-      cursorColor: SioColorsDark.whiteBlue,
-      decoration: UnderLinedTextFormFieldDecoration(
-        errorStyle: const TextStyle(height: 0),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        labelText:
-            widget.labelText ?? context.locale.common_password_input_label,
-        hintText:
-            widget.labelText ?? context.locale.common_password_input_label,
-        iconColor: SioColorsDark.black,
-        suffixIcon: IconButton(
-            padding: Paddings.top20,
-            icon: Icon(
-              _isDisplayed ? widget.displayedIcon : widget.icon,
-              color: controller.text.isNotEmpty
-                  ? SioColorsDark.mentolGreen
-                  : SioColorsDark.secondary5,
-            ),
-            onPressed: () {
-              setState(() {
-                _isDisplayed = !_isDisplayed;
-              });
-            }),
-      ),
-      onTap: widget.onTap,
     );
   }
 }

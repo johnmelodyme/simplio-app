@@ -11,11 +11,22 @@ class ValidatedPassword {
     return errorMsg;
   }
 
+  String? passworMatchValidator(String? password1, String? password2,
+      {required String errorMsg}) {
+    if (_validateMatchingPasswords(password1, password2)) return null;
+
+    return errorMsg;
+  }
+
   bool _validatePassword(String? password) {
     return _hasSpecialCharacters(password) &&
         _hasUpperCharacters(password) &&
         _hasNumbers(password) &&
         _isLongEnough(password);
+  }
+
+  bool _validateMatchingPasswords(String? password1, String? password2) {
+    return password1 == password2;
   }
 
   Map<String, bool> get missingValue => {

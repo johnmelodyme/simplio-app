@@ -121,9 +121,16 @@
     "sign_up_screen_create_account_choose_new_password":"Choose new password",
     "sign_up_screen_create_account_already_have_account":"Already have an account?",
 
-    "password_change_screen_new_password_input_label":"New password",
-    "password_change_screen_old_password_input_label":"Old password",
-    "password_change_change_password_page_title":"Change password",
+    "password_change_screen_current_password_input_label":"Current password",
+    "password_change_screen_new_password_input_label":"Choose new password",
+    "password_change_screen_confirm_new_password_input_label":"Confirm new password",
+    "password_change_screen_update_label":"Update",
+    "password_change_screen_password_label":"password",
+    "password_change_screen_sumbit_button":"Update password",
+
+    "password_change_screen_enter_current_password_label":"Please enter current password",
+    "password_change_screen_enter_new_password_label":"Please enter new valid password",
+    "password_change_screen_confirm_new_password_label":"New password should match",
 
     "password_reset_screen_forgot_password_label1": "Forgot",
     "password_reset_screen_forgot_password_label2": "password",

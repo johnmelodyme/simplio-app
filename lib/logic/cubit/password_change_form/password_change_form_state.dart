@@ -3,11 +3,13 @@ part of 'password_change_form_cubit.dart';
 class PasswordChangeFormState extends Equatable {
   final ValidatedPassword oldPassword;
   final ValidatedPassword newPassword;
+  final ValidatedPassword newConfirmedPassword;
   final PasswordChangeFormResponse? response;
 
   const PasswordChangeFormState._({
     required this.oldPassword,
     required this.newPassword,
+    required this.newConfirmedPassword,
     this.response,
   });
 
@@ -15,6 +17,7 @@ class PasswordChangeFormState extends Equatable {
       : this._(
           oldPassword: const ValidatedPassword(),
           newPassword: const ValidatedPassword(),
+          newConfirmedPassword: const ValidatedPassword(),
         );
 
   @override
@@ -27,6 +30,7 @@ class PasswordChangeFormState extends Equatable {
   PasswordChangeFormState copyWith({
     String? oldPassword,
     String? newPassword,
+    String? newConfirmedPassword,
     PasswordChangeFormResponse? response,
   }) {
     return PasswordChangeFormState._(
@@ -35,6 +39,9 @@ class PasswordChangeFormState extends Equatable {
       ),
       newPassword: ValidatedPassword(
         value: newPassword ?? this.newPassword.toString(),
+      ),
+      newConfirmedPassword: ValidatedPassword(
+        value: newConfirmedPassword ?? this.newConfirmedPassword.toString(),
       ),
       response: response ?? this.response,
     );
