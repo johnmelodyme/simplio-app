@@ -178,7 +178,7 @@ class WalletConnectCubit extends Cubit<WalletConnectState> {
 
   @override
   Future<void> close() async {
-    _events?.cancel();
+    await _events?.cancel();
     super.close();
   }
 }

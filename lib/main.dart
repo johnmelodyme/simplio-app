@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:simplio_app/data/http/clients/public_http_client.dart';
 import 'package:simplio_app/data/http/clients/secured_http_client.dart';
+import 'package:simplio_app/data/http/services/account_service.dart';
 import 'package:simplio_app/data/http/services/asset_service.dart';
 import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
+import 'package:simplio_app/data/http/services/buy_service.dart';
 import 'package:simplio_app/data/http/services/games_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
@@ -20,6 +22,7 @@ import 'package:simplio_app/data/providers/wallet_db_provider.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
+import 'package:simplio_app/data/repositories/buy_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/games_repository.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
@@ -54,6 +57,7 @@ class _SimplioAppState extends State<SimplioApp> {
   late AssetRepository assetRepository;
   late WalletConnectRepository walletConnectRepository;
   late FeeRepository feeRepository;
+  late BuyRepository buyRepository;
   late TransactionRepository transactionRepository;
   late GamesRepository gamesRepository;
 
@@ -78,6 +82,7 @@ class _SimplioAppState extends State<SimplioApp> {
         RepositoryProvider.value(value: feeRepository),
         RepositoryProvider.value(value: transactionRepository),
         RepositoryProvider.value(value: gamesRepository),
+        RepositoryProvider.value(value: buyRepository),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc.builder(
@@ -148,6 +153,10 @@ class _SimplioAppState extends State<SimplioApp> {
     );
     feeRepository = FeeRepository.builder(
       assetService: securedApi.service<AssetService>(),
+    );
+    buyRepository = BuyRepository(
+      accountService: securedApi.service<AccountService>(),
+      buyService: securedApi.service<BuyService>(),
     );
 
     transactionRepository = TransactionRepository();
