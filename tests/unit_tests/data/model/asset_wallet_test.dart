@@ -47,6 +47,7 @@ void main() {
         address: '0x',
         decimalPlaces: 16,
         balance: BigInt.zero,
+        fiatBalance: 0,
         isEnabled: true,
       );
       final sol = NetworkWallet(
@@ -56,6 +57,7 @@ void main() {
         address: '0x',
         decimalPlaces: 9,
         balance: BigInt.zero,
+        fiatBalance: 0,
         isEnabled: true,
       );
       final bnb = NetworkWallet(
@@ -65,6 +67,7 @@ void main() {
         address: '0x',
         decimalPlaces: 9,
         balance: BigInt.zero,
+        fiatBalance: 0,
         isEnabled: true,
       );
 
@@ -129,6 +132,7 @@ void main() {
               address: '0x',
               decimalPlaces: 8,
               balance: BigInt.zero,
+              fiatBalance: 0,
               isEnabled: false,
             ),
           ]);

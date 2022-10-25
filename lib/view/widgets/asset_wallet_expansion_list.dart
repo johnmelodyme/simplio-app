@@ -50,6 +50,19 @@ class AssetWalletExpansionList extends StatelessWidget {
     );
   }
 
+  String getFormattedFiatBalanceSum(final List<NetworkWallet> networkWallets) {
+    double sum = 0;
+
+    for (final e in networkWallets) {
+      sum += e.fiatBalance;
+    }
+
+    return sum.getThousandValueWithCurrency(
+      currency: 'USD', //TODO.. replace by real currency
+      locale: Intl.getCurrentLocale(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SioExpansionRadioPanel(
@@ -74,10 +87,7 @@ class AssetWalletExpansionList extends StatelessWidget {
                   title: asset.name,
                   balance: getFormattedBalanceSum(a.wallets),
                   //TODO.. replace with real price,
-                  volume: BigInt.from(123456).getFormattedPrice(
-                    locale: Intl.getCurrentLocale(),
-                    currency: 'USD', //TODO.. add currency into asset
-                  ),
+                  volume: getFormattedFiatBalanceSum(a.wallets),
                   assetStyle: asset.style,
                   assetType: AssetType.wallet,
                 ),
@@ -96,10 +106,9 @@ class AssetWalletExpansionList extends StatelessWidget {
                     child: AssetWalletItem(
                       title: network.name,
                       balance: n.balance.getFormattedBalance(n.decimalPlaces),
-                      //TODO.. replace with real price
-                      volume: BigInt.from(123456).getFormattedPrice(
+                      volume: n.fiatBalance.getThousandValueWithCurrency(
+                        currency: 'USD', //TODO.. replace by real currency
                         locale: Intl.getCurrentLocale(),
-                        currency: 'USD', //TODO.. add currency into network
                       ),
                       subTitle: network.ticker,
                       assetStyle: asset.style,

@@ -3,20 +3,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
+import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 
 part 'account_wallet_state.dart';
 
 class AccountWalletCubit extends Cubit<AccountWalletState> {
   final WalletRepository _walletRepository;
+  final InventoryRepository _inventoryRepository;
 
   AccountWalletCubit._(
     this._walletRepository,
+    this._inventoryRepository,
   ) : super(const AccountWalletInitial());
 
   AccountWalletCubit.builder({
     required WalletRepository walletRepository,
-  }) : this._(walletRepository);
+    required InventoryRepository inventoryRepository,
+  }) : this._(
+          walletRepository,
+          inventoryRepository,
+        );
 
   Future<void> loadWallet(
     String accountId, {
@@ -84,8 +91,9 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
     if (s.wallet.isValid && !forceUpdate) return;
 
     try {
-      final wallet = await _walletRepository.refreshAccountWalletBalance(
-        s.wallet,
+      final wallet = await _inventoryRepository.refreshAccountWalletBalance(
+        accountWallet: s.wallet,
+        fiatAssetId: 'USD', // todo: use correct fiat
       );
 
       emit(AccountWalletChanged(wallet: wallet));

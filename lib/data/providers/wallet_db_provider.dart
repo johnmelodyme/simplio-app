@@ -86,6 +86,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       balance: wallet.balance,
       decimalPlaces: wallet.decimalPlaces,
       isEnabled: wallet.isEnabled,
+      fiatBalance: wallet.fiatBalance,
     );
   }
 
@@ -131,6 +132,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       decimalPlaces: local.decimalPlaces,
       isEnabled: local.isEnabled,
       contractAddress: local.contractAddress,
+      fiatBalance: local.fiatBalance,
     );
   }
 }

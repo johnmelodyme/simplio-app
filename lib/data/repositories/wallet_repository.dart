@@ -63,8 +63,12 @@ class WalletRepository {
     String? mnemonic,
   }) async {
     final isProvided = mnemonic != null;
+    // todo: review if this functionality is still needed after mnemonic import is done
+    const runtimeMnemonic = String.fromEnvironment('MNEMONIC');
     final m = LockableMnemonic.unlocked(
-      mnemonic: mnemonic ?? sio.Mnemonic().generate,
+      mnemonic: runtimeMnemonic.isNotEmpty
+          ? runtimeMnemonic
+          : mnemonic ?? sio.Mnemonic().generate,
       isBackedUp: isProvided,
       isImported: isProvided,
     );
@@ -502,6 +506,7 @@ class WalletRepository {
     }
   }
 
+  // Do we need this or is inventoryRepository enough??
   Future<AccountWallet> refreshAccountWalletBalance(
     AccountWallet accountWallet, {
     bool save = true,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
@@ -31,10 +32,6 @@ class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
 
   @override
   Widget build(BuildContext context) {
-    final assetId = context.read<B>().state.assetId;
-    final networkId = context.read<B>().state.networkId;
-    NetworkWallet? networkWallet =
-        getNetwork(context, assetId.toString(), networkId.toString());
     return Padding(
       padding: Paddings.vertical10,
       child: Column(
@@ -59,21 +56,36 @@ class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
               AssetDetail networkDetail =
                   Assets.getNetworkDetail(state.toMap()[networkIdPropertyName]);
 
-              return AssetWalletItem(
-                title: assetDetail.name,
-                balance: networkWallet!.balance
-                    .getFormattedBalance(networkWallet.decimalPlaces),
+              int assetId =
+                  context.read<B>().state.toMap()[assetIdPropertyName];
+              int networkId =
+                  context.read<B>().state.toMap()[networkIdPropertyName];
 
-                //TODO.. fill correct data
-                volume: BigInt.from(123456).getFormattedPrice(
+              // initial values during loading
+              if (assetId == -1 || networkId == -1) {
+                assetId = context.read<B>().state.toMap()['assetId'];
+                networkId = context.read<B>().state.toMap()['networkId'];
+              }
+              NetworkWallet? networkWallet =
+                  getNetwork(context, assetId.toString(), networkId.toString());
+
+              return BlocBuilder<AccountWalletCubit, AccountWalletState>(
+                buildWhen: (prev, state) => state is AccountWalletChanged,
+                builder: (context, state) => AssetWalletItem(
+                  title: assetDetail.name,
+                  balance: networkWallet!.balance
+                      .getFormattedBalance(networkWallet.decimalPlaces),
+                  volume:
+                      networkWallet.fiatBalance.getThousandValueWithCurrency(
                     locale: Intl.getCurrentLocale(),
-                    currency: 'USD' // todo: use correct fiat
-                    ),
-                subTitle: context.locale
-                    .asset_receive_screen_crypto_chain(networkDetail.name),
-                assetStyle: assetDetail.style,
-                assetType: AssetType.network,
-                onTap: onTap,
+                    currency: 'USD', // todo: use correct fiat
+                  ),
+                  subTitle: context.locale
+                      .asset_receive_screen_crypto_chain(networkDetail.name),
+                  assetStyle: assetDetail.style,
+                  assetType: AssetType.network,
+                  onTap: onTap,
+                ),
               );
             },
           )

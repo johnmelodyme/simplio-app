@@ -65,6 +65,14 @@ class AssetWallet extends Equatable {
     return copyWith(wallets: walletsMap);
   }
 
+  AssetWallet updateNetworkWallet(NetworkWallet wallet) {
+    final index = wallets.indexOf(wallet);
+    List<NetworkWallet> updateWallets = wallets;
+    updateWallets[index] = wallet;
+
+    return updateWalletsFromIterable(updateWallets);
+  }
+
   NetworkWallet? findWallet(String uuid) {
     final res = _wallets.values.where((w) => w.uuid == uuid);
     return res.isEmpty ? null : res.first;

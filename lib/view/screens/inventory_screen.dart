@@ -48,7 +48,7 @@ class InventoryScreen extends StatelessWidget {
                 topSlivers: [
                   const SliverGap(Dimensions.padding16),
                   //todo.. replace by real data
-                  const TotalBalance(balance: 2402.7),
+                  const TotalBalance(),
                   const SliverGap(Dimensions.padding20),
                 ],
                 bottomSlivers: [
@@ -66,7 +66,7 @@ class InventoryScreen extends StatelessWidget {
                 topSlivers: [
                   const SliverGap(Dimensions.padding16),
                   //todo.. replace by real data
-                  const TotalBalance(balance: 2402.7),
+                  const TotalBalance(),
                   const SliverGap(Dimensions.padding20),
                 ],
                 bottomSlivers: [
@@ -80,7 +80,7 @@ class InventoryScreen extends StatelessWidget {
                 topSlivers: [
                   const SliverGap(Dimensions.padding16),
                   //todo.. replace by real data
-                  const TotalBalance(balance: 2402.7),
+                  const TotalBalance(),
                   const SliverGap(Dimensions.padding20),
                 ],
                 bottomSlivers: [

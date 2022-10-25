@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
+import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
@@ -39,6 +40,8 @@ class AuthenticatedApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AccountWalletCubit.builder(
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
+            inventoryRepository:
+                RepositoryProvider.of<InventoryRepository>(context),
           ),
         ),
         BlocProvider(

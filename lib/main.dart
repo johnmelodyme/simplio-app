@@ -10,6 +10,7 @@ import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
 import 'package:simplio_app/data/http/services/buy_service.dart';
 import 'package:simplio_app/data/http/services/games_service.dart';
+import 'package:simplio_app/data/http/services/inventory_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
@@ -25,6 +26,7 @@ import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/data/repositories/buy_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/games_repository.dart';
+import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
@@ -60,6 +62,7 @@ class _SimplioAppState extends State<SimplioApp> {
   late BuyRepository buyRepository;
   late TransactionRepository transactionRepository;
   late GamesRepository gamesRepository;
+  late InventoryRepository inventoryRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +86,7 @@ class _SimplioAppState extends State<SimplioApp> {
         RepositoryProvider.value(value: transactionRepository),
         RepositoryProvider.value(value: gamesRepository),
         RepositoryProvider.value(value: buyRepository),
+        RepositoryProvider.value(value: inventoryRepository),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc.builder(
@@ -158,11 +162,13 @@ class _SimplioAppState extends State<SimplioApp> {
       accountService: securedApi.service<AccountService>(),
       buyService: securedApi.service<BuyService>(),
     );
-
     transactionRepository = TransactionRepository();
-
     gamesRepository = GamesRepository.builder(
       gamesService: securedApi.service<GamesService>(),
+    );
+    inventoryRepository = InventoryRepository(
+      walletDb: walletDbProvider,
+      inventoryService: securedApi.service<InventoryService>(),
     );
   }
 }

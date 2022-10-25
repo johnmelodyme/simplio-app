@@ -49,7 +49,7 @@ class CoinDetailBalance extends StatelessWidget {
                 style: SioTextStyles.h1.apply(color: SioColors.whiteBlue),
               ),
               Text(
-                networkWallet.balance.getFormattedPrice(
+                networkWallet.fiatBalance.getThousandValueWithCurrency(
                   locale: Intl.getCurrentLocale(),
                   currency: 'USD', //TODO.. replace by real currency
                 ),
