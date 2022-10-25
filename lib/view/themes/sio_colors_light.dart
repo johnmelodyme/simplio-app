@@ -42,6 +42,6 @@ abstract class SioColorsLight {
 
   static const attentionGradient = Color(0xFFEE733E);
 
-  static const gameItemStartGradient = Color(0xFF092F45);
-  static const gameItemEndGradient = Color(0xFF0B3B57);
+  static const searchItemStartGradient = Color(0xFF092F45);
+  static const searchItemEndGradient = Color(0xFF0B3B57);
 }

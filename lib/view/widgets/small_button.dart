@@ -60,34 +60,36 @@ class SmallButton extends StatelessWidget {
       );
     }
 
-    return ConstrainedBox(
-      constraints:
-          const BoxConstraints.tightFor(height: Constants.smallButtonHeight),
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-            type == SmallButtonType.bordered
-                ? Colors.transparent
-                : SioColors.secondary1,
+    return ElevatedButton(
+      style: ButtonStyle(
+        minimumSize: MaterialStateProperty.all<Size>(
+          const Size(
+            Constants.minSmallButtonWidth,
+            Constants.smallButtonHeight,
           ),
-          padding: MaterialStateProperty.all<EdgeInsets>(
-            EdgeInsets.zero,
-          ),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-            borderRadius: BorderRadii.radius30,
-            side: type == SmallButtonType.bordered
-                ? BorderSide(
-                    width: 0.5,
-                    color: borderColor!,
-                  )
-                : BorderSide.none,
-          )),
-          elevation: MaterialStateProperty.all<double>(0),
         ),
-        onPressed: onPressed,
-        child: child,
+        backgroundColor: MaterialStateProperty.all<Color>(
+          type == SmallButtonType.bordered
+              ? Colors.transparent
+              : SioColors.secondary1,
+        ),
+        padding: MaterialStateProperty.all<EdgeInsets>(
+          EdgeInsets.zero,
+        ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+          borderRadius: BorderRadii.radius30,
+          side: type == SmallButtonType.bordered
+              ? BorderSide(
+                  width: 0.5,
+                  color: borderColor!,
+                )
+              : BorderSide.none,
+        )),
+        elevation: MaterialStateProperty.all<double>(0),
       ),
+      onPressed: onPressed,
+      child: child,
     );
   }
 }

@@ -6,7 +6,7 @@ Feature: Pin Code Page
     When I expect the text "Log in" to be present within 10 seconds
     And I tap the label that contains the text "Log in"
     And  I fill the "themed-text-form-field" field with "bob@gmail.com"
-    And  I fill the "password-text-field" field with "Password1@"
+    And  I fill the "sign-in-screen-password-text-field" field with "Password1@"
     And  I tap the label that contains the text "Log in"
     Then I expect the text "Set your security code to keep your account secure" to be present within 60 seconds
 
@@ -73,7 +73,7 @@ Feature: Pin Code Page
     When I expect the text "Log in" to be present within 10 seconds
     And I tap the label that contains the text "Log in"
     And  I fill the "themed-text-form-field" field with "bob@gmail.com"
-    And  I fill the "password-text-field" field with "Password1@"
+    And  I fill the "sign-in-screen-password-text-field" field with "Password1@"
     Then I tap the label that contains the text "Log in"
 
     When I expect the text "Enter your pin code." to be present within 10 seconds

@@ -60,7 +60,6 @@ class AssetReceiveScreen extends StatelessWidget with WalletUtilsMixin {
                       context.locale.asset_receive_screen_receive_coins_btn,
                   secondPart: assetDetail.name,
                   actionType: ActionType.close,
-                  onBackTap: () => Navigator.pop(context),
                   onShareTap: () {},
                 ),
               ),

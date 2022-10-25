@@ -2,10 +2,10 @@ import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/asset_search_item.dart';
+import 'package:simplio_app/view/widgets/network_wallet_search_item.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
-import 'package:sio_glyphs/sio_icons.dart';
 
 class CryptoAssetExpansionList extends StatelessWidget {
   final List<CryptoAssetData> children;
@@ -31,36 +31,37 @@ class CryptoAssetExpansionList extends StatelessWidget {
             canTapOnHeader: true,
             headerBuilder: (context, _) {
               return Padding(
-                padding: Paddings.vertical20,
-                child: ListTile(
-                  leading: asset.style.icon,
-                  title: Text(
-                    a.name,
-                    style: SioTextStyles.h5.apply(color: SioColors.whiteBlue),
-                  ),
+                padding: const EdgeInsets.only(
+                  top: Dimensions.padding10,
+                  left: Dimensions.padding16,
+                  right: Dimensions.padding16,
+                ),
+                child: AssetSearchItem(
+                  label: a.name,
+                  priceLabel: '\$12,345.89', //TODO.. replace by real price
+                  assetIcon: asset.style.icon,
+                  assetAction: const [
+                    AssetAction.buy,
+                    AssetAction.addToInventory
+                  ],
+                  onActionPressed: (AssetAction assetAction) {},
                 ),
               );
             },
             body: Column(
               children: a.networks.map((n) {
                 final network = Assets.getNetworkDetail(n.networkId);
-                return ListTile(
-                  title: Text(network.name,
-                      style: SioTextStyles.h5.apply(
-                        color: SioColors.whiteBlue,
-                      )),
-                  subtitle: Text(
-                    network.ticker,
-                    style:
-                        SioTextStyles.bodyS.apply(color: SioColors.secondary7),
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(
-                      SioIcons.plus,
-                      size: 20,
-                    ),
-                    color: SioColors.whiteBlue,
-                    onPressed: () => onTap(n),
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      top: Dimensions.padding4,
+                      left: Dimensions.padding16,
+                      right: Dimensions.padding16),
+                  child: NetworkWalletSearchItem(
+                    title: network.name,
+                    subTitle: network.ticker,
+                    onTap: () {
+                      onTap(n);
+                    },
                   ),
                 );
               }).toList(),

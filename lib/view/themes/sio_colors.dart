@@ -94,11 +94,11 @@ abstract class SioColors {
       ? SioColorsDark.attentionGradient
       : SioColorsLight.attentionGradient;
 
-  static Color get gameItemStartGradient => isDarkMode()
-      ? SioColorsDark.gameItemStartGradient
-      : SioColorsLight.gameItemStartGradient;
+  static Color get searchItemStartGradient => isDarkMode()
+      ? SioColorsDark.searchItemStartGradient
+      : SioColorsLight.searchItemStartGradient;
 
-  static Color get gameItemEndGradient => isDarkMode()
-      ? SioColorsDark.gameItemEndGradient
-      : SioColorsLight.gameItemEndGradient;
+  static Color get searchItemEndGradient => isDarkMode()
+      ? SioColorsDark.searchItemEndGradient
+      : SioColorsLight.searchItemEndGradient;
 }

@@ -161,7 +161,6 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
                       secondPart:
                           context.locale.asset_exchange_screen_coin_label_lc,
                       actionType: ActionType.close,
-                      onBackTap: () => GoRouter.of(context).pop(),
                     ),
                     HighlightedFormElement(
                         key: assetKey,

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -39,6 +40,7 @@ class TwoLinesAppBar extends ColorizedAppBar {
                   alignment: Alignment.centerLeft,
                   child: IconButton(
                     onPressed: () {
+                      GoRouter.of(context).pop();
                       onBackTap?.call();
                     },
                     padding: const EdgeInsets.all(Dimensions.padding16),

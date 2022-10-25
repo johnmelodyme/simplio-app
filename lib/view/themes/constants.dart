@@ -163,6 +163,7 @@ class Dimensions {
   static const double padding16 = 16;
   static const double padding17 = 17;
   static const double padding20 = 20;
+  static const double padding25 = 25;
   static const double padding30 = 30;
   static const double padding32 = 32;
   static const double padding35 = 35;
@@ -191,6 +192,7 @@ class Constants {
   //sizes
   static const double appBarHeight = 76;
   static const double bottomTabBarHeight = 56;
+  static const double assetItemHeight = 160;
   static const double gameItemHeight = 160;
   static const double navigationTabBarHeight = 45;
   static const double searchBarHeight = 44;
@@ -199,6 +201,7 @@ class Constants {
   static const double toggleButtonWidth = 90;
   static const double singleToggleButtonWidth = 48;
   static const double smallButtonHeight = 30;
+  static const double minSmallButtonWidth = 60;
   static const double earningButtonHeight = 49;
   static const double coinsBottomTabBarHeight = 131;
   static const double colorizedAppBarHeight = 54;

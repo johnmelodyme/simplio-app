@@ -72,13 +72,11 @@ class _SearchState extends State<Search> {
                             firstPart: widget.firstPart,
                             secondPart: widget.secondPart,
                             actionType: ActionType.close,
-                            onBackTap: () => Navigator.of(context).pop(),
                           )
                         : ColorizedAppBar(
                             firstPart: widget.firstPart,
                             secondPart: widget.secondPart,
                             actionType: ActionType.close,
-                            onBackTap: () => Navigator.of(context).pop(),
                           ),
                   ),
                 ),

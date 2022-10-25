@@ -86,9 +86,9 @@ class GameItem extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.centerRight,
                     colors: [
-                      SioColors.gameItemStartGradient,
-                      SioColors.gameItemEndGradient,
-                      SioColors.gameItemEndGradient,
+                      SioColors.searchItemStartGradient,
+                      SioColors.searchItemEndGradient,
+                      SioColors.searchItemEndGradient,
                     ],
                     stops: const [0, 0.33, 1],
                   ),
@@ -112,11 +112,11 @@ class GameItem extends StatelessWidget {
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: [
-                      SioColors.gameItemStartGradient,
-                      SioColors.gameItemEndGradient,
-                      SioColors.gameItemEndGradient.withOpacity(0.73),
-                      SioColors.gameItemEndGradient.withOpacity(0.0),
-                      SioColors.gameItemEndGradient.withOpacity(0.0)
+                      SioColors.searchItemStartGradient,
+                      SioColors.searchItemEndGradient,
+                      SioColors.searchItemEndGradient.withOpacity(0.73),
+                      SioColors.searchItemEndGradient.withOpacity(0.0),
+                      SioColors.searchItemEndGradient.withOpacity(0.0)
                     ],
                     stops: const [0, 0.37, 0.45, 0.66, 1.0],
                   ),
@@ -128,7 +128,7 @@ class GameItem extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   highlightColor:
-                      SioColors.gameItemEndGradient.withOpacity(0.73),
+                      SioColors.searchItemEndGradient.withOpacity(0.73),
                   onTap: () => onTap?.call(),
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -176,8 +176,8 @@ class GameItem extends StatelessWidget {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: context
-                                            .locale.game_item_coin_price_label,
+                                        text: context.locale
+                                            .common_item_coin_price_label,
                                         style: SioTextStyles.bodyDetail.apply(
                                           color: SioColors.secondary7,
                                         ),

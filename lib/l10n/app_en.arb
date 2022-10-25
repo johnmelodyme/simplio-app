@@ -89,7 +89,7 @@
         "categoryIndex": {}
       }
     },
-    "game_item_coin_price_label": "Coin price: ",
+    "common_item_coin_price_label": "Coin price: ",
 
     "game_item_action_types": "{actionType, select, play{Play} buyCoin{Buy Coin} remove{Remove} addToMyGames{Add to My Games}}",
     "@game_item_action_types": {
@@ -265,6 +265,15 @@
     "asset_search_screen_search_and_add": "Search & Add",
     "asset_search_screen_coins": "Coins",
     "asset_search_screen_search": "Search",
+
+
+    "asset_item_action_types": "{actionType, select, buy{Buy} addToInventory{Add to Inventory}}",
+    "@asset_item_action_types": {
+      "description": "Game Action type",
+      "placeholders": {
+        "actionType": {}
+      }
+    },
 
     "qr_code_scanner_screen_connect_title": "Connect",
     "qr_code_scanner_screen_wallet_title": "wallet",

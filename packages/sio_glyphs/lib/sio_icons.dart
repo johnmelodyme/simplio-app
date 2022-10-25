@@ -19,162 +19,174 @@ class SioIcons {
   SioIcons._();
 
   static const _kFontFam = 'SioIcons';
-  static const String? _kFontPkg = 'sio_glyphs';
+  static const String _kFontPkg = 'sio_glyphs';
 
-  static const IconData warning_amber =
-      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData west =
-      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData vertical_align_top =
-      IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData verified_user_outline =
-      IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData verified_user =
-      IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData verified =
-      IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData vertical_align_bottom =
-      IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData wallpaper =
-      IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData update_shielded =
-      IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData world =
-      IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData update =
-      IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData west_outline =
-      IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData tune =
-      IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData swap_outline =
-      IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData swap2 =
-      IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData swap =
-      IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData star_border =
-      IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData sports_esports =
-      IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData south_outline =
-      IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData sort =
-      IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData share =
-      IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData settings =
-      IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData search =
-      IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData rocket_swipe =
-      IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData refresh =
-      IconData(0xe818, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData qr_code =
-      IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData plus_rounded =
-      IconData(0xe81a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData plus =
-      IconData(0xe81b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData play =
-      IconData(0xe81c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData pie_chart_outlined =
-      IconData(0xe81d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData percentage =
-      IconData(0xe81e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData onbound =
-      IconData(0xe81f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData north_east_outline =
-      IconData(0xe820, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData north_east =
-      IconData(0xe821, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData nft =
-      IconData(0xe822, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData more_vert =
-      IconData(0xe823, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData locked_account_outline =
-      IconData(0xe824, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData link_broken_outline =
-      IconData(0xe825, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData link_outline =
-      IconData(0xe826, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData link =
-      IconData(0xe827, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData link_broken =
-      IconData(0xe828, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData keyboard_double_arrow_up =
-      IconData(0xe829, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData inventory =
-      IconData(0xe82a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData info_outline =
-      IconData(0xe82b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData south =
-      IconData(0xe82c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData info_bubble =
-      IconData(0xe82d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData info =
-      IconData(0xe82e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData gridview =
+      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData world =
+      IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData lock =
+      IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData time =
+      IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData backward =
+      IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData cup =
+      IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData fire =
+      IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData eye_hide =
+      IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sports_esports =
+      IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData west_outline =
+      IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData west =
+      IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData warning_amber =
+      IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData vertical_align_top =
+      IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData vertical_align_bottom =
+      IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData wallpaper =
+      IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData verified_user_outline =
+      IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData verified_user =
+      IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData verified =
+      IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData update_shielded =
+      IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData update =
+      IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData tune =
+      IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData swap2 =
+      IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData swap_outline =
+      IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData swap =
+      IconData(0xe818, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData star_border =
+      IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData south_outline =
+      IconData(0xe81a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData south =
+      IconData(0xe81b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sort =
+      IconData(0xe81c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData share =
+      IconData(0xe81d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData settings =
+      IconData(0xe81e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData rocket_swipe =
+      IconData(0xe81f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData search =
+      IconData(0xe820, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData qr_code =
+      IconData(0xe821, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData refresh =
+      IconData(0xe822, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData plus_rounded =
+      IconData(0xe823, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData plus =
+      IconData(0xe824, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData pie_chart_outlined =
+      IconData(0xe825, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData play =
+      IconData(0xe826, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData percentage =
+      IconData(0xe827, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData onbound =
+      IconData(0xe828, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData north_east_outline =
+      IconData(0xe829, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData north_east =
+      IconData(0xe82a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData nft =
+      IconData(0xe82b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData more_vert =
+      IconData(0xe82c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData link_outline =
+      IconData(0xe82d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData link_broken_outline =
+      IconData(0xe82e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData locked_account_outline =
       IconData(0xe82f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData fingerprint =
+  static const IconData link_broken =
       IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData eye_filled =
+  static const IconData link =
       IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData eye =
+  static const IconData keyboard_double_arrow_up =
       IconData(0xe832, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData edit =
+  static const IconData info_outline =
       IconData(0xe833, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData error_outline =
+  static const IconData info_bubble =
       IconData(0xe834, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData east_outline =
+  static const IconData info =
       IconData(0xe835, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData east =
+  static const IconData fingerprint =
       IconData(0xe836, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData done =
+  static const IconData eye_filled =
       IconData(0xe837, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData diamond =
+  static const IconData eye =
       IconData(0xe838, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData dialogue =
+  static const IconData error_outline =
       IconData(0xe839, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData credit_card =
+  static const IconData edit =
       IconData(0xe83a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData copy_dash =
+  static const IconData east_outline =
       IconData(0xe83b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData copy =
+  static const IconData east =
       IconData(0xe83c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData compass =
+  static const IconData done =
       IconData(0xe83d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData coins =
+  static const IconData diamond =
       IconData(0xe83e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData cancel_outline =
+  static const IconData dialogue =
       IconData(0xe83f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData cancel =
+  static const IconData credit_card =
       IconData(0xe840, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData camera =
+  static const IconData copy_dash =
       IconData(0xe841, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData bell =
+  static const IconData copy =
       IconData(0xe842, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData basket =
+  static const IconData compass =
       IconData(0xe843, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData axe =
+  static const IconData coins =
       IconData(0xe844, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData award =
+  static const IconData cancel =
       IconData(0xe845, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData arrow_top =
+  static const IconData cancel_outline =
       IconData(0xe846, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData arrow_right =
+  static const IconData camera =
       IconData(0xe847, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData arrow_left =
+  static const IconData bell =
       IconData(0xe848, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData arrow_forward =
+  static const IconData basket =
       IconData(0xe849, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData arrow_circle_up =
+  static const IconData axe =
       IconData(0xe84a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData arrow_circle_down =
+  static const IconData award =
       IconData(0xe84b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData arrow_bottom =
+  static const IconData arrow_top =
       IconData(0xe84c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData arrow_back =
+  static const IconData arrow_right =
       IconData(0xe84d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrow_left =
+      IconData(0xe84e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrow_forward =
+      IconData(0xe84f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrow_circle_down =
+      IconData(0xe850, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrow_circle_up =
+      IconData(0xe851, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrow_bottom =
+      IconData(0xe852, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrow_back =
+      IconData(0xe853, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
