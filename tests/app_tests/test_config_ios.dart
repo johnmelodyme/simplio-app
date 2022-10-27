@@ -8,6 +8,7 @@ import './steps/click_button_with_key.dart';
 import './steps/click_button_with_tooltip.dart';
 import './steps/wait_x_seconds.dart';
 import './steps/text_exists_step_with_time.dart';
+import 'steps/tap_widget_with_text.dart';
 
 Future<void> main() {
   Map<String, String> envVars = Platform.environment;
@@ -27,6 +28,7 @@ Future<void> main() {
       tapWidgetWithTheKey(),
       waitXSeconds(),
       textExistsWithTimeStep(),
+      tapWidgetWithTextWithinTimeStep(),
     ]
     ..targetAppPath = "tests/app_tests/app.dart"
     ..dartDefineArgs = ['TEST_RUN=true', 'API_URL=$apiUrl', 'API_KEY=$apiKey']
