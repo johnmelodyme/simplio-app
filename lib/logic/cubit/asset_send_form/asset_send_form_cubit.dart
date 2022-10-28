@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
+import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/logic/extensions/double_extensions.dart';
@@ -30,18 +31,17 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
         );
 
   void changeFormValue({
-    int? assetId,
-    int? networkId,
+    AssetWallet? sourceAssetWallet,
+    NetworkWallet? sourceNetworkWallet,
     String? toAddress,
     String? nextAmountDigit,
     String? nextAmountFiatDigit,
     String? totalAmount,
-    NetworkWallet? networkWallet,
     AmountUnit? amountUnit,
   }) {
     final newState = state.copyWith(
-      assetId: assetId,
-      networkId: networkId,
+      sourceAssetWallet: sourceAssetWallet,
+      sourceNetworkWallet: sourceNetworkWallet,
       toAddress: toAddress,
       amount: nextAmountDigit != null
           ? '${state.amount == '0' ? '' : state.amount}$nextAmountDigit'
@@ -51,7 +51,6 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
           : null,
       totalAmount: totalAmount,
       amountUnit: amountUnit,
-      networkWallet: networkWallet,
     );
 
     emit(newState);
@@ -188,12 +187,11 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
     });
   }
 
-  void maxAmountClicked(NetworkWallet networkWallet) async {
+  void maxAmountClicked() async {
     emit(
       state.copyWith(
-        amount: networkWallet.balance
-            .getFormattedBalance(networkWallet.decimalPlaces)
-            .toString(),
+        amount: state.sourceNetworkWallet.balance
+            .getFormattedBalance(state.sourceNetworkWallet.decimalPlaces),
       ),
     );
   }
@@ -201,9 +199,18 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
   Future<void> builtTxState(String accountWalletId) async {
     emit(state.copyWith(response: const FetchingFeesPending()));
 
+    if (state.toAddress == '') throw Exception('Empty target address');
+
+    final targetAddressIsValid = _walletRepository.isValidAddress(
+      address: state.toAddress,
+      networkId: state.sourceNetworkWallet.networkId,
+    );
+
+    if (!targetAddressIsValid) throw Exception('Target address is not valid');
+
     final fees = await _feeRepository.loadFees(
-      assetId: state.assetId,
-      networkId: state.networkId,
+      assetId: state.sourceAssetWallet.assetId,
+      networkId: state.sourceNetworkWallet.networkId,
     );
 
     BigInt fee = BigInt.zero;
@@ -221,18 +228,18 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
     }
     final WalletTransaction tx = await _walletRepository.signTransaction(
       accountWalletId,
-      networkId: state.networkId,
+      networkId: state.sourceNetworkWallet.networkId,
       toAddress: state.toAddress,
       amount: BigInt.zero,
       feeAmount: fee,
       gasLimit: fees.gasLimit,
-      assetDecimals: state.networkWallet.decimalPlaces,
-      contractAddress: state.networkWallet.contractAddress ?? '',
+      assetDecimals: state.sourceNetworkWallet.decimalPlaces,
+      contractAddress: state.sourceNetworkWallet.contractAddress,
     );
-    // todo: handle FetchingFeesFailure
+    // TODO: handle FetchingFeesFailure
 
-    final networkFee =
-        tx.networkFee.getFormattedBalance(state.networkWallet.decimalPlaces);
+    final networkFee = tx.networkFee
+        .getFormattedBalance(state.sourceNetworkWallet.decimalPlaces);
     emit(state.copyWith(
       baseNetworkFee: fee,
       gasLimit: fees.gasLimit,
@@ -242,29 +249,27 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
     ));
   }
 
-  void submitForm(String accountWalletId) async {
-    if (state.networkWallet.contractAddress == null) {
-      if (state.amountToSend(state.networkWallet.decimalPlaces) < BigInt.zero) {
+  Future<void> submitForm(String accountWalletId) async {
+    if (state.sourceNetworkWallet.contractAddress == null) {
+      if (state.amountToSend < BigInt.zero) {
         throw Exception('Amount to send can\'t be negative');
       }
     }
 
-    // TODO: add full Pubkey validation from sio_core_light after implementation
-    if (state.toAddress == '') throw Exception('Invalid toAddress');
-
-    final amount = state.networkWallet.contractAddress == null
-        ? state.amountToSend(state.networkWallet.decimalPlaces)
-        : doubleStringToBigInt(state.amount, state.networkWallet.decimalPlaces);
+    final amount = state.sourceNetworkWallet.contractAddress == null
+        ? state.amountToSend
+        : doubleStringToBigInt(
+            state.amount, state.sourceNetworkWallet.decimalPlaces);
 
     final WalletTransaction tx = await _walletRepository.signTransaction(
       accountWalletId,
-      networkId: state.networkId,
+      networkId: state.sourceNetworkWallet.networkId,
       toAddress: state.toAddress,
       amount: amount,
       feeAmount: state.baseNetworkFee,
       gasLimit: state.gasLimit,
-      assetDecimals: state.networkWallet.decimalPlaces,
-      contractAddress: state.networkWallet.contractAddress,
+      assetDecimals: state.sourceNetworkWallet.decimalPlaces,
+      contractAddress: state.sourceNetworkWallet.contractAddress,
     );
 
     final String txHash = await _walletRepository.broadcastTransaction(tx);

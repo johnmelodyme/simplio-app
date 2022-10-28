@@ -42,8 +42,8 @@ class _AssetSendSummaryScreen extends State<AssetSendSummaryScreen> {
       listener: (context, state) {
         GoRouter.of(context)
             .replaceNamed(AuthenticatedRouter.assetSendSuccess, params: {
-          'assetId': state.assetId.toString(),
-          'networkId': state.networkId.toString(),
+          'assetId': state.sourceAssetWallet.assetId.toString(),
+          'networkId': state.sourceNetworkWallet.networkId.toString(),
         });
       },
       child: Container(
@@ -116,7 +116,7 @@ class _TotalAmount extends StatelessWidget {
                     children: [
                       TextSpan(
                         text:
-                            '${state.totalAmount} ${Assets.getAssetDetail(state.assetId).ticker}',
+                            '${state.totalAmount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
                         style: SioTextStyles.h4.apply(
                           color: SioColors.mentolGreen,
                         ),
@@ -149,7 +149,7 @@ class _Fee extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AssetSendFormCubit, AssetSendFormState>(
       buildWhen: (prev, curr) =>
-          prev.networkId != curr.networkId ||
+          prev.sourceNetworkWallet != curr.sourceNetworkWallet ||
           prev.networkFee != curr.networkFee,
       builder: (context, state) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +164,7 @@ class _Fee extends StatelessWidget {
           Row(
             children: [
               Text(
-                '${state.networkFee} ${Assets.getAssetDetail(state.networkId).ticker}',
+                '${state.networkFee} ${Assets.getAssetDetail(state.networkAssetId).ticker}',
                 style: SioTextStyles.bodyPrimary.copyWith(
                   color: SioColors.whiteBlue,
                 ),
@@ -208,7 +208,7 @@ class _Amount extends StatelessWidget {
           );
         } else {
           fee = Text(
-            '${state.networkWallet.contractAddress == null ? state.amountToSend(state.networkWallet.decimalPlaces).getFormattedBalance(state.networkWallet.decimalPlaces).toString() : state.amount} ${Assets.getAssetDetail(state.assetId).ticker}',
+            '${state.sourceNetworkWallet.contractAddress == null ? state.amountToSend.getFormattedBalance(state.sourceNetworkWallet.decimalPlaces) : state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
             style: SioTextStyles.bodyPrimary.apply(color: SioColors.whiteBlue),
           );
         }
@@ -361,8 +361,8 @@ class _AppBar extends StatelessWidget {
           GoRouter.of(context).replaceNamed(
             AuthenticatedRouter.assetSend,
             params: {
-              'assetId': state.assetId.toString(),
-              'networkId': state.networkId.toString(),
+              'assetId': state.sourceAssetWallet.assetId.toString(),
+              'networkId': state.sourceNetworkWallet.networkId.toString(),
             },
             extra: state,
           );

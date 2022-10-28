@@ -5,6 +5,7 @@ import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
+import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
@@ -42,6 +43,7 @@ class AuthenticatedApp extends StatelessWidget {
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
             inventoryRepository:
                 RepositoryProvider.of<InventoryRepository>(context),
+            swapRepository: RepositoryProvider.of<SwapRepository>(context),
           ),
         ),
         BlocProvider(
@@ -53,7 +55,13 @@ class AuthenticatedApp extends StatelessWidget {
           ),
         ),
         BlocProvider(create: (_) => TabBarCubit()),
-        BlocProvider(create: (context) => AssetExchangeFormCubit.builder()),
+        BlocProvider(
+          create: (context) => AssetExchangeFormCubit(
+            swapRepository: RepositoryProvider.of<SwapRepository>(context),
+            feeRepository: RepositoryProvider.of<FeeRepository>(context),
+            walletRepository: RepositoryProvider.of<WalletRepository>(context),
+          ),
+        ),
         BlocProvider(
           create: (context) => AssetSendFormCubit.builder(
             feeRepository: RepositoryProvider.of<FeeRepository>(context),

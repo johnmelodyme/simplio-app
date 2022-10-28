@@ -67,6 +67,7 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
                   child: TwoLinesAppBar(
                     firstPart: networkDetail.name,
                     secondPart: networkDetail.ticker,
+                    onBackTap: () => Navigator.of(context).pop(),
                   ),
                 ),
               ),

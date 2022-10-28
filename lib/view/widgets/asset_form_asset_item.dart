@@ -2,6 +2,7 @@ import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
@@ -17,15 +18,17 @@ class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
     extends StatelessWidget with WalletUtilsMixin {
   final String label;
   final bool highlighted;
-  final String assetIdPropertyName;
-  final String networkIdPropertyName;
+  final String sourceAssetWalletPropertyName;
+  final String sourceNetworkWalletPropertyName;
   final GestureTapCallback? onTap;
+  final bool isLoading;
 
   AssetFormAssetItem({
     required this.label,
     this.highlighted = false,
-    this.assetIdPropertyName = 'assetId',
-    this.networkIdPropertyName = 'networkId',
+    this.sourceAssetWalletPropertyName = 'sourceAssetWallet',
+    this.sourceNetworkWalletPropertyName = 'sourceNetworkWallet',
+    this.isLoading = false,
     this.onTap,
     super.key,
   });
@@ -46,45 +49,79 @@ class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
           Gaps.gap5,
           BlocBuilder<B, S>(
             buildWhen: (prev, curr) =>
-                prev.toMap()[assetIdPropertyName] !=
-                    curr.toMap()[assetIdPropertyName] ||
-                prev.toMap()[networkIdPropertyName] !=
-                    curr.toMap()[networkIdPropertyName],
+                prev.toMap()[sourceAssetWalletPropertyName] !=
+                    curr.toMap()[sourceAssetWalletPropertyName] ||
+                prev.toMap()[sourceNetworkWalletPropertyName] !=
+                    curr.toMap()[sourceNetworkWalletPropertyName],
             builder: (context, state) {
-              AssetDetail assetDetail =
-                  Assets.getAssetDetail(state.toMap()[assetIdPropertyName]);
-              AssetDetail networkDetail =
-                  Assets.getNetworkDetail(state.toMap()[networkIdPropertyName]);
+              final AssetWallet assetWallet =
+                  state.toMap()[sourceAssetWalletPropertyName];
+              final NetworkWallet networkWallet =
+                  state.toMap()[sourceNetworkWalletPropertyName];
 
-              int assetId =
-                  context.read<B>().state.toMap()[assetIdPropertyName];
-              int networkId =
-                  context.read<B>().state.toMap()[networkIdPropertyName];
+              AssetDetail assetDetail =
+                  Assets.getAssetDetail(assetWallet.assetId);
+              AssetDetail networkDetail =
+                  Assets.getNetworkDetail(networkWallet.networkId);
+
+              // final assetId = context.read<B>().state.sourceAssetWallet.assetId;
+              // final networkId =
+              //     context.read<B>().state.sourceNetworkWallet.networkId;
+              // NetworkWallet? networkWallet =
+              // getNetwork(context, assetId.toString(), networkId.toString());
+
+              // int assetId =
+              //     context.read<B>().state.toMap()[assetIdPropertyName];
+              // int networkId =
+              //     context.read<B>().state.toMap()[networkIdPropertyName];
 
               // initial values during loading
-              if (assetId == -1 || networkId == -1) {
-                assetId = context.read<B>().state.toMap()['assetId'];
-                networkId = context.read<B>().state.toMap()['networkId'];
-              }
-              NetworkWallet? networkWallet =
-                  getNetwork(context, assetId.toString(), networkId.toString());
+              // if (assetId == -1 || networkId == -1) {
+              //   assetId = context.read<B>().state.toMap()['assetId'];
+              //   networkId = context.read<B>().state.toMap()['networkId'];
+              // }
+              // NetworkWallet? networkWallet =
+              //     getNetwork(context, assetId.toString(), networkId.toString());
 
               return BlocBuilder<AccountWalletCubit, AccountWalletState>(
                 buildWhen: (prev, state) => state is AccountWalletChanged,
-                builder: (context, state) => AssetWalletItem(
-                  title: assetDetail.name,
-                  balance: networkWallet!.balance
-                      .getFormattedBalance(networkWallet.decimalPlaces),
-                  volume:
-                      networkWallet.fiatBalance.getThousandValueWithCurrency(
-                    locale: Intl.getCurrentLocale(),
-                    currency: 'USD', // todo: use correct fiat
-                  ),
-                  subTitle: context.locale
-                      .asset_receive_screen_crypto_chain(networkDetail.name),
-                  assetStyle: assetDetail.style,
-                  assetType: AssetType.network,
-                  onTap: onTap,
+                builder: (context, state) => Stack(
+                  children: [
+                    Opacity(
+                      opacity: isLoading ? 0.2 : 1,
+                      child: AssetWalletItem(
+                        title: assetDetail.name,
+                        balance: networkWallet.balance
+                            .getFormattedBalance(networkWallet.decimalPlaces),
+                        volume: networkWallet.fiatBalance
+                            .getThousandValueWithCurrency(
+                          locale: Intl.getCurrentLocale(),
+                          currency: 'USD', // todo: use correct fiat
+                        ),
+                        subTitle: context.locale
+                            .asset_receive_screen_crypto_chain(
+                                networkDetail.name),
+                        assetStyle: assetDetail.style,
+                        assetType: AssetType.network,
+                        onTap: isLoading ? null : onTap,
+                      ),
+                    ),
+                    if (isLoading)
+                      SizedBox(
+                        height: getHeightByType(AssetType.network),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              context.locale.common_loading_with_dots,
+                              style: SioTextStyles.bodyS.copyWith(
+                                color: SioColors.highlight1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                  ],
                 ),
               );
             },

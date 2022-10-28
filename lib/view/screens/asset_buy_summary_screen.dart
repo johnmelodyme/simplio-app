@@ -29,8 +29,8 @@ class AssetBuySummaryScreen extends StatelessWidget {
             GoRouter.of(context).replaceNamed(
               AuthenticatedRouter.assetBuyPaymentGateway,
               params: {
-                'assetId': state.assetId.toString(),
-                'networkId': state.networkId.toString(),
+                'assetId': state.sourceAssetWallet.assetId.toString(),
+                'networkId': state.sourceNetworkWallet.networkId.toString(),
               },
             );
           },
@@ -45,8 +45,8 @@ class AssetBuySummaryScreen extends StatelessWidget {
             GoRouter.of(context).replaceNamed(
               AuthenticatedRouter.assetBuyConfirmation,
               params: {
-                'assetId': state.assetId.toString(),
-                'networkId': state.networkId.toString(),
+                'assetId': state.sourceAssetWallet.assetId.toString(),
+                'networkId': state.sourceNetworkWallet.networkId.toString(),
               },
             );
           },
@@ -61,8 +61,8 @@ class AssetBuySummaryScreen extends StatelessWidget {
             GoRouter.of(context).replaceNamed(
               AuthenticatedRouter.assetBuySuccess,
               params: {
-                'assetId': state.assetId.toString(),
-                'networkId': state.networkId.toString(),
+                'assetId': state.sourceAssetWallet.assetId.toString(),
+                'networkId': state.sourceNetworkWallet.networkId.toString(),
               },
             );
           },
@@ -139,7 +139,8 @@ class _AmountToBuy extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
       buildWhen: (prev, curr) =>
-          prev.assetId != curr.assetId || prev.amount != curr.amount,
+          prev.sourceAssetWallet != curr.sourceAssetWallet ||
+          prev.amount != curr.amount,
       builder: (context, state) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -153,7 +154,7 @@ class _AmountToBuy extends StatelessWidget {
           Row(
             children: [
               Text(
-                '${state.fee} ${Assets.getAssetDetail(state.assetId).ticker}',
+                '${state.fee} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
                 style: SioTextStyles.bodyPrimary.copyWith(
                   color: SioColors.whiteBlue,
                 ),
@@ -186,7 +187,8 @@ class _Fee extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
       buildWhen: (prev, curr) =>
-          prev.assetId != curr.assetId || prev.amount != curr.amount,
+          prev.sourceAssetWallet != curr.sourceAssetWallet ||
+          prev.amount != curr.amount,
       builder: (context, state) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -200,7 +202,7 @@ class _Fee extends StatelessWidget {
           Row(
             children: [
               Text(
-                '${state.amount} ${Assets.getAssetDetail(state.assetId).ticker}',
+                '${state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
                 style: SioTextStyles.bodyPrimary
                     .copyWith(color: SioColors.whiteBlue),
               ),
@@ -351,7 +353,7 @@ class _InTotalToBuy extends StatelessWidget {
                     children: [
                       TextSpan(
                         text:
-                            '${state.totalAmountToBuy} ${Assets.getAssetDetail(state.assetId).ticker}',
+                            '${state.totalAmountToBuy} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
                         style: SioTextStyles.h4.apply(
                           color: SioColors.mentolGreen,
                         ),
@@ -398,8 +400,8 @@ class _AppBar extends StatelessWidget {
         GoRouter.of(context).replaceNamed(
           AuthenticatedRouter.assetBuy,
           params: {
-            'assetId': state.assetId.toString(),
-            'networkId': state.networkId.toString(),
+            'assetId': state.sourceAssetWallet.assetId.toString(),
+            'networkId': state.sourceNetworkWallet.networkId.toString(),
           },
         );
       },

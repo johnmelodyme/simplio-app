@@ -300,8 +300,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                     pageBuilder: pageBuilder(
                       builder: (state) => Builder(
                         builder: (context) => AssetSendScreen(
-                          assetId: state.params['assetId'],
-                          networkId: state.params['networkId'],
+                          sourceAssetId: state.params['assetId'],
+                          sourceNetworkId: state.params['networkId'],
                         ),
                       ),
                       settings: const ApplicationSettings.hiddenTabBar(),
@@ -355,8 +355,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                     name: assetExchange,
                     pageBuilder: pageBuilder(
                       builder: (state) => AssetExchangeScreen(
-                        assetId: state.params['assetId'],
-                        networkId: state.params['networkId'],
+                        sourceAssetId: state.params['assetId'],
+                        sourceNetworkId: state.params['networkId'],
                       ),
                       settings: const ApplicationSettings.hiddenTabBar(),
                     ),

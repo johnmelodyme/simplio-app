@@ -4,6 +4,7 @@ import 'package:simplio_app/data/model/account_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
+import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 
 part 'account_wallet_state.dart';
@@ -11,18 +12,22 @@ part 'account_wallet_state.dart';
 class AccountWalletCubit extends Cubit<AccountWalletState> {
   final WalletRepository _walletRepository;
   final InventoryRepository _inventoryRepository;
+  final SwapRepository _swapRepository;
 
   AccountWalletCubit._(
     this._walletRepository,
     this._inventoryRepository,
+    this._swapRepository,
   ) : super(const AccountWalletInitial());
 
   AccountWalletCubit.builder({
     required WalletRepository walletRepository,
     required InventoryRepository inventoryRepository,
+    required SwapRepository swapRepository,
   }) : this._(
           walletRepository,
           inventoryRepository,
+          swapRepository,
         );
 
   Future<void> loadWallet(
@@ -46,6 +51,8 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
   Future<void> enableNetworkWallet(NetworkData data) async {
     final s = state;
     if (s is! AccountWalletProvided) return;
+
+    _swapRepository.clearSwapRoutesCache();
 
     try {
       final accountWallet = await _walletRepository.enableNetworkWallet(

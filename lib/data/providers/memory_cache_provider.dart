@@ -10,12 +10,14 @@ class MemoryCacheProvider<T> implements Cache {
   DateTime _updatedAt;
   T _initialData;
   T _data;
+  bool _populated;
 
   MemoryCacheProvider._(
     this._updatedAt,
     this._lifetime,
     this._initialData,
     this._data,
+    this._populated,
   );
 
   MemoryCacheProvider.builder({
@@ -26,12 +28,13 @@ class MemoryCacheProvider<T> implements Cache {
           lifetimeInSeconds,
           initialData,
           initialData,
+          false,
         );
 
   @override
   bool get isValid {
-    final expiresAt = _updatedAt.microsecondsSinceEpoch + (_lifetime * 1000);
-    return DateTime.now().microsecondsSinceEpoch <= expiresAt;
+    final expiresAt = _updatedAt.millisecondsSinceEpoch + (_lifetime * 1000);
+    return _populated && DateTime.now().millisecondsSinceEpoch <= expiresAt;
   }
 
   @override
@@ -41,8 +44,12 @@ class MemoryCacheProvider<T> implements Cache {
   void write(data) {
     _updatedAt = DateTime.now();
     _data = data;
+    _populated = true;
   }
 
   @override
-  void clear() => _data = _initialData;
+  void clear() {
+    _populated = false;
+    _data = _initialData;
+  }
 }

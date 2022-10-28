@@ -14,6 +14,7 @@ import 'package:simplio_app/data/http/services/games_service.dart';
 import 'package:simplio_app/data/http/services/inventory_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
+import 'package:simplio_app/data/http/services/swap_service.dart';
 import 'package:simplio_app/data/http/services/transaction_history_service.dart';
 import 'package:simplio_app/data/model/auth_token.dart';
 import 'package:simplio_app/data/providers/storage_provider.dart';
@@ -42,6 +43,7 @@ class SecuredHttpClient extends HttpClient {
               ...AccountService.converter(),
               ...BuyService.converter(),
               ...InventoryService.converter(),
+              ...SwapService.converter(),
             }),
             authenticator: RefreshTokenAuthenticator(
               authTokenStorage: authTokenStorage,
@@ -62,6 +64,7 @@ class SecuredHttpClient extends HttpClient {
               AccountService.create(),
               BuyService.create(),
               InventoryService.create(),
+              SwapService.create(),
             ],
           ),
         );

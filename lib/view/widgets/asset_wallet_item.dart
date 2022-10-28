@@ -5,6 +5,14 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 
+double getHeightByType(AssetType assetType) {
+  return assetType == AssetType.wallet ? 70 : 50;
+}
+
+double getAvatarSize(AssetType assetType) {
+  return assetType == AssetType.wallet ? 40 : 29;
+}
+
 class AssetWalletItem extends StatelessWidget {
   const AssetWalletItem({
     required this.title,
@@ -25,14 +33,6 @@ class AssetWalletItem extends StatelessWidget {
   final GestureTapCallback? onTap;
   final AssetType assetType;
 
-  double getHeightByType() {
-    return assetType == AssetType.wallet ? 70 : 50;
-  }
-
-  double getAvatarSize() {
-    return assetType == AssetType.wallet ? 40 : 29;
-  }
-
   TextStyle getTextStyle() {
     return assetType == AssetType.wallet
         ? SioTextStyles.h5
@@ -44,7 +44,7 @@ class AssetWalletItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: getHeightByType(),
+        height: getHeightByType(assetType),
         decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -59,7 +59,7 @@ class AssetWalletItem extends StatelessWidget {
           padding: Paddings.horizontal16,
           child: Row(children: [
             AvatarWithShadow(
-              size: getAvatarSize(),
+              size: getAvatarSize(assetType),
               child: assetStyle.icon,
             ),
             Gaps.gap10,

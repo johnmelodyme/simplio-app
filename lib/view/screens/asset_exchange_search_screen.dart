@@ -39,25 +39,6 @@ class _AssetExchangeSearchScreen extends State<AssetExchangeSearchScreen> {
   List<AssetWallet> availableWallets = [];
 
   @override
-  void initState() {
-    final state = context.read<AccountWalletCubit>().state;
-
-    if (state is! AccountWalletProvided) {
-      throw Exception('No AccountWallet Provided');
-      // todo: add notification for the user when the snackbar task is done
-    }
-
-    widget.fromSearch
-        ? context
-            .read<AssetExchangeFormCubit>()
-            .loadFromSearchInitialData(state.wallet.wallets)
-        : context
-            .read<AssetExchangeFormCubit>()
-            .loadTargetSearchInitialData(state.wallet.wallets);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final accountWalletState = context.read<AccountWalletCubit>().state;
     if (accountWalletState is! AccountWalletProvided) {
@@ -75,50 +56,52 @@ class _AssetExchangeSearchScreen extends State<AssetExchangeSearchScreen> {
       searchController: widget.searchController,
       appBarStyle: AppBarStyle.multiColored,
       child: BlocBuilder<AssetExchangeFormCubit, AssetExchangeFormState>(
-        buildWhen: (prev, curr) =>
-            curr.response is AssetSearchFromSuccess ||
-            curr.response is AssetSearchFromFailure ||
-            curr.response is AssetSearchFromPending,
         builder: (context, state) {
           final response = state.response;
-          if (response is AssetSearchFromSuccess) {
-            availableWallets = response.availableWallets;
-            _search(widget.searchController.text);
-
-            return SingleChildScrollView(
-              child: AssetWalletExpansionList(
-                assetWallets: filteredWallets,
-                onTap: (assetWallet, networkWallet) {
-                  if (widget.fromSearch) {
-                    context.read<AssetExchangeFormCubit>().changeFormValue(
-                          assetId: assetWallet.assetId,
-                          networkId: networkWallet.networkId,
-                        );
-
-                    context.read<AssetExchangeFormCubit>().onFromAssetChange(
-                        assetId: assetWallet.assetId,
-                        networkId: networkWallet.networkId,
-                        availableWallets: availableWallets);
-                  } else {
-                    context.read<AssetExchangeFormCubit>().changeFormValue(
-                          targetAssetId: assetWallet.assetId,
-                          targetNetworkId: networkWallet.networkId,
-                        );
-                  }
-                  GoRouter.of(context).pop();
-                },
+          if (response is SearchAssetsLoading) {
+            return const Center(
+              child: Padding(
+                padding: Paddings.bottom32,
+                child: ListLoading(),
               ),
             );
           }
 
-          if (response is AssetSearchFromFailure) {
+          if (response is SearchAssetsFailure) {
             // todo: add proper error handling
           }
 
-          return const Center(
-            child: Padding(
-              padding: Paddings.bottom32,
-              child: ListLoading(),
+          availableWallets = widget.fromSearch
+              ? state.availableFromAssets
+              : state.availableTargetAssets;
+
+          _search(widget.searchController.text);
+
+          return SingleChildScrollView(
+            child: AssetWalletExpansionList(
+              assetWallets: filteredWallets,
+              onTap: (assetWallet, networkWallet) {
+                if (widget.fromSearch) {
+                  context.read<AssetExchangeFormCubit>().changeAssetWallets(
+                        sourceAssetWallet: assetWallet,
+                        sourceNetworkWallet: networkWallet,
+                      );
+
+                  context
+                      .read<AssetExchangeFormCubit>()
+                      .loadAvailableTargetPairs(
+                        availableWallets,
+                        assetWallet.assetId,
+                        networkWallet.networkId,
+                      );
+                } else {
+                  context.read<AssetExchangeFormCubit>().changeAssetWallets(
+                        targetAssetWallet: assetWallet,
+                        targetNetworkWallet: networkWallet,
+                      );
+                }
+                GoRouter.of(context).pop();
+              },
             ),
           );
         },

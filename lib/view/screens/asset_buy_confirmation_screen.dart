@@ -28,8 +28,8 @@ class AssetBuyConfirmationScreen extends StatelessWidget {
             GoRouter.of(context).replaceNamed(
                 AuthenticatedRouter.assetBuyPaymentGateway,
                 params: {
-                  'assetId': state.assetId.toString(),
-                  'networkId': state.networkId.toString(),
+                  'assetId': state.sourceAssetWallet.assetId.toString(),
+                  'networkId': state.sourceNetworkWallet.networkId.toString(),
                 });
           }
         },
@@ -39,8 +39,8 @@ class AssetBuyConfirmationScreen extends StatelessWidget {
             GoRouter.of(context).replaceNamed(
               AuthenticatedRouter.assetBuySummary,
               params: {
-                'assetId': state.assetId.toString(),
-                'networkId': state.networkId.toString(),
+                'assetId': state.sourceAssetWallet.assetId.toString(),
+                'networkId': state.sourceNetworkWallet.networkId.toString(),
               },
             );
           },
@@ -93,7 +93,7 @@ class AssetBuyConfirmationScreen extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '${response.newTotalAmount} ${Assets.getNetworkDetail(state.networkId).ticker}',
+                            '${response.newTotalAmount} ${Assets.getNetworkDetail(state.sourceNetworkWallet.networkId).ticker}',
                             style: SioTextStyles.bodyPrimary.copyWith(
                               color: SioColors.softBlack,
                             ),

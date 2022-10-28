@@ -1,8 +1,12 @@
 part of 'asset_exchange_form_cubit.dart';
 
+enum AmountUnit { crypto, fiat }
+
+enum FocusedDirection { from, to }
+
 abstract class AssetFormState {
-  abstract final int assetId;
-  abstract final int networkId;
+  abstract final AssetWallet sourceAssetWallet;
+  abstract final NetworkWallet sourceNetworkWallet;
 
   Map<String, dynamic> toMap();
 }
@@ -18,112 +22,187 @@ abstract class AssetFormExceptions {
 class AssetExchangeFormState extends Equatable
     implements AssetFormExceptions, AssetFormState {
   @override
-  final int assetId;
+  final AssetWallet sourceAssetWallet;
   @override
-  final int networkId;
-  final int targetAssetId;
-  final int targetNetworkId;
+  final NetworkWallet sourceNetworkWallet;
+  final AssetWallet targetAssetWallet;
+  final NetworkWallet targetNetworkWallet;
   final String amountFrom;
   final String amountFromFiat;
   final String amountTo;
-  final String totalAmount;
-  final String totalSwapFee;
-  final String sourceTransactionFee;
-  final String targetTransactionFee;
-  final String swapFee;
-  final AmountUnit amountUnit;
+  final String amountToFiat;
+  final BigInt amountToAfterFee;
+  final AmountUnit amountFromUnit;
+  final AmountUnit amountToUnit;
+  final BigInt totalSwapFee;
+  final BigInt sourceTransactionFee;
+  final BigInt targetTransactionFee;
+  final BigInt swapFee;
+  final BigInt baseNetworkFee;
+  final BigInt networkFee;
+  final BigInt gasLimit;
+  final String sourceDepositAddress;
+  final List<AssetWallet> availableFromAssets;
+  final List<AssetWallet> availableTargetAssets;
+  final FocusedDirection focusedDirection;
 
   final AssetExchangeFormResponse? response;
 
   const AssetExchangeFormState._({
-    required this.assetId,
-    required this.networkId,
-    required this.targetAssetId,
-    required this.targetNetworkId,
+    required this.sourceAssetWallet,
+    required this.sourceNetworkWallet,
+    required this.targetAssetWallet,
+    required this.targetNetworkWallet,
     required this.amountFrom,
     required this.amountFromFiat,
     required this.amountTo,
-    required this.totalAmount,
-    required this.amountUnit,
+    required this.amountToFiat,
+    required this.amountToAfterFee,
+    required this.amountFromUnit,
+    required this.amountToUnit,
     required this.totalSwapFee,
     required this.sourceTransactionFee,
     required this.targetTransactionFee,
     required this.swapFee,
+    required this.baseNetworkFee,
+    required this.networkFee,
+    required this.gasLimit,
+    required this.sourceDepositAddress,
+    required this.availableFromAssets,
+    required this.availableTargetAssets,
+    required this.focusedDirection,
     this.response,
   });
 
-  const AssetExchangeFormState.init()
-      : this._(
-          assetId: -1,
-          networkId: -1,
-          targetAssetId: -1,
-          targetNetworkId: -1,
+  AssetExchangeFormState.init([
+    int sourceAssetId = -1,
+    int sourceNetworkId = -1,
+    int targetAssetId = -1,
+    int targetNetworkId = -1,
+  ]) : this._(
+          sourceAssetWallet: AssetWallet.builder(assetId: sourceAssetId),
+          sourceNetworkWallet: NetworkWallet.builder(
+              networkId: sourceNetworkId, address: '', decimalPlaces: -1),
+          targetAssetWallet: AssetWallet.builder(assetId: targetAssetId),
+          targetNetworkWallet: NetworkWallet.builder(
+              networkId: targetNetworkId, address: '', decimalPlaces: -1),
           amountFrom: '',
           amountFromFiat: '',
           amountTo: '',
-          totalAmount: '0',
-          amountUnit: AmountUnit.crypto,
-          totalSwapFee: '0',
-          sourceTransactionFee: '0',
-          targetTransactionFee: '0',
-          swapFee: '0',
+          amountToFiat: '',
+          amountToAfterFee: BigInt.zero,
+          amountFromUnit: AmountUnit.crypto,
+          amountToUnit: AmountUnit.crypto,
+          totalSwapFee: BigInt.zero,
+          sourceTransactionFee: BigInt.zero,
+          targetTransactionFee: BigInt.zero,
+          swapFee: BigInt.zero,
+          baseNetworkFee: BigInt.zero,
+          networkFee: BigInt.zero,
+          gasLimit: BigInt.zero,
+          sourceDepositAddress: '',
+          availableFromAssets: const [],
+          availableTargetAssets: const [],
+          focusedDirection: FocusedDirection.from,
         );
 
   bool get isValid =>
+      sourceAssetWallet.assetId >= 0 &&
+      sourceNetworkWallet.networkId >= 0 &&
+      targetAssetWallet.assetId >= 0 &&
+      targetNetworkWallet.networkId >= 0 &&
       amountFrom.isNotEmpty &&
       amountTo.isNotEmpty &&
       double.parse(amountFrom) > 0 &&
       double.parse(amountTo) > 0;
 
+  BigInt get amountToSend =>
+      doubleStringToBigInt(amountFrom, sourceNetworkWallet.decimalPlaces) -
+      networkFee;
+
+  int get networkAssetId {
+    return AssetRepository.assetId(networkId: sourceNetworkWallet.networkId);
+  }
+
   @override
   List<Object?> get props => [
-        assetId,
-        networkId,
-        targetAssetId,
-        targetNetworkId,
+        sourceAssetWallet,
+        sourceNetworkWallet,
+        targetAssetWallet,
+        targetNetworkWallet,
         amountFrom,
         amountFromFiat,
         amountTo,
-        amountUnit.index,
+        amountToFiat,
+        amountToAfterFee,
+        amountFromUnit,
+        amountToUnit,
         totalSwapFee,
         sourceTransactionFee,
         targetTransactionFee,
         swapFee,
+        baseNetworkFee,
+        networkFee,
+        gasLimit,
+        sourceDepositAddress,
         response,
+        availableFromAssets,
+        availableTargetAssets,
+        focusedDirection,
       ];
 
   AssetExchangeFormState copyWith({
-    int? assetId,
-    int? networkId,
-    int? targetAssetId,
-    int? targetNetworkId,
+    AssetWallet? sourceAssetWallet,
+    NetworkWallet? sourceNetworkWallet,
+    AssetWallet? targetAssetWallet,
+    NetworkWallet? targetNetworkWallet,
     String? address,
     String? amountFrom,
     String? amountFromFiat,
     String? amountTo,
+    String? amountToFiat,
+    BigInt? amountToAfterFee,
     String? totalAmount,
-    AmountUnit? amountUnit,
-    String? totalSwapFee,
-    String? sourceTransactionFee,
-    String? targetTransactionFee,
-    String? swapFee,
+    AmountUnit? amountFromUnit,
+    AmountUnit? amountToUnit,
+    BigInt? totalSwapFee,
+    BigInt? sourceTransactionFee,
+    BigInt? targetTransactionFee,
+    BigInt? swapFee,
+    BigInt? baseNetworkFee,
+    BigInt? networkFee,
+    BigInt? gasLimit,
+    String? sourceDepositAddress,
     AssetExchangeFormResponse? response,
+    List<AssetWallet>? availableFromAssets,
+    List<AssetWallet>? availableTargetAssets,
+    FocusedDirection? focusedDirection,
   }) {
     return AssetExchangeFormState._(
-      assetId: assetId ?? this.assetId,
-      networkId: networkId ?? this.networkId,
-      targetAssetId: targetAssetId ?? this.targetAssetId,
-      targetNetworkId: targetNetworkId ?? this.targetNetworkId,
+      sourceAssetWallet: sourceAssetWallet ?? this.sourceAssetWallet,
+      sourceNetworkWallet: sourceNetworkWallet ?? this.sourceNetworkWallet,
+      targetAssetWallet: targetAssetWallet ?? this.targetAssetWallet,
+      targetNetworkWallet: targetNetworkWallet ?? this.targetNetworkWallet,
       amountFrom: amountFrom ?? this.amountFrom,
       amountFromFiat: amountFromFiat ?? this.amountFromFiat,
       amountTo: amountTo ?? this.amountTo,
-      totalAmount: totalAmount ?? this.totalAmount,
-      amountUnit: amountUnit ?? this.amountUnit,
+      amountToFiat: amountToFiat ?? this.amountToFiat,
+      amountToAfterFee: amountToAfterFee ?? this.amountToAfterFee,
+      amountFromUnit: amountFromUnit ?? this.amountFromUnit,
+      amountToUnit: amountToUnit ?? this.amountToUnit,
       totalSwapFee: totalSwapFee ?? this.totalSwapFee,
       sourceTransactionFee: sourceTransactionFee ?? this.sourceTransactionFee,
       targetTransactionFee: targetTransactionFee ?? this.targetTransactionFee,
       swapFee: swapFee ?? this.swapFee,
+      baseNetworkFee: baseNetworkFee ?? this.baseNetworkFee,
+      networkFee: networkFee ?? this.networkFee,
+      gasLimit: gasLimit ?? this.gasLimit,
+      sourceDepositAddress: sourceDepositAddress ?? this.sourceDepositAddress,
       response: response ?? this.response,
+      availableFromAssets: availableFromAssets ?? this.availableFromAssets,
+      availableTargetAssets:
+          availableTargetAssets ?? this.availableTargetAssets,
+      focusedDirection: focusedDirection ?? this.focusedDirection,
     );
   }
 
@@ -154,10 +233,10 @@ class AssetExchangeFormState extends Equatable
   @override
   Map<String, dynamic> toMap() {
     return {
-      'assetId': assetId,
-      'networkId': networkId,
-      'targetAssetId': targetAssetId,
-      'targetNetworkId': targetNetworkId,
+      'sourceAssetWallet': sourceAssetWallet,
+      'sourceNetworkWallet': sourceNetworkWallet,
+      'targetAssetWallet': targetAssetWallet,
+      'targetNetworkWallet': targetNetworkWallet,
     };
   }
 }
@@ -234,25 +313,48 @@ class AssetExchangeFormFailure extends AssetExchangeFormResponse {
   List<Object?> get props => [exception];
 }
 
-class AssetSearchFromPending extends AssetExchangeFormResponse {
-  const AssetSearchFromPending();
+class FetchingFeesPending extends AssetExchangeFormResponse {
+  const FetchingFeesPending();
 
   @override
   List<Object?> get props => [];
 }
 
-class AssetSearchFromFailure extends AssetExchangeFormResponse {
-  const AssetSearchFromFailure();
+class FetchingFeesSuccess extends AssetExchangeFormResponse {
+  final String totalSwapFee;
+
+  const FetchingFeesSuccess({required this.totalSwapFee});
 
   @override
   List<Object?> get props => [];
 }
 
-class AssetSearchFromSuccess extends AssetExchangeFormResponse {
-  final List<AssetWallet> availableWallets;
+class FetchingFeesFailure extends AssetExchangeFormResponse {
+  final Exception exception;
 
-  const AssetSearchFromSuccess({required this.availableWallets});
+  const FetchingFeesFailure({required this.exception});
 
   @override
-  List<Object?> get props => [availableWallets];
+  List<Object?> get props => [exception];
+}
+
+class SearchAssetsLoading extends AssetExchangeFormResponse {
+  const SearchAssetsLoading();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SearchAssetsFailure extends AssetExchangeFormResponse {
+  const SearchAssetsFailure();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SearchAssetsSuccess extends AssetExchangeFormResponse {
+  const SearchAssetsSuccess();
+
+  @override
+  List<Object?> get props => [];
 }

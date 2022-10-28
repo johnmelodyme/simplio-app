@@ -4,30 +4,30 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
+import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
-import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 
 part 'asset_buy_form_state.dart';
 
 class AssetBuyFormCubit extends Cubit<AssetBuyFormState> {
   AssetBuyFormCubit._({AssetBuyFormState? initialState})
-      : super(initialState ?? const AssetBuyFormState.init());
+      : super(initialState ?? AssetBuyFormState.init());
 
   AssetBuyFormCubit.builder({AssetBuyFormState? initialState})
       : this._(initialState: initialState);
 
   void changeFormValue({
-    int? assetId,
-    int? networkId,
+    AssetWallet? sourceAssetWallet,
+    NetworkWallet? sourceNetworkWallet,
     String? nextAmountDigit,
     String? nextAmountFiatDigit,
     String? totalAmount,
     AmountUnit? amountUnit,
   }) {
     final newState = state.copyWith(
-      assetId: assetId,
-      networkId: networkId,
+      sourceAssetWallet: sourceAssetWallet,
+      sourceNetworkWallet: sourceNetworkWallet,
       amountFrom: nextAmountDigit != null
           ? '${state.amount == '0' ? '' : state.amount}$nextAmountDigit'
           : null,
@@ -96,7 +96,7 @@ class AssetBuyFormCubit extends Cubit<AssetBuyFormState> {
     if (state.amount.isNotEmpty) {
       String result = state.amount.substring(0, state.amount.length - 1);
       if (result.isEmpty) {
-        result = const AssetBuyFormState.init().amount;
+        result = AssetBuyFormState.init().amount;
       }
 
       changeAmountFrom(result);
@@ -108,7 +108,7 @@ class AssetBuyFormCubit extends Cubit<AssetBuyFormState> {
       String result =
           state.amountFiat.substring(0, state.amountFiat.length - 1);
       if (result.isEmpty) {
-        result = const AssetBuyFormState.init().amountFiat;
+        result = AssetBuyFormState.init().amountFiat;
       }
 
       changeAmountFromFiat(result);
@@ -198,6 +198,6 @@ class AssetBuyFormCubit extends Cubit<AssetBuyFormState> {
   }
 
   void clear() {
-    emit(const AssetBuyFormState.init());
+    emit(AssetBuyFormState.init());
   }
 }

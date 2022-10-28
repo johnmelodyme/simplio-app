@@ -16,6 +16,7 @@ import 'package:simplio_app/data/http/services/password_reset_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
 import 'package:simplio_app/data/http/services/sign_in_service.dart';
 import 'package:simplio_app/data/http/services/sign_up_service.dart';
+import 'package:simplio_app/data/http/services/swap_service.dart';
 import 'package:simplio_app/data/providers/account_db_provider.dart';
 import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
 import 'package:simplio_app/data/providers/wallet_connect_session_db_provider.dart';
@@ -27,6 +28,7 @@ import 'package:simplio_app/data/repositories/buy_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/games_repository.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
+import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
@@ -63,6 +65,7 @@ class _SimplioAppState extends State<SimplioApp> {
   late TransactionRepository transactionRepository;
   late GamesRepository gamesRepository;
   late InventoryRepository inventoryRepository;
+  late SwapRepository swapRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +90,7 @@ class _SimplioAppState extends State<SimplioApp> {
         RepositoryProvider.value(value: gamesRepository),
         RepositoryProvider.value(value: buyRepository),
         RepositoryProvider.value(value: inventoryRepository),
+        RepositoryProvider.value(value: swapRepository),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc.builder(
@@ -169,6 +173,9 @@ class _SimplioAppState extends State<SimplioApp> {
     inventoryRepository = InventoryRepository(
       walletDb: walletDbProvider,
       inventoryService: securedApi.service<InventoryService>(),
+    );
+    swapRepository = SwapRepository.builder(
+      swapService: securedApi.service<SwapService>(),
     );
   }
 }

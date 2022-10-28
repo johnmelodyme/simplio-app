@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:simplio_app/data/model/asset_wallet.dart';
+import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
-import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
+import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/helpers/thousand_separator_input_formatter.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/scroll_mixin.dart';
+import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -25,7 +28,7 @@ import 'package:simplio_app/view/widgets/toggle.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class AssetBuyScreen extends StatefulWidget {
+class AssetBuyScreen extends StatefulWidget with WalletUtilsMixin {
   const AssetBuyScreen({
     super.key,
     required this.assetId,
@@ -84,6 +87,9 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
 
   @override
   Widget build(BuildContext context) {
+    late AssetWallet? sourceAssetWallet;
+    late NetworkWallet? sourceNetworkWallet;
+
     final s = context.read<AccountWalletCubit>().state;
     if (s is! AccountWalletProvided) throw Exception('No asset wallet found');
 
@@ -95,13 +101,14 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
       throw Exception('No networkId');
     }
 
-    final assetBuyState = context.read<AssetBuyFormCubit>().state;
-    if (assetBuyState.assetId == const AssetBuyFormState.init().assetId) {
-      context.read<AssetBuyFormCubit>().changeFormValue(
-            assetId: int.parse(widget.assetId!),
-            networkId: int.parse(widget.networkId!),
-          );
-    }
+    sourceAssetWallet = widget.getAssetWallet(context, widget.assetId!);
+    sourceNetworkWallet =
+        widget.getNetwork(context, widget.assetId!, widget.networkId!);
+
+    context.read<AssetBuyFormCubit>().changeFormValue(
+          sourceAssetWallet: sourceAssetWallet,
+          sourceNetworkWallet: sourceNetworkWallet,
+        );
 
     return Container(
       decoration: BoxDecoration(
@@ -173,7 +180,8 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
                         children: [
                           BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
                             buildWhen: (prev, curr) =>
-                                prev.assetId != curr.assetId,
+                                prev.sourceAssetWallet !=
+                                curr.sourceAssetWallet,
                             builder: (context, state) => AssetFormAssetItem<
                                 AssetBuyFormCubit, AssetBuyFormState>(
                               highlighted: assetHighlightController.highlighted,
@@ -253,7 +261,7 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
                       children: [
                         BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
                           buildWhen: (prev, curr) =>
-                              prev.assetId != curr.assetId,
+                              prev.sourceAssetWallet != curr.sourceAssetWallet,
                           builder: (context, state) => _AmountFormField(
                             amountController: amountController,
                             scrollController: scrollController,
@@ -265,7 +273,7 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
 
                               scrollTo(amountKey, -50);
                             },
-                            assetId: state.assetId,
+                            assetId: state.sourceAssetWallet.assetId,
                             highlightController: amountHighlightController,
                           ),
                         ),
@@ -433,7 +441,7 @@ class _AmountFormField extends StatelessWidget {
                             ),
                           )
                         : Text(
-                            '${state.amount.isEmpty ? '0' : state.amount} ${Assets.getAssetDetail(state.assetId).ticker}',
+                            '${state.amount.isEmpty ? '0' : state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
                             style: SioTextStyles.bodyL.copyWith(
                               color: SioColors.secondary7,
                             ),

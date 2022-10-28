@@ -7,9 +7,9 @@ enum Priority { low, normal, high }
 class AssetSendFormState extends Equatable
     implements AssetFormState, AssetFormExceptions {
   @override
-  final int assetId;
+  final AssetWallet sourceAssetWallet;
   @override
-  final int networkId;
+  final NetworkWallet sourceNetworkWallet;
   final String toAddress;
   final String amount;
   final String amountFiat;
@@ -20,13 +20,12 @@ class AssetSendFormState extends Equatable
   final Priority priority;
   final String txHash;
   final AmountUnit amountUnit;
-  final NetworkWallet networkWallet;
 
   final AssetSendFormResponse? response;
 
   const AssetSendFormState._({
-    required this.assetId,
-    required this.networkId,
+    required this.sourceAssetWallet,
+    required this.sourceNetworkWallet,
     required this.toAddress,
     required this.amount,
     required this.amountFiat,
@@ -37,44 +36,47 @@ class AssetSendFormState extends Equatable
     required this.networkFee,
     required this.txHash,
     required this.priority,
-    required this.networkWallet,
     this.response,
   });
 
   AssetSendFormState.init([
-    int assetId = -1,
-    int networkId = -1,
+    int sourceAssetId = -1,
+    int sourceNetworkId = -1,
   ]) : this._(
-            assetId: assetId,
-            networkId: networkId,
-            toAddress: '',
-            amount: '',
-            amountFiat: '',
-            totalAmount: '0',
-            amountUnit: AmountUnit.crypto,
-            baseNetworkFee: BigInt.zero,
-            gasLimit: BigInt.zero,
-            networkFee: '0',
-            txHash: '',
-            priority: Priority.normal,
-            networkWallet: NetworkWallet.builder(
-                networkId: networkId, address: '', decimalPlaces: -1));
+          sourceAssetWallet: AssetWallet.builder(assetId: sourceAssetId),
+          sourceNetworkWallet: NetworkWallet.builder(
+              networkId: sourceNetworkId, address: '', decimalPlaces: -1),
+          toAddress: '',
+          amount: '',
+          amountFiat: '',
+          totalAmount: '0',
+          amountUnit: AmountUnit.crypto,
+          baseNetworkFee: BigInt.zero,
+          gasLimit: BigInt.zero,
+          networkFee: '0',
+          txHash: '',
+          priority: Priority.normal,
+        );
 
   bool get isValid =>
-      assetId >= 0 &&
-      networkId >= 0 &&
+      sourceAssetWallet.assetId >= 0 &&
+      sourceNetworkWallet.networkId >= 0 &&
       toAddress.isNotEmpty &&
       double.tryParse(amount) != null &&
       double.parse(amount) > 0;
 
-  BigInt amountToSend(int decimalPlaces) =>
-      doubleStringToBigInt(amount, decimalPlaces) -
-      doubleStringToBigInt(networkFee, decimalPlaces);
+  BigInt get amountToSend =>
+      doubleStringToBigInt(amount, sourceNetworkWallet.decimalPlaces) -
+      doubleStringToBigInt(networkFee, sourceNetworkWallet.decimalPlaces);
+
+  int get networkAssetId {
+    return AssetRepository.assetId(networkId: sourceNetworkWallet.networkId);
+  }
 
   @override
   List<Object?> get props => [
-        assetId,
-        networkId,
+        sourceAssetWallet,
+        sourceNetworkWallet,
         toAddress,
         amount,
         amountFiat,
@@ -89,8 +91,8 @@ class AssetSendFormState extends Equatable
       ];
 
   AssetSendFormState copyWith({
-    int? assetId,
-    int? networkId,
+    AssetWallet? sourceAssetWallet,
+    NetworkWallet? sourceNetworkWallet,
     String? toAddress,
     String? amount,
     String? amountFiat,
@@ -101,12 +103,11 @@ class AssetSendFormState extends Equatable
     String? networkFee,
     String? txHash,
     Priority? priority,
-    NetworkWallet? networkWallet,
     AssetSendFormResponse? response,
   }) {
     return AssetSendFormState._(
-      assetId: assetId ?? this.assetId,
-      networkId: networkId ?? this.networkId,
+      sourceAssetWallet: sourceAssetWallet ?? this.sourceAssetWallet,
+      sourceNetworkWallet: sourceNetworkWallet ?? this.sourceNetworkWallet,
       toAddress: toAddress ?? this.toAddress,
       amount: amount ?? this.amount,
       amountFiat: amountFiat ?? this.amountFiat,
@@ -117,7 +118,6 @@ class AssetSendFormState extends Equatable
       gasLimit: gasLimit ?? this.gasLimit,
       txHash: txHash ?? this.txHash,
       priority: priority ?? this.priority,
-      networkWallet: networkWallet ?? this.networkWallet,
       response: response ?? this.response,
     );
   }
@@ -125,8 +125,8 @@ class AssetSendFormState extends Equatable
   @override
   Map<String, dynamic> toMap() {
     return {
-      'assetId': assetId,
-      'networkId': networkId,
+      'sourceAssetWallet': sourceAssetWallet,
+      'sourceNetworkWallet': sourceNetworkWallet,
     };
   }
 

@@ -33,8 +33,8 @@ class _AssetBuyPaymentGateWayScreen
       listener: (context, state) => GoRouter.of(context).replaceNamed(
         AuthenticatedRouter.assetBuySuccess,
         params: {
-          'assetId': state.assetId.toString(),
-          'networkId': state.networkId.toString(),
+          'assetId': state.sourceAssetWallet.assetId.toString(),
+          'networkId': state.sourceNetworkWallet.networkId.toString(),
         },
       ),
       child: Container(
@@ -61,8 +61,8 @@ class _AssetBuyPaymentGateWayScreen
                 GoRouter.of(context).replaceNamed(
                   AuthenticatedRouter.assetBuySummary,
                   params: {
-                    'assetId': state.assetId.toString(),
-                    'networkId': state.networkId.toString(),
+                    'assetId': state.sourceAssetWallet.assetId.toString(),
+                    'networkId': state.sourceNetworkWallet.networkId.toString(),
                   },
                 );
               },

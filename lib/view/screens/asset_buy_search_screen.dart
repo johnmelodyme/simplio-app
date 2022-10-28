@@ -80,8 +80,8 @@ class _AssetBuySearchScreen extends State<AssetBuySearchScreen> {
                 assetWallets: filteredWallets,
                 onTap: (assetWallet, networkWallet) {
                   context.read<AssetBuyFormCubit>().changeFormValue(
-                        assetId: assetWallet.assetId,
-                        networkId: networkWallet.networkId,
+                        sourceAssetWallet: assetWallet,
+                        sourceNetworkWallet: networkWallet,
                       );
 
                   GoRouter.of(context).pop();

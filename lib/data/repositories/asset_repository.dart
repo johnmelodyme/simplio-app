@@ -2,7 +2,7 @@ import 'package:simplio_app/data/http/services/asset_service.dart';
 import 'package:simplio_app/data/providers/memory_cache_provider.dart';
 import 'package:sio_core_light/sio_core_light.dart' as sio;
 
-const _cacheLifetimeInSeconds = 10;
+const _cacheLifetimeInSeconds = 1800;
 
 class AssetRepository {
   static int assetId({required int networkId}) {

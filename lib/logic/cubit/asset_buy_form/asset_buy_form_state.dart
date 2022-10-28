@@ -7,9 +7,9 @@ enum DebitCardType { visa, masterCard }
 class AssetBuyFormState extends Equatable
     implements AssetFormExceptions, AssetFormState {
   @override
-  final int assetId;
+  final AssetWallet sourceAssetWallet;
   @override
-  final int networkId;
+  final NetworkWallet sourceNetworkWallet;
   final String amount;
   final String amountFiat;
   final String totalAmountToBuy;
@@ -23,8 +23,8 @@ class AssetBuyFormState extends Equatable
   final AssetBuyFormResponse? response;
 
   const AssetBuyFormState._({
-    required this.assetId,
-    required this.networkId,
+    required this.sourceAssetWallet,
+    required this.sourceNetworkWallet,
     required this.amount,
     required this.amountFiat,
     required this.totalAmountToBuy,
@@ -37,10 +37,13 @@ class AssetBuyFormState extends Equatable
     this.debitCardType,
   });
 
-  const AssetBuyFormState.init()
-      : this._(
-          assetId: -1,
-          networkId: -1,
+  AssetBuyFormState.init([
+    int sourceAssetId = -1,
+    int sourceNetworkId = -1,
+  ]) : this._(
+          sourceAssetWallet: AssetWallet.builder(assetId: sourceAssetId),
+          sourceNetworkWallet: NetworkWallet.builder(
+              networkId: sourceNetworkId, address: '', decimalPlaces: -1),
           amount: '',
           amountFiat: '',
           totalAmountToBuy: '0',
@@ -56,8 +59,8 @@ class AssetBuyFormState extends Equatable
 
   @override
   List<Object?> get props => [
-        assetId,
-        networkId,
+        sourceAssetWallet,
+        sourceNetworkWallet,
         amount,
         amountFiat,
         amountUnit.index,
@@ -70,8 +73,8 @@ class AssetBuyFormState extends Equatable
       ];
 
   AssetBuyFormState copyWith({
-    int? assetId,
-    int? networkId,
+    AssetWallet? sourceAssetWallet,
+    NetworkWallet? sourceNetworkWallet,
     String? amountFrom,
     String? amountFromFiat,
     String? totalAmount,
@@ -84,8 +87,8 @@ class AssetBuyFormState extends Equatable
     String? paymentGatewayUrl,
   }) {
     return AssetBuyFormState._(
-      assetId: assetId ?? this.assetId,
-      networkId: networkId ?? this.networkId,
+      sourceAssetWallet: sourceAssetWallet ?? this.sourceAssetWallet,
+      sourceNetworkWallet: sourceNetworkWallet ?? this.sourceNetworkWallet,
       amount: amountFrom ?? amount,
       amountFiat: amountFromFiat ?? amountFiat,
       totalAmountToBuy: totalAmount ?? totalAmountToBuy,
@@ -127,8 +130,8 @@ class AssetBuyFormState extends Equatable
   @override
   Map<String, dynamic> toMap() {
     return {
-      'assetId': assetId,
-      'networkId': networkId,
+      'sourceAssetWallet': sourceAssetWallet,
+      'sourceNetworkWallet': sourceNetworkWallet,
     };
   }
 }

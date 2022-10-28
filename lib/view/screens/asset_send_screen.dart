@@ -32,20 +32,20 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class AssetSendScreen extends StatefulWidget with WalletUtilsMixin {
   const AssetSendScreen({
     super.key,
-    required this.assetId,
-    required this.networkId,
+    required this.sourceAssetId,
+    required this.sourceNetworkId,
   });
 
-  final String? assetId;
-  final String? networkId;
+  final String? sourceAssetId;
+  final String? sourceNetworkId;
 
   @override
   State<StatefulWidget> createState() => _AssetSendScreen();
 }
 
 class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
-  late AssetWallet? assetWallet;
-  late NetworkWallet? networkWallet;
+  late AssetWallet? sourceAssetWallet;
+  late NetworkWallet? sourceNetworkWallet;
 
   final addressController = TextEditingController();
   final addressHighlightController = HighlightController();
@@ -66,22 +66,21 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
 
   @override
   void initState() {
-    if (widget.assetId == null) {
+    if (widget.sourceAssetId == null) {
       throw Exception('No assetId provided');
     }
 
-    if (widget.networkId == null) {
+    if (widget.sourceNetworkId == null) {
       throw Exception('No networkId provided');
     }
 
-    assetWallet = widget.getAssetWallet(context, widget.assetId!);
-    networkWallet =
-        widget.getNetwork(context, widget.assetId!, widget.networkId!);
+    sourceAssetWallet = widget.getAssetWallet(context, widget.sourceAssetId!);
+    sourceNetworkWallet = widget.getNetwork(
+        context, widget.sourceAssetId!, widget.sourceNetworkId!);
 
     context.read<AssetSendFormCubit>().changeFormValue(
-          assetId: int.parse(widget.assetId!),
-          networkId: int.parse(widget.networkId!),
-          networkWallet: networkWallet,
+          sourceAssetWallet: sourceAssetWallet,
+          sourceNetworkWallet: sourceNetworkWallet,
         );
 
     assetHighlightController.concurrentControllers = [
@@ -119,20 +118,25 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
 
     final AssetSendFormCubit assetSendCubit =
         context.read<AssetSendFormCubit>();
-    if (assetSendCubit.state.assetId == AssetSendFormState.init().assetId) {
+    if (assetSendCubit.state.sourceAssetWallet ==
+        AssetSendFormState.init().sourceAssetWallet) {
       context.read<AssetSendFormCubit>().changeFormValue(
-            assetId: int.parse(widget.assetId!),
-            networkId: int.parse(widget.networkId!),
+            sourceAssetWallet: sourceAssetWallet,
+            sourceNetworkWallet: sourceNetworkWallet,
           );
     }
 
     return BlocListener<AssetSendFormCubit, AssetSendFormState>(
       listenWhen: (prev, curr) =>
-          prev.assetId != curr.assetId || prev.networkId != curr.networkId,
+          prev.sourceAssetWallet != curr.sourceAssetWallet ||
+          prev.sourceNetworkWallet != curr.sourceNetworkWallet,
       listener: (context, state) {
-        assetWallet = widget.getAssetWallet(context, state.assetId.toString());
-        networkWallet = widget.getNetwork(
-            context, state.assetId.toString(), state.networkId.toString());
+        sourceAssetWallet = widget.getAssetWallet(
+            context, state.sourceAssetWallet.assetId.toString());
+        sourceNetworkWallet = widget.getNetwork(
+            context,
+            state.sourceAssetWallet.assetId.toString(),
+            state.sourceNetworkWallet.networkId.toString());
       },
       child: Container(
         decoration: BoxDecoration(
@@ -170,8 +174,8 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
             child: SioScaffold(
               backgroundColor: Colors.transparent,
               bottomNavigationBar: _NextButton(
-                assetId: widget.assetId!,
-                networkId: widget.networkId!,
+                assetId: widget.sourceAssetId!,
+                networkId: widget.sourceNetworkId!,
               ),
               body: SingleChildScrollView(
                 controller: scrollController,
@@ -205,7 +209,8 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                           children: [
                             BlocBuilder<AssetSendFormCubit, AssetSendFormState>(
                               buildWhen: (prev, curr) =>
-                                  prev.assetId != curr.assetId,
+                                  prev.sourceAssetWallet !=
+                                  curr.sourceAssetWallet,
                               builder: (context, state) => AssetFormAssetItem<
                                   AssetSendFormCubit, AssetSendFormState>(
                                 highlighted:
@@ -216,8 +221,8 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                                   GoRouter.of(context).pushNamed(
                                       AuthenticatedRouter.assetSendSearch,
                                       params: {
-                                        'assetId': widget.assetId!,
-                                        'networkId': widget.networkId!,
+                                        'assetId': widget.sourceAssetId!,
+                                        'networkId': widget.sourceNetworkId!,
                                       });
                                 },
                               ),
@@ -243,8 +248,8 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                                   GoRouter.of(context).pushNamed(
                                 AuthenticatedRouter.assetSendQrScanner,
                                 params: {
-                                  'assetId': widget.assetId!,
-                                  'networkId': widget.networkId!,
+                                  'assetId': widget.sourceAssetId!,
+                                  'networkId': widget.sourceNetworkId!,
                                 },
                               ),
                               onTap: () {
@@ -263,38 +268,37 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                             Gaps.gap20,
                           ]),
                       HighlightedFormElement(
-                        key: amountKey,
-                        controller: amountHighlightController,
-                        clickableHeight: 90,
-                        onTap: () => setState(() {
-                          amountHighlightController.deselectConcurrent();
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        }),
-                        children: [
-                          BlocBuilder<AssetSendFormCubit, AssetSendFormState>(
-                            buildWhen: (prev, curr) =>
-                                prev.assetId != curr.assetId,
-                            builder: (context, state) => _AmountFormField(
-                              amountFromController: amountController,
-                              highlightController: amountHighlightController,
-                              networkWallet: networkWallet!,
-                              scrollController: scrollController,
-                              onTap: () {
-                                setState(() {
-                                  panelController.open();
-                                  _isPanelOpen = true;
+                          key: amountKey,
+                          controller: amountHighlightController,
+                          clickableHeight: 90,
+                          onTap: () => setState(() {
+                                amountHighlightController.deselectConcurrent();
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              }),
+                          children: [
+                            BlocBuilder<AssetSendFormCubit, AssetSendFormState>(
+                              buildWhen: (prev, curr) =>
+                                  prev.sourceAssetWallet !=
+                                  curr.sourceAssetWallet,
+                              builder: (context, state) => _AmountFormField(
+                                amountFromController: amountController,
+                                highlightController: amountHighlightController,
+                                scrollController: scrollController,
+                                onTap: () {
+                                  setState(() {
+                                    panelController.open();
+                                    _isPanelOpen = true;
 
-                                  amountController.text = '';
-                                });
+                                    amountController.text = '';
+                                  });
 
-                                scrollTo(amountKey, 0);
-                              },
-                              assetId: state.assetId,
+                                  scrollTo(amountKey, 0);
+                                },
+                                assetId: state.sourceAssetWallet.assetId,
+                              ),
                             ),
-                          ),
-                          Gaps.gap10,
-                        ],
-                      ),
+                            Gaps.gap10,
+                          ]),
                       if (amountHighlightController.highlighted)
                         Container(
                           padding: Paddings.left16,
@@ -342,8 +346,8 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
                   ),
                 ),
                 _NextButton(
-                  assetId: widget.assetId!,
-                  networkId: widget.networkId!,
+                  assetId: widget.sourceAssetId!,
+                  networkId: widget.sourceNetworkId!,
                 ),
               ],
             ),
@@ -486,7 +490,6 @@ class _AmountFormField extends StatelessWidget {
   final ScrollController scrollController;
   final GestureTapCallback onTap;
   final int assetId;
-  final NetworkWallet networkWallet;
 
   const _AmountFormField({
     required this.amountFromController,
@@ -494,7 +497,6 @@ class _AmountFormField extends StatelessWidget {
     required this.onTap,
     required this.assetId,
     required this.highlightController,
-    required this.networkWallet,
   });
 
   @override
@@ -547,9 +549,8 @@ class _AmountFormField extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             AssetMinMaxButton(
               buttonType: ButtonType.max,
-              onTap: () => context
-                  .read<AssetSendFormCubit>()
-                  .maxAmountClicked(networkWallet),
+              onTap: () =>
+                  context.read<AssetSendFormCubit>().maxAmountClicked(),
             ),
           ]),
         ],

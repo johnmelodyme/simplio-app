@@ -81,9 +81,8 @@ class _AssetSendSearchScreen extends State<AssetSendSearchScreen> {
                 onTap: (assetWallet, networkWallet) {
                   final cubit = context.read<AssetSendFormCubit>();
                   cubit.changeFormValue(
-                    assetId: assetWallet.assetId,
-                    networkId: networkWallet.networkId,
-                    networkWallet: networkWallet,
+                    sourceAssetWallet: assetWallet,
+                    sourceNetworkWallet: networkWallet,
                   );
                   cubit.clearAmount();
 

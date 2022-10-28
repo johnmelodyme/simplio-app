@@ -141,6 +141,13 @@ class WalletRepository {
     return _wallet.mnemonic();
   }
 
+  bool isValidAddress({
+    required String address,
+    required int networkId,
+  }) {
+    return sio.Address.isValid(address: address, networkId: networkId);
+  }
+
   String getCoinAddress(
     String accountWalletId, {
     required int networkId,
