@@ -14,7 +14,7 @@ class WalletConnectRequestList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: SioColors.black.withAlpha(220),
+      color: SioColors.secondary1.withAlpha(236),
       width: double.infinity,
       height: double.infinity,
       child: SafeArea(
@@ -23,7 +23,7 @@ class WalletConnectRequestList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 396,
+              height: 376,
               child: PageView.builder(
                 itemCount: children.length,
                 controller: PageController(viewportFraction: 0.86),

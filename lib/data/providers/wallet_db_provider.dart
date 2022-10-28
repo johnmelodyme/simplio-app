@@ -82,9 +82,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       uuid: wallet.uuid,
       networkId: wallet.networkId,
       address: wallet.address,
-      contractAddress: wallet.isToken ? wallet.contractAddress : null,
       balance: wallet.balance,
-      decimalPlaces: wallet.decimalPlaces,
       isEnabled: wallet.isEnabled,
       fiatBalance: wallet.fiatBalance,
     );
@@ -117,22 +115,27 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       Map.fromEntries(local.wallets.map(
         (e) => MapEntry(
           e.networkId,
-          _mapNetworkWalletFrom(e),
+          _mapNetworkWalletFrom(e, assetId: local.assetId),
         ),
       )),
     );
   }
 
-  NetworkWallet _mapNetworkWalletFrom(NetworkWalletLocal local) {
+  NetworkWallet _mapNetworkWalletFrom(
+    NetworkWalletLocal local, {
+    required int assetId,
+  }) {
     return NetworkWallet(
       uuid: local.uuid,
       networkId: local.networkId,
       address: local.address,
       balance: local.balance,
-      decimalPlaces: local.decimalPlaces,
       isEnabled: local.isEnabled,
-      contractAddress: local.contractAddress,
       fiatBalance: local.fiatBalance,
+      preset: NetworkWallet.makePreset(
+        assetId: assetId,
+        networkId: local.networkId,
+      ),
     );
   }
 }

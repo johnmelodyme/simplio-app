@@ -91,8 +91,9 @@ class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
                       opacity: isLoading ? 0.2 : 1,
                       child: AssetWalletItem(
                         title: assetDetail.name,
-                        balance: networkWallet.balance
-                            .getFormattedBalance(networkWallet.decimalPlaces),
+                        balance: networkWallet.balance.getFormattedBalance(
+                          networkWallet.preset.decimalPlaces,
+                        ),
                         volume: networkWallet.fiatBalance
                             .getThousandValueWithCurrency(
                           locale: Intl.getCurrentLocale(),

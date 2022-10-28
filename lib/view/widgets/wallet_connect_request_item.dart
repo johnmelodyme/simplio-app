@@ -1,11 +1,15 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/back_gradient2.dart';
+import 'package:simplio_app/view/widgets/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
-import 'package:sio_glyphs/sio_icons.dart';
+import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/number_extensions.dart';
 
 abstract class WalletConnectRequestItem<T extends WalletConnectRequest>
     extends Widget {
@@ -39,7 +43,11 @@ class _WalletConnectTransactionRequestItemState
 
   @override
   Widget build(BuildContext context) {
-    final asset = Assets.getNetworkDetail(60);
+    final asset = Assets.getAssetDetail(widget.request.assetId);
+    final preset = Assets.getAssetPreset(
+      assetId: widget.request.assetId,
+      networkId: widget.request.networkId,
+    );
     return _ItemCard(
       child: Column(
         children: [
@@ -55,8 +63,8 @@ class _WalletConnectTransactionRequestItemState
                       vertical: Dimensions.padding32,
                     ),
                     child: SizedBox(
-                      width: 64,
-                      height: 64,
+                      width: 52,
+                      height: 52,
                       child: Material(
                         clipBehavior: Clip.antiAlias,
                         color: asset.style.foregroundColor,
@@ -67,10 +75,15 @@ class _WalletConnectTransactionRequestItemState
                     ),
                   ),
                   Text(
-                    widget.request.amount.toString(),
+                    widget.request.amount
+                        .getFormattedBalance(
+                          preset.decimalPlaces,
+                        )
+                        .toString(),
                     textAlign: TextAlign.center,
-                    style: SioTextStyles.h2.copyWith(
+                    style: SioTextStyles.h3.copyWith(
                       overflow: TextOverflow.ellipsis,
+                      color: SioColors.white,
                     ),
                   ),
                   Padding(
@@ -78,37 +91,13 @@ class _WalletConnectTransactionRequestItemState
                       vertical: Dimensions.padding10,
                     ),
                     child: Text(
-                      "${widget.request.peer.name} requests a transaction",
+                      "${widget.request.peer.name} ${context.locale.wallet_connect_request_transaction}",
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         color: SioColors.highlight1,
                         fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Material(
-                    borderRadius: BorderRadius.circular(RadiusSize.radius20),
-                    color: SioColors.secondary1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(Dimensions.padding10),
-                      child: Row(
-                        children: const [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                Dimensions.padding10,
-                              ),
-                              // TODO - When widgets will be redesigned, add translations.
-                              child: Text('Detail'),
-                            ),
-                          ),
-                          Icon(
-                            SioIcons.arrow_right,
-                            size: 14.0,
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ],
@@ -125,17 +114,18 @@ class _WalletConnectTransactionRequestItemState
                   child: Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
+                        child: BorderedTextButton(
                           onPressed: () {
                             setState(() => _isLoading = true);
                             widget.onReject().onError((_, __) {
                               setState(() => _isLoading = false);
                             });
                           },
-                          // TODO - When widgets will be redesigned, add translations.
-                          child: const Text('Reject'),
+                          label: context.locale.common_reject,
+                          // child: Text(context.locale.common_reject),
                         ),
                       ),
+                      const Gap(Dimensions.padding10),
                       Expanded(
                         child: HighlightedElevatedButton(
                           onPressed: () {
@@ -144,11 +134,10 @@ class _WalletConnectTransactionRequestItemState
                               setState(() => _isLoading = false);
                             });
                           },
-                          // TODO - When widgets will be redesigned, add translations.
                           label:
                               widget.request.type == TransactionRequestType.send
-                                  ? 'Send'
-                                  : 'Sign',
+                                  ? context.locale.common_send_btn_label
+                                  : context.locale.common_sign_btn_label,
                         ),
                       )
                     ],
@@ -201,8 +190,8 @@ class _WalletConnectSignatureRequestItemState
                       vertical: Dimensions.padding32,
                     ),
                     child: SizedBox(
-                      width: 64,
-                      height: 64,
+                      width: 52,
+                      height: 52,
                       child: Material(
                         clipBehavior: Clip.antiAlias,
                         elevation: 4.0,
@@ -213,42 +202,20 @@ class _WalletConnectSignatureRequestItemState
                   ),
                   Text(
                     widget.request.peer.name,
-                    style: SioTextStyles.h2,
+                    style: SioTextStyles.h3.apply(color: SioColors.white),
                     textAlign: TextAlign.center,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: Dimensions.padding10,
                     ),
-                    // TODO - When widgets will be redesigned, add translations.
                     child: Text(
-                      'Requests a signature',
+                      context.locale.wallet_connect_request_signature,
                       style: TextStyle(
                         color: SioColors.highlight1,
                         fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Material(
-                    borderRadius: BorderRadius.circular(RadiusSize.radius20),
-                    color: SioColors.secondary1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(Dimensions.padding10),
-                      child: Row(
-                        children: const [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                Dimensions.padding10,
-                              ),
-                              // TODO - When widgets will be redesigned, add translations.
-                              child: Text('Detail'),
-                            ),
-                          ),
-                          Icon(SioIcons.arrow_right, size: 14.0),
-                        ],
-                      ),
                     ),
                   ),
                 ],
@@ -265,26 +232,25 @@ class _WalletConnectSignatureRequestItemState
                   child: Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
+                        child: BorderedTextButton(
                           onPressed: () {
                             setState(() => _isLoading = true);
                             widget.onReject();
                           },
-                          // TODO - When widgets will be redesigned, add translations.
-                          child: const Text('Ignore'),
+                          label: context.locale.common_ignore_btn_label,
                         ),
                       ),
+                      const Gap(Dimensions.padding10),
                       Expanded(
                         child: HighlightedElevatedButton(
                           onPressed: () {
                             setState(() => _isLoading = true);
                             widget.onApprove();
                           },
-                          // TODO - When widgets will be redesigned, add translations.
                           label:
                               widget.request.type == TransactionRequestType.send
-                                  ? 'Send'
-                                  : 'Sign',
+                                  ? context.locale.common_send_btn_label
+                                  : context.locale.common_sign_btn_label,
                         ),
                       ),
                     ],
@@ -338,8 +304,8 @@ class _WalletConnectSessionRequestItemState
                       vertical: Dimensions.padding32,
                     ),
                     child: SizedBox(
-                      width: 64,
-                      height: 64,
+                      width: 52,
+                      height: 52,
                       child: Material(
                         clipBehavior: Clip.antiAlias,
                         elevation: 4.0,
@@ -351,7 +317,8 @@ class _WalletConnectSessionRequestItemState
                   Text(
                     widget.request.peer.name,
                     textAlign: TextAlign.center,
-                    style: SioTextStyles.h2.copyWith(
+                    style: SioTextStyles.h3.copyWith(
+                      color: SioColors.white,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -360,7 +327,7 @@ class _WalletConnectSessionRequestItemState
                       vertical: Dimensions.padding10,
                     ),
                     child: Text(
-                      'wants to connect with your wallet',
+                      context.locale.wallet_connect_request_session,
                       style: TextStyle(
                         color: SioColors.highlight1,
                         fontSize: 14,
@@ -369,10 +336,10 @@ class _WalletConnectSessionRequestItemState
                     ),
                   ),
                   Material(
-                    borderRadius: BorderRadius.circular(RadiusSize.radius20),
+                    borderRadius: BorderRadius.circular(RadiusSize.radius12),
                     color: SioColors.secondary1,
                     child: Padding(
-                      padding: const EdgeInsets.all(Dimensions.padding10),
+                      padding: const EdgeInsets.all(Dimensions.padding8),
                       child: Row(
                         children: [
                           CircleAvatar(
@@ -388,12 +355,10 @@ class _WalletConnectSessionRequestItemState
                               child: Text(
                                 network.name,
                                 overflow: TextOverflow.ellipsis,
+                                style: SioTextStyles.subtitleStyle
+                                    .apply(color: SioColors.white),
                               ),
                             ),
-                          ),
-                          const Icon(
-                            SioIcons.arrow_right,
-                            size: 14.0,
                           ),
                         ],
                       ),
@@ -407,17 +372,16 @@ class _WalletConnectSessionRequestItemState
             padding: const EdgeInsets.all(Dimensions.padding10),
             child: Row(children: [
               Expanded(
-                child: ElevatedButton(
+                child: BorderedTextButton(
+                  label: context.locale.common_reject,
                   onPressed: widget.onReject,
-                  // TODO - When widgets will be redesigned, add translations.
-                  child: const Text('Reject'),
                 ),
               ),
+              const Gap(Dimensions.padding10),
               Expanded(
                 child: HighlightedElevatedButton(
                   onPressed: () => widget.onApprove(widget.request.networkId),
-                  // TODO - When widgets will be redesigned, add translations.
-                  label: 'Approve',
+                  label: context.locale.common_approve,
                 ),
               )
             ]),
@@ -453,11 +417,11 @@ class _ItemCard extends StatelessWidget {
         maxWidth: 320,
       ),
       child: Material(
-        elevation: 20.0,
+        elevation: 36.0,
         clipBehavior: Clip.hardEdge,
         borderRadius: BorderRadius.circular(RadiusSize.radius20),
-        color: SioColors.secondary1,
-        child: child,
+        color: SioColors.transparent,
+        child: BackGradient2(child: child),
       ),
     );
   }

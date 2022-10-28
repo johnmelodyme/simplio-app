@@ -1,3 +1,4 @@
+import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
@@ -26,7 +27,7 @@ void main() {
               NetworkWallet.builder(
                 networkId: i,
                 address: '',
-                decimalPlaces: 2,
+                preset: const AssetPreset(decimalPlaces: 2),
               ),
             );
           }
@@ -42,33 +43,30 @@ void main() {
     () {
       final eth = NetworkWallet(
         uuid: 'ethereum',
-        contractAddress: '0x',
         networkId: 60,
         address: '0x',
-        decimalPlaces: 16,
         balance: BigInt.zero,
         fiatBalance: 0,
         isEnabled: true,
+        preset: const AssetPreset(decimalPlaces: 18),
       );
       final sol = NetworkWallet(
         uuid: 'solana',
-        contractAddress: '0x',
         networkId: 501,
         address: '0x',
-        decimalPlaces: 9,
         balance: BigInt.zero,
         fiatBalance: 0,
         isEnabled: true,
+        preset: const AssetPreset(decimalPlaces: 6),
       );
       final bnb = NetworkWallet(
         uuid: 'bnb',
-        contractAddress: '0x',
         networkId: 20000714,
         address: '0x',
-        decimalPlaces: 9,
         balance: BigInt.zero,
         fiatBalance: 0,
         isEnabled: true,
+        preset: const AssetPreset(decimalPlaces: 18),
       );
 
       final assetWallet = AssetWallet.builder(
@@ -127,13 +125,12 @@ void main() {
             sol.copyWith(isEnabled: false),
             NetworkWallet(
               uuid: 'x',
-              contractAddress: '0x',
               networkId: 0,
               address: '0x',
-              decimalPlaces: 8,
               balance: BigInt.zero,
               fiatBalance: 0,
               isEnabled: false,
+              preset: const AssetPreset(decimalPlaces: 8),
             ),
           ]);
 

@@ -291,7 +291,9 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
       if (state.amountFrom.isNotEmpty && double.parse(state.amountFrom) > 0) {
         final swapParams = await _swapRepository.getSwapData(
           sourceAmount: doubleStringToBigInt(
-              state.amountFrom, state.sourceNetworkWallet.decimalPlaces),
+            state.amountFrom,
+            state.sourceNetworkWallet.preset.decimalPlaces,
+          ),
           sourceAssetId: state.sourceAssetWallet.assetId,
           sourceNetworkId: state.sourceNetworkWallet.networkId,
           targetAssetId: state.targetAssetWallet.assetId,
@@ -301,9 +303,10 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
         emit(
           state.copyWith(
             response: const AmountToSuccess(),
-            amountTo: swapParams.targetGuaranteedWithdrawalAmount
-                .toDecimalString(
-                    decimalOffset: state.targetNetworkWallet.decimalPlaces),
+            amountTo:
+                swapParams.targetGuaranteedWithdrawalAmount.toDecimalString(
+              decimalOffset: state.targetNetworkWallet.preset.decimalPlaces,
+            ),
           ),
         );
       } else {
@@ -323,7 +326,9 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
       if (state.amountTo.isNotEmpty && double.parse(state.amountTo) > 0) {
         final swapParams = await _swapRepository.getSwapData(
           sourceAmount: doubleStringToBigInt(
-              state.amountTo, state.targetNetworkWallet.decimalPlaces),
+            state.amountTo,
+            state.targetNetworkWallet.preset.decimalPlaces,
+          ),
           sourceAssetId: state.targetAssetWallet.assetId,
           sourceNetworkId: state.targetNetworkWallet.networkId,
           targetAssetId: state.sourceAssetWallet.assetId,
@@ -333,9 +338,10 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
         emit(
           state.copyWith(
             response: const AmountFromSuccess(),
-            amountFrom: swapParams.targetGuaranteedWithdrawalAmount
-                .toDecimalString(
-                    decimalOffset: state.sourceNetworkWallet.decimalPlaces),
+            amountFrom:
+                swapParams.targetGuaranteedWithdrawalAmount.toDecimalString(
+              decimalOffset: state.sourceNetworkWallet.preset.decimalPlaces,
+            ),
             // TODO: add this fiat calculation when backend provide the value in swapParams
             amountFromFiat: '',
           ),
@@ -361,8 +367,9 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
 
     emit(
       state.copyWith(
-        amountFrom: (swapParams.sourceMinDepositAmount)
-            .getFormattedBalance(state.sourceNetworkWallet.decimalPlaces),
+        amountFrom: (swapParams.sourceMinDepositAmount).getFormattedBalance(
+          state.sourceNetworkWallet.preset.decimalPlaces,
+        ),
       ),
     );
 
@@ -372,8 +379,9 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
   void maxAmountClicked() async {
     emit(
       state.copyWith(
-        amountFrom: state.sourceNetworkWallet.balance
-            .getFormattedBalance(state.sourceNetworkWallet.decimalPlaces),
+        amountFrom: state.sourceNetworkWallet.balance.getFormattedBalance(
+          state.sourceNetworkWallet.preset.decimalPlaces,
+        ),
       ),
     );
 
@@ -409,7 +417,9 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
 
     final swapParams = await _swapRepository.getSwapData(
       sourceAmount: doubleStringToBigInt(
-          state.amountFrom, state.sourceNetworkWallet.decimalPlaces),
+        state.amountFrom,
+        state.sourceNetworkWallet.preset.decimalPlaces,
+      ),
       sourceAssetId: state.sourceAssetWallet.assetId,
       sourceNetworkId: state.sourceNetworkWallet.networkId,
       targetAssetId: state.targetAssetWallet.assetId,
@@ -428,8 +438,8 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
       amount: BigInt.zero,
       feeAmount: fees.highFee,
       gasLimit: fees.gasLimit,
-      assetDecimals: state.sourceNetworkWallet.decimalPlaces,
-      contractAddress: state.sourceNetworkWallet.contractAddress,
+      assetDecimals: state.sourceNetworkWallet.preset.decimalPlaces,
+      contractAddress: state.sourceNetworkWallet.preset.contractAddress,
     );
 
     final totalSwapFee = swapParams.totalSwapFee + tx.networkFee;
@@ -446,24 +456,27 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
         gasLimit: fees.gasLimit,
         amountToAfterFee: swapParams.targetGuaranteedWithdrawalAmount,
         response: FetchingFeesSuccess(
-          totalSwapFee: totalSwapFee
-              .getFormattedBalance(state.sourceNetworkWallet.decimalPlaces),
+          totalSwapFee: totalSwapFee.getFormattedBalance(
+            state.sourceNetworkWallet.preset.decimalPlaces,
+          ),
         ),
       ),
     );
   }
 
   void submitForm(String accountWalletId) async {
-    if (state.sourceNetworkWallet.contractAddress == null) {
+    if (state.sourceNetworkWallet.isNotToken) {
       if (state.amountToSend < BigInt.zero) {
         throw Exception('Amount to send can\'t be negative');
       }
     }
 
-    final amount = state.sourceNetworkWallet.contractAddress == null
+    final amount = state.sourceNetworkWallet.isNotToken
         ? state.amountToSend
         : doubleStringToBigInt(
-            state.amountFrom, state.sourceNetworkWallet.decimalPlaces);
+            state.amountFrom,
+            state.sourceNetworkWallet.preset.decimalPlaces,
+          );
 
     final WalletTransaction tx = await _walletRepository.signTransaction(
       accountWalletId,
@@ -472,8 +485,8 @@ class AssetExchangeFormCubit extends Cubit<AssetExchangeFormState> {
       amount: amount,
       feeAmount: state.baseNetworkFee,
       gasLimit: state.gasLimit,
-      assetDecimals: state.sourceNetworkWallet.decimalPlaces,
-      contractAddress: state.sourceNetworkWallet.contractAddress,
+      assetDecimals: state.sourceNetworkWallet.preset.decimalPlaces,
+      contractAddress: state.sourceNetworkWallet.preset.contractAddress,
     );
 
     final String txHash = await _walletRepository.broadcastTransaction(tx);

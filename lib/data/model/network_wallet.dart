@@ -1,50 +1,57 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
+import 'package:crypto_assets/crypto_assets.dart';
 
 part 'network_wallet.g.dart';
 
 class NetworkWallet extends Equatable {
+  static AssetPreset makePreset({
+    required int assetId,
+    required int networkId,
+  }) {
+    return Assets.getAssetPreset(
+      assetId: assetId,
+      networkId: networkId,
+    );
+  }
+
   final String uuid;
   final int networkId;
   final String address;
-  final String? contractAddress;
   final BigInt balance;
   final double fiatBalance;
-  final int decimalPlaces;
   final bool isEnabled;
+  final AssetPreset preset;
 
   const NetworkWallet({
     required this.uuid,
     required this.networkId,
     required this.address,
-    required this.contractAddress,
     required this.balance,
     required this.fiatBalance,
-    required this.decimalPlaces,
     required this.isEnabled,
+    required this.preset,
   });
 
   NetworkWallet.builder({
     required int networkId,
     required String address,
-    String? contractAddress,
     BigInt? balance,
     double? fiatBalance,
-    required int decimalPlaces,
     bool isEnabled = true,
+    required AssetPreset preset,
   }) : this(
           uuid: const Uuid().v4(),
           networkId: networkId,
           address: address,
-          contractAddress: contractAddress,
           balance: balance ?? BigInt.zero,
           fiatBalance: fiatBalance ?? 0,
-          decimalPlaces: decimalPlaces,
           isEnabled: isEnabled,
+          preset: preset,
         );
 
-  bool get isToken => contractAddress?.isNotEmpty == true;
+  bool get isToken => preset.contractAddress?.isNotEmpty == true;
   bool get isNotToken => !isToken;
 
   @override
@@ -52,7 +59,6 @@ class NetworkWallet extends Equatable {
         uuid,
         networkId,
         address,
-        contractAddress,
         balance,
         fiatBalance,
         isEnabled,
@@ -67,11 +73,10 @@ class NetworkWallet extends Equatable {
       uuid: uuid,
       networkId: networkId,
       address: address,
-      contractAddress: contractAddress,
       balance: balance ?? this.balance,
       fiatBalance: fiatBalance ?? this.fiatBalance,
-      decimalPlaces: decimalPlaces,
       isEnabled: isEnabled ?? this.isEnabled,
+      preset: preset,
     );
   }
 }
@@ -88,27 +93,19 @@ class NetworkWalletLocal extends HiveObject {
   final String address;
 
   @HiveField(3)
-  final String? contractAddress;
-
-  @HiveField(4)
   final BigInt balance;
 
-  @HiveField(5)
-  final int decimalPlaces;
-
-  @HiveField(6)
+  @HiveField(4)
   final bool isEnabled;
 
-  @HiveField(7)
+  @HiveField(5)
   final double fiatBalance;
 
   NetworkWalletLocal({
     required this.uuid,
     required this.networkId,
     required this.address,
-    required this.contractAddress,
     required this.balance,
-    required this.decimalPlaces,
     required this.isEnabled,
     required this.fiatBalance,
   });

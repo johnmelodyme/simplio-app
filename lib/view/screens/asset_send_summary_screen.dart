@@ -208,7 +208,7 @@ class _Amount extends StatelessWidget {
           );
         } else {
           fee = Text(
-            '${state.sourceNetworkWallet.contractAddress == null ? state.amountToSend.getFormattedBalance(state.sourceNetworkWallet.decimalPlaces) : state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
+            '${state.sourceNetworkWallet.isNotToken ? state.amountToSend.getFormattedBalance(state.sourceNetworkWallet.preset.decimalPlaces) : state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
             style: SioTextStyles.bodyPrimary.apply(color: SioColors.whiteBlue),
           );
         }

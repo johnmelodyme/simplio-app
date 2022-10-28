@@ -65,6 +65,16 @@ class AssetDetails {
     ),
   );
 
+  static AssetDetail dai = AssetDetail(
+    name: 'Dai token',
+    ticker: 'DAI',
+    style: AssetStyle(
+      icon: CryptoIcon.bnb,
+      primaryColor: const Color(0xFFDCDCDC),
+      foregroundColor: Colors.white,
+    ),
+  );
+
   static AssetDetail bnbSmartChain = AssetDetail(
     name: 'BNB Smart Chain',
     ticker: 'BSC',

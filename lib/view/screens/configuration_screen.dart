@@ -43,7 +43,12 @@ class ConfigurationScreen extends StatelessWidget {
                     .map<Widget>(
                       (e) => ListTile(
                         minVerticalPadding: 20.0,
-                        title: Text(e.value.name),
+                        title: Text(
+                          e.value.name,
+                          style: SioTextStyles.bodyStyle.apply(
+                            color: SioColors.whiteBlue,
+                          ),
+                        ),
                         trailing: ElevatedButton(
                           onPressed: () {
                             context

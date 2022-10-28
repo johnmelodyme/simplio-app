@@ -59,8 +59,6 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
         s.wallet,
         assetId: data.assetId,
         networkId: data.networkId,
-        decimalPlaces: data.decimalPlaces,
-        contractAddress: data.contractAddress,
       );
 
       emit(AccountWalletChanged(wallet: accountWallet));

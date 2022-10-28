@@ -1,12 +1,18 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 
-class SystemAssetDetails {
-  const SystemAssetDetails._();
+abstract class SystemAssetDetail extends AssetDetail {
+  const SystemAssetDetail({required super.style});
+}
 
-  static const AssetDetail notFound = AssetDetail(
-    name: '',
-    ticker: '',
+class AssetDetailNotFound extends SystemAssetDetail {
+  const AssetDetailNotFound({required super.style});
+}
+
+class SystemAssetDetails {
+  SystemAssetDetails._();
+
+  static const SystemAssetDetail notFound = AssetDetailNotFound(
     style: AssetStyle(
       icon: Icon(Icons.question_mark_outlined),
       primaryColor: Colors.black12,

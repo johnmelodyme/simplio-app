@@ -45,7 +45,7 @@ class CoinDetailBalance extends StatelessWidget {
               const Gap(52),
               Text(
                 networkWallet.balance
-                    .getFormattedBalance(networkWallet.decimalPlaces),
+                    .getFormattedBalance(networkWallet.preset.decimalPlaces),
                 style: SioTextStyles.h1.apply(color: SioColors.whiteBlue),
               ),
               Text(

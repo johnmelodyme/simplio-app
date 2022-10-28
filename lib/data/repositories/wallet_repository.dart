@@ -84,8 +84,6 @@ class WalletRepository {
     AccountWallet accountWallet, {
     required int assetId,
     required int networkId,
-    required int decimalPlaces,
-    String? contractAddress,
   }) async {
     _checkInitializedAccountWallet(accountWallet.uuid);
 
@@ -97,9 +95,11 @@ class WalletRepository {
             NetworkWallet.builder(
               networkId: networkId,
               address: _wallet.getAddressForCoin(networkId),
-              contractAddress: contractAddress,
-              decimalPlaces: decimalPlaces,
               isEnabled: true,
+              preset: NetworkWallet.makePreset(
+                assetId: assetId,
+                networkId: networkId,
+              ),
             );
 
     return await _walletDb.save(
@@ -645,7 +645,7 @@ class WalletRepository {
     final res = await _balanceService.token(
       networkWallet.networkId,
       networkWallet.address,
-      networkWallet.contractAddress!,
+      networkWallet.preset.contractAddress!,
     );
 
     final body = res.body;

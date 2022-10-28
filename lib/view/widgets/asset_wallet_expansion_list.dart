@@ -24,19 +24,20 @@ class AssetWalletExpansionList extends StatelessWidget {
   String getFormattedBalanceSum(final List<NetworkWallet> networkWallets) {
     BigInt sum = BigInt.zero;
     int lowestDecimalPlace = networkWallets
-        .map((networkWallet) => networkWallet.decimalPlaces)
+        .map((networkWallet) => networkWallet.preset.decimalPlaces)
         .reduce(min);
 
     int greatestDecimalPlace = networkWallets
-        .map((networkWallet) => networkWallet.decimalPlaces)
+        .map((networkWallet) => networkWallet.preset.decimalPlaces)
         .reduce(max);
 
     for (final NetworkWallet networkWallet in networkWallets) {
       BigInt compBalance = networkWallet.balance;
       int trailingZeros = 0;
 
-      if (networkWallet.decimalPlaces < greatestDecimalPlace) {
-        trailingZeros = greatestDecimalPlace - networkWallet.decimalPlaces;
+      if (networkWallet.preset.decimalPlaces < greatestDecimalPlace) {
+        trailingZeros =
+            greatestDecimalPlace - networkWallet.preset.decimalPlaces;
         compBalance = BigInt.parse(
             '${networkWallet.balance.toString()}${'0' * trailingZeros}');
       }
@@ -105,7 +106,9 @@ class AssetWalletExpansionList extends StatelessWidget {
                         right: Dimensions.padding16),
                     child: AssetWalletItem(
                       title: network.name,
-                      balance: n.balance.getFormattedBalance(n.decimalPlaces),
+                      balance: n.balance.getFormattedBalance(
+                        n.preset.decimalPlaces,
+                      ),
                       volume: n.fiatBalance.getThousandValueWithCurrency(
                         currency: 'USD', //TODO.. replace by real currency
                         locale: Intl.getCurrentLocale(),

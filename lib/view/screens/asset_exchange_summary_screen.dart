@@ -108,7 +108,7 @@ class _ExchangeTo extends StatelessWidget {
               children: [
                 TextSpan(
                   text:
-                      '${state.amountToAfterFee.toDecimalString(decimalOffset: state.targetNetworkWallet.decimalPlaces)} '
+                      '${state.amountToAfterFee.toDecimalString(decimalOffset: state.targetNetworkWallet.preset.decimalPlaces)} '
                       '${Assets.getAssetDetail(state.targetAssetWallet.assetId).ticker}',
                   style: SioTextStyles.h4.apply(
                     color: SioColors.mentolGreen,
@@ -168,7 +168,7 @@ class _Fee extends StatelessWidget {
           );
         } else {
           fee = Text(
-            '${state.totalSwapFee.getFormattedBalance(state.sourceNetworkWallet.decimalPlaces)} '
+            '${state.totalSwapFee.getFormattedBalance(state.sourceNetworkWallet.preset.decimalPlaces)} '
             '${Assets.getAssetDetail(state.networkAssetId).ticker}',
             style: SioTextStyles.bodyPrimary.apply(
               color: SioColors.whiteBlue,
@@ -260,6 +260,7 @@ class _Fee extends StatelessWidget {
                                   state.targetTransactionFee
                                       .getFormattedBalance(state
                                           .sourceNetworkWallet
+                                          .preset
                                           .decimalPlaces), // todo: calculate correct fiat value
                                   style: SioTextStyles.bodyPrimary.copyWith(
                                     color: SioColors.whiteBlue,
@@ -286,6 +287,7 @@ class _Fee extends StatelessWidget {
                                   state.sourceTransactionFee
                                       .getFormattedBalance(state
                                           .sourceNetworkWallet
+                                          .preset
                                           .decimalPlaces), // todo: calculate correct fiat value
                                   style: SioTextStyles.bodyPrimary.copyWith(
                                     color: SioColors.whiteBlue,
@@ -311,6 +313,7 @@ class _Fee extends StatelessWidget {
                                 child: Text(
                                   state.swapFee.getFormattedBalance(state
                                       .sourceNetworkWallet
+                                      .preset
                                       .decimalPlaces), // todo: calculate correct fiat value
                                   style: SioTextStyles.bodyPrimary.copyWith(
                                     color: SioColors.whiteBlue,
@@ -351,7 +354,7 @@ class _ExchangeFrom extends StatelessWidget {
           );
         } else {
           exchangeFrom = Text(
-            '${state.sourceNetworkWallet.contractAddress == null ? state.amountToSend.getFormattedBalance(state.sourceNetworkWallet.decimalPlaces) : state.amountFrom} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
+            '${state.sourceNetworkWallet.isNotToken ? state.amountToSend.getFormattedBalance(state.sourceNetworkWallet.preset.decimalPlaces) : state.amountFrom} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
             style: SioTextStyles.bodyPrimary.copyWith(
               color: SioColors.whiteBlue,
             ),

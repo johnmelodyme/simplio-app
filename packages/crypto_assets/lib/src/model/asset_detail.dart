@@ -8,8 +8,8 @@ class AssetDetail {
   final AssetStyle style;
 
   const AssetDetail({
-    required this.name,
-    required this.ticker,
+    this.name = '',
+    this.ticker = '',
     required this.style,
   });
 }

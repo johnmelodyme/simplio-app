@@ -8,6 +8,8 @@
   "common_user_level": "User Level",
   "common_email":"Email",
   "common_retry": "Retry",
+  "common_approve": "Approve",
+  "common_reject": "Reject",
   "common_password_input_label": "Password",
   "common_log_in_button_label": "Log in",
   "common_password_rule_atleast_8_chars":"Has at least 8 characters",
@@ -16,6 +18,8 @@
   "common_password_rule_upper_char":"Must include upper case character",
   "common_submit_btn_label":"Submit",
   "common_send_btn_label":"Send",
+  "common_sign_btn_label":"Sign",
+  "common_ignore_btn_label":"Ignore",
   "common_email_validation_error":"Please enter valid email address",
   "common_password_validation_error":"Please enter valid password",
   "common_priority_low":"Low",
@@ -301,6 +305,8 @@
     "coin_detail_screen_menu_exchange" : "Exchange",
     "coin_detail_screen_menu_receive" : "Receive",
     "coin_detail_screen_menu_send" : "Send",
-    "coin_detail_screen_menu_earn" : "Earn"
-
+    "coin_detail_screen_menu_earn" : "Earn",
+    "wallet_connect_request_session": "wants to connect with your wallet",
+    "wallet_connect_request_signature": "Requests a signature",
+    "wallet_connect_request_transaction": "requests a transaction"
 }

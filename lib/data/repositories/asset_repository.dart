@@ -85,8 +85,6 @@ class AssetRepository {
           networkId: curr.networkId,
           assetId: curr.assetId,
           networkTicker: curr.networkTicker,
-          decimalPlaces: curr.decimalPlaces,
-          contractAddress: curr.contractAddress,
         ));
         return acc;
       }
@@ -102,8 +100,6 @@ class AssetRepository {
                   networkId: curr.networkId,
                   assetId: curr.assetId,
                   networkTicker: curr.networkTicker,
-                  decimalPlaces: curr.decimalPlaces,
-                  contractAddress: curr.contractAddress,
                 ),
               })
         });
@@ -146,15 +142,11 @@ class NetworkData {
   final int networkId;
   final int assetId;
   final String networkTicker;
-  final int decimalPlaces;
-  final String? contractAddress;
 
   const NetworkData({
     required this.networkId,
     required this.assetId,
     required this.networkTicker,
-    required this.decimalPlaces,
-    this.contractAddress,
   });
 }
 

@@ -190,8 +190,9 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
   void maxAmountClicked() async {
     emit(
       state.copyWith(
-        amount: state.sourceNetworkWallet.balance
-            .getFormattedBalance(state.sourceNetworkWallet.decimalPlaces),
+        amount: state.sourceNetworkWallet.balance.getFormattedBalance(
+          state.sourceNetworkWallet.preset.decimalPlaces,
+        ),
       ),
     );
   }
@@ -233,13 +234,14 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
       amount: BigInt.zero,
       feeAmount: fee,
       gasLimit: fees.gasLimit,
-      assetDecimals: state.sourceNetworkWallet.decimalPlaces,
-      contractAddress: state.sourceNetworkWallet.contractAddress,
+      assetDecimals: state.sourceNetworkWallet.preset.decimalPlaces,
+      contractAddress: state.sourceNetworkWallet.preset.contractAddress,
     );
     // TODO: handle FetchingFeesFailure
 
-    final networkFee = tx.networkFee
-        .getFormattedBalance(state.sourceNetworkWallet.decimalPlaces);
+    final networkFee = tx.networkFee.getFormattedBalance(
+      state.sourceNetworkWallet.preset.decimalPlaces,
+    );
     emit(state.copyWith(
       baseNetworkFee: fee,
       gasLimit: fees.gasLimit,
@@ -250,16 +252,18 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
   }
 
   Future<void> submitForm(String accountWalletId) async {
-    if (state.sourceNetworkWallet.contractAddress == null) {
+    if (state.sourceNetworkWallet.isNotToken) {
       if (state.amountToSend < BigInt.zero) {
         throw Exception('Amount to send can\'t be negative');
       }
     }
 
-    final amount = state.sourceNetworkWallet.contractAddress == null
+    final amount = state.sourceNetworkWallet.isNotToken
         ? state.amountToSend
         : doubleStringToBigInt(
-            state.amount, state.sourceNetworkWallet.decimalPlaces);
+            state.amount,
+            state.sourceNetworkWallet.preset.decimalPlaces,
+          );
 
     final WalletTransaction tx = await _walletRepository.signTransaction(
       accountWalletId,
@@ -268,8 +272,8 @@ class AssetSendFormCubit extends Cubit<AssetSendFormState> {
       amount: amount,
       feeAmount: state.baseNetworkFee,
       gasLimit: state.gasLimit,
-      assetDecimals: state.sourceNetworkWallet.decimalPlaces,
-      contractAddress: state.sourceNetworkWallet.contractAddress,
+      assetDecimals: state.sourceNetworkWallet.preset.decimalPlaces,
+      contractAddress: state.sourceNetworkWallet.preset.contractAddress,
     );
 
     final String txHash = await _walletRepository.broadcastTransaction(tx);

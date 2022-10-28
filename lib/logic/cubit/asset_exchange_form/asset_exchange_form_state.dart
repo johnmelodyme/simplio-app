@@ -82,10 +82,22 @@ class AssetExchangeFormState extends Equatable
   ]) : this._(
           sourceAssetWallet: AssetWallet.builder(assetId: sourceAssetId),
           sourceNetworkWallet: NetworkWallet.builder(
-              networkId: sourceNetworkId, address: '', decimalPlaces: -1),
+            networkId: sourceNetworkId,
+            address: '',
+            preset: NetworkWallet.makePreset(
+              assetId: sourceAssetId,
+              networkId: sourceNetworkId,
+            ),
+          ),
           targetAssetWallet: AssetWallet.builder(assetId: targetAssetId),
           targetNetworkWallet: NetworkWallet.builder(
-              networkId: targetNetworkId, address: '', decimalPlaces: -1),
+            networkId: targetNetworkId,
+            address: '',
+            preset: NetworkWallet.makePreset(
+              assetId: targetAssetId,
+              networkId: targetNetworkId,
+            ),
+          ),
           amountFrom: '',
           amountFromFiat: '',
           amountTo: '',
@@ -117,7 +129,10 @@ class AssetExchangeFormState extends Equatable
       double.parse(amountTo) > 0;
 
   BigInt get amountToSend =>
-      doubleStringToBigInt(amountFrom, sourceNetworkWallet.decimalPlaces) -
+      doubleStringToBigInt(
+        amountFrom,
+        sourceNetworkWallet.preset.decimalPlaces,
+      ) -
       networkFee;
 
   int get networkAssetId {

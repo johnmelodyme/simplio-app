@@ -1,3 +1,4 @@
+import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/model/account_wallet.dart';
@@ -119,14 +120,14 @@ void main() {
               60: NetworkWallet.builder(
                 networkId: 60,
                 address: '0x',
-                decimalPlaces: 19,
+                preset: const AssetPreset(decimalPlaces: 19),
               )
             }),
             AssetWallet.builder(uuid: 'solana', assetId: 3, wallets: {
               501: NetworkWallet.builder(
                 networkId: 501,
                 address: '0x',
-                decimalPlaces: 19,
+                preset: const AssetPreset(decimalPlaces: 19),
               )
             }),
           ]);
@@ -143,7 +144,7 @@ void main() {
               501: NetworkWallet.builder(
                 networkId: 501,
                 address: '0x',
-                decimalPlaces: 19,
+                preset: const AssetPreset(decimalPlaces: 19),
               )
             }),
           ]);
@@ -162,7 +163,7 @@ void main() {
               0: NetworkWallet.builder(
                 networkId: 0,
                 address: '0x',
-                decimalPlaces: 8,
+                preset: const AssetPreset(decimalPlaces: 8),
               )
             }),
             AssetWallet.builder(uuid: 'x', assetId: 1000),
