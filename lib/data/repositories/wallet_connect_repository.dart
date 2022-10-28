@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:simplio_app/data/model/wallet_connect_session.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:wallet_connect/wallet_connect.dart';
@@ -19,7 +20,7 @@ class WalletConnectRepository {
 
   /// Active sessions hold 'topicId' as their key and [WCClient] as value
   final Map<String, WCClient> _sessions = {};
-  final _eventController = StreamController<WalletConnectEvent>();
+  final _eventController = BehaviorSubject<WalletConnectEvent>();
 
   WalletConnectRepository._(this._walletConnectSessionDb);
 
@@ -28,7 +29,7 @@ class WalletConnectRepository {
   }) : this._(walletConnectSessionDb);
 
   Stream<WalletConnectEvent> get events {
-    return _eventController.stream.asBroadcastStream();
+    return _eventController.stream;
   }
 
   Map<String, WalletConnectPeer> get sessions => _sessions.values

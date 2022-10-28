@@ -48,6 +48,7 @@ dependencies:
   infinite_scroll_pagination: ^3.2.0
   sliding_up_panel: ^2.0.0+1
   webview_flutter: ^3.0.4
+  rxdart: ^0.27.5
 
 dev_dependencies:
   flutter_driver:
