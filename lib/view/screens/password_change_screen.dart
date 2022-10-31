@@ -55,24 +55,10 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
                           offset: const Offset(0, 0),
                         ),
                       ]),
-                      child: Stack(
-                        children: [
-                          Icon(
-                            Icons.lock_outline_rounded, //TODO.. change icon
-                            color: SioColors.mentolGreen,
-                            size: 70,
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 10,
-                            child: Icon(
-                              SioIcons.refresh,
-                              color: SioColors.highlight,
-                              size: 30,
-                            ),
-                          ),
-                        ],
+                      child: Icon(
+                        SioIcons.lock, //TODO.. change icon
+                        color: SioColors.mentolGreen,
+                        size: 70,
                       ),
                     ),
                   ],

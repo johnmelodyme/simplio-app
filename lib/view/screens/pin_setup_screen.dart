@@ -6,7 +6,10 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/widgets/headline_text.dart';
+import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
+import 'package:simplio_app/view/widgets/account_created_icon.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/pin_digits.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
@@ -27,14 +30,24 @@ class PinSetupScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  HeadlineText(
-                    context.locale
-                        .pin_setup_screen_account_creation_before_pin_setup,
+                  const AccountCreatedIcon(),
+                  Gaps.gap20,
+                  Text(
+                    context.locale.pin_setup_screen_account_creation_title,
+                    textAlign: TextAlign.center,
+                    style: SioTextStyles.h1.apply(
+                      color: SioColorsDark.whiteBlue,
+                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(context.locale.pin_setup_screen_set_pin_label),
+                  Gaps.gap12,
+                  Text(
+                    context.locale.pin_setup_screen_account_creation_subtitle,
+                    textAlign: TextAlign.center,
+                    style: SioTextStyles.bodyPrimary.apply(
+                      color: SioColorsDark.secondary7,
+                    ),
                   ),
+                  Gaps.gap60,
                   BlocBuilder<PinSetupFormCubit, PinSetupFormState>(
                     builder: (context, state) {
                       return PinDigits(

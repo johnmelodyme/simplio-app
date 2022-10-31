@@ -3,9 +3,9 @@ Feature: Main Page
 
   Scenario: Checking Forgot Password Page
 
-    Then I wait until the element of type "TextButton" is present
-    And I tap the label that contains the text "Log in"
-    When I expect the text "Log in" to be present within 10 seconds
+    Given I wait until the element of type "ElevatedButton" is present
+    When I tap the label that contains the text "Log in"
+    And I expect the text "Log in" to be present within 10 seconds
     And I tap the button with the key: "sign-in-screen-reset-password-button"
     Then I expect the text "Please enter your email address associated with your account to receive a link for resetting your password." to be present within 10 seconds
     When I fill the "themed-text-form-field" field with "bob.gmail.com"

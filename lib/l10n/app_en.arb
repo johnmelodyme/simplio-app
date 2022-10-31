@@ -56,7 +56,19 @@
     "configuration_screen_change_password": "Change password",
     "configuration_screen_sign_out": "Sign out",
 
-    "welcome_screen_go_to_app_btn":"Go to app",
+    "welcome_screen_already_have_an_account": "Already have an account?",
+    "welcome_screen_login": "Log in",
+    "welcome_screen_start_using_app_btn":"Start using app",
+    "welcome_screen_page1_discover":"Discover",
+    "welcome_screen_page1_gamefi":"GameFi",
+    "welcome_screen_page1_world":"world",
+    "welcome_screen_page1_subtitle":"instantly with one simple app.",
+    "welcome_screen_page2_buy_favourite":"Buy favorite",
+    "welcome_screen_page2_tokens_and_nfts":"tokens & NFT´s",
+    "welcome_screen_page2_subtitle":"with your debit card.",
+    "welcome_screen_page3_connect":"Connect",
+    "welcome_screen_page3_to_play_games":"to\nPlay 2 Earn games",
+    "welcome_screen_page3_subtitle":"instantly with one simple click.",
 
     "application_screen_discovery_tabbar_label": "Discover",
     "application_screen_games_tabbar_label": "My Games",
@@ -160,11 +172,10 @@
 
    
 
+    "pin_setup_screen_account_creation_title": "Account created",
+    "pin_setup_screen_account_creation_subtitle": "One last think to do. Set your Security\nCode to keep your account safe.",
 
-    "pin_setup_screen_account_creation_before_pin_setup":"Done! \n One last thing to do",
-    "pin_setup_screen_set_pin_label":"Set your security code to keep your account secure",
-
-    "protected_guard_enter_pin_code": "Enter your pin code.",
+    "protected_guard_enter_pin_code": "Enter your pin",
     "protected_guard_remaining_attempts": "You have remaining attempts:",
     "protected_guard_last_chance": "This is your last chance",
 

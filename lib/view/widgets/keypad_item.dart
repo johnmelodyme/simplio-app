@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 
 class KeypadItem extends StatelessWidget {
   const KeypadItem({
@@ -95,11 +96,13 @@ class _KeypadButton<T> extends KeypadItem {
         key: key,
         onTap: () => onTap(value),
         customBorder: isCircular ? const CircleBorder() : null,
-        child: Container(
-          alignment: Alignment.center,
+        child: Center(
           child: Text(value.toString(),
-              style: SioTextStyles.numericKeyboard
-                  .copyWith(color: SioColors.whiteBlue)),
+              textAlign: TextAlign.center,
+              style: SioTextStyles.numericKeyboard.copyWith(
+                color: SioColors.whiteBlue,
+                height: 1,
+              )),
         ),
       ),
     );
@@ -146,10 +149,42 @@ class _ActionButton extends KeypadItem {
     final elevatedBody = SizedBox(
       width: size.width,
       height: size.height,
-      child: ElevatedButton(
-        onPressed: onTap,
-        child: Center(
-          child: content,
+      child: ClipRRect(
+        borderRadius: BorderRadii.radius10,
+        child: ElevatedButton(
+          onPressed: onTap,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+              Colors.transparent,
+            ),
+            padding: MaterialStateProperty.all<EdgeInsets>(
+              EdgeInsets.zero,
+            ),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadii.radius10,
+                side: BorderSide.none,
+              ),
+            ),
+            elevation: MaterialStateProperty.all<double>(0),
+          ),
+          child: SizedBox(
+            width: Constants.keypadButtonSize.width,
+            height: Constants.keypadButtonSize.height,
+            child: Ink(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    SioColorsDark.backGradient4Start,
+                    SioColorsDark.blackGradient2,
+                  ],
+                ),
+              ),
+              child: content,
+            ),
+          ),
         ),
       ),
     );

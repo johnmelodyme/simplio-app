@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
+import 'package:simplio_app/view/widgets/back_gradient1.dart';
 import 'package:simplio_app/view/widgets/keypad_item.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
@@ -40,23 +42,32 @@ class _KeypadGrid extends StatelessWidget {
         maxWidth: double.infinity,
         minHeight: rows.length * 59,
       ),
-      child: Padding(
-        padding: Paddings.horizontal5,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            for (final row in rows)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  for (final item in row.children)
-                    Expanded(
-                      flex: stretchItems ? 1 : 0,
-                      child: item,
-                    )
-                ],
-              )
-          ],
+      child: ClipRRect(
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(
+            RadiusSize.radius20,
+          ),
+        ),
+        child: BackGradient1(
+          child: Padding(
+            padding: Paddings.horizontal5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                for (final row in rows)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      for (final item in row.children)
+                        Expanded(
+                          flex: stretchItems ? 1 : 0,
+                          child: item,
+                        )
+                    ],
+                  )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -189,7 +200,8 @@ class Numpad extends StatelessWidget {
                       ? KeypadItem.action(
                           key: const Key('numpad-action-proceed'),
                           actionType: ActionButtonType.elevated,
-                          content: Icon(SioIcons.done, color: iconColor),
+                          content: const Icon(SioIcons.done,
+                              color: SioColorsDark.secondary6),
                           onTap: () => onProceed?.call(),
                         )
                       : const KeypadItem(),

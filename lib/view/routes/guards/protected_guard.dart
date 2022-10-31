@@ -19,12 +19,18 @@ class ProtectedGuard extends StatefulWidget {
   final bool Function(AccountProvided state)? protectWhen;
   final WidgetBuilder protectedBuilder;
   final BuildContextCallback onPrevent;
+  final Widget icon;
+  final String title;
+  final String? subtitle;
 
   const ProtectedGuard({
     super.key,
     this.protectWhen,
     required this.protectedBuilder,
     required this.onPrevent,
+    required this.icon,
+    required this.title,
+    this.subtitle,
   });
 
   @override
@@ -55,6 +61,9 @@ class _ProtectedGuardState extends State<ProtectedGuard> {
               account: s.account,
             ),
             child: _Protection(
+              icon: widget.icon,
+              title: widget.title,
+              subtitle: widget.subtitle,
               onFailure: (context, account) async {
                 context
                     .read<AccountCubit>()
@@ -75,10 +84,16 @@ class _ProtectedGuardState extends State<ProtectedGuard> {
 class _Protection extends StatelessWidget {
   final Function(BuildContext context, PinVerifyFormSuccess) onSuccess;
   final Function(BuildContext context, Account account) onFailure;
+  final Widget icon;
+  final String title;
+  final String? subtitle;
 
   const _Protection({
     required this.onSuccess,
     required this.onFailure,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
   });
 
   @override
@@ -92,33 +107,44 @@ class _Protection extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(context.locale.protected_guard_enter_pin_code,
-                      style: SioTextStyles.bodyPrimary.apply(
+                  icon,
+                  Gaps.gap20,
+                  Text(title,
+                      textAlign: TextAlign.center,
+                      style: SioTextStyles.h1.apply(
                         color: SioColorsDark.whiteBlue,
                       )),
-                  Padding(
-                    padding: Paddings.vertical20,
-                    child: BlocConsumer<PinVerifyFormCubit, PinVerifyFormState>(
-                      listenWhen: (p, c) => p.response != c.response,
-                      listener: (context, state) {
-                        final res = state.response;
-                        if (res is PinVerifyFormSuccess) {
-                          onSuccess(context, res);
-                        }
-
-                        if (res is PinVerifyFormFailure) {
-                          onFailure(context, state.account);
-                        }
-                      },
-                      buildWhen: (prev, curr) => prev.pin != curr.pin,
-                      builder: (context, state) {
-                        return PinDigits(
-                          pin: state.pin.value,
-                          pinDigitStyle: PinDigitStyle.hideAllAfterTime,
-                          duration: const Duration(seconds: 1),
-                        );
-                      },
+                  if (subtitle != null) ...[
+                    Gaps.gap12,
+                    Text(
+                      subtitle!,
+                      textAlign: TextAlign.center,
+                      style: SioTextStyles.bodyPrimary.apply(
+                        color: SioColorsDark.secondary7,
+                      ),
                     ),
+                  ],
+                  Gaps.gap60,
+                  BlocConsumer<PinVerifyFormCubit, PinVerifyFormState>(
+                    listenWhen: (p, c) => p.response != c.response,
+                    listener: (context, state) {
+                      final res = state.response;
+                      if (res is PinVerifyFormSuccess) {
+                        onSuccess(context, res);
+                      }
+
+                      if (res is PinVerifyFormFailure) {
+                        onFailure(context, state.account);
+                      }
+                    },
+                    buildWhen: (prev, curr) => prev.pin != curr.pin,
+                    builder: (context, state) {
+                      return PinDigits(
+                        pin: state.pin.value,
+                        pinDigitStyle: PinDigitStyle.hideAllAfterTime,
+                        duration: const Duration(seconds: 1),
+                      );
+                    },
                   ),
                   BlocBuilder<PinVerifyFormCubit, PinVerifyFormState>(
                     buildWhen: (prev, curr) =>

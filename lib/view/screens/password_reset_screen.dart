@@ -75,19 +75,9 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                                 child: Stack(
                                   children: [
                                     Icon(
-                                      Icons.lock_outline_rounded,
+                                      SioIcons.lock,
                                       color: SioColors.mentolGreen,
                                       size: 70,
-                                    ),
-                                    Positioned(
-                                      left: 0,
-                                      right: 0,
-                                      bottom: 10,
-                                      child: Icon(
-                                        Icons.question_mark,
-                                        color: SioColors.nft,
-                                        size: 30,
-                                      ),
                                     ),
                                   ],
                                 ),

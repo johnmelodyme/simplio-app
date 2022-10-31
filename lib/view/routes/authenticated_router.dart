@@ -6,6 +6,7 @@ import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/data/repositories/games_repository.dart';
+import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
@@ -26,6 +27,7 @@ import 'package:simplio_app/view/screens/asset_buy_search_screen.dart';
 import 'package:simplio_app/view/screens/asset_buy_success_screen.dart';
 import 'package:simplio_app/view/screens/asset_buy_summary_screen.dart';
 import 'package:simplio_app/view/screens/asset_detail_screen.dart';
+import 'package:simplio_app/view/screens/asset_exchange_screen.dart';
 import 'package:simplio_app/view/screens/asset_exchange_search_screen.dart';
 import 'package:simplio_app/view/screens/asset_exchange_success_screen.dart';
 import 'package:simplio_app/view/screens/asset_exchange_summary_screen.dart';
@@ -44,8 +46,9 @@ import 'package:simplio_app/view/screens/games_search_screen.dart';
 import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
-import 'package:simplio_app/view/screens/asset_exchange_screen.dart';
 import 'package:simplio_app/view/screens/wallet_connect_qr_code_scanner_screen.dart';
+import 'package:simplio_app/view/widgets/account_created_icon.dart';
+import 'package:simplio_app/view/widgets/lock_with_shadow_icon.dart';
 
 class AuthenticatedRouter with PageBuilderMixin {
   static const String discovery = 'discovery';
@@ -97,8 +100,11 @@ class AuthenticatedRouter with PageBuilderMixin {
       initialLocation: '/in',
       // TODO - Replace this param with [ShellRoute] on go_router v5 migration
       // See https://github.com/flutter/flutter/issues/108141
-      navigatorBuilder: (_, __, child) {
+      navigatorBuilder: (context, __, child) {
         return ProtectedGuard(
+          icon: const AccountCreatedIcon(),
+          title: context.locale.pin_setup_screen_account_creation_title,
+          subtitle: context.locale.pin_setup_screen_account_creation_subtitle,
           protectWhen: (state) =>
               state.account.securityLevel.index > SecurityLevel.none.index &&
               state is AccountLocked,
@@ -181,12 +187,17 @@ class AuthenticatedRouter with PageBuilderMixin {
                                   RepositoryProvider.of<AuthRepository>(
                                       context),
                             ),
-                            child: ProtectedGuard(
-                              protectedBuilder: (_) =>
-                                  const PasswordChangeScreen(),
-                              onPrevent: (context) =>
-                                  context.goNamed(configuration),
-                            ),
+                            child: Builder(builder: (context) {
+                              return ProtectedGuard(
+                                icon: const LockWithShadowIcon(),
+                                title: context
+                                    .locale.protected_guard_enter_pin_code,
+                                protectedBuilder: (_) =>
+                                    const PasswordChangeScreen(),
+                                onPrevent: (context) =>
+                                    context.goNamed(configuration),
+                              );
+                            }),
                           ),
                         ),
                       )

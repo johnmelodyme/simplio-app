@@ -4,7 +4,7 @@ Feature: Main Page
 
   Scenario: Checking Creation of New Account
 
-    Given I wait 10 seconds
+    Given I wait until the element of type "ElevatedButton" is present
     When I tap the label that contains the text 'Log in'
     And I expect the text 'Enter Simplio.' to be present
     And I tap the button with the key: 'sign-in-screen-create-account-button'

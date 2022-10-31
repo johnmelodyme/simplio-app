@@ -3,10 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/unauthenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/bordered_text_button.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
+import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/story.dart';
+import 'package:simplio_app/view/widgets/welcome_screen_page.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -15,78 +18,148 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SioScaffold(
       body: SafeArea(
-        child: Story(
-          repeat: !const bool.fromEnvironment('TEST_RUN'),
-          itemDuration: const Duration(seconds: 2),
-          items: [
-            Container(
-              width: double.infinity,
-              color: Colors.red,
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Placeholder 1',
-                  style: TextStyle(
-                      fontSize:
-                          Theme.of(context).textTheme.headlineLarge?.fontSize),
-                ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              color: Colors.green,
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Placeholder 2',
-                  style: TextStyle(
-                      fontSize:
-                          Theme.of(context).textTheme.headlineLarge?.fontSize),
-                ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              color: Colors.orange,
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Placeholder 3',
-                  style: TextStyle(
-                      fontSize:
-                          Theme.of(context).textTheme.headlineLarge?.fontSize),
-                ),
-              ),
-            ),
-          ],
-          bottomNavigationBar: Padding(
-            padding: Paddings.horizontal20,
-            child: Column(
-              children: [
-                Padding(
-                  padding: Paddings.bottom20,
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: HighlightedElevatedButton(
-                      onPressed: () => {},
-                      label: context.locale.welcome_screen_go_to_app_btn,
+        child: Stack(children: [
+          Positioned.fill(
+            child: Story(
+              repeat: !const bool.fromEnvironment('TEST_RUN'),
+              itemDuration: const Duration(seconds: 2),
+              items: [
+                WelcomScreenPage(
+                  textSpans: [
+                    TextSpan(
+                      text: '${context.locale.welcome_screen_page1_discover}\n',
+                      style: SioTextStyles.h1.apply(
+                        color: SioColorsDark.whiteBlue,
+                      ),
                     ),
-                  ),
+                    TextSpan(
+                      text: '${context.locale.welcome_screen_page1_gamefi} ',
+                      style: SioTextStyles.h1
+                          .apply(color: SioColorsDark.mentolGreen),
+                    ),
+                    TextSpan(
+                      text: context.locale.welcome_screen_page1_world,
+                      style: SioTextStyles.h1
+                          .apply(color: SioColorsDark.whiteBlue),
+                    ),
+                  ],
+                  subtitle: context.locale.welcome_screen_page1_subtitle,
+                  imageRes: 'assets/images/start_screen1.png',
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: BorderedTextButton(
-                    onPressed: () {
-                      GoRouter.of(context)
-                          .pushNamed(UnauthenticatedRouter.signIn);
-                    },
-                    label: context.locale.common_log_in_button_label,
-                  ),
+                WelcomScreenPage(
+                  textSpans: [
+                    TextSpan(
+                      text:
+                          '${context.locale.welcome_screen_page2_buy_favourite}\n',
+                      style: SioTextStyles.h1.apply(
+                        color: SioColorsDark.whiteBlue,
+                      ),
+                    ),
+                    TextSpan(
+                      text: context.locale.welcome_screen_page2_tokens_and_nfts,
+                      style: SioTextStyles.h1
+                          .apply(color: SioColorsDark.mentolGreen),
+                    ),
+                  ],
+                  subtitle: context.locale.welcome_screen_page2_subtitle,
+                  imageRes: 'assets/images/start_screen2.png',
+                ),
+                WelcomScreenPage(
+                  textSpans: [
+                    TextSpan(
+                      text: '${context.locale.welcome_screen_page3_connect} ',
+                      style: SioTextStyles.h1.apply(
+                        color: SioColorsDark.mentolGreen,
+                      ),
+                    ),
+                    TextSpan(
+                      text: context.locale.welcome_screen_page3_to_play_games,
+                      style: SioTextStyles.h1
+                          .apply(color: SioColorsDark.whiteBlue),
+                    ),
+                  ],
+                  subtitle: context.locale.welcome_screen_page3_subtitle,
+                  imageRes: 'assets/images/start_screen3.png',
                 ),
               ],
             ),
           ),
-        ),
+          Positioned(
+            bottom: -30,
+            left: 0,
+            right: 0,
+            child: Row(
+              children: [
+                const Spacer(
+                  flex: 3,
+                ),
+                Expanded(
+                  flex: 6,
+                  child: Image.asset(
+                    'assets/images/simpliona_login.png',
+                  ),
+                ),
+                const Spacer(
+                  flex: 1,
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: Paddings.horizontal20,
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: HighlightedElevatedButton(
+                      onPressed: () => {},
+                      label: context.locale.welcome_screen_start_using_app_btn,
+                    ),
+                  ),
+                  Padding(
+                    padding: Paddings.all20,
+                    child: GestureDetector(
+                      child: Row(
+                        key: const Key('welcome-screen-log-in-button'),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            context
+                                .locale.welcome_screen_already_have_an_account,
+                            style: SioTextStyles.bodyPrimary.copyWith(
+                                color: SioColorsDark.secondary7, height: 1),
+                          ),
+                          Gaps.gap8,
+                          Text(
+                            context.locale.welcome_screen_login,
+                            style: SioTextStyles.bodyPrimary.copyWith(
+                              color: SioColorsDark.mentolGreen,
+                              height: 1,
+                            ),
+                          ),
+                          const Icon(
+                            SioIcons.arrow_right,
+                            size: 14,
+                            color: SioColorsDark.mentolGreen,
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        GoRouter.of(context)
+                            .pushNamed(UnauthenticatedRouter.signIn);
+                      },
+                    ),
+                  ),
+                  Gaps.gap10,
+                ],
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }

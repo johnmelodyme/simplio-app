@@ -115,6 +115,9 @@ class _SimplioAppState extends State<SimplioApp> {
   Future<void> init() async {
     await Hive.initFlutter();
 
+    // Precache welcome screen images, otherwise they would pope into view later.
+    precacheWelcomeImages();
+
     /// Initialize all top-level Hive Db Providers
     final authTokenDbProvider = AuthTokenDbProvider();
     final accountDbProvider = AccountDbProvider();
@@ -177,5 +180,14 @@ class _SimplioAppState extends State<SimplioApp> {
     swapRepository = SwapRepository.builder(
       swapService: securedApi.service<SwapService>(),
     );
+  }
+
+  void precacheWelcomeImages() {
+    precacheImage(
+        Image.asset('assets/images/start_screen1.png').image, context);
+    precacheImage(
+        Image.asset('assets/images/start_screen2.png').image, context);
+    precacheImage(
+        Image.asset('assets/images/start_screen3.png').image, context);
   }
 }

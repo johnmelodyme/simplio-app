@@ -111,8 +111,12 @@ class Paddings {
 }
 
 class BorderRadii {
+  static BorderRadius radius2 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius2));
   static BorderRadius radius6 =
       const BorderRadius.all(Radius.circular(RadiusSize.radius6));
+  static BorderRadius radius10 =
+      const BorderRadius.all(Radius.circular(RadiusSize.radius10));
   static BorderRadius radius12 =
       const BorderRadius.all(Radius.circular(RadiusSize.radius12));
   static BorderRadius radius15 =
@@ -174,6 +178,7 @@ class Dimensions {
 }
 
 class RadiusSize {
+  static const double radius2 = 2;
   static const double radius6 = 6;
   static const double radius10 = 10;
   static const double radius12 = 12;
@@ -213,7 +218,7 @@ class Constants {
   static const pageSizeTransactions = 7;
   static const pageSizeGames = 7;
 
-  static const keypadButtonSize = Size(100.0, 60.0);
+  static const keypadButtonSize = Size(50.0, 50.0);
 
   //times
   static const slidableBannerItemSwapTimeMillis = 3000;

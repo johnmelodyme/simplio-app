@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/model/helpers/validated_pin.dart';
+import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 
 enum PinDigitStyle { hideAllExceptLast, hideAllAfterTime, showAll }
@@ -107,25 +109,26 @@ class _PinNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6.5),
+      padding: Paddings.horizontal10,
       child: Container(
         alignment: Alignment.center,
-        width: 59,
-        height: 59,
+        width: 50,
+        height: 50,
         decoration: BoxDecoration(
-          color: SioColors.whiteBlue,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(6),
+          border: Border(
+            bottom: BorderSide(
+              width: 1,
+              color: char?.isNotEmpty == true
+                  ? SioColors.whiteBlue
+                  : SioColors.secondary7,
+            ),
           ),
         ),
         child: Text(
           key: key,
           char ?? '',
-          style: TextStyle(
-            color: SioColors.black,
-            backgroundColor: SioColors.whiteBlue,
-            fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
-            fontWeight: Theme.of(context).textTheme.headlineMedium?.fontWeight,
+          style: SioTextStyles.h2.apply(
+            color: SioColors.whiteBlue,
           ),
         ),
       ),

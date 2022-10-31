@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/themed_linear_progress_indicator.dart';
+
+const double indicatorHeight = 2;
+const double indicatorWidth = 31;
+const double indicatorPadding = 5;
 
 class Story extends StatefulWidget {
   final List<Widget> items;
   final Widget? bottomNavigationBar;
   final Duration itemDuration;
   final bool repeat;
-
-  final double _indicatorPadding = 15;
 
   const Story({
     super.key,
@@ -29,51 +31,43 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final bars = Padding(
-      padding: Paddings.horizontal20,
-      child: Row(
-        children: widget.items
-            .asMap()
-            .entries
-            .map(
-              (e) => Padding(
-                padding: _progressIndicatorPadding(e.key, widget.items.length),
+    final bars = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: widget.items
+          .asMap()
+          .entries
+          .map(
+            (e) => Padding(
+              padding: _progressIndicatorPadding(e.key, widget.items.length),
+              child: ClipRRect(
+                borderRadius: BorderRadii.radius2,
                 child: SizedBox(
-                  width: _indicatorWidth(),
+                  height: indicatorHeight,
+                  width: indicatorWidth,
                   child: ThemedLinearProgressIndicator(
                     value: controllers[e.key].value,
                   ),
                 ),
               ),
-            )
-            .toList(),
-      ),
+            ),
+          )
+          .toList(),
     );
 
-    return SioScaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: Paddings.bottom20,
-            child: bars,
+    return Column(
+      children: [
+        Gaps.gap16,
+        bars,
+        const Gap(46),
+        Expanded(
+          child: GestureDetector(
+            onTapDown: (_) => _toggleAnimation(),
+            onLongPressEnd: (_) => _toggleAnimation(stop: false),
+            onTapUp: _handleLeftRightTaps,
+            child: widget.items[displayedItemIndex],
           ),
-          Expanded(
-            child: GestureDetector(
-              onTapDown: (_) => _toggleAnimation(),
-              onLongPressEnd: (_) => _toggleAnimation(stop: false),
-              onTapUp: _handleLeftRightTaps,
-              child: Padding(
-                padding: Paddings.bottom20.add(Paddings.horizontal20),
-                child: widget.items[displayedItemIndex],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: widget.bottomNavigationBar,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -117,17 +111,10 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
 
   EdgeInsetsGeometry _progressIndicatorPadding(int index, int length) {
     if (index + 1 < length) {
-      return EdgeInsets.only(right: widget._indicatorPadding);
+      return const EdgeInsets.only(right: indicatorPadding);
     } else {
       return const EdgeInsets.only();
     }
-  }
-
-  double _indicatorWidth() {
-    return (MediaQuery.of(context).size.width -
-            Paddings.horizontal20.horizontal -
-            widget._indicatorPadding * (widget.items.length - 1)) /
-        widget.items.length;
   }
 
   void _toggleAnimation({stop = true}) {
