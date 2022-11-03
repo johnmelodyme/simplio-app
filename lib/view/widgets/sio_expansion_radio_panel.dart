@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
 
 const double _kPanelHeaderCollapsedHeight = kMinInteractiveDimension;
 
@@ -20,33 +22,36 @@ class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
   ExpansionPanelRadio? _currentOpenPanel;
 
   bool _isChildExpanded(int index) {
-    final ExpansionPanelRadio radioWidget =
-        widget.children[index] as ExpansionPanelRadio;
-    return _currentOpenPanel?.value == radioWidget.value;
+    final selectedIndex =
+        context.read<ExpansionListCubit>().state.selectedIndex;
+    return selectedIndex == index;
   }
 
   void _handlePressed(bool isExpanded, int index) {
     widget.expansionCallback?.call(index, isExpanded);
+    if (!isExpanded || index == -1) {
+      context.read<ExpansionListCubit>().selectValue(index);
+    } else {
+      final ExpansionPanelRadio pressedChild =
+          widget.children[index] as ExpansionPanelRadio;
 
-    final ExpansionPanelRadio pressedChild =
-        widget.children[index] as ExpansionPanelRadio;
+      // If another ExpansionPanelRadio was already open, apply its
+      // expansionCallback (if any) to false, because it's closing.
+      for (int childIndex = 0;
+          childIndex < widget.children.length;
+          childIndex += 1) {
+        final ExpansionPanelRadio child =
+            widget.children[childIndex] as ExpansionPanelRadio;
+        if (widget.expansionCallback != null &&
+            childIndex != index &&
+            child.value == _currentOpenPanel?.value) {
+          widget.expansionCallback!(childIndex, false);
+        }
 
-    // If another ExpansionPanelRadio was already open, apply its
-    // expansionCallback (if any) to false, because it's closing.
-    for (int childIndex = 0;
-        childIndex < widget.children.length;
-        childIndex += 1) {
-      final ExpansionPanelRadio child =
-          widget.children[childIndex] as ExpansionPanelRadio;
-      if (widget.expansionCallback != null &&
-          childIndex != index &&
-          child.value == _currentOpenPanel?.value) {
-        widget.expansionCallback!(childIndex, false);
+        setState(() {
+          _currentOpenPanel = isExpanded ? null : pressedChild;
+        });
       }
-
-      setState(() {
-        _currentOpenPanel = isExpanded ? null : pressedChild;
-      });
     }
   }
 
@@ -119,11 +124,18 @@ class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
       );
     }
 
-    return MergeableMaterial(
-      hasDividers: false,
-      dividerColor: widget.dividerColor,
-      elevation: widget.elevation,
-      children: items,
+    return BlocListener<ExpansionListCubit, ExpansionListState>(
+      listenWhen: (prev, curr) => prev.selectedIndex != curr.selectedIndex,
+      listener: (context, state) {
+        _handlePressed(
+            _isChildExpanded(state.selectedIndex), state.selectedIndex);
+      },
+      child: MergeableMaterial(
+        hasDividers: false,
+        dividerColor: widget.dividerColor,
+        elevation: widget.elevation,
+        children: items,
+      ),
     );
   }
 }

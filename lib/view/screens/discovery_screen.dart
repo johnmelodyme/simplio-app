@@ -5,17 +5,24 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/discover_coins_content.dart';
 import 'package:simplio_app/view/widgets/discover_games_content.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
+import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
 import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
 import 'package:simplio_app/view/widgets/slidable_banner.dart';
 import 'package:sio_glyphs/sio_icons.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class DiscoveryScreen extends StatelessWidget {
-  const DiscoveryScreen({super.key});
+class DiscoveryScreen extends ScreenWithDialog {
+  DiscoveryScreen({super.key})
+      : super(
+          panelController: PanelController(),
+          withBottomTabBar: true,
+        );
 
   @override
-  Widget build(BuildContext context) {
+  Widget innerBuild(BuildContext context) {
     return NavigationTabBar(
       tabs: [
         NavigationBarTabItem(
@@ -44,6 +51,11 @@ class DiscoveryScreen extends StatelessWidget {
           label: context.locale.discovery_tab_coins,
           searchBar: SearchBarPlaceholder(
             label: context.locale.discovery_screen_search_and_add_coins,
+            onTap: () {
+              GoRouter.of(context).pushNamed(
+                AuthenticatedRouter.assetSearch,
+              );
+            },
           ),
           iconData: SioIcons.coins,
           iconColor: SioColors.coins,
@@ -52,7 +64,10 @@ class DiscoveryScreen extends StatelessWidget {
             const SlidableBanner(),
             const SliverGap(Dimensions.padding20),
           ],
-          bottomSlivers: [],
+          bottomSlivers: [
+            const SliverGap(Dimensions.padding20),
+            const DiscoverCoinsContent(),
+          ],
         ),
         NavigationBarTabItem(
           label: context.locale.discovery_tab_nft,

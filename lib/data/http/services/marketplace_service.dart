@@ -1,20 +1,27 @@
 import 'package:chopper/chopper.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:simplio_app/data/http/converters/json_serializable_converter.dart';
+import 'package:simplio_app/data/repositories/asset_repository.dart';
 
-part 'games_service.chopper.dart';
-part 'games_service.g.dart';
+part 'marketplace_service.chopper.dart';
+part 'marketplace_service.g.dart';
 
 @ChopperApi(baseUrl: '/marketplace')
-abstract class GamesService extends ChopperService {
-  static GamesService create() => _$GamesService();
+abstract class MarketplaceService extends ChopperService {
+  static MarketplaceService create() => _$MarketplaceService();
   static FactoryConvertMap converter() => {
         GamesResponse: GamesResponse.fromJson,
+        AssetsResponse: AssetsResponse.fromJson,
       };
 
   @Post(path: '/games/search')
-  Future<Response<GamesResponse>> search(
+  Future<Response<GamesResponse>> gameSearch(
     @Body() SearchGamesRequest body,
+  );
+
+  @Post(path: '/assets/search')
+  Future<Response<AssetsResponse>> assetSearch(
+    @Body() SearchAssetsRequest body,
   );
 }
 
@@ -50,6 +57,30 @@ class SearchGamesRequest {
   Map<String, dynamic> toJson() => _$SearchGamesRequestToJson(this);
 }
 
+@JsonSerializable()
+class SearchAssetsRequest {
+  final int page;
+  final int pageSize;
+  final String currency;
+  final String name;
+  final List<int> categories;
+  final SortType sort;
+
+  const SearchAssetsRequest({
+    required this.page,
+    required this.pageSize,
+    required this.currency,
+    required this.name,
+    required this.categories,
+    this.sort = SortType.desc,
+  });
+
+  factory SearchAssetsRequest.fromJson(Map<String, dynamic> json) =>
+      _$SearchAssetsRequestFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SearchAssetsRequestToJson(this);
+}
+
 enum Release { alpha, beta, live, playToEarn, preSale }
 
 enum Genre { action, adventure, arcade }
@@ -72,6 +103,22 @@ class GamesResponse {
       _$GamesResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$GamesResponseToJson(this);
+}
+
+@JsonSerializable()
+class AssetsResponse {
+  final List<Asset> items;
+  final int totalCount;
+
+  const AssetsResponse({
+    required this.items,
+    required this.totalCount,
+  });
+
+  factory AssetsResponse.fromJson(Map<String, dynamic> json) =>
+      _$AssetsResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetsResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -102,6 +149,32 @@ class Game {
 }
 
 @JsonSerializable()
+class Network {
+  final int networkId;
+  final String networkTicker;
+  final int decimalPlaces;
+  final String? contractAddress;
+
+  const Network({
+    required this.networkId,
+    required this.networkTicker,
+    required this.decimalPlaces,
+    required this.contractAddress,
+  });
+
+  factory Network.fromJson(Map<String, dynamic> json) =>
+      _$NetworkFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NetworkToJson(this);
+
+  NetworkData toNetworkData(int assetId) => NetworkData(
+        networkId: networkId,
+        assetId: assetId,
+        networkTicker: networkTicker,
+      );
+}
+
+@JsonSerializable()
 class AssetEmbedded {
   final int assetId;
   final int networkId;
@@ -123,4 +196,37 @@ class AssetEmbedded {
       _$AssetEmbeddedFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetEmbeddedToJson(this);
+}
+
+@JsonSerializable()
+class Asset {
+  final int assetId;
+  final String name;
+  final String ticker;
+  final bool isPromoted;
+  final String currency;
+  final double price;
+  final List<Network> networks;
+
+  const Asset({
+    required this.assetId,
+    required this.name,
+    required this.ticker,
+    required this.isPromoted,
+    required this.currency,
+    required this.price,
+    required this.networks,
+  });
+
+  factory Asset.fromJson(Map<String, dynamic> json) => _$AssetFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetToJson(this);
+
+  CryptoAssetData toCryptoAsset() => CryptoAssetData(
+        assetId: assetId,
+        name: name,
+        ticker: ticker,
+        price: price,
+        networks: networks.map((e) => e.toNetworkData(assetId)).toSet(),
+      );
 }

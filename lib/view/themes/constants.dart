@@ -213,6 +213,7 @@ class Constants {
   static const double panelKeyboardHeightWithButton = 357;
   static const double slidableBannerHeight = 140;
   static const double slidableBannerBulletSize = 4;
+  static const double dialogHeight = 250;
 
   //counts
   static const pageSizeTransactions = 7;

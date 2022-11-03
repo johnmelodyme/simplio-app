@@ -1,72 +1,121 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
+import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
+import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_search_item.dart';
 import 'package:simplio_app/view/widgets/network_wallet_search_item.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
 
-class CryptoAssetExpansionList extends StatelessWidget {
+class CryptoAssetExpansionList extends StatefulWidget {
   final List<CryptoAssetData> children;
-  final void Function(NetworkData data) onTap;
+  final void Function(NetworkData data, AssetAction assetAction) onTap;
+  final bool withoutPadding;
 
   const CryptoAssetExpansionList({
     super.key,
     this.children = const <CryptoAssetData>[],
     required this.onTap,
+    this.withoutPadding = false,
   });
+
+  @override
+  State<StatefulWidget> createState() => _CryptoAssetExpansionList();
+}
+
+class _CryptoAssetExpansionList extends State<CryptoAssetExpansionList> {
+  AssetAction selectedAssetAction = AssetAction.addToInventory;
 
   @override
   Widget build(BuildContext context) {
     return SioExpansionRadioPanel(
       animationDuration: const Duration(milliseconds: 500),
-      children: children.map(
+      children: widget.children.map(
         (a) {
           final asset = Assets.getAssetDetail(a.assetId);
 
-          return ExpansionPanelRadio(
+          final expansionPanel = ExpansionPanelRadio(
             backgroundColor: SioColors.softBlack,
             value: UniqueKey(),
-            canTapOnHeader: true,
             headerBuilder: (context, _) {
               return Padding(
-                padding: const EdgeInsets.only(
-                  top: Dimensions.padding10,
-                  left: Dimensions.padding16,
-                  right: Dimensions.padding16,
-                ),
+                padding: widget.withoutPadding
+                    ? EdgeInsets.zero
+                    : const EdgeInsets.only(
+                        top: Dimensions.padding10,
+                        left: Dimensions.padding16,
+                        right: Dimensions.padding16,
+                      ),
                 child: AssetSearchItem(
                   label: a.name,
-                  priceLabel: '\$12,345.89', //TODO.. replace by real price
+                  priceLabel: a.price.getThousandValueWithCurrency(
+                    currency: 'USD', //TODO.. replace by real currency
+                    locale: Intl.getCurrentLocale(),
+                  ),
                   assetIcon: asset.style.icon,
                   assetAction: const [
                     AssetAction.buy,
                     AssetAction.addToInventory
                   ],
-                  onActionPressed: (AssetAction assetAction) {},
+                  onActionPressed: (AssetAction assetAction) {
+                    setState(() {
+                      selectedAssetAction = assetAction;
+                    });
+                    if (a.networks.length > 1) {
+                      final isSelected = widget.children.indexOf(a) ==
+                          context
+                              .read<ExpansionListCubit>()
+                              .state
+                              .selectedIndex;
+
+                      if (!isSelected) {
+                        context.read<ExpansionListCubit>().selectValue(
+                            isSelected ? -1 : widget.children.indexOf(a));
+                      }
+                    } else {
+                      widget.onTap(a.networks.first, selectedAssetAction);
+                    }
+                  },
                 ),
               );
             },
-            body: Column(
-              children: a.networks.map((n) {
-                final network = Assets.getNetworkDetail(n.networkId);
-                return Padding(
-                  padding: const EdgeInsets.only(
-                      top: Dimensions.padding4,
-                      left: Dimensions.padding16,
-                      right: Dimensions.padding16),
-                  child: NetworkWalletSearchItem(
-                    title: network.name,
-                    subTitle: network.ticker,
-                    onTap: () {
-                      onTap(n);
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
+            body: a.networks.length > 1
+                ? Column(
+                    children: a.networks.map((n) {
+                      final network = Assets.getNetworkDetail(n.networkId);
+                      if (network == SystemAssetDetails.notFound) {
+                        // display only supported networks
+                        return const SizedBox.shrink();
+                      }
+
+                      return Padding(
+                        padding: widget.withoutPadding
+                            ? const EdgeInsets.only(top: Dimensions.padding4)
+                            : const EdgeInsets.only(
+                                top: Dimensions.padding4,
+                                left: Dimensions.padding16,
+                                right: Dimensions.padding16),
+                        child: NetworkWalletSearchItem(
+                          icon: SizedBox(
+                            height: 30,
+                            child: asset.style.icon,
+                          ),
+                          title: network.name,
+                          subTitle: network.ticker,
+                          selectedAssetAction: selectedAssetAction,
+                          onTap: () => widget.onTap(n, selectedAssetAction),
+                        ),
+                      );
+                    }).toList(),
+                  )
+                : const SizedBox.shrink(),
           );
+
+          return expansionPanel;
         },
       ).toList(),
     );

@@ -3,7 +3,6 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/themed_text.dart';
 
-// todo: correct background from design needs to be applied
 class GradientTextButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;

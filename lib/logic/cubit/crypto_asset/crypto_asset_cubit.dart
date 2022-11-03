@@ -1,31 +1,56 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
+import 'package:simplio_app/data/repositories/marketplace_repository.dart';
+import 'package:simplio_app/view/themes/constants.dart';
 
 part 'crypto_asset_state.dart';
 
 class CryptoAssetCubit extends Cubit<CryptoAssetState> {
-  final AssetRepository _assetRepository;
+  final MarketplaceRepository _marketplaceRepository;
+  final PagingController<int, Asset> pagingController =
+      PagingController(firstPageKey: 1);
+
+  bool _isDisposed = false;
 
   CryptoAssetCubit._(
-    this._assetRepository,
+    this._marketplaceRepository,
   ) : super(const CryptoAssetInitial());
 
   CryptoAssetCubit.builder({
-    required AssetRepository assetRepository,
-  }) : this._(assetRepository);
+    required MarketplaceRepository marketplaceRepository,
+  }) : this._(marketplaceRepository);
 
-  Future<void> loadCryptoAsset({bool readCache = true}) async {
+  Future<void> loadCryptoAsset({int page = 1, bool readCache = true}) async {
     emit(const CryptoAssetLoading());
-
     try {
-      final assets = await _assetRepository.loadCryptoAssets(
-        readCache: readCache,
+      final assets = await _marketplaceRepository.assetSearch(
+        SearchAssetsRequest(
+          page: page,
+          pageSize: 100,
+          currency: 'USD', // todo: use correct fiat
+          name: '', categories: [],
+        ),
       );
-      emit(CryptoAssetLoaded(assets: assets));
+
+      if (assets.length < Constants.pageSizeGames) {
+        pagingController.appendLastPage(assets);
+      } else {
+        pagingController.appendPage(assets, page + 1);
+      }
+
+      _emitSafely(CryptoAssetLoaded(
+          assets: assets.map((e) => e.toCryptoAsset()).toList()));
     } on Exception catch (e) {
-      emit(CryptoAssetLoadedWithError(error: e));
+      _emitSafely(CryptoAssetLoadedWithError(error: e));
     }
+  }
+
+  void reloadGames() async {
+    pagingController.refresh();
+    await loadCryptoAsset(page: pagingController.firstPageKey);
   }
 
   Future<void> queryCryptoAsset({
@@ -33,17 +58,29 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
     bool readCache = true,
   }) async {
     try {
-      final assets =
-          await _assetRepository.loadCryptoAssets(readCache: readCache).then(
-                (loadedAssets) => loadedAssets
-                    .where((d) =>
-                        d.name.toLowerCase().contains(query.toLowerCase()) ||
-                        d.ticker.toLowerCase().contains(query.toLowerCase()))
-                    .toList(),
-              );
-      emit(CryptoAssetLoaded(assets: assets));
+      emit(const CryptoAssetLoading());
+      final assets = query.isNotEmpty
+          ? await _marketplaceRepository.assetSearch(SearchAssetsRequest(
+              page: 1,
+              pageSize: 100,
+              currency: 'USD', // todo: use correct fiat
+              name: query, categories: [],
+            ))
+          : <Asset>[];
+      emit(CryptoAssetLoaded(
+          assets: assets.map((e) => e.toCryptoAsset()).toList()));
     } on Exception catch (e) {
       emit(CryptoAssetLoadedWithError(error: e));
     }
+  }
+
+  void _emitSafely(CryptoAssetState state) {
+    if (_isDisposed) return;
+
+    emit(state);
+  }
+
+  void dispose() {
+    _isDisposed = true;
   }
 }

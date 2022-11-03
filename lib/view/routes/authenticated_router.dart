@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
-import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
-import 'package:simplio_app/data/repositories/games_repository.dart';
+import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
+import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
+import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
 import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';
@@ -150,7 +151,10 @@ class AuthenticatedRouter with PageBuilderMixin {
                 path: 'discovery',
                 name: discovery,
                 pageBuilder: pageBuilder(
-                  builder: (state) => const DiscoveryScreen(),
+                  builder: (state) => BlocProvider(
+                    create: (context) => DialogCubit.builder(),
+                    child: DiscoveryScreen(),
+                  ),
                   withTransition: false,
                   settings: const ApplicationSettings(
                     tabBar: TabBarRouteSettings(
@@ -208,11 +212,18 @@ class AuthenticatedRouter with PageBuilderMixin {
                 path: 'inventory',
                 name: inventory,
                 pageBuilder: pageBuilder(
-                  builder: (state) => BlocProvider(
-                    create: (context) => CryptoAssetCubit.builder(
-                      assetRepository:
-                          RepositoryProvider.of<AssetRepository>(context),
-                    ),
+                  builder: (state) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => CryptoAssetCubit.builder(
+                          marketplaceRepository:
+                              RepositoryProvider.of<MarketplaceRepository>(
+                                  context),
+                        ),
+                      ),
+                      BlocProvider(
+                          create: (context) => ExpansionListCubit.builder()),
+                    ],
                     child: Builder(builder: (context) {
                       return const InventoryScreen();
                     }),
@@ -231,8 +242,9 @@ class AuthenticatedRouter with PageBuilderMixin {
                     pageBuilder: pageBuilder(
                       builder: (state) => BlocProvider(
                         create: (context) => CryptoAssetCubit.builder(
-                          assetRepository:
-                              RepositoryProvider.of<AssetRepository>(context),
+                          marketplaceRepository:
+                              RepositoryProvider.of<MarketplaceRepository>(
+                                  context),
                         ),
                         child: Builder(builder: (context) {
                           return const InventoryScreen(
@@ -254,8 +266,9 @@ class AuthenticatedRouter with PageBuilderMixin {
                     pageBuilder: pageBuilder(
                       builder: (state) => BlocProvider(
                         create: (context) => CryptoAssetCubit.builder(
-                          assetRepository:
-                              RepositoryProvider.of<AssetRepository>(context),
+                          marketplaceRepository:
+                              RepositoryProvider.of<MarketplaceRepository>(
+                                  context),
                         ),
                         child: Builder(builder: (context) {
                           return const InventoryScreen(
@@ -277,8 +290,9 @@ class AuthenticatedRouter with PageBuilderMixin {
                     pageBuilder: pageBuilder(
                       builder: (state) => BlocProvider(
                         create: (context) => CryptoAssetCubit.builder(
-                          assetRepository:
-                              RepositoryProvider.of<AssetRepository>(context),
+                          marketplaceRepository:
+                              RepositoryProvider.of<MarketplaceRepository>(
+                                  context),
                         ),
                         child: Builder(builder: (context) {
                           return const InventoryScreen(
@@ -322,9 +336,12 @@ class AuthenticatedRouter with PageBuilderMixin {
                         path: 'search',
                         name: assetSendSearch,
                         pageBuilder: pageBuilder(
-                          builder: (state) => AssetSendSearchScreen(
-                            assetId: state.params['assetId']!,
-                            networkId: state.params['networkId']!,
+                          builder: (state) => BlocProvider(
+                            create: (context) => ExpansionListCubit.builder(),
+                            child: AssetSendSearchScreen(
+                              assetId: state.params['assetId']!,
+                              networkId: state.params['networkId']!,
+                            ),
                           ),
                           settings: const ApplicationSettings.hiddenTabBar(),
                         ),
@@ -376,11 +393,14 @@ class AuthenticatedRouter with PageBuilderMixin {
                         path: 'search-from',
                         name: assetExchangeSearchFrom,
                         pageBuilder: pageBuilder(
-                          builder: (state) => AssetExchangeSearchScreen(
-                            assetId: state.params['assetId']!,
-                            networkId: state.params['networkId']!,
-                            fromSearch: true,
-                            targetSearch: false,
+                          builder: (state) => BlocProvider(
+                            create: (context) => ExpansionListCubit.builder(),
+                            child: AssetExchangeSearchScreen(
+                              assetId: state.params['assetId']!,
+                              networkId: state.params['networkId']!,
+                              fromSearch: true,
+                              targetSearch: false,
+                            ),
                           ),
                           settings: const ApplicationSettings.hiddenTabBar(),
                         ),
@@ -389,11 +409,14 @@ class AuthenticatedRouter with PageBuilderMixin {
                         path: 'search-target',
                         name: assetExchangeSearchTarget,
                         pageBuilder: pageBuilder(
-                          builder: (state) => AssetExchangeSearchScreen(
-                            assetId: state.params['assetId']!,
-                            networkId: state.params['networkId']!,
-                            fromSearch: false,
-                            targetSearch: true,
+                          builder: (state) => BlocProvider(
+                            create: (context) => ExpansionListCubit.builder(),
+                            child: AssetExchangeSearchScreen(
+                              assetId: state.params['assetId']!,
+                              networkId: state.params['networkId']!,
+                              fromSearch: false,
+                              targetSearch: true,
+                            ),
                           ),
                           settings: const ApplicationSettings.hiddenTabBar(),
                         ),
@@ -433,9 +456,12 @@ class AuthenticatedRouter with PageBuilderMixin {
                         path: 'search',
                         name: assetBuySearch,
                         pageBuilder: pageBuilder(
-                          builder: (state) => AssetBuySearchScreen(
-                            assetId: state.params['assetId']!,
-                            networkId: state.params['networkId']!,
+                          builder: (state) => BlocProvider(
+                            create: (context) => ExpansionListCubit.builder(),
+                            child: AssetBuySearchScreen(
+                              assetId: state.params['assetId']!,
+                              networkId: state.params['networkId']!,
+                            ),
                           ),
                           settings: const ApplicationSettings.hiddenTabBar(),
                         ),
@@ -517,11 +543,19 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'asset-search',
               name: assetSearch,
               pageBuilder: pageBuilder(
-                builder: (state) => BlocProvider(
-                  create: (context) => CryptoAssetCubit.builder(
-                    assetRepository:
-                        RepositoryProvider.of<AssetRepository>(context),
-                  ),
+                builder: (state) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => CryptoAssetCubit.builder(
+                        marketplaceRepository:
+                            RepositoryProvider.of<MarketplaceRepository>(
+                                context),
+                      ),
+                    ),
+                    BlocProvider(
+                        create: (context) => ExpansionListCubit.builder()),
+                    BlocProvider(create: (context) => DialogCubit.builder()),
+                  ],
                   child: Builder(
                     builder: (context) {
                       return AssetSearchScreen();
@@ -537,8 +571,8 @@ class AuthenticatedRouter with PageBuilderMixin {
               pageBuilder: pageBuilder(
                 builder: (state) => BlocProvider(
                   create: (context) => GamesCubit.builder(
-                    gamesRepository:
-                        RepositoryProvider.of<GamesRepository>(context),
+                    marketplaceRepository:
+                        RepositoryProvider.of<MarketplaceRepository>(context),
                   ),
                   child: Builder(
                     builder: (context) {

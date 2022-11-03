@@ -34,6 +34,10 @@
   "common_go_back":"Go back",
   "common_unknown_error":"Unknown error happened!",
   "common_error":"An error happened please try it later.",
+  "common_cancel":"Cancel",
+  "common_continue":"Continue",
+  "common_disconnect":"Disconnect",
+  "common_remove":"Remove",
 
   "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
@@ -295,7 +299,7 @@
     "asset_search_screen_search": "Search",
 
 
-    "asset_item_action_types": "{actionType, select, buy{Buy} addToInventory{Add to Inventory}}",
+    "asset_item_action_types": "{actionType, select, buy{Buy} addToInventory{Add to Inventory}, remove{Remove}}",
     "@asset_item_action_types": {
       "description": "Game Action type",
       "placeholders": {
@@ -306,6 +310,19 @@
     "qr_code_scanner_screen_connect_title": "Connect",
     "qr_code_scanner_screen_wallet_title": "wallet",
 
+    "slide_up_dialog_do_nothing":"Do nothing",
+    "slide_up_dialog_create_coin_label_1":"Do you agree to ",
+    "slide_up_dialog_create_coin_label_2":"create a coin wallet",
+    "slide_up_dialog_create_coin_label_3":" on your inventory?",
+    "slide_up_dialog_cancel_earning_label_1":"Do you really want to ",
+    "slide_up_dialog_cancel_earning_label_2":"cancel",
+    "slide_up_dialog_cancel_earning_label_3":" the ongoing earning?",
+    "slide_up_dialog_remove_coin_1":"Do you really want to ",
+    "slide_up_dialog_remove_coin_2":"remove",
+    "slide_up_dialog_remove_coin_3":" the coin\nfrom your inventory?",
+    "slide_up_dialog_disconnect_dapp_1":"Do you really want to ",
+    "slide_up_dialog_disconnect_dapp_2":"disconnect",
+    "slide_up_dialog_disconnect_dapp_3":" dApp?",
 
     "coin_detail_screen_add_to_inventory_button": "Add to Inventory",
     "coin_detail_screen_remove_from_inventory_button": "Remove from Inventory",

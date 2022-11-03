@@ -14,7 +14,6 @@ class AssetSearchItem extends StatelessWidget {
     required this.label,
     required this.priceLabel,
     required this.assetIcon,
-    this.onTap,
     required this.assetAction,
     required this.onActionPressed,
   });
@@ -22,36 +21,36 @@ class AssetSearchItem extends StatelessWidget {
   final String label;
   final String priceLabel;
   final Widget assetIcon;
-  final Function? onTap;
   final List<AssetAction> assetAction;
   final Function(AssetAction) onActionPressed;
 
-  Color getTextColorByActionType(
-      BuildContext context, AssetAction assetAction) {
+  Color getTextColorByActionType(AssetAction assetAction) {
     switch (assetAction) {
       case AssetAction.addToInventory:
+      case AssetAction.remove:
         return SioColors.secondary7;
       case AssetAction.buy:
         return SioColors.black;
     }
   }
 
-  SmallButtonType getButtonStyleByActionType(
-      BuildContext context, AssetAction assetAction) {
+  SmallButtonType getButtonStyleByActionType(AssetAction assetAction) {
     switch (assetAction) {
       case AssetAction.buy:
         return SmallButtonType.highlighted;
       case AssetAction.addToInventory:
+      case AssetAction.remove:
         return SmallButtonType.bordered;
     }
   }
 
-  Color? getBorderColorByActionType(
-      BuildContext context, AssetAction assetAction) {
-    if (assetAction == AssetAction.addToInventory) {
-      return SioColors.secondary7;
-    } else {
-      return null;
+  Color? getBorderColorByActionType(AssetAction assetAction) {
+    switch (assetAction) {
+      case AssetAction.addToInventory:
+      case AssetAction.remove:
+        return SioColors.secondary7;
+      default:
+        return null;
     }
   }
 
@@ -116,15 +115,11 @@ class AssetSearchItem extends StatelessWidget {
                           return SmallButton(
                             label: context.locale
                                 .asset_item_action_types(assetAction.name),
-                            onPressed: () {
-                              onActionPressed.call(assetAction);
-                            },
-                            type: getButtonStyleByActionType(
-                                context, assetAction),
-                            labelColor:
-                                getTextColorByActionType(context, assetAction),
-                            borderColor: getBorderColorByActionType(
-                                context, assetAction),
+                            onPressed: () => onActionPressed(assetAction),
+                            type: getButtonStyleByActionType(assetAction),
+                            labelColor: getTextColorByActionType(assetAction),
+                            borderColor:
+                                getBorderColorByActionType(assetAction),
                           );
                         }).toList(),
                       ),
@@ -144,4 +139,4 @@ class AssetSearchItem extends StatelessWidget {
   }
 }
 
-enum AssetAction { buy, addToInventory }
+enum AssetAction { buy, addToInventory, remove }

@@ -19,12 +19,10 @@ class AssetRepository {
 
   final AssetService _assetService;
 
-  final MemoryCacheProvider<List<CryptoAssetData>> _cryptoDataCache;
   final MemoryCacheProvider<List<FiatAssetData>> _fiatDataCache;
 
   AssetRepository._(
     this._assetService,
-    this._cryptoDataCache,
     this._fiatDataCache,
   );
 
@@ -36,28 +34,7 @@ class AssetRepository {
             lifetimeInSeconds: _cacheLifetimeInSeconds,
             initialData: const [],
           ),
-          MemoryCacheProvider.builder(
-            lifetimeInSeconds: _cacheLifetimeInSeconds,
-            initialData: const [],
-          ),
         );
-
-  Future<List<CryptoAssetData>> loadCryptoAssets({
-    bool readCache = true,
-  }) async {
-    if (readCache && _cryptoDataCache.isValid) return _cryptoDataCache.read();
-
-    final response = await _assetService.crypto();
-    final body = response.body;
-
-    if (response.isSuccessful && body != null) {
-      final cryptoAssets = _makeCryptoAssetData(body);
-      _cryptoDataCache.write(cryptoAssets);
-      return cryptoAssets;
-    }
-
-    throw Exception("Could not load 'crypto' assets");
-  }
 
   Future<List<FiatAssetData>> loadFiatAssets({
     bool readCache = true,
@@ -74,38 +51,6 @@ class AssetRepository {
     }
 
     throw Exception("Could not load 'fiat' assets");
-  }
-
-  List<CryptoAssetData> _makeCryptoAssetData(
-      List<CryptoAssetResponse> response) {
-    final map = response.fold<Map<int, CryptoAssetData>>({}, (acc, curr) {
-      final data = acc[curr.assetId];
-      if (data != null) {
-        data.networks.add(NetworkData(
-          networkId: curr.networkId,
-          assetId: curr.assetId,
-          networkTicker: curr.networkTicker,
-        ));
-        return acc;
-      }
-
-      return acc
-        ..addAll({
-          curr.assetId: CryptoAssetData(
-              assetId: curr.assetId,
-              name: curr.name,
-              ticker: curr.ticker,
-              networks: <NetworkData>{
-                NetworkData(
-                  networkId: curr.networkId,
-                  assetId: curr.assetId,
-                  networkTicker: curr.networkTicker,
-                ),
-              })
-        });
-    });
-
-    return map.values.toList();
   }
 
   List<FiatAssetData> _makeFiatAssetData(List<FiatAssetResponse> response) {
@@ -128,12 +73,14 @@ class CryptoAssetData {
   final int assetId;
   final String name;
   final String ticker;
+  final double price;
   final Set<NetworkData> networks;
 
   const CryptoAssetData({
     required this.assetId,
     required this.name,
     required this.ticker,
+    required this.price,
     required this.networks,
   });
 }

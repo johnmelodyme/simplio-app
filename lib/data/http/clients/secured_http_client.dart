@@ -10,7 +10,7 @@ import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
 import 'package:simplio_app/data/http/services/buy_service.dart';
-import 'package:simplio_app/data/http/services/games_service.dart';
+import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/http/services/inventory_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
@@ -39,7 +39,7 @@ class SecuredHttpClient extends HttpClient {
               ...BroadcastService.converter(),
               ...PasswordChangeService.converter(),
               ...TransactionHistoryService.converter(),
-              ...GamesService.converter(),
+              ...MarketplaceService.converter(),
               ...AccountService.converter(),
               ...BuyService.converter(),
               ...InventoryService.converter(),
@@ -61,7 +61,7 @@ class SecuredHttpClient extends HttpClient {
               BroadcastService.create(),
               PasswordChangeService.create(),
               TransactionHistoryService.create(),
-              GamesService.create(),
+              MarketplaceService.create(),
               AccountService.create(),
               BuyService.create(),
               InventoryService.create(),

@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
+import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
+import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/asset_search_item.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
+import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
 import 'package:simplio_app/view/widgets/search.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class AssetSearchScreen extends StatelessWidget {
-  AssetSearchScreen({super.key});
+class AssetSearchScreen extends ScreenWithDialog {
+  AssetSearchScreen({super.key})
+      : super(
+          panelController: PanelController(),
+        );
 
   final TextEditingController searchController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    final ctx = context.read<CryptoAssetCubit>();
+  Widget innerBuild(BuildContext context) {
+    final cubit = context.read<CryptoAssetCubit>();
 
     searchController.addListener(
-      () => {
+      () {
         context.read<CryptoAssetCubit>().queryCryptoAsset(
               query: searchController.text,
-            ),
+            );
       },
     );
 
@@ -32,20 +41,36 @@ class AssetSearchScreen extends StatelessWidget {
       searchController: searchController,
       appBarStyle: AppBarStyle.twoLined,
       child: BlocProvider.value(
-        value: ctx,
+        value: cubit,
         child: BlocBuilder<CryptoAssetCubit, CryptoAssetState>(
           builder: (context, state) {
-            if (state is CryptoAssetInitial) ctx.loadCryptoAsset();
-
             if (state is CryptoAssetLoaded) {
               return SingleChildScrollView(
                 padding: Paddings.top20,
                 child: CryptoAssetExpansionList(
-                  children: (state.assets),
-                  onTap: (data) {
-                    context
-                        .read<AccountWalletCubit>()
-                        .enableNetworkWallet(data);
+                  children: state.assets,
+                  onTap: (data, assetAction) async {
+                    context.read<DialogCubit>().showDialog(
+                      (proceed) async {
+                        if (proceed) {
+                          await context
+                              .read<AccountWalletCubit>()
+                              .enableNetworkWallet(data)
+                              .then((_) {
+                            if (assetAction == AssetAction.buy) {
+                              GoRouter.of(context).replaceNamed(
+                                AuthenticatedRouter.assetBuy,
+                                params: {
+                                  'assetId': data.assetId.toString(),
+                                  'networkId': data.networkId.toString(),
+                                },
+                              );
+                            }
+                          });
+                        }
+                      },
+                      DialogType.createCoin,
+                    );
                   },
                 ),
               );
@@ -54,9 +79,13 @@ class AssetSearchScreen extends StatelessWidget {
             // TODO - implement logic with error
             if (state is CryptoAssetLoadedWithError) {}
 
-            return const Center(
-              child: ListLoading(),
-            );
+            if (state is CryptoAssetLoading) {
+              return const Center(
+                child: ListLoading(),
+              );
+            }
+
+            return const SizedBox.shrink();
           },
         ),
       ),

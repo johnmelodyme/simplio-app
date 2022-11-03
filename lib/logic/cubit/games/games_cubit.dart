@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:simplio_app/data/http/services/games_service.dart';
-import 'package:simplio_app/data/repositories/games_repository.dart';
+import 'package:simplio_app/data/http/services/marketplace_service.dart';
+import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 
 part 'games_state.dart';
 
 class GamesCubit extends Cubit<GamesState> {
-  final GamesRepository _gamesRepository;
+  final MarketplaceRepository _marketplaceRepository;
   final PagingController<int, Game> pagingController =
       PagingController(firstPageKey: 1);
 
@@ -16,12 +16,12 @@ class GamesCubit extends Cubit<GamesState> {
   String _currentlySearched = '';
 
   GamesCubit._(
-    this._gamesRepository,
+    this._marketplaceRepository,
   ) : super(GamesInitialState());
 
   GamesCubit.builder({
-    required GamesRepository gamesRepository,
-  }) : this._(gamesRepository);
+    required MarketplaceRepository marketplaceRepository,
+  }) : this._(marketplaceRepository);
 
   void reloadGames() {
     _emitSafely(GamesLoadingState());
@@ -44,7 +44,7 @@ class GamesCubit extends Cubit<GamesState> {
     _emitSafely(GamesLoadingState());
 
     try {
-      List<Game> games = await _gamesRepository.search(
+      List<Game> games = await _marketplaceRepository.gameSearch(
         SearchGamesRequest(
           page: pageKey,
           pageSize: Constants.pageSizeGames,

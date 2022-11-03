@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:simplio_app/data/http/services/games_service.dart';
-import 'package:simplio_app/data/repositories/games_repository.dart';
+import 'package:simplio_app/data/http/services/marketplace_service.dart';
+import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/game_item.dart';
@@ -30,7 +30,8 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
       sliver: BlocProvider(
         create: (context) {
           cubit = GamesCubit.builder(
-            gamesRepository: RepositoryProvider.of<GamesRepository>(context),
+            marketplaceRepository:
+                RepositoryProvider.of<MarketplaceRepository>(context),
           )..pagingController.addPageRequestListener(addLoadEvent);
           return cubit;
         },

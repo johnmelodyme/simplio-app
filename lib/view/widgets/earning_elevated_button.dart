@@ -12,7 +12,6 @@ import 'package:sio_glyphs/sio_icons.dart';
 class EarningElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final EarningType earningType;
-
   final double? apyPercentage;
   final BigInt? balance;
   final double? increment;

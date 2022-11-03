@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/asset_search_item.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class NetworkWalletSearchItem extends StatelessWidget {
   const NetworkWalletSearchItem({
     required this.title,
+    required this.selectedAssetAction,
+    required this.icon,
     this.subTitle,
     this.onTap,
     super.key,
   });
 
+  final Widget icon;
   final String title;
   final String? subTitle;
   final GestureTapCallback? onTap;
+  final AssetAction selectedAssetAction;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,7 @@ class NetworkWalletSearchItem extends StatelessWidget {
         child: Padding(
           padding: Paddings.horizontal16,
           child: Row(children: [
+            icon,
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -55,13 +61,21 @@ class NetworkWalletSearchItem extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-              icon: Icon(
-                SioIcons.plus_rounded,
-                color: SioColors.mentolGreen,
-              ),
-              onPressed: () => onTap?.call(),
-            )
+            selectedAssetAction == AssetAction.addToInventory
+                ? IconButton(
+                    icon: Icon(
+                      SioIcons.plus_rounded,
+                      color: SioColors.mentolGreen,
+                    ),
+                    onPressed: () => onTap?.call(),
+                  )
+                : IconButton(
+                    icon: Icon(
+                      SioIcons.basket,
+                      color: SioColors.coins,
+                    ),
+                    onPressed: () => onTap?.call(),
+                  )
           ]),
         ),
       ),
