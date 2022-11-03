@@ -15,6 +15,7 @@ class SuccessPage extends StatelessWidget {
     this.successLabel,
     this.optionalAction,
     this.goBack = false,
+    this.hasSuccessButton = true,
     this.goBackAction,
   });
 
@@ -24,6 +25,7 @@ class SuccessPage extends StatelessWidget {
   final String? successLabel;
   final GestureTapCallback? optionalAction;
   final bool goBack;
+  final bool hasSuccessButton;
   final VoidCallback? goBackAction;
 
   @override
@@ -52,13 +54,14 @@ class SuccessPage extends StatelessWidget {
             const Spacer(),
             centerChild,
             const Spacer(),
-            Padding(
-              padding: Paddings.horizontal20,
-              child: SuccessButton(
-                text: successLabel ?? context.locale.common_done,
-                onTap: successAction,
+            if (hasSuccessButton)
+              Padding(
+                padding: Paddings.horizontal20,
+                child: SuccessButton(
+                  text: successLabel ?? context.locale.common_done,
+                  onTap: successAction,
+                ),
               ),
-            ),
             if (option != null && optionalAction != null)
               Padding(
                 padding: Paddings.vertical20,

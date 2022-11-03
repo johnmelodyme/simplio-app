@@ -3,21 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:simplio_app/data/model/asset_wallet.dart';
-import 'package:simplio_app/data/model/network_wallet.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
+import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart'
+    as send_cubit;
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/helpers/thousand_separator_input_formatter.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
+import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/screens/mixins/scroll_mixin.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_form_asset_item.dart';
+import 'package:simplio_app/view/widgets/asset_form_exception.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/gradient_text_button.dart';
 import 'package:simplio_app/view/widgets/highlighted_form_element.dart';
@@ -42,7 +44,8 @@ class AssetBuyScreen extends StatefulWidget with WalletUtilsMixin {
   State<StatefulWidget> createState() => _AssetBuyScreen();
 }
 
-class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
+class _AssetBuyScreen extends State<AssetBuyScreen>
+    with Scroll, PopupDialogMixin {
   final amountController = TextEditingController();
   final amountHighlightController = HighlightController();
   final assetHighlightController = HighlightController();
@@ -61,6 +64,10 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
 
   @override
   void initState() {
+    super.initState();
+    final s = context.read<AccountWalletCubit>().state;
+    if (s is! AccountWalletProvided) throw Exception('No asset wallet found');
+
     amountHighlightController.concurrentControllers = [
       assetHighlightController,
       paymentMethodHighlightController,
@@ -73,7 +80,20 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
       amountHighlightController,
       assetHighlightController,
     ];
-    super.initState();
+
+    final sourceAssetWallet = widget.getAssetWallet(context, widget.assetId!);
+    final sourceNetworkWallet =
+        widget.getNetwork(context, widget.assetId!, widget.networkId!);
+
+    context.read<AssetBuyFormCubit>().changeFormValue(
+          sourceAssetWallet: sourceAssetWallet,
+          sourceNetworkWallet: sourceNetworkWallet,
+        );
+
+    context.read<AssetBuyFormCubit>().loadAvailableAssetsToBuy(
+          availableWallets: s.wallet.wallets,
+          fiat: 'USD', // todo: replace it with correct fiat
+        );
   }
 
   @override
@@ -87,12 +107,6 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
 
   @override
   Widget build(BuildContext context) {
-    late AssetWallet? sourceAssetWallet;
-    late NetworkWallet? sourceNetworkWallet;
-
-    final s = context.read<AccountWalletCubit>().state;
-    if (s is! AccountWalletProvided) throw Exception('No asset wallet found');
-
     if (widget.assetId == null) {
       throw Exception('No assetId');
     }
@@ -101,228 +115,247 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
       throw Exception('No networkId');
     }
 
-    sourceAssetWallet = widget.getAssetWallet(context, widget.assetId!);
-    sourceNetworkWallet =
-        widget.getNetwork(context, widget.assetId!, widget.networkId!);
-
-    context.read<AssetBuyFormCubit>().changeFormValue(
-          sourceAssetWallet: sourceAssetWallet,
-          sourceNetworkWallet: sourceNetworkWallet,
-        );
-
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.center,
-          colors: [
-            SioColors.backGradient4Start,
-            SioColors.softBlack,
-          ],
+    return BlocListener<AssetBuyFormCubit, AssetBuyFormState>(
+      listener: (context, state) {
+        final response = state.response;
+        if (response is AssetSearchFailure) {
+          showError(
+            context,
+            message: context.locale.common_error,
+            afterHideAction: () => GoRouter.of(context).pop(),
+          );
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.center,
+            colors: [
+              SioColors.backGradient4Start,
+              SioColors.softBlack,
+            ],
+          ),
         ),
-      ),
-      child: SlidingUpPanel(
-        controller: panelController,
-        color: Colors.transparent,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(RadiusSize.radius20),
-          topRight: Radius.circular(RadiusSize.radius20),
-        ),
-        boxShadow: null,
-        minHeight: 0,
-        maxHeight: Constants.panelKeyboardHeightWithButton,
-        body: GestureDetector(
-          onTap: () {
-            // handle clicks to the background
-            setState(() {
-              amountHighlightController.deselect();
-              assetHighlightController.deselect();
-              paymentMethodHighlightController.deselect();
-              panelController.close();
-            });
-            FocusManager.instance.primaryFocus?.unfocus();
-            scrollTo(assetKey, 50);
-          },
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            bottomNavigationBar: _NextButton(
-              assetId: widget.assetId!,
-              networkId: widget.networkId!,
-            ),
-            body: SingleChildScrollView(
-              controller: scrollController,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    panelController.close();
-                    _isPanelOpen = false;
-                  });
+        child: SlidingUpPanel(
+          controller: panelController,
+          color: Colors.transparent,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(RadiusSize.radius20),
+            topRight: Radius.circular(RadiusSize.radius20),
+          ),
+          boxShadow: null,
+          minHeight: 0,
+          maxHeight: Constants.panelKeyboardHeightWithButton,
+          body: GestureDetector(
+            onTap: () {
+              // handle clicks to the background
+              setState(() {
+                amountHighlightController.deselect();
+                assetHighlightController.deselect();
+                paymentMethodHighlightController.deselect();
+                panelController.close();
+              });
+              FocusManager.instance.primaryFocus?.unfocus();
+              scrollTo(assetKey, 50);
+            },
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              bottomNavigationBar: _NextButton(
+                assetId: widget.assetId!,
+                networkId: widget.networkId!,
+              ),
+              body: SingleChildScrollView(
+                controller: scrollController,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      panelController.close();
+                      _isPanelOpen = false;
+                    });
 
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ColorizedAppBar(
-                      firstPart: context.locale.asset_buy_screen_buy,
-                      secondPart:
-                          context.locale.asset_exchange_screen_coin_label_lc,
-                      actionType: ActionType.close,
-                    ),
-                    HighlightedFormElement(
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ColorizedAppBar(
+                        firstPart: context.locale.asset_buy_screen_buy,
+                        secondPart:
+                            context.locale.asset_exchange_screen_coin_label_lc,
+                        actionType: ActionType.close,
+                      ),
+                      HighlightedFormElement(
                         key: assetKey,
                         controller: assetHighlightController,
                         clickableHeight: 100,
-                        onTap: () => setState(() {
-                              assetHighlightController.deselectConcurrent();
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            }),
+                        onTap: () => setState(
+                          () {
+                            assetHighlightController.deselectConcurrent();
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
+                        ),
                         children: [
                           BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
                             buildWhen: (prev, curr) =>
+                                prev.response != curr.response ||
+                                prev.sourceNetworkWallet !=
+                                    curr.sourceNetworkWallet ||
                                 prev.sourceAssetWallet !=
-                                curr.sourceAssetWallet,
+                                    curr.sourceAssetWallet,
                             builder: (context, state) => AssetFormAssetItem<
                                 AssetBuyFormCubit, AssetBuyFormState>(
+                              isLoading: state.response is AssetSearchLoading,
                               highlighted: assetHighlightController.highlighted,
                               label:
                                   context.locale.asset_buy_screen_what_you_buy,
                               onTap: () {
                                 GoRouter.of(context).pushNamed(
-                                    AuthenticatedRouter.assetBuySearch,
-                                    params: {
-                                      'assetId': widget.assetId!,
-                                      'networkId': widget.networkId!,
-                                    });
+                                  AuthenticatedRouter.assetBuySearch,
+                                  params: {
+                                    'assetId': widget.assetId!,
+                                    'networkId': widget.networkId!,
+                                  },
+                                );
                               },
                             ),
                           ),
-                        ]),
-                    HighlightedFormElement(
-                        key: paymentMethodKey,
-                        controller: paymentMethodHighlightController,
-                        clickableHeight: 100,
-                        onTap: () => setState(() {
-                              paymentMethodHighlightController
-                                  .deselectConcurrent();
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            }),
-                        children: [
-                          Gaps.gap10,
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              context.locale
-                                  .asset_buy_screen_choose_payment_method,
-                              style: SioTextStyles.bodyL.apply(
-                                color:
-                                    paymentMethodHighlightController.highlighted
-                                        ? SioColors.mentolGreen
-                                        : SioColors.secondary7,
+                        ],
+                      ),
+                      HighlightedFormElement(
+                          key: paymentMethodKey,
+                          controller: paymentMethodHighlightController,
+                          clickableHeight: 100,
+                          onTap: () => setState(() {
+                                paymentMethodHighlightController
+                                    .deselectConcurrent();
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              }),
+                          children: [
+                            Gaps.gap10,
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                context.locale
+                                    .asset_buy_screen_choose_payment_method,
+                                style: SioTextStyles.bodyL.apply(
+                                  color: paymentMethodHighlightController
+                                          .highlighted
+                                      ? SioColors.mentolGreen
+                                      : SioColors.secondary7,
+                                ),
                               ),
                             ),
-                          ),
-                          Gaps.gap5,
-                          SioDropdown(
-                            placeholder: Row(
-                              children: [
-                                Icon(
-                                  SioIcons.credit_card,
-                                  size: 35,
-                                  color: SioColors.secondary7,
-                                ),
-                                Gaps.gap12,
-                                Text(
-                                  context
-                                      .locale.asset_buy_screen_use_debit_card,
-                                  style: SioTextStyles.bodyPrimary.copyWith(
+                            Gaps.gap5,
+                            SioDropdown(
+                              placeholder: Row(
+                                children: [
+                                  Icon(
+                                    SioIcons.credit_card,
+                                    size: 35,
                                     color: SioColors.secondary7,
                                   ),
-                                ),
-                              ],
+                                  Gaps.gap12,
+                                  Text(
+                                    context
+                                        .locale.asset_buy_screen_use_debit_card,
+                                    style: SioTextStyles.bodyPrimary.copyWith(
+                                      color: SioColors.secondary7,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              highlightController:
+                                  paymentMethodHighlightController,
+                              selectedIndex: selectedPaymentIndex,
+                              itemSelectedCallback: (int selectedIndex) =>
+                                  setState(() =>
+                                      selectedPaymentIndex = selectedIndex),
                             ),
-                            highlightController:
-                                paymentMethodHighlightController,
-                            selectedIndex: selectedPaymentIndex,
-                            itemSelectedCallback: (int selectedIndex) =>
-                                setState(
-                                    () => selectedPaymentIndex = selectedIndex),
-                          ),
-                          Gaps.gap8,
-                        ]),
-                    HighlightedFormElement(
-                      key: amountKey,
-                      controller: amountHighlightController,
-                      clickableHeight: 80,
-                      onTap: () => setState(() {
-                        amountHighlightController.deselectConcurrent();
-                        amountHighlightController.select();
-                      }),
-                      children: [
-                        BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
-                          buildWhen: (prev, curr) =>
-                              prev.sourceAssetWallet != curr.sourceAssetWallet,
-                          builder: (context, state) => _AmountFormField(
-                            amountController: amountController,
-                            scrollController: scrollController,
-                            onTap: () {
-                              setState(() {
-                                panelController.open();
-                                _isPanelOpen = true;
-                              });
+                            Gaps.gap8,
+                          ]),
+                      HighlightedFormElement(
+                        key: amountKey,
+                        controller: amountHighlightController,
+                        clickableHeight: 80,
+                        onTap: () => setState(() {
+                          amountHighlightController.deselectConcurrent();
+                          amountHighlightController.select();
+                        }),
+                        children: [
+                          BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
+                            buildWhen: (prev, curr) =>
+                                prev.sourceAssetWallet !=
+                                curr.sourceAssetWallet,
+                            builder: (context, state) => _AmountFormField(
+                              amountController: amountController,
+                              scrollController: scrollController,
+                              onTap: () {
+                                setState(() {
+                                  panelController.open();
+                                  _isPanelOpen = true;
+                                });
 
-                              scrollTo(amountKey, -50);
-                            },
-                            assetId: state.sourceAssetWallet.assetId,
-                            highlightController: amountHighlightController,
+                                scrollTo(amountKey, -50);
+                              },
+                              assetId: state.sourceAssetWallet.assetId,
+                              highlightController: amountHighlightController,
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (amountHighlightController.highlighted)
+                        Container(
+                          padding: Paddings.left16,
+                          child: const AssetFormException<AssetBuyFormCubit,
+                              AssetBuyFormState>(
+                            formElementIndex: 0,
                           ),
                         ),
-                      ],
-                    ),
-                    if (_isPanelOpen)
-                      const SizedBox(
-                        height: Constants.panelKeyboardHeightWithButton,
-                      ),
-                  ],
+                      if (_isPanelOpen)
+                        const SizedBox(
+                          height: Constants.panelKeyboardHeightWithButton,
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        panel: Container(
-          padding: Paddings.vertical16,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadiusDirectional.only(
-              topStart: BorderRadii.radius20.topLeft,
-              topEnd: BorderRadii.radius20.topLeft,
-              bottomEnd: Radius.zero,
-              bottomStart: Radius.zero,
+          panel: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadiusDirectional.only(
+                topStart: BorderRadii.radius20.topLeft,
+                topEnd: BorderRadii.radius20.topLeft,
+                bottomEnd: Radius.zero,
+                bottomStart: Radius.zero,
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  SioColors.softBlack,
+                  SioColors.backGradient4Start,
+                ],
+              ),
             ),
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                SioColors.softBlack,
-                SioColors.backGradient4Start,
+            child: Column(
+              children: [
+                BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
+                  buildWhen: (prev, curr) => prev.amountUnit != curr.amountUnit,
+                  builder: (context, state) => Numpad(
+                    isDecimal: true,
+                    onTap: _onTap(context),
+                    onErase: _onErase(context),
+                    onDecimalDotTap: _onDecimalDotTap(context),
+                  ),
+                ),
+                _NextButton(
+                  assetId: widget.assetId!,
+                  networkId: widget.networkId!,
+                ),
               ],
             ),
-          ),
-          child: Column(
-            children: [
-              BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
-                buildWhen: (prev, curr) => prev.amountUnit != curr.amountUnit,
-                builder: (context, state) => Numpad(
-                  isDecimal: true,
-                  onTap: _onTap(context),
-                  onErase: _onErase(context),
-                  onDecimalDotTap: _onDecimalDotTap(context),
-                ),
-              ),
-              _NextButton(
-                assetId: widget.assetId!,
-                networkId: widget.networkId!,
-              ),
-            ],
           ),
         ),
       ),
@@ -332,7 +365,7 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
   ValueChanged<int> _onTap(BuildContext context) {
     return (number) {
       final cubit = context.read<AssetBuyFormCubit>();
-      return cubit.state.amountUnit == AmountUnit.crypto
+      return cubit.state.amountUnit == send_cubit.AmountUnit.crypto
           ? cubit.changeFormValue(nextAmountDigit: number.toString())
           : cubit.changeFormValue(nextAmountFiatDigit: number.toString());
     };
@@ -340,16 +373,16 @@ class _AssetBuyScreen extends State<AssetBuyScreen> with Scroll {
 
   VoidCallback _onErase(BuildContext context) {
     final cubit = context.read<AssetBuyFormCubit>();
-    return cubit.state.amountUnit == AmountUnit.crypto
-        ? cubit.eraseAmountFrom
-        : cubit.eraseAmountFromFiat;
+    return cubit.state.amountUnit == send_cubit.AmountUnit.crypto
+        ? cubit.eraseAmount
+        : cubit.eraseAmountFiat;
   }
 
   VoidCallback _onDecimalDotTap(BuildContext context) {
     final cubit = context.read<AssetBuyFormCubit>();
-    return cubit.state.amountUnit == AmountUnit.crypto
-        ? cubit.addDecimalDotAmountFrom
-        : cubit.addDecimalDotAmountFromFiat;
+    return cubit.state.amountUnit == send_cubit.AmountUnit.crypto
+        ? cubit.addDecimalDotAmount
+        : cubit.addDecimalDotAmountFiat;
   }
 }
 
@@ -378,12 +411,10 @@ class _AmountFormField extends StatelessWidget {
             buildWhen: (prev, curr) =>
                 prev.amount != curr.amount ||
                 prev.amountFiat != curr.amountFiat ||
-                prev.amountUnit != curr.amountUnit ||
-                curr.response is AmountPending ||
-                curr.response is AmountFailure ||
-                curr.response is AmountSuccess,
+                prev.amountUnit != curr.amountUnit,
             builder: (context, state) {
-              amountController.text = state.amountUnit == AmountUnit.crypto
+              amountController.text = state.amountUnit ==
+                      send_cubit.AmountUnit.crypto
                   ? ThousandsSeparatorInputFormatter().format(state.amount)
                   : ThousandsSeparatorInputFormatter().format(state.amountFiat);
               final assetFormCubit = context.read<AssetBuyFormCubit>();
@@ -392,7 +423,6 @@ class _AmountFormField extends StatelessWidget {
                 controller: amountController,
                 onTap: onTap,
                 suffixIconMaxWidth: 140,
-                loading: state.response is AmountPending,
                 highlighted: highlightController.highlighted,
                 suffixIcon: Padding(
                   padding: Paddings.all8,
@@ -425,27 +455,40 @@ class _AmountFormField extends StatelessWidget {
                 buildWhen: (prev, curr) =>
                     prev.amount != curr.amount ||
                     prev.amountFiat != curr.amountFiat ||
-                    prev.amountUnit != curr.amountUnit,
-                builder: (context, state) =>
-                    state.amountUnit == AmountUnit.crypto
-                        ? Text(
-                            double.parse(state.amountFiat.isEmpty
-                                    ? '0'
-                                    : state.amountFiat)
-                                .getThousandValueWithCurrency(
-                              currency: 'USD', //TODO.. replace by real currency
-                              locale: Intl.getCurrentLocale(),
-                            ),
-                            style: SioTextStyles.bodyL.copyWith(
-                              color: SioColors.secondary7,
-                            ),
-                          )
-                        : Text(
-                            '${state.amount.isEmpty ? '0' : state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
-                            style: SioTextStyles.bodyL.copyWith(
-                              color: SioColors.secondary7,
-                            ),
+                    prev.amountUnit != curr.amountUnit ||
+                    curr.response is AmountSuccess ||
+                    curr.response is AmountFailure ||
+                    curr.response is AmountPending,
+                builder: (context, state) {
+                  if (state.response is AmountPending) {
+                    return Text(
+                      context.locale.common_loading_with_dots,
+                      style: SioTextStyles.bodyS.copyWith(
+                        color: SioColors.mentolGreen,
+                      ),
+                    );
+                  }
+
+                  return state.amountUnit == send_cubit.AmountUnit.crypto
+                      ? Text(
+                          double.parse(state.amountFiat.isEmpty
+                                  ? '0'
+                                  : state.amountFiat)
+                              .getThousandValueWithCurrency(
+                            currency: 'USD', //TODO.. replace by real currency
+                            locale: Intl.getCurrentLocale(),
                           ),
+                          style: SioTextStyles.bodyL.copyWith(
+                            color: SioColors.secondary7,
+                          ),
+                        )
+                      : Text(
+                          '${state.amount.isEmpty ? '0' : state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
+                          style: SioTextStyles.bodyL.copyWith(
+                            color: SioColors.secondary7,
+                          ),
+                        );
+                },
               ),
             ],
           ),
@@ -475,7 +518,6 @@ class _NextButton extends StatelessWidget {
           context.locale.asset_send_screen_summary_btn_label,
           enabled: state.isValid,
           onPressed: () {
-            GoRouter.of(context).pop();
             GoRouter.of(context).pushNamed(
               AuthenticatedRouter.assetBuySummary,
               params: {

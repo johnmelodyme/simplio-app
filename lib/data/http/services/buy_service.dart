@@ -216,12 +216,12 @@ class PairCryptoAsset {
 class BuyConvertResponse {
   final FiatAsset fiatAsset;
   final CryptoAsset cryptoAsset;
-  final FeeAsset fee;
+  final FeeAsset targetAmount;
 
   BuyConvertResponse({
     required this.fiatAsset,
     required this.cryptoAsset,
-    required this.fee,
+    required this.targetAmount,
   });
 
   factory BuyConvertResponse.fromJson(Map<String, dynamic> json) =>
@@ -249,10 +249,12 @@ class FiatAsset {
 @JsonSerializable()
 class CryptoAsset {
   final int assetId;
+  final int networkId;
   final double amount;
 
   CryptoAsset({
     required this.assetId,
+    required this.networkId,
     required this.amount,
   });
 
@@ -265,7 +267,7 @@ class CryptoAsset {
 @JsonSerializable()
 class FeeAsset {
   final String assetId;
-  final String amount;
+  final double amount;
 
   FeeAsset({
     required this.assetId,
@@ -284,14 +286,12 @@ class BuyOrderBody {
   final ConvertCryptoAssetWithoutAmount cryptoAsset;
   final ConvertTargetAmount targetAmount;
   final String walletAddress;
-  final String applicantId;
 
   BuyOrderBody({
     required this.fiatAsset,
     required this.cryptoAsset,
     required this.targetAmount,
     required this.walletAddress,
-    required this.applicantId,
   });
 
   factory BuyOrderBody.fromJson(Map<String, dynamic> json) =>
@@ -363,10 +363,12 @@ class ConvertFiatAssetWithoutAmount {
 @JsonSerializable()
 class ConvertCryptoAsset {
   final int assetId;
+  final int networkId;
   final double? amount;
 
   ConvertCryptoAsset({
     required this.assetId,
+    required this.networkId,
     this.amount,
   });
 
@@ -379,8 +381,12 @@ class ConvertCryptoAsset {
 @JsonSerializable()
 class ConvertCryptoAssetWithoutAmount {
   final int assetId;
+  final int networkId;
 
-  ConvertCryptoAssetWithoutAmount({required this.assetId});
+  ConvertCryptoAssetWithoutAmount({
+    required this.assetId,
+    required this.networkId,
+  });
 
   factory ConvertCryptoAssetWithoutAmount.fromJson(Map<String, dynamic> json) =>
       _$ConvertCryptoAssetWithoutAmountFromJson(json);

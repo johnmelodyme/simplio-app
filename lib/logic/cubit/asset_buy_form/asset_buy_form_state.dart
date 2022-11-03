@@ -4,6 +4,16 @@ enum PaymentMethod { debitCard, payPal, applePay, googlePay }
 
 enum DebitCardType { visa, masterCard }
 
+class CryptoFiatPair {
+  final PairFiatAsset fiatAsset;
+  final PairCryptoAsset cryptoAsset;
+
+  const CryptoFiatPair({
+    required this.fiatAsset,
+    required this.cryptoAsset,
+  });
+}
+
 class AssetBuyFormState extends Equatable
     implements AssetFormExceptions, AssetFormState {
   @override
@@ -12,13 +22,14 @@ class AssetBuyFormState extends Equatable
   final NetworkWallet sourceNetworkWallet;
   final String amount;
   final String amountFiat;
-  final String totalAmountToBuy;
-  final String fee;
-  final String price;
   final AmountUnit amountUnit;
   final PaymentMethod paymentMethod;
+  final BuyConvertResponse buyConvertResponse;
+  final CryptoFiatPair selectedPair;
   final DebitCardType? debitCardType;
-  final String? paymentGatewayUrl;
+  final String paymentGatewayUrl;
+  final String orderId;
+  final Map<AssetWallet, CryptoFiatPair> availableWallets;
 
   final AssetBuyFormResponse? response;
 
@@ -27,13 +38,14 @@ class AssetBuyFormState extends Equatable
     required this.sourceNetworkWallet,
     required this.amount,
     required this.amountFiat,
-    required this.totalAmountToBuy,
     required this.amountUnit,
-    required this.fee,
-    required this.price,
     required this.paymentMethod,
+    required this.buyConvertResponse,
+    required this.selectedPair,
+    required this.availableWallets,
     this.response,
-    this.paymentGatewayUrl,
+    this.paymentGatewayUrl = '',
+    this.orderId = '',
     this.debitCardType,
   });
 
@@ -52,16 +64,35 @@ class AssetBuyFormState extends Equatable
           ),
           amount: '',
           amountFiat: '',
-          totalAmountToBuy: '0',
           amountUnit: AmountUnit.crypto,
           paymentMethod: PaymentMethod
               .debitCard, // we will support only debit cards in the beginning
-          fee: '0',
-          price: '0',
+          buyConvertResponse: BuyConvertResponse(
+              fiatAsset: FiatAsset(assetId: '', amount: 0),
+              cryptoAsset: CryptoAsset(
+                  assetId: sourceAssetId,
+                  networkId: sourceNetworkId,
+                  amount: 0),
+              targetAmount: FeeAsset(assetId: '', amount: 0)),
+          selectedPair: CryptoFiatPair(
+              fiatAsset: PairFiatAsset(
+                assetId: '',
+                decimalPlaces: -1,
+                minimum: double.infinity,
+                maximum: -1,
+              ),
+              cryptoAsset: PairCryptoAsset(
+                assetId: -1,
+                networkId: -1,
+              )),
           paymentGatewayUrl: '',
+          availableWallets: {},
         );
 
-  bool get isValid => amount.isNotEmpty && double.parse(amount) > 0;
+  bool get isValid =>
+      !hasErrors.contains(true) &&
+      double.tryParse(amount) != null &&
+      double.parse(amount) > 0;
 
   @override
   List<Object?> get props => [
@@ -70,68 +101,70 @@ class AssetBuyFormState extends Equatable
         amount,
         amountFiat,
         amountUnit.index,
-        fee,
-        price,
         paymentMethod,
         debitCardType,
         paymentGatewayUrl,
+        orderId,
+        buyConvertResponse,
+        selectedPair,
+        availableWallets,
         response,
+        hasErrors,
+        hasWarnings,
       ];
 
   AssetBuyFormState copyWith({
     AssetWallet? sourceAssetWallet,
     NetworkWallet? sourceNetworkWallet,
-    String? amountFrom,
-    String? amountFromFiat,
+    String? amount,
+    String? amountFiat,
     String? totalAmount,
     AmountUnit? amountUnit,
-    String? fee,
-    String? price,
+    BuyConvertResponse? buyConvertResponse,
     PaymentMethod? paymentMethod,
     DebitCardType? debitCardType,
     AssetBuyFormResponse? response,
+    CryptoFiatPair? selectedPair,
+    Map<AssetWallet, CryptoFiatPair>? availableWallets,
     String? paymentGatewayUrl,
+    String? orderId,
   }) {
     return AssetBuyFormState._(
       sourceAssetWallet: sourceAssetWallet ?? this.sourceAssetWallet,
       sourceNetworkWallet: sourceNetworkWallet ?? this.sourceNetworkWallet,
-      amount: amountFrom ?? amount,
-      amountFiat: amountFromFiat ?? amountFiat,
-      totalAmountToBuy: totalAmount ?? totalAmountToBuy,
+      amount: amount ?? this.amount,
+      amountFiat: amountFiat ?? this.amountFiat,
       amountUnit: amountUnit ?? this.amountUnit,
-      fee: fee ?? this.fee,
-      price: price ?? this.price,
       paymentMethod: paymentMethod ?? this.paymentMethod,
+      buyConvertResponse: buyConvertResponse ?? this.buyConvertResponse,
       debitCardType: debitCardType ?? this.debitCardType,
       response: response ?? this.response,
+      selectedPair: selectedPair ?? this.selectedPair,
+      availableWallets: availableWallets ?? this.availableWallets,
       paymentGatewayUrl: paymentGatewayUrl ?? this.paymentGatewayUrl,
+      orderId: orderId ?? this.orderId,
     );
   }
 
   @override
   List<String> errors(BuildContext context) => [
-        '',
+        context.locale.asset_buy_screen_range_exception(
+            selectedPair.fiatAsset.minimum.toString(),
+            selectedPair.fiatAsset.maximum.toString())
       ];
 
   @override
   List<bool> get hasErrors => [
-        false,
+        double.tryParse(amountFiat) != null &&
+            (double.parse(amountFiat) > selectedPair.fiatAsset.maximum ||
+                double.parse(amountFiat) < selectedPair.fiatAsset.minimum),
       ];
 
   @override
-  List<bool> get hasWarnings {
-    return [
-      (double.tryParse(amount) != null && double.parse(amount) > 0),
-    ];
-  }
+  List<bool> get hasWarnings => [false];
 
   @override
-  List<String> warnings(BuildContext context) {
-    return [
-      context
-          .locale.asset_send_summary_screen_transaction_includes_fees_warning,
-    ];
-  }
+  List<String> warnings(BuildContext context) => [];
 
   @override
   Map<String, dynamic> toMap() {
@@ -140,6 +173,14 @@ class AssetBuyFormState extends Equatable
       'sourceNetworkWallet': sourceNetworkWallet,
     };
   }
+
+  double get estimatedPrice =>
+      buyConvertResponse.fiatAsset.amount /
+      buyConvertResponse.cryptoAsset.amount;
+
+  double get totalAmountToPayInFiat =>
+      buyConvertResponse.fiatAsset.amount +
+      buyConvertResponse.targetAmount.amount;
 }
 
 abstract class AssetBuyFormResponse extends Equatable {
@@ -185,15 +226,7 @@ class AssetBuyFormPriceRefreshPending extends AssetBuyFormResponse {
 }
 
 class AssetBuyFormPriceRefreshSuccess extends AssetBuyFormResponse {
-  final bool confirmationNeeded;
-  final String? newTotalAmount;
-  final String? newTotalAmountFiat;
-
-  const AssetBuyFormPriceRefreshSuccess({
-    required this.confirmationNeeded,
-    required this.newTotalAmount,
-    required this.newTotalAmountFiat,
-  });
+  const AssetBuyFormPriceRefreshSuccess();
 
   @override
   List<Object?> get props => [];
@@ -224,25 +257,24 @@ class AssetBuyFormFailure extends AssetBuyFormResponse {
   List<Object?> get props => [exception];
 }
 
-class AssetSearchFromPending extends AssetBuyFormResponse {
-  const AssetSearchFromPending();
+class AssetSearchLoading extends AssetBuyFormResponse {
+  const AssetSearchLoading();
 
   @override
   List<Object?> get props => [];
 }
 
-class AssetSearchFromFailure extends AssetBuyFormResponse {
-  const AssetSearchFromFailure();
+class AssetSearchFailure extends AssetBuyFormResponse {
+  final String error;
+  const AssetSearchFailure({required this.error});
 
   @override
   List<Object?> get props => [];
 }
 
-class AssetSearchFromSuccess extends AssetBuyFormResponse {
-  final List<AssetWallet> availableWallets;
-
-  const AssetSearchFromSuccess({required this.availableWallets});
+class AssetSearchLoaded extends AssetBuyFormResponse {
+  const AssetSearchLoaded();
 
   @override
-  List<Object?> get props => [availableWallets];
+  List<Object?> get props => [];
 }

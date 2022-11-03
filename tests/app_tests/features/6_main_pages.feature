@@ -1,8 +1,9 @@
+@blockedByBug
 Feature: Main Pages Checking
 
   Scenario: Checking Main Pages Of an APP
 
-    Then I wait until the element of type "TextButton" is present
+    Given I wait until the element of type "ElevatedButton" is present
     When I expect the text "Log in" to be present within 10 seconds
     And I tap the label that contains the text "Log in"
     And  I fill the "themed-text-form-field" field with "bob@gmail.com"

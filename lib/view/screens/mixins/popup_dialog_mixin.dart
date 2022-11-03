@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/popup_dialog.dart';
 import 'package:simplio_app/view/widgets/popup_error.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 
 mixin PopupDialogMixin {
   Future<void> showPopup(
@@ -39,7 +41,6 @@ mixin PopupDialogMixin {
   Future<void> showError(
     final BuildContext context, {
     required String message,
-    required Widget icon,
     Duration? hideAfter = const Duration(seconds: 3),
     Function? afterHideAction,
   }) async {
@@ -50,7 +51,11 @@ mixin PopupDialogMixin {
       barrierDismissible: true,
       useRootNavigator: true,
       builder: (context) => PopupError(
-        icon: icon,
+        icon: Icon(
+          SioIcons.error_outline,
+          size: 40,
+          color: SioColors.whiteBlue,
+        ),
         message: message,
         onCancel: () {
           popupIsActive = false;

@@ -317,7 +317,6 @@ class _AssetSendScreen extends State<AssetSendScreen> with Scroll {
             ),
           ),
           panel: Container(
-            padding: Paddings.vertical16,
             decoration: BoxDecoration(
               borderRadius: BorderRadiusDirectional.only(
                 topStart: BorderRadii.radius20.topLeft,

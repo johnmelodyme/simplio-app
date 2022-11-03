@@ -1,24 +1,17 @@
 import 'dart:io';
 import 'package:simplio_app/data/http/errors/bad_request_http_error.dart';
-import 'package:simplio_app/data/http/services/account_service.dart';
 import 'package:simplio_app/data/http/services/buy_service.dart';
 
 class BuyRepository {
-  final AccountService _accountService;
   final BuyService _buyService;
 
   BuyRepository._(
-    this._accountService,
     this._buyService,
   );
 
   BuyRepository({
-    required AccountService accountService,
     required BuyService buyService,
-  }) : this._(
-          accountService,
-          buyService,
-        );
+  }) : this._(buyService);
 
   Future<List<BuyPairResponseItem>> pairs({
     bool readCache = true,
@@ -53,6 +46,7 @@ class BuyRepository {
   Future<BuyConvertResponse> convert({
     required String fiatAssetId,
     required int cryptoAssetId,
+    required int cryptoNetworkId,
     required double amount,
     bool fromCrypto = true,
   }) async {
@@ -64,6 +58,7 @@ class BuyRepository {
               ),
               cryptoAsset: ConvertCryptoAsset(
                 assetId: cryptoAssetId,
+                networkId: cryptoNetworkId,
                 amount: amount,
               ),
             ),
@@ -76,6 +71,7 @@ class BuyRepository {
               ),
               cryptoAsset: ConvertCryptoAssetWithoutAmount(
                 assetId: cryptoAssetId,
+                networkId: cryptoNetworkId,
               ),
             ),
           );
@@ -90,16 +86,6 @@ class BuyRepository {
     required BuyConvertResponse convertResponse,
     required String walletAddress,
   }) async {
-    final profile = await _getAccountProfile();
-
-    if (!profile.isVerified) {
-      throw Exception('Account is not verified.');
-    }
-
-    if (profile.applicantId == null) {
-      throw Exception("Account does not have 'applicantId'.");
-    }
-
     final res = await _buyService.initialize(BuyOrderBody(
       fiatAsset: ConvertFiatAsset(
         assetId: convertResponse.fiatAsset.assetId,
@@ -107,13 +93,13 @@ class BuyRepository {
       ),
       cryptoAsset: ConvertCryptoAssetWithoutAmount(
         assetId: convertResponse.cryptoAsset.assetId,
+        networkId: convertResponse.cryptoAsset.networkId,
       ),
       targetAmount: ConvertTargetAmount(
-        assetId: convertResponse.fee.assetId.toString(),
-        amount: double.parse(convertResponse.fee.amount),
+        assetId: convertResponse.targetAmount.assetId,
+        amount: convertResponse.targetAmount.amount,
       ),
       walletAddress: walletAddress,
-      applicantId: profile.applicantId!,
     ));
 
     final body = res.body;
@@ -134,14 +120,5 @@ class BuyRepository {
 
     throw Exception(
         "Could not get status with orderId $orderId - ${res.error.toString()}");
-  }
-
-  Future<AccountProfileResponse> _getAccountProfile() async {
-    final res = await _accountService.profile();
-
-    final body = res.body;
-    if (res.isSuccessful && body != null) return body;
-
-    throw Exception("Could not fetch account profile: ${res.error.toString()}");
   }
 }

@@ -90,11 +90,6 @@ class _WalletConnectQrCodeScannerScreenState
                                     context,
                                     message:
                                         context.locale.common_unknown_error,
-                                    icon: const Icon(
-                                      SioIcons.error_outline,
-                                      size: 40,
-                                      color: SioColorsDark.whiteBlue,
-                                    ),
                                     hideAfter:
                                         const Duration(milliseconds: 2000),
                                     afterHideAction: () =>

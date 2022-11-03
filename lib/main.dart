@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:simplio_app/data/http/clients/public_http_client.dart';
 import 'package:simplio_app/data/http/clients/secured_http_client.dart';
-import 'package:simplio_app/data/http/services/account_service.dart';
 import 'package:simplio_app/data/http/services/asset_service.dart';
 import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
@@ -166,7 +165,6 @@ class _SimplioAppState extends State<SimplioApp> {
       assetService: securedApi.service<AssetService>(),
     );
     buyRepository = BuyRepository(
-      accountService: securedApi.service<AccountService>(),
       buyService: securedApi.service<BuyService>(),
     );
     transactionRepository = TransactionRepository();

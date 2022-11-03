@@ -40,10 +40,6 @@ class _AssetBuySearchScreen extends State<AssetBuySearchScreen> {
       // todo: add notification for the user when the snackbar task is done
     }
 
-    context
-        .read<AssetBuyFormCubit>()
-        .loadFromSearchInitialData(state.wallet.wallets);
-
     super.initState();
   }
 
@@ -66,38 +62,41 @@ class _AssetBuySearchScreen extends State<AssetBuySearchScreen> {
       appBarStyle: AppBarStyle.multiColored,
       child: BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
         buildWhen: (prev, curr) =>
-            curr.response is AssetSearchFromSuccess ||
-            curr.response is AssetSearchFromFailure ||
-            curr.response is AssetSearchFromPending,
+            curr.response is AssetSearchLoaded ||
+            curr.response is AssetSearchFailure ||
+            curr.response is AssetSearchLoading,
         builder: (context, state) {
           final response = state.response;
-          if (response is AssetSearchFromSuccess) {
-            availableWallets = response.availableWallets;
-            search(widget.searchController.text);
-
-            return SingleChildScrollView(
-              child: AssetWalletExpansionList(
-                assetWallets: filteredWallets,
-                onTap: (assetWallet, networkWallet) {
-                  context.read<AssetBuyFormCubit>().changeFormValue(
-                        sourceAssetWallet: assetWallet,
-                        sourceNetworkWallet: networkWallet,
-                      );
-
-                  GoRouter.of(context).pop();
-                },
+          if (response is AssetSearchLoading) {
+            return const Center(
+              child: Padding(
+                padding: Paddings.bottom32,
+                child: ListLoading(),
               ),
             );
           }
 
-          if (response is AssetSearchFromFailure) {
+          if (response is AssetSearchFailure) {
             // todo: add proper error handling
           }
 
-          return const Center(
-            child: Padding(
-              padding: Paddings.bottom32,
-              child: ListLoading(),
+          availableWallets = state.availableWallets.keys.toList();
+          search(widget.searchController.text);
+          return SingleChildScrollView(
+            child: AssetWalletExpansionList(
+              assetWallets: filteredWallets,
+              onTap: (assetWallet, networkWallet) {
+                context.read<AssetBuyFormCubit>().changeFormValue(
+                    sourceAssetWallet: assetWallet,
+                    sourceNetworkWallet: networkWallet,
+                    selectedPair: CryptoFiatPair(
+                      fiatAsset: state.availableWallets[assetWallet]!.fiatAsset,
+                      cryptoAsset:
+                          state.availableWallets[assetWallet]!.cryptoAsset,
+                    ));
+
+                GoRouter.of(context).pop();
+              },
             ),
           );
         },

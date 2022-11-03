@@ -64,25 +64,6 @@ class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
               AssetDetail networkDetail =
                   Assets.getNetworkDetail(networkWallet.networkId);
 
-              // final assetId = context.read<B>().state.sourceAssetWallet.assetId;
-              // final networkId =
-              //     context.read<B>().state.sourceNetworkWallet.networkId;
-              // NetworkWallet? networkWallet =
-              // getNetwork(context, assetId.toString(), networkId.toString());
-
-              // int assetId =
-              //     context.read<B>().state.toMap()[assetIdPropertyName];
-              // int networkId =
-              //     context.read<B>().state.toMap()[networkIdPropertyName];
-
-              // initial values during loading
-              // if (assetId == -1 || networkId == -1) {
-              //   assetId = context.read<B>().state.toMap()['assetId'];
-              //   networkId = context.read<B>().state.toMap()['networkId'];
-              // }
-              // NetworkWallet? networkWallet =
-              //     getNetwork(context, assetId.toString(), networkId.toString());
-
               return BlocBuilder<AccountWalletCubit, AccountWalletState>(
                 buildWhen: (prev, state) => state is AccountWalletChanged,
                 builder: (context, state) => Stack(

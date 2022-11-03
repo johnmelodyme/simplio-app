@@ -44,6 +44,7 @@ class SecuredHttpClient extends HttpClient {
               ...BuyService.converter(),
               ...InventoryService.converter(),
               ...SwapService.converter(),
+              ...BuyService.converter(),
             }),
             authenticator: RefreshTokenAuthenticator(
               authTokenStorage: authTokenStorage,
@@ -65,6 +66,7 @@ class SecuredHttpClient extends HttpClient {
               BuyService.create(),
               InventoryService.create(),
               SwapService.create(),
+              BuyService.create(),
             ],
           ),
         );

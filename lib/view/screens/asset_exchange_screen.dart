@@ -307,7 +307,6 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
             ),
           ),
           panel: Container(
-            padding: Paddings.vertical16,
             decoration: BoxDecoration(
               borderRadius: BorderRadiusDirectional.only(
                 topStart: BorderRadii.radius20.topLeft,

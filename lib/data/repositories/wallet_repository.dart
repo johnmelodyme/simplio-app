@@ -63,12 +63,8 @@ class WalletRepository {
     String? mnemonic,
   }) async {
     final isProvided = mnemonic != null;
-    // todo: review if this functionality is still needed after mnemonic import is done
-    const runtimeMnemonic = String.fromEnvironment('MNEMONIC');
     final m = LockableMnemonic.unlocked(
-      mnemonic: runtimeMnemonic.isNotEmpty
-          ? runtimeMnemonic
-          : mnemonic ?? sio.Mnemonic().generate,
+      mnemonic: mnemonic ?? sio.Mnemonic().generate,
       isBackedUp: isProvided,
       isImported: isProvided,
     );

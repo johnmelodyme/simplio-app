@@ -61,7 +61,6 @@ class AssetFormException<B extends StateStreamable<S>,
             return displayError && state.hasErrors[formElementIndex]
                 ? Padding(
                     padding: const EdgeInsets.only(
-                      left: Dimensions.padding16,
                       top: Dimensions.padding10,
                       bottom: Dimensions.padding5,
                     ),
