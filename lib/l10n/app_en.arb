@@ -178,7 +178,7 @@
    
 
     "pin_setup_screen_account_creation_title": "Account created",
-    "pin_setup_screen_account_creation_subtitle": "One last think to do. Set your Security\nCode to keep your account safe.",
+    "pin_setup_screen_account_creation_subtitle": "One last thing to do. Set your Security\nCode to keep your account safe.",
 
     "protected_guard_enter_pin_code": "Enter your pin",
     "protected_guard_remaining_attempts": "You have remaining attempts:",
