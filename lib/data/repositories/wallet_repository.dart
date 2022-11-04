@@ -90,7 +90,7 @@ class WalletRepository {
         assetWallet.getWallet(networkId)?.copyWith(isEnabled: true) ??
             NetworkWallet.builder(
               networkId: networkId,
-              address: _wallet.getAddressForCoin(networkId),
+              address: getCoinAddress(accountWallet.uuid, networkId: networkId),
               isEnabled: true,
               preset: NetworkWallet.makePreset(
                 assetId: assetId,
@@ -149,6 +149,9 @@ class WalletRepository {
     required int networkId,
   }) {
     _checkInitializedAccountWallet(accountWalletId);
+    if (!sio.Networks.isSupported(networkId: networkId)) {
+      throw Exception("Network wallet '$networkId}' is not supported");
+    }
     return _wallet.getAddressForCoin(networkId);
   }
 
@@ -258,7 +261,7 @@ class WalletRepository {
 
     final nonce = await _getNonce(
       networkId: networkId,
-      walletAddress: _wallet.getAddressForCoin(networkId),
+      walletAddress: getCoinAddress(accountWalletId, networkId: networkId),
     );
 
     WalletTransaction? transaction;
@@ -340,10 +343,13 @@ class WalletRepository {
     return transaction;
   }
 
-  Future<List<Utxo>> _getUtxo({required int networkId}) async {
+  Future<List<Utxo>> _getUtxo(
+    String accountWalletId, {
+    required int networkId,
+  }) async {
     final res = await _blockchainUtilsService.utxo(
       networkId: networkId.toString(),
-      walletAddress: _wallet.getAddressForCoin(networkId),
+      walletAddress: getCoinAddress(accountWalletId, networkId: networkId),
     );
 
     final body = res.body;
@@ -366,7 +372,7 @@ class WalletRepository {
 
     if (!sio.Cluster.utxo.contains(networkId)) return null;
 
-    final utxos = await _getUtxo(networkId: networkId);
+    final utxos = await _getUtxo(accountWalletId, networkId: networkId);
 
     return _makeTransaction(
       networkId: networkId,
@@ -417,7 +423,7 @@ class WalletRepository {
 
     final latestBlockHash = await _getLatestBlockHash(
       networkId: networkId,
-      walletAddress: _wallet.getAddressForCoin(networkId),
+      walletAddress: getCoinAddress(accountWalletId, networkId: networkId),
     );
 
     if (contractAddress != null) {
