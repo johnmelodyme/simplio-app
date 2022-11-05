@@ -33,7 +33,7 @@ class HighlightedElevatedButton extends StatelessWidget {
             onPressed != null
                 ? SioColors.highlight1
                 : SioColors.backGradient4Start,
-            onPressed != null ? SioColors.vividBlue : SioColors.blackGradient2,
+            onPressed != null ? SioColors.vividBlue : SioColors.backGradient2,
           ]),
           borderRadius: BorderRadii.radius30,
         ),

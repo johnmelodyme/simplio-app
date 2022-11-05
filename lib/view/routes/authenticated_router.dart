@@ -39,7 +39,9 @@ import 'package:simplio_app/view/screens/asset_send_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_search_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_success_screen.dart';
 import 'package:simplio_app/view/screens/asset_send_summary_screen.dart';
+import 'package:simplio_app/view/screens/backup_inventory_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
+import 'package:simplio_app/view/screens/configuration_security_screen.dart';
 import 'package:simplio_app/view/screens/dapps_screen.dart';
 import 'package:simplio_app/view/screens/discovery_screen.dart';
 import 'package:simplio_app/view/screens/games_screen.dart';
@@ -63,7 +65,9 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String findDapps = 'find-dapps';
   static const String pinSetup = 'pin-setup';
   static const String accountSetup = 'account-setup';
+  static const String securitySettings = 'security-settings';
   static const String passwordChange = 'password-change';
+  static const String backupInventory = 'backup-inventory';
   static const String assetDetail = 'asset-detail';
   static const String assetSearch = 'asset-search';
 
@@ -175,36 +179,80 @@ class AuthenticatedRouter with PageBuilderMixin {
                     ),
                     routes: [
                       GoRoute(
-                        path: 'password-change',
-                        name: passwordChange,
+                        path: 'security-settings',
+                        name: securitySettings,
                         pageBuilder: pageBuilder(
-                          settings: const ApplicationSettings(
-                            tabBar: TabBarRouteSettings(
-                              selectedKey: ValueKey(configuration),
-                              isVisible: false,
-                            ),
+                          builder: (state) => const ConfigurationSecurityScreen(
+                            key: ValueKey(securitySettings),
                           ),
-                          builder: (state) => BlocProvider(
-                            create: (context) =>
-                                PasswordChangeFormCubit.builder(
-                              authRepository:
-                                  RepositoryProvider.of<AuthRepository>(
-                                      context),
-                            ),
-                            child: Builder(builder: (context) {
-                              return ProtectedGuard(
-                                icon: const LockWithShadowIcon(),
-                                title: context
-                                    .locale.protected_guard_enter_pin_code,
-                                protectedBuilder: (_) =>
-                                    const PasswordChangeScreen(),
-                                onPrevent: (context) =>
-                                    context.goNamed(configuration),
-                              );
-                            }),
-                          ),
+                          withTransition: false,
+                          settings: const ApplicationSettings.hiddenTabBar(),
                         ),
-                      )
+                        routes: [
+                          GoRoute(
+                            path: 'password-change',
+                            name: passwordChange,
+                            pageBuilder: pageBuilder(
+                              settings: const ApplicationSettings(
+                                tabBar: TabBarRouteSettings(
+                                  selectedKey: ValueKey(configuration),
+                                  isVisible: false,
+                                ),
+                              ),
+                              builder: (state) => BlocProvider(
+                                create: (context) =>
+                                    PasswordChangeFormCubit.builder(
+                                  authRepository:
+                                      RepositoryProvider.of<AuthRepository>(
+                                          context),
+                                ),
+                                child: Builder(builder: (context) {
+                                  return ProtectedGuard(
+                                    icon: const LockWithShadowIcon(),
+                                    title: context
+                                        .locale.protected_guard_enter_pin_code,
+                                    protectedBuilder: (_) =>
+                                        const PasswordChangeScreen(),
+                                    onPrevent: (context) =>
+                                        context.goNamed(securitySettings),
+                                  );
+                                }),
+                              ),
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'backup-inventory',
+                            name: backupInventory,
+                            pageBuilder: pageBuilder(
+                              settings: const ApplicationSettings(
+                                tabBar: TabBarRouteSettings(
+                                  selectedKey: ValueKey(backupInventory),
+                                  isVisible: false,
+                                ),
+                              ),
+                              builder: (state) => BlocProvider(
+                                create: (context) =>
+                                    PasswordChangeFormCubit.builder(
+                                  authRepository:
+                                      RepositoryProvider.of<AuthRepository>(
+                                          context),
+                                ),
+                                child: Builder(builder: (context) {
+                                  return ProtectedGuard(
+                                    icon: const LockWithShadowIcon(),
+                                    title: context
+                                        .locale.protected_guard_enter_pin_code,
+                                    protectedBuilder: (_) =>
+                                        const BackupInventoryScreen(),
+                                    onPrevent: (context) =>
+                                        context.goNamed(securitySettings),
+                                  );
+                                }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ]),

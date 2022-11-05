@@ -44,7 +44,7 @@ class _Switch extends State<ChoiceSwitch> {
           end: Alignment.center,
           colors: [
             SioColors.backGradient4Start,
-            SioColors.blackGradient2,
+            SioColors.backGradient2,
           ],
         ),
         borderRadius: borderRadius,

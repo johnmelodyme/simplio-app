@@ -27,7 +27,7 @@ class SuccessButton extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [
                 SioColors
-                    .blackGradient2, // todo: replace with proper color when Theme refactoring is done
+                    .backGradient2, // todo: replace with proper color when Theme refactoring is done
                 SioColors.backGradient4Start,
               ],
             )),

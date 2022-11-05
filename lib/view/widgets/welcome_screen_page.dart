@@ -3,8 +3,8 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 
-class WelcomScreenPage extends StatelessWidget {
-  const WelcomScreenPage({
+class WelcomeScreenPage extends StatelessWidget {
+  const WelcomeScreenPage({
     super.key,
     required this.textSpans,
     required this.subtitle,

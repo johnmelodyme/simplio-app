@@ -79,9 +79,8 @@ abstract class SioColors {
       ? SioColorsDark.bottomTabBarEndColor
       : SioColorsLight.bottomTabBarEndColor;
 
-  static Color get blackGradient2 => isDarkMode()
-      ? SioColorsDark.blackGradient2
-      : SioColorsLight.blackGradient2;
+  static Color get backGradient2 =>
+      isDarkMode() ? SioColorsDark.backGradient2 : SioColorsLight.backGradient2;
 
   static Color get backGradient3Start => isDarkMode()
       ? SioColorsDark.backGradient3Start

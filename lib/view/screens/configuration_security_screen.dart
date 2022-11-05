@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
-import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -13,8 +11,8 @@ import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-class ConfigurationScreen extends StatelessWidget {
-  const ConfigurationScreen({super.key});
+class ConfigurationSecurityScreen extends StatelessWidget {
+  const ConfigurationSecurityScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +24,8 @@ class ConfigurationScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: ColorizedAppBar(
               firstPart: '',
-              secondPart: context.locale.configuration_screen_settings_title,
-              actionType: ActionType.close,
+              secondPart: context.locale.configuration_screen_security,
+              actionType: ActionType.back,
             ),
           ),
           SliverToBoxAdapter(
@@ -64,51 +62,31 @@ class ConfigurationScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: ListTile(
               title: Text(
-                context.locale.configuration_screen_security,
+                'Backup your inventory',
                 style: SioTextStyles.bodyStyle.apply(
                   color: SioColors.whiteBlue,
                 ),
               ),
               onTap: () {
                 GoRouter.of(context)
-                    .pushNamed(AuthenticatedRouter.securitySettings);
+                    .pushNamed(AuthenticatedRouter.backupInventory);
               },
             ),
           ),
           SliverToBoxAdapter(
             child: ListTile(
-              title: Text(context.locale.configuration_screen_sign_out,
-                  style: SioTextStyles.bodyStyle.apply(
-                    color: SioColors.whiteBlue,
-                  )),
+              title: Text(
+                context.locale.configuration_screen_change_password,
+                style: SioTextStyles.bodyStyle.apply(
+                  color: SioColors.whiteBlue,
+                ),
+              ),
               onTap: () {
-                context.read<AuthBloc>().add(const GotUnauthenticated());
+                GoRouter.of(context)
+                    .pushNamed(AuthenticatedRouter.passwordChange);
               },
             ),
           ),
-          if (!const bool.fromEnvironment('IS_PROD'))
-            SliverToBoxAdapter(
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        context.locale.common_configuration_dark_mode(
-                            globalThemeMode == ThemeMode.dark),
-                        style: SioTextStyles.bodyStyle.apply(
-                          color: SioColors.whiteBlue,
-                        )),
-                    Switch(
-                      onChanged: (bool isDarkMode) async {
-                        await context.read<AccountCubit>().updateTheme(
-                            isDarkMode ? ThemeMode.dark : ThemeMode.light);
-                      },
-                      value: globalThemeMode == ThemeMode.dark,
-                    ),
-                  ],
-                ),
-              ),
-            ),
         ],
       ),
     );

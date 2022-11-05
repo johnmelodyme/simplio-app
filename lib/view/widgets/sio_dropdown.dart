@@ -55,7 +55,7 @@ class _SioDropdown extends State<SioDropdown> {
                       colors: [
                         SioColors.backGradient4Start,
                         SioColors
-                            .blackGradient2, // todo: replace with proper color when Theme refactoring is done
+                            .backGradient2, // todo: replace with proper color when Theme refactoring is done
                       ],
                     ),
                   ),
@@ -78,7 +78,7 @@ class _SioDropdown extends State<SioDropdown> {
       colors: [
         SioColors.backGradient4Start,
         SioColors
-            .blackGradient2, // todo: replace with proper color when Theme refactoring is done
+            .backGradient2, // todo: replace with proper color when Theme refactoring is done
       ],
     );
 

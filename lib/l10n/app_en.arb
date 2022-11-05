@@ -60,6 +60,24 @@
     "configuration_screen_settings_title": "Settings",
     "configuration_screen_change_password": "Change password",
     "configuration_screen_sign_out": "Sign out",
+    "configuration_screen_security": "Security",
+
+    "backup_inventory_screen_warning": "Do not create a digital copy such as screenshots,a text file or an email",
+    "backup_inventory_screen_button_label": "Press and hold to reveal",
+    "backup_inventory_screen_backup": "Backup your phrase",
+    "backup_inventory_screen_appbar_title_1": "Backup ",
+    "backup_inventory_screen_appbar_title_2": "Inventory",
+    "backup_inventory_screen_your_secret": "Your secret phrase",
+    "backup_inventory_screen_write_down_your_secret": "Write down your secret phrase in the\ncorrect order on paper",
+
+
+    "backup_inventory_screen_title_1": "You are always in control of\nyour Inventory with ",
+    "backup_inventory_screen_title_2": "12 words",
+    "backup_inventory_screen_title_3": "To ",
+    "backup_inventory_screen_title_4": "recover your Inventory",
+    "backup_inventory_screen_title_5": ", just enter all 12 words in the right order",
+    "backup_inventory_screen_subtitle_1": "If you lose your device, you\ncan recover your Inventory\nwith 12 words. These 12 words\nare called your secret recovery\nphrase.",
+    "backup_inventory_screen_subtitle_2": "Keep your phrase safe so you\ncan access your crypto anytime",
 
     "welcome_screen_already_have_an_account": "Already have an account?",
     "welcome_screen_login": "Log in",

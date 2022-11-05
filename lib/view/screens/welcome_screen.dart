@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
               repeat: !const bool.fromEnvironment('TEST_RUN'),
               itemDuration: const Duration(seconds: 2),
               items: [
-                WelcomScreenPage(
+                WelcomeScreenPage(
                   textSpans: [
                     TextSpan(
                       text: '${context.locale.welcome_screen_page1_discover}\n',
@@ -46,7 +46,7 @@ class WelcomeScreen extends StatelessWidget {
                   subtitle: context.locale.welcome_screen_page1_subtitle,
                   imageRes: 'assets/images/start_screen1.png',
                 ),
-                WelcomScreenPage(
+                WelcomeScreenPage(
                   textSpans: [
                     TextSpan(
                       text:
@@ -64,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                   subtitle: context.locale.welcome_screen_page2_subtitle,
                   imageRes: 'assets/images/start_screen2.png',
                 ),
-                WelcomScreenPage(
+                WelcomeScreenPage(
                   textSpans: [
                     TextSpan(
                       text: '${context.locale.welcome_screen_page3_connect} ',

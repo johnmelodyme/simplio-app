@@ -178,7 +178,7 @@ class _ActionButton extends KeypadItem {
                   end: Alignment.bottomRight,
                   colors: [
                     SioColorsDark.backGradient4Start,
-                    SioColorsDark.blackGradient2,
+                    SioColorsDark.backGradient2,
                   ],
                 ),
               ),

@@ -22,7 +22,7 @@ class BackGradient2 extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: [
               topLeftColor ?? SioColors.backGradient4Start,
-              bottomRightColor ?? SioColors.blackGradient2,
+              bottomRightColor ?? SioColors.backGradient2,
             ],
           ),
         ),
