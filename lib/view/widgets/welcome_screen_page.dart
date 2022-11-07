@@ -44,7 +44,7 @@ class WelcomeScreenPage extends StatelessWidget {
         Positioned(
           left: 0,
           right: 0,
-          bottom: 0,
+          bottom: _bottomMargin(context),
           child: Image.asset(
             imageRes,
             fit: BoxFit.fitWidth,
@@ -52,5 +52,12 @@ class WelcomeScreenPage extends StatelessWidget {
         )
       ],
     );
+  }
+
+  double _bottomMargin(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    if (screenHeight < 700) return -30;
+    if (screenHeight > 900) return 30;
+    return 0;
   }
 }

@@ -22,7 +22,7 @@ class WelcomeScreen extends StatelessWidget {
           Positioned.fill(
             child: Story(
               repeat: !const bool.fromEnvironment('TEST_RUN'),
-              itemDuration: const Duration(seconds: 2),
+              itemDuration: const Duration(seconds: 3),
               items: [
                 WelcomeScreenPage(
                   textSpans: [
