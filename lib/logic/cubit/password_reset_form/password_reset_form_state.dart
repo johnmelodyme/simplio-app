@@ -11,7 +11,7 @@ class PasswordResetFormState extends Equatable {
   const PasswordResetFormState.init() : this(const ValidatedEmail(), null);
 
   @override
-  List<Object?> get props => [email, response];
+  List<Object?> get props => [email, response, isValid];
 
   PasswordResetFormState copyWith({
     String? email,
@@ -22,6 +22,8 @@ class PasswordResetFormState extends Equatable {
       response,
     );
   }
+
+  bool get isValid => email.isValid;
 }
 
 abstract class PasswordResetFormResponse extends Equatable {

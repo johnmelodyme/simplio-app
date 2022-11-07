@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/data/model/helpers/validated_email.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/password_reset_form/password_reset_form_cubit.dart';
 import 'package:simplio_app/view/decorations/underlined_text_form_field_decoration.dart';
@@ -47,6 +46,9 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                   );
                 }
               },
+              buildWhen: (prev, curr) =>
+                  prev.response != curr.response ||
+                  prev.isValid != curr.isValid,
               builder: (context, state) {
                 return Column(
                   children: [
@@ -141,9 +143,9 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                         width: double.infinity,
                         child: HighlightedElevatedButton(
                           key: const Key('reset-screen-submit-button'),
-                          onPressed: ValidatedEmail(value: state.email.value)
-                                      .isValid &&
-                                  state is! PasswordResetFormPending
+                          onPressed: (state.isValid &&
+                                  state.response is! PasswordResetFormPending &&
+                                  state.response is! PasswordResetFormSuccess)
                               ? () {
                                   cubit.submitForm();
                                   FocusManager.instance.primaryFocus?.unfocus();
@@ -157,9 +159,8 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                       Gaps.gap20,
                       GestureDetector(
                         onTap: () {
-                          if (ValidatedEmail(value: state.email.value)
-                                  .isValid &&
-                              state is! PasswordResetFormPending) {
+                          if (state.isValid &&
+                              state.response is! PasswordResetFormPending) {
                             cubit.submitForm(resend: true);
                             FocusManager.instance.primaryFocus?.unfocus();
                           }
