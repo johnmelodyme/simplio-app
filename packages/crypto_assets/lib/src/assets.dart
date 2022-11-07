@@ -13,6 +13,7 @@ class Assets {
   const Assets._();
 
   static final Map<AssetId, AssetDetail> _assets = {
+    AssetIds.simplio.id: AssetDetails.simplio,
     AssetIds.bitcoin.id: AssetDetails.bitcoin,
     AssetIds.ethereum.id: AssetDetails.ethereum,
     AssetIds.solana.id: AssetDetails.solana,
@@ -21,6 +22,7 @@ class Assets {
     AssetIds.binanceUSD.id: AssetDetails.binanceUSD,
     AssetIds.bnb.id: AssetDetails.bnb,
     AssetIds.dai.id: AssetDetails.dai,
+    AssetIds.tinyCoin.id: AssetDetails.tinyCoin,
   };
 
   static final Map<NetworkId, AssetDetail> _networks = {

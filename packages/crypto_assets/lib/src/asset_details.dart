@@ -1,5 +1,4 @@
 import 'package:crypto_assets/crypto_assets.dart';
-import 'package:crypto_assets/crypto_icons.dart';
 import 'package:flutter/material.dart';
 
 class AssetDetails {
@@ -9,7 +8,7 @@ class AssetDetails {
     name: 'Simplio',
     ticker: 'SIO',
     style: AssetStyle(
-      icon: CryptoIcon.sio,
+      icon: AssetIcons.simplio,
       primaryColor: Colors.blue,
       foregroundColor: Colors.white,
     ),
@@ -19,7 +18,7 @@ class AssetDetails {
     name: 'Bitcoin',
     ticker: 'BTC',
     style: AssetStyle(
-      icon: CryptoIcon.btc,
+      icon: AssetIcons.bitcoin,
       primaryColor: const Color(0xffff9900),
       foregroundColor: Colors.white,
     ),
@@ -29,7 +28,7 @@ class AssetDetails {
     name: 'Solana',
     ticker: 'SOL',
     style: AssetStyle(
-      icon: CryptoIcon.sol,
+      icon: AssetIcons.solana,
       primaryColor: const Color(0xff411e7d),
       foregroundColor: Colors.white,
     ),
@@ -39,7 +38,7 @@ class AssetDetails {
     name: 'USD Coin',
     ticker: 'USDC',
     style: AssetStyle(
-      icon: CryptoIcon.usdc,
+      icon: AssetIcons.usdCoin,
       primaryColor: const Color(0xff2775ca),
       foregroundColor: Colors.white,
     ),
@@ -49,8 +48,18 @@ class AssetDetails {
     name: 'Tether',
     ticker: 'USDT',
     style: AssetStyle(
-      icon: CryptoIcon.tetherUsdt,
+      icon: AssetIcons.tether,
       primaryColor: const Color(0xff26a17b),
+      foregroundColor: Colors.white,
+    ),
+  );
+
+  static AssetDetail tinyCoin = AssetDetail(
+    name: 'Tiny Coin',
+    ticker: 'TINC',
+    style: AssetStyle(
+      icon: AssetIcons.tinyCoin,
+      primaryColor: const Color(0xfff7591b),
       foregroundColor: Colors.white,
     ),
   );
@@ -59,7 +68,7 @@ class AssetDetails {
     name: 'BNB',
     ticker: 'BNB',
     style: AssetStyle(
-      icon: CryptoIcon.bnb,
+      icon: AssetIcons.bnb,
       primaryColor: const Color(0xfff0b909),
       foregroundColor: Colors.white,
     ),
@@ -69,7 +78,7 @@ class AssetDetails {
     name: 'Dai token',
     ticker: 'DAI',
     style: AssetStyle(
-      icon: CryptoIcon.bnb,
+      icon: AssetIcons.dai,
       primaryColor: const Color(0xFFDCDCDC),
       foregroundColor: Colors.white,
     ),
@@ -79,7 +88,7 @@ class AssetDetails {
     name: 'BNB Smart Chain',
     ticker: 'BSC',
     style: AssetStyle(
-      icon: CryptoIcon.bsc,
+      icon: AssetIcons.bnbSmartChain,
       primaryColor: const Color(0xfff0b909),
       foregroundColor: Colors.white,
     ),
@@ -89,7 +98,7 @@ class AssetDetails {
     name: 'Ethereum',
     ticker: 'ETH',
     style: AssetStyle(
-      icon: CryptoIcon.eth,
+      icon: AssetIcons.ethereum,
       primaryColor: Colors.black12,
       foregroundColor: Colors.white,
     ),
@@ -99,7 +108,7 @@ class AssetDetails {
     name: 'Chainlink',
     ticker: 'CHAIN',
     style: AssetStyle(
-      icon: CryptoIcon.chain,
+      icon: AssetIcons.chainlink,
       primaryColor: Colors.black12,
       foregroundColor: Colors.white,
     ),
@@ -109,7 +118,7 @@ class AssetDetails {
     name: 'Bitcoin Cash',
     ticker: 'BCH',
     style: AssetStyle(
-      icon: CryptoIcon.bch,
+      icon: AssetIcons.bitcoinCash,
       primaryColor: const Color(0xff8dc351),
       foregroundColor: Colors.white,
     ),
@@ -119,7 +128,7 @@ class AssetDetails {
     name: 'Flux',
     ticker: 'FLUX',
     style: AssetStyle(
-      icon: CryptoIcon.zelFlux,
+      icon: AssetIcons.flux,
       primaryColor: const Color(0xff2a60d0),
       foregroundColor: Colors.white,
     ),
@@ -129,7 +138,7 @@ class AssetDetails {
     name: 'Dogecoin',
     ticker: 'DOGE',
     style: AssetStyle(
-      icon: CryptoIcon.doge,
+      icon: AssetIcons.dogecoin,
       primaryColor: const Color(0xffffe4a4),
       foregroundColor: Colors.white,
     ),
@@ -139,7 +148,7 @@ class AssetDetails {
     name: 'Dash',
     ticker: 'DASH',
     style: AssetStyle(
-      icon: CryptoIcon.dash,
+      icon: AssetIcons.dash,
       primaryColor: const Color(0xff008be6),
       foregroundColor: Colors.white,
     ),
@@ -149,7 +158,7 @@ class AssetDetails {
     name: 'Digibyte',
     ticker: 'DGB',
     style: AssetStyle(
-      icon: CryptoIcon.dgb,
+      icon: AssetIcons.digibyte,
       primaryColor: const Color(0xff006ad2),
       foregroundColor: Colors.white,
     ),
@@ -159,7 +168,7 @@ class AssetDetails {
     name: 'Litecoin',
     ticker: 'LTC',
     style: AssetStyle(
-      icon: CryptoIcon.ltc,
+      icon: AssetIcons.litecoin,
       primaryColor: const Color(0xffeaeaea),
       foregroundColor: Colors.white,
     ),
@@ -169,7 +178,7 @@ class AssetDetails {
     name: 'Binance USD',
     ticker: 'BUSD',
     style: AssetStyle(
-      icon: CryptoIcon.busd,
+      icon: AssetIcons.binanceUSD,
       primaryColor: const Color(0xfff3ba2f),
       foregroundColor: Colors.white,
     ),
@@ -179,7 +188,7 @@ class AssetDetails {
     name: 'Zcash',
     ticker: 'ZEC',
     style: AssetStyle(
-      icon: CryptoIcon.zcashZec,
+      icon: AssetIcons.zcash,
       primaryColor: const Color(0xfff5df97),
       foregroundColor: Colors.white,
     ),

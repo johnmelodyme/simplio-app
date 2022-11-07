@@ -1,4 +1,4 @@
-import 'package:crypto_assets/crypto_icons.dart';
+import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -73,7 +73,7 @@ class SplashScreen extends StatelessWidget {
                           SizedBox(
                             height: 34,
                             width: 34,
-                            child: CryptoIcon.sio,
+                            child: AssetIcons.simplio,
                           ),
                           Gaps.gap10,
                           Text(
