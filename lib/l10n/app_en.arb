@@ -176,7 +176,7 @@
     "password_reset_screen_forgot_password_hint": "Please enter your email address associated with your account to receive a link for resetting your password.",
     "password_reset_screen_did_not_receive_link_label": "Didn't receive a link?",
     "password_reset_screen_resend_label": " Resend",
-    "password_reset_screen_link_sent": "“Link was sent to {email}”",
+    "password_reset_screen_link_sent": "Link was sent to\n{email}",
     "@password_reset_screen_link_sent": {
        "placeholders": {
           "email": {
@@ -184,7 +184,7 @@
           }
        }
     },
-    "password_reset_screen_link_resent": "“We resend a link to {email}”",
+    "password_reset_screen_link_resent": "We resend a link to\n{email}",
     "@password_reset_screen_link_resent": {
        "placeholders": {
           "email": {
