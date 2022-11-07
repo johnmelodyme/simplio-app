@@ -69,7 +69,8 @@ class AssetWalletExpansionList extends StatelessWidget {
     return SioExpansionRadioPanel(
       animationDuration: const Duration(milliseconds: 500),
       dividerColor: SioColors.softBlack,
-      children: assetWallets.map(
+      children:
+          assetWallets.where((a) => a.wallets.any((n) => n.isEnabled)).map(
         (a) {
           final asset = Assets.getAssetDetail(a.assetId);
 

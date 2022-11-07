@@ -19,13 +19,15 @@ class CoinDetailBalance extends StatelessWidget {
     super.key,
     required this.assetDetail,
     required this.networkWallet,
+    this.onRemoveFromInventory,
   });
 
   final AssetDetail assetDetail;
   final NetworkWallet networkWallet;
+  final VoidCallback? onRemoveFromInventory;
 
   bool _isInInventory() {
-    return true;
+    return networkWallet.isEnabled;
   }
 
   @override
@@ -67,6 +69,7 @@ class CoinDetailBalance extends StatelessWidget {
                 _isInInventory()
                     ? BorderedTextButton(
                         onPressed: () {
+                          onRemoveFromInventory?.call();
                           //TODO.. CTA for network wallet removal and refresh state
                         },
                         label: context.locale

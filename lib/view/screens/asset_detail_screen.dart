@@ -76,6 +76,12 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
                   child: CoinDetailBalance(
                     assetDetail: assetDetail,
                     networkWallet: networkWallet,
+                    onRemoveFromInventory: () {
+                      context.read<AccountWalletCubit>().disableNetworkWallet(
+                            assetId: assetWallet.assetId,
+                            networkId: networkWallet.networkId,
+                          );
+                    },
                   ),
                 ),
               ),
