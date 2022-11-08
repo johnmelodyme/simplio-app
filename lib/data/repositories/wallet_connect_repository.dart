@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:simplio_app/data/model/wallet_connect_session.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wallet_connect/wallet_connect.dart';
+
+typedef TopicId = String;
+typedef SessionId = String;
 
 class WalletConnectRepository {
   static const WalletConnectPeer sioPeer = WalletConnectPeer(
@@ -19,7 +23,7 @@ class WalletConnectRepository {
   final WalletConnectSessionDb _walletConnectSessionDb;
 
   /// Active sessions hold 'topicId' as their key and [WCClient] as value
-  final Map<String, WCClient> _sessions = {};
+  final Map<TopicId, WalletConnectSession> _sessions = {};
   final _eventController = BehaviorSubject<WalletConnectEvent>();
 
   WalletConnectRepository._(this._walletConnectSessionDb);
@@ -33,26 +37,30 @@ class WalletConnectRepository {
   }
 
   Map<String, WalletConnectPeer> get sessions => _sessions.values
-      .where((s) => s.isConnected)
-      .where((s) => s.session != null)
+      .where((s) => s.client.isConnected)
+      .where((s) => s.client.session != null)
       .map((s) => MapEntry(
-          s.session?.topic ?? '',
+          s.client.session?.topic ?? '',
           WalletConnectPeer(
-            name: s.remotePeerMeta?.name ?? '',
-            url: s.remotePeerMeta?.url ?? '',
-            icons: s.remotePeerMeta?.icons ?? const [],
+            name: s.client.remotePeerMeta?.name ?? '',
+            url: s.client.remotePeerMeta?.url ?? '',
+            icons: s.client.remotePeerMeta?.icons ?? const [],
           )))
       .fold({}, (acc, curr) => acc..addEntries([curr]));
 
-  Future<void> openSession(
+  Future<String> openSession(
     String accountWalletId, {
     required String uri,
+    WalletConnectConnectionData? connectionData,
+    SessionId? sessionId,
   }) {
     final session = WCSession.from(uri);
 
     return _connect(
       accountWalletId,
       topicId: session.topic,
+      connectionData: connectionData,
+      sessionId: sessionId,
       onConnect: (client) {
         client.connectNewSession(
           session: session,
@@ -66,24 +74,35 @@ class WalletConnectRepository {
     );
   }
 
-  Future<void> _connect(
+  Future<String> _connect(
     String accountWalletId, {
-    required String topicId,
+    required TopicId topicId,
+    WalletConnectConnectionData? connectionData,
+    SessionId? sessionId,
     required void Function(WCClient client) onConnect,
   }) async {
     final client = WCClient(
       onFailure: _onFailure(topicId),
       onConnect: _onSessionOpened(topicId, accountWalletId),
       onDisconnect: _onSessionClosed(topicId, accountWalletId),
-      onSessionRequest: _onSessionRequest(topicId, accountWalletId),
+      onSessionRequest: connectionData != null
+          // TODO - improve naming for session `approved` and add docs.
+          ? _onSessionApproved(topicId, accountWalletId, connectionData)
+          : _onSessionRequest(topicId, accountWalletId),
       onEthSign: _onSignMessage(topicId, accountWalletId),
       onEthSendTransaction: _onSendTransaction(topicId, accountWalletId),
       onEthSignTransaction: _onSignTransaction(topicId, accountWalletId),
     );
 
     try {
-      _sessions.putIfAbsent(topicId, () => client);
+      final session = WalletConnectSession.builder(
+        client: client,
+        sessionId: sessionId,
+      );
+      _sessions.putIfAbsent(topicId, () => session);
       onConnect(client);
+
+      return session.sessionId;
     } catch (e) {
       _sessions.remove(topicId);
       throw Exception("Could not open a session to '$topicId'");
@@ -111,8 +130,18 @@ class WalletConnectRepository {
     }
   }
 
-  void closeSession(String topicId) {
-    final WCClient? client = _sessions[topicId];
+  void closeSessionBySessionId(SessionId sessionId) {
+    try {
+      _sessions.forEach((_, session) {
+        if (session.sessionId == sessionId) session.client.killSession();
+      });
+    } catch (_) {
+      return;
+    }
+  }
+
+  void closeSessionByTopicId(TopicId topicId) {
+    final WCClient? client = _sessions[topicId]?.client;
     if (client != null) client.killSession();
   }
 
@@ -121,12 +150,13 @@ class WalletConnectRepository {
     required String walletAddress,
     required int chainId,
   }) async {
-    final WCClient? client = _sessions[request.topicId];
+    final WalletConnectSession? session = _sessions[request.topicId];
 
-    if (client == null) {
+    if (session == null) {
       throw Exception("Client for '${request.topicId}' session does not exist");
     }
 
+    final client = session.client;
     chainId = client.chainId ?? chainId;
 
     try {
@@ -142,6 +172,7 @@ class WalletConnectRepository {
       await _walletConnectSessionDb.save(WalletConnectSessionLocal(
         accountWalletId: request.accountWalletId,
         topicId: request.topicId,
+        sessionId: session.sessionId,
         sessionDetail: jsonEncode(client.sessionStore),
       ));
     } catch (e) {
@@ -150,7 +181,7 @@ class WalletConnectRepository {
   }
 
   void rejectSessionRequest(WalletConnectSessionRequest request) {
-    final WCClient? client = _sessions[request.topicId];
+    final WCClient? client = _sessions[request.topicId]?.client;
 
     if (client == null) {
       throw Exception("Client for '${request.topicId}' session does not exist");
@@ -164,7 +195,7 @@ class WalletConnectRepository {
   }
 
   void rejectRequest(WalletConnectRequest request) {
-    final WCClient? client = _sessions[request.topicId];
+    final WCClient? client = _sessions[request.topicId]?.client;
 
     if (client == null) {
       throw Exception("Client for '${request.topicId}' session does not exist");
@@ -178,7 +209,7 @@ class WalletConnectRepository {
   }
 
   void approveDataRequest(WalletConnectDataRequest request) {
-    final WCClient? client = _sessions[request.topicId];
+    final WCClient? client = _sessions[request.topicId]?.client;
 
     if (client == null) {
       throw Exception("Client for '${request.topicId}' session does not exist");
@@ -192,7 +223,7 @@ class WalletConnectRepository {
   }
 
   VoidCallback _onSessionOpened(
-    String topicId,
+    TopicId topicId,
     String accountWalletId,
   ) {
     return () {
@@ -206,11 +237,11 @@ class WalletConnectRepository {
   }
 
   SocketClose _onSessionClosed(
-    String topicId,
+    TopicId topicId,
     String accountWalletId,
   ) {
     return (_, __) async {
-      final WCClient? client = _sessions[topicId];
+      final WCClient? client = _sessions[topicId]?.client;
 
       if (client == null) {
         throw Exception("Client for '$topicId' session does not exist");
@@ -231,21 +262,56 @@ class WalletConnectRepository {
     };
   }
 
-  Function(dynamic error) _onFailure(String topicId) {
+  Function(dynamic error) _onFailure(TopicId topicId) {
     return (dynamic error) {
       debugPrint("WC Failure: ${error.toString()}");
     };
   }
 
-  SessionRequest _onSessionRequest(String topicId, String accountWalletId) {
+  SessionRequest _onSessionApproved(
+    TopicId topicId,
+    String accountWalletId,
+    WalletConnectConnectionData data,
+  ) {
     return (int requestId, WCPeerMeta peer) {
-      final WCClient? client = _sessions[topicId];
+      final WalletConnectSession? session = _sessions[topicId];
 
-      if (client == null) {
+      if (session == null) {
         throw Exception("Client for '$topicId' session does not exist");
       }
 
-      final chainId = client.chainId ?? AssetRepository.chainId(networkId: 60);
+      final chainId = AssetRepository.chainId(networkId: data.networkId);
+
+      approveSessionRequest(
+        WalletConnectSessionRequest(
+          topicId: topicId,
+          accountWalletId: accountWalletId,
+          requestId: requestId,
+          peer: WalletConnectPeer(
+            name: peer.name,
+            url: peer.url,
+            icons: peer.icons,
+          ),
+
+          /// Chain ID is not always present
+          networkId: AssetRepository.networkId(chainId: chainId),
+        ),
+        walletAddress: data.walletAddress,
+        chainId: chainId,
+      );
+    };
+  }
+
+  SessionRequest _onSessionRequest(TopicId topicId, String accountWalletId) {
+    return (int requestId, WCPeerMeta peer) {
+      final WalletConnectSession? session = _sessions[topicId];
+
+      if (session == null) {
+        throw Exception("Client for '$topicId' session does not exist");
+      }
+
+      final chainId =
+          session.client.chainId ?? AssetRepository.chainId(networkId: 60);
 
       _eventController.add(
         WalletConnectSessionRequest(
@@ -265,7 +331,7 @@ class WalletConnectRepository {
     };
   }
 
-  EthSign _onSignMessage(String topicId, String accountWalletId) {
+  EthSign _onSignMessage(TopicId topicId, String accountWalletId) {
     return (
       int requestId,
       WCEthereumSignMessage message,
@@ -305,13 +371,13 @@ class WalletConnectRepository {
   }
 
   WalletConnectSignatureRequest _makeSignatureRequest({
-    required String topicId,
+    required TopicId topicId,
     required String accountWalletId,
     required int requestId,
     required SignRequestType type,
     required WCEthereumSignMessage message,
   }) {
-    final WCClient? client = _sessions[topicId];
+    final WCClient? client = _sessions[topicId]?.client;
 
     if (client == null) {
       throw Exception("Client for '$topicId' session does not exist");
@@ -340,7 +406,7 @@ class WalletConnectRepository {
     );
   }
 
-  EthTransaction _onSendTransaction(String topicId, String accountWalletId) {
+  EthTransaction _onSendTransaction(TopicId topicId, String accountWalletId) {
     return (int requestId, WCEthereumTransaction transaction) {
       _eventController.add(_makeTransactionRequest(
         topicId: topicId,
@@ -352,7 +418,7 @@ class WalletConnectRepository {
     };
   }
 
-  EthTransaction _onSignTransaction(String topicId, String accountWalletId) {
+  EthTransaction _onSignTransaction(TopicId topicId, String accountWalletId) {
     return (int requestId, WCEthereumTransaction transaction) {
       _eventController.add(_makeTransactionRequest(
         topicId: topicId,
@@ -365,13 +431,13 @@ class WalletConnectRepository {
   }
 
   WalletConnectTransactionRequest _makeTransactionRequest({
-    required String topicId,
+    required TopicId topicId,
     required String accountWalletId,
     required int requestId,
     required TransactionRequestType type,
     required WCEthereumTransaction transaction,
   }) {
-    final WCClient? client = _sessions[topicId];
+    final WCClient? client = _sessions[topicId]?.client;
 
     if (client == null) {
       throw Exception("Client for '$topicId' session does not exist");
@@ -600,6 +666,31 @@ class WalletConnectPeer {
     required this.url,
     this.icons = const [],
     this.description = '',
+  });
+}
+
+class WalletConnectSession {
+  final SessionId sessionId;
+  final WCClient client;
+
+  const WalletConnectSession({
+    required this.sessionId,
+    required this.client,
+  });
+
+  WalletConnectSession.builder({
+    SessionId? sessionId,
+    required WCClient client,
+  }) : this(sessionId: sessionId ?? const Uuid().v4(), client: client);
+}
+
+class WalletConnectConnectionData {
+  final String walletAddress;
+  final int networkId;
+
+  const WalletConnectConnectionData({
+    required this.walletAddress,
+    required this.networkId,
   });
 }
 

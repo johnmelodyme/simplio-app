@@ -95,6 +95,7 @@ class _AssetBuyPaymentGateWayScreen extends State<AssetBuyPaymentGateWayScreen>
                       prev.paymentGatewayUrl != curr.paymentGatewayUrl,
                   builder: (context, state) => state.paymentGatewayUrl.isEmpty
                       ? const ListLoading()
+                      // TODO - remove WebView package and use InAppWebView instead.
                       : WebView(
                           backgroundColor: Colors.transparent,
                           initialUrl: state.paymentGatewayUrl,

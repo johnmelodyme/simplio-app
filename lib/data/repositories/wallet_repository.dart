@@ -483,11 +483,17 @@ class WalletRepository {
     required String message,
   }) {
     try {
-      return sio.EthSign.message(
-          wallet: _wallet, networkId: networkId, message: message);
-    } catch (_) {
       return sio.EthSign.personalMessage(
-          wallet: _wallet, networkId: networkId, message: message);
+        wallet: _wallet,
+        networkId: networkId,
+        message: message,
+      );
+    } catch (_) {
+      return sio.EthSign.message(
+        wallet: _wallet,
+        networkId: networkId,
+        message: message,
+      );
     }
   }
 
@@ -497,7 +503,10 @@ class WalletRepository {
   }) {
     try {
       return sio.EthSign.personalMessage(
-          wallet: _wallet, networkId: networkId, message: message);
+        wallet: _wallet,
+        networkId: networkId,
+        message: message,
+      );
     } catch (_) {
       return '';
     }
@@ -509,7 +518,10 @@ class WalletRepository {
   }) {
     try {
       return sio.EthSign.typedData(
-          wallet: _wallet, networkId: networkId, jsonData: jsonData);
+        wallet: _wallet,
+        networkId: networkId,
+        jsonData: jsonData,
+      );
     } catch (_) {
       return '';
     }

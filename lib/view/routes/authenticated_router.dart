@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
@@ -44,6 +45,7 @@ import 'package:simplio_app/view/screens/configuration_screen.dart';
 import 'package:simplio_app/view/screens/configuration_security_screen.dart';
 import 'package:simplio_app/view/screens/dapps_screen.dart';
 import 'package:simplio_app/view/screens/discovery_screen.dart';
+import 'package:simplio_app/view/screens/gameplay_screen.dart';
 import 'package:simplio_app/view/screens/games_screen.dart';
 import 'package:simplio_app/view/screens/games_search_screen.dart';
 import 'package:simplio_app/view/screens/inventory_screen.dart';
@@ -70,6 +72,7 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String backupInventory = 'backup-inventory';
   static const String assetDetail = 'asset-detail';
   static const String assetSearch = 'asset-search';
+  static const String gameplay = 'gameplay';
 
   static const String assetSend = 'asset-send';
   static const String assetSendQrScanner = 'asset-send-qr-scanner';
@@ -583,6 +586,20 @@ class AuthenticatedRouter with PageBuilderMixin {
                 settings: const ApplicationSettings(
                   tabBar: TabBarRouteSettings(
                     selectedKey: ValueKey(findDapps),
+                  ),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'gameplay',
+              name: gameplay,
+              pageBuilder: pageBuilder(
+                builder: (state) => GameplayScreen(
+                  game: state.extra as Game,
+                ),
+                settings: const ApplicationSettings(
+                  tabBar: TabBarRouteSettings(
+                    isVisible: false,
                   ),
                 ),
               ),

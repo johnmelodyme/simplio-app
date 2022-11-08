@@ -53,7 +53,7 @@ class ConfigurationScreen extends StatelessWidget {
                           onPressed: () {
                             context
                                 .read<WalletConnectCubit>()
-                                .closeSession(e.key);
+                                .closeSessionByTopicId(e.key);
                           },
                           child: const Icon(SioIcons.link_broken),
                         ),

@@ -52,13 +52,48 @@ class WalletConnectCubit extends Cubit<WalletConnectState> {
     _walletConnectRepository.loadSessions(accountWalletId);
   }
 
-  Future<void> openSession(
+  // TODO - think of a better name!
+  Future<String> openRequestedSession(
     String accountWalletId, {
     required String uri,
   }) async {
+    return _openSession(
+      accountWalletId,
+      uri: uri,
+    );
+  }
+
+  Future<String> openApprovedSession(
+    String accountWalletId, {
+    required String uri,
+    required int networkId,
+    required SessionId sessionId,
+  }) async {
+    return _openSession(
+      accountWalletId,
+      uri: uri,
+      sessionId: sessionId,
+      connectionData: WalletConnectConnectionData(
+        networkId: networkId,
+        walletAddress: _walletRepository.getCoinAddress(
+          accountWalletId,
+          networkId: networkId,
+        ),
+      ),
+    );
+  }
+
+  Future<String> _openSession(
+    String accountWalletId, {
+    required String uri,
+    WalletConnectConnectionData? connectionData,
+    SessionId? sessionId,
+  }) {
     try {
-      await _walletConnectRepository.openSession(
+      return _walletConnectRepository.openSession(
         accountWalletId,
+        connectionData: connectionData,
+        sessionId: sessionId,
         uri: uri,
       );
     } catch (e) {
@@ -172,8 +207,12 @@ class WalletConnectCubit extends Cubit<WalletConnectState> {
     emit(state.removeRequest(request));
   }
 
-  void closeSession(String topicId) {
-    _walletConnectRepository.closeSession(topicId);
+  void closeSessionByTopicId(TopicId topicId) {
+    _walletConnectRepository.closeSessionByTopicId(topicId);
+  }
+
+  void closeSessionBySessionId(SessionId sessionId) {
+    _walletConnectRepository.closeSessionBySessionId(sessionId);
   }
 
   @override

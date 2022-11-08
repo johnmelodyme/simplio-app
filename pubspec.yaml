@@ -34,7 +34,7 @@ dependencies:
   uuid: ^3.0.6
   encrypt: ^5.0.1
   trust_wallet_core_lib: ^0.0.6+2.9.6
-  sio_core_light: ^1.1.7
+  sio_core_light: ^1.1.8
   qr_flutter: ^4.0.0
   mobile_scanner: ^2.0.0
   crypto_assets:
@@ -49,6 +49,7 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   webview_flutter: ^3.0.4
   rxdart: ^0.27.5
+  flutter_inappwebview: ^5.7.1
 
 dev_dependencies:
   flutter_driver:

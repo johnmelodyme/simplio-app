@@ -11,11 +11,15 @@ class WalletConnectSessionLocal extends HiveObject {
   final String topicId;
 
   @HiveField(2)
+  final String sessionId;
+
+  @HiveField(3)
   final String sessionDetail;
 
   WalletConnectSessionLocal({
     required this.accountWalletId,
     required this.topicId,
+    required this.sessionId,
     required this.sessionDetail,
   });
 }

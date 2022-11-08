@@ -66,7 +66,10 @@ class _WalletConnectQrCodeScannerScreenState
                               if (s is AccountWalletProvided) {
                                 context
                                     .read<WalletConnectCubit>()
-                                    .openSession(s.wallet.uuid, uri: value)
+                                    .openRequestedSession(
+                                      s.wallet.uuid,
+                                      uri: value,
+                                    )
                                     .then(
                                   (_) {
                                     setState(() => address = value);

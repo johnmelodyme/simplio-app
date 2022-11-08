@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
+import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/game_item.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
@@ -40,14 +42,21 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
             return PagedSliverList.separated(
               pagingController: cubit.pagingController,
               builderDelegate: PagedChildBuilderDelegate<Game>(
-                itemBuilder: (context, item, index) {
+                itemBuilder: (context, game, index) {
                   return GameItem(
-                    game: item,
+                    game: game,
                     gameActions: const [
                       GameAction.play,
                       GameAction.buyCoin,
                     ],
-                    onActionPressed: (GameAction gameAction) {},
+                    onActionPressed: (GameAction gameAction) async {
+                      if (gameAction != GameAction.play) return;
+
+                      GoRouter.of(context).pushNamed(
+                        AuthenticatedRouter.gameplay,
+                        extra: game,
+                      );
+                    },
                     onTap: () {},
                   );
                 },
