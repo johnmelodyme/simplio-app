@@ -1,5 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.simplio_app">
+
+    <!-- Provide required visibility configuration for API level 30 and above -->
+    <queries>
+        <!-- If your app opens https URLs -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
    <application
         android:label="Simplio Test"
         android:name="${applicationName}"

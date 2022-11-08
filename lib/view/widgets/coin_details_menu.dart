@@ -12,38 +12,105 @@ class CoinDetailsMenu extends StatelessWidget {
   const CoinDetailsMenu({
     super.key,
     required this.onActionCallback,
+    required this.allowedActions,
   });
 
   final CoinDetailsMenuCallback onActionCallback;
+  final List<ActionType> allowedActions;
+
+  CoinDetailMenuItem getItemByActionType(
+      BuildContext context, ActionType actionType) {
+    switch (actionType) {
+      case ActionType.play:
+        return CoinDetailMenuItem(
+          actionType: ActionType.play,
+          label: context.locale.coin_menu_play,
+          icon: SioIcons.play,
+        );
+      case ActionType.buy:
+        return CoinDetailMenuItem(
+          actionType: ActionType.buy,
+          label: context.locale.coin_menu_buy,
+          icon: SioIcons.basket,
+        );
+      case ActionType.buyCoin:
+        return CoinDetailMenuItem(
+          actionType: ActionType.buyCoin,
+          label: context.locale.coin_menu_buy_coin,
+          icon: SioIcons.basket,
+        );
+      case ActionType.exchange:
+        return CoinDetailMenuItem(
+          actionType: ActionType.exchange,
+          label: context.locale.coin_menu_exchange,
+          icon: SioIcons.swap,
+        );
+      case ActionType.receive:
+        return CoinDetailMenuItem(
+          actionType: ActionType.receive,
+          label: context.locale.coin_menu_receive,
+          icon: SioIcons.vertical_align_bottom,
+        );
+      case ActionType.send:
+        return CoinDetailMenuItem(
+          actionType: ActionType.send,
+          label: context.locale.coin_menu_send,
+          icon: SioIcons.vertical_align_top,
+        );
+      case ActionType.earn:
+        return CoinDetailMenuItem(
+          actionType: ActionType.earn,
+          label: context.locale.coin_menu_earn,
+          icon: SioIcons.north_east,
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final List<CoinDetailMenuItem> coinMenuItems = [
-      CoinDetailMenuItem(
-        actionType: ActionType.buy,
-        label: context.locale.coin_detail_screen_menu_buy,
-        icon: SioIcons.basket,
-      ),
-      CoinDetailMenuItem(
-        actionType: ActionType.exchange,
-        label: context.locale.coin_detail_screen_menu_exchange,
-        icon: SioIcons.swap,
-      ),
-      CoinDetailMenuItem(
-        actionType: ActionType.receive,
-        label: context.locale.coin_detail_screen_menu_receive,
-        icon: SioIcons.vertical_align_bottom,
-      ),
-      CoinDetailMenuItem(
-        actionType: ActionType.send,
-        label: context.locale.coin_detail_screen_menu_send,
-        icon: SioIcons.vertical_align_top,
-      ),
-      CoinDetailMenuItem(
-        actionType: ActionType.earn,
-        label: context.locale.coin_detail_screen_menu_earn,
-        icon: SioIcons.north_east,
-      ),
+      if (allowedActions.contains(ActionType.play))
+        CoinDetailMenuItem(
+          actionType: ActionType.play,
+          label: context.locale.coin_menu_play,
+          icon: SioIcons.play,
+        ),
+      if (allowedActions.contains(ActionType.buyCoin))
+        CoinDetailMenuItem(
+          actionType: ActionType.buyCoin,
+          label: context.locale.coin_menu_buy_coin,
+          icon: SioIcons.basket,
+        ),
+      if (allowedActions.contains(ActionType.buy))
+        CoinDetailMenuItem(
+          actionType: ActionType.buy,
+          label: context.locale.coin_menu_buy,
+          icon: SioIcons.basket,
+        ),
+      if (allowedActions.contains(ActionType.exchange))
+        CoinDetailMenuItem(
+          actionType: ActionType.exchange,
+          label: context.locale.coin_menu_exchange,
+          icon: SioIcons.swap,
+        ),
+      if (allowedActions.contains(ActionType.receive))
+        CoinDetailMenuItem(
+          actionType: ActionType.receive,
+          label: context.locale.coin_menu_receive,
+          icon: SioIcons.vertical_align_bottom,
+        ),
+      if (allowedActions.contains(ActionType.send))
+        CoinDetailMenuItem(
+          actionType: ActionType.send,
+          label: context.locale.coin_menu_send,
+          icon: SioIcons.vertical_align_top,
+        ),
+      if (allowedActions.contains(ActionType.earn))
+        CoinDetailMenuItem(
+          actionType: ActionType.earn,
+          label: context.locale.coin_menu_earn,
+          icon: SioIcons.north_east,
+        ),
     ];
 
     return BottomTabBarContainer(
@@ -57,11 +124,13 @@ class CoinDetailsMenu extends StatelessWidget {
             children: [
               if (index == 0) Gaps.gap16,
               CoinDetailsMenuButton(
-                  key: ValueKey(coinMenuItems[index].actionType),
-                  label: coinMenuItems[index].label,
-                  icon: coinMenuItems[index].icon,
+                  key: ValueKey(allowedActions[index]),
+                  label:
+                      getItemByActionType(context, allowedActions[index]).label,
+                  icon:
+                      getItemByActionType(context, allowedActions[index]).icon,
                   onPressed: () {
-                    onActionCallback.call(coinMenuItems[index].actionType);
+                    onActionCallback.call(allowedActions[index]);
                   }),
               if (index == coinMenuItems.length - 1) Gaps.gap16,
             ],
@@ -72,13 +141,13 @@ class CoinDetailsMenu extends StatelessWidget {
             Dimensions.padding5,
           );
         },
-        itemCount: coinMenuItems.length,
+        itemCount: allowedActions.length,
       ),
     );
   }
 }
 
-enum ActionType { buy, exchange, receive, send, earn }
+enum ActionType { play, buy, buyCoin, exchange, receive, send, earn }
 
 class CoinDetailMenuItem {
   final ActionType actionType;

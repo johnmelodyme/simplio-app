@@ -38,6 +38,8 @@
   "common_continue":"Continue",
   "common_disconnect":"Disconnect",
   "common_remove":"Remove",
+  "common_read_more":"Read more",
+  "common_read_less":"Read less",
 
   "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
@@ -360,11 +362,28 @@
             "increment": {}
         }
     },
-    "coin_detail_screen_menu_buy" : "Buy",
-    "coin_detail_screen_menu_exchange" : "Exchange",
-    "coin_detail_screen_menu_receive" : "Receive",
-    "coin_detail_screen_menu_send" : "Send",
-    "coin_detail_screen_menu_earn" : "Earn",
+
+    "coin_menu_play": "Play",
+    "coin_menu_buy" : "Buy",
+    "coin_menu_buy_coin" : "Buy coin",
+    "coin_menu_exchange" : "Exchange",
+    "coin_menu_receive" : "Receive",
+    "coin_menu_send" : "Send",
+    "coin_menu_earn" : "Earn",
+
+    "game_detail_screen_game_title": "Game",
+    "game_detail_screen_detail_title": "detail",
+    "game_detail_screen_add_to_my_games": "Add to My Games",
+    "game_detail_screen_remove_from_my_games": "Remove from My Games",
+    "game_detail_screen_game_coin_balance": "Game coin\nbalance",
+    "game_detail_screen_community": "Community",
+    "game_detail_screen_my_game_nfts": "My game NFT's",
+    "game_detail_screen_game_added": "“Game added to\nMy Games”",
+    "game_detail_screen_game_removed": "“Game removed from\nMy Games”",
+
+    "my_games_screen_discover_new_games": "Discover new games",
+    "my_games_screen_empty_list_label": "You’ll see added or played\ngames here.",
+
     "wallet_connect_request_session": "wants to connect with your wallet",
     "wallet_connect_request_signature": "Requests a signature",
     "wallet_connect_request_transaction": "requests a transaction"

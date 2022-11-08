@@ -27,17 +27,43 @@ class AccountProfileResponse {
   final String accountId;
   final String locales;
 
+  final List<int>? assets;
+  List<int>? gameFavorite;
+  List<int>? gameLibrary;
+
+  final bool isMarketingApproved;
+  final String? marketingApprovedAt;
+  final bool isTermsAndConditionApproved;
+  final String? termsAndConditionApprovedAt;
+  final bool isDarkModeActivated;
+  final String? lastLoggedDeviceId;
+  final bool isSumSubReviewed;
   @JsonKey(name: 'isSumSubApproved')
   final bool isVerified;
 
   @JsonKey(name: 'sumSubApplicationUserId')
   final String? applicantId;
 
-  const AccountProfileResponse({
+  final String email;
+  final String phone;
+
+  AccountProfileResponse({
     required this.accountId,
     required this.locales,
+    this.assets,
+    this.gameFavorite,
+    this.gameLibrary,
+    required this.isMarketingApproved,
+    this.marketingApprovedAt,
+    required this.isTermsAndConditionApproved,
+    this.termsAndConditionApprovedAt,
+    required this.isDarkModeActivated,
+    this.lastLoggedDeviceId,
+    required this.isSumSubReviewed,
     required this.isVerified,
     this.applicantId,
+    required this.email,
+    required this.phone,
   });
 
   factory AccountProfileResponse.fromJson(Map<String, dynamic> json) =>

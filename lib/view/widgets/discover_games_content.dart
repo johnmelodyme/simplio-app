@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
+import 'package:simplio_app/data/repositories/user_repository.dart';
+import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
+import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -11,36 +15,42 @@ import 'package:simplio_app/view/widgets/game_item.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
 
-class DiscoverGamesContent extends StatefulWidget {
+class DiscoverGamesContent extends StatelessWidget {
   const DiscoverGamesContent({super.key});
 
-  @override
-  State<DiscoverGamesContent> createState() => _DiscoverGamesContentState();
-}
-
-class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
-  late GamesCubit cubit;
-
-  void addLoadEvent(int offset) {
+  void _addLoadEvent(GamesCubit cubit, int offset) {
     cubit.loadGames(offset);
+  }
+
+  void _buyCoin(BuildContext context, String assetId, String networkId) {
+    context.read<AssetBuyFormCubit>().clear();
+    GoRouter.of(context).pushNamed(AuthenticatedRouter.assetBuy, params: {
+      'assetId': assetId,
+      'networkId': networkId,
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final accountWalletCubit = context.read<AccountWalletCubit>();
     return SliverPadding(
       padding: Paddings.horizontal16,
       sliver: BlocProvider(
         create: (context) {
-          cubit = GamesCubit.builder(
+          final cubit = GamesCubit.builder(
+            userRepository: RepositoryProvider.of<UserRepository>(context),
             marketplaceRepository:
                 RepositoryProvider.of<MarketplaceRepository>(context),
-          )..pagingController.addPageRequestListener(addLoadEvent);
+          );
+          cubit.pagingController.addPageRequestListener(
+            (offset) => _addLoadEvent(cubit, offset),
+          );
           return cubit;
         },
         child: BlocBuilder<GamesCubit, GamesState>(
           builder: (context, state) {
             return PagedSliverList.separated(
-              pagingController: cubit.pagingController,
+              pagingController: context.read<GamesCubit>().pagingController,
               builderDelegate: PagedChildBuilderDelegate<Game>(
                 itemBuilder: (context, game, index) {
                   return GameItem(
@@ -49,15 +59,49 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
                       GameAction.play,
                       GameAction.buyCoin,
                     ],
-                    onActionPressed: (GameAction gameAction) async {
-                      if (gameAction != GameAction.play) return;
-
+                    onActionPressed: (GameAction gameAction) {
+                      if (gameAction == GameAction.play) {
+                        GoRouter.of(context).pushNamed(
+                          AuthenticatedRouter.gameplay,
+                          extra: game,
+                        );
+                      } else if (gameAction == GameAction.buyCoin) {
+                        final String assetId =
+                            game.assetEmbedded.assetId.toString();
+                        final String networkId =
+                            game.assetEmbedded.networkId.toString();
+                        if (accountWalletCubit.hasNetworkWalledAdded(
+                          assetId: int.parse(assetId),
+                          networkId: int.parse(networkId),
+                        )) {
+                          _buyCoin(context, assetId, networkId);
+                        } else {
+                          context.read<DialogCubit>().showDialog(
+                            (proceed) async {
+                              if (proceed) {
+                                await accountWalletCubit
+                                    .enableNetworkWallet(
+                                  assetId: int.parse(assetId),
+                                  networkId: int.parse(networkId),
+                                )
+                                    .then((_) {
+                                  _buyCoin(context, assetId, networkId);
+                                });
+                              }
+                            },
+                            DialogType.createCoin,
+                          );
+                        }
+                      }
+                    },
+                    onTap: () {
                       GoRouter.of(context).pushNamed(
-                        AuthenticatedRouter.gameplay,
-                        extra: game,
+                        AuthenticatedRouter.gameDetail,
+                        params: {
+                          'gameId': game.gameId.toString(),
+                        },
                       );
                     },
-                    onTap: () {},
                   );
                 },
                 firstPageProgressIndicatorBuilder: (_) =>
@@ -79,7 +123,7 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
                     ),
                   ),
                   onTap: () {
-                    cubit.reloadGames();
+                    context.read<GamesCubit>().reloadGames();
                   },
                 ),
                 noMoreItemsIndicatorBuilder: (_) => Gaps.gap20,
@@ -95,7 +139,10 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
                       ),
                     ),
                     onTap: () {
-                      cubit.loadGames(cubit.pagingController.nextPageKey!);
+                      context.read<GamesCubit>().loadGames(context
+                          .read<GamesCubit>()
+                          .pagingController
+                          .nextPageKey!);
                     },
                   ),
                 ),
@@ -106,12 +153,5 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    cubit.dispose();
-    cubit.pagingController.removePageRequestListener(addLoadEvent);
-    super.dispose();
   }
 }

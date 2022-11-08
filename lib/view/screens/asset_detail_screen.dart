@@ -94,6 +94,13 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
         Align(
           alignment: Alignment.bottomCenter,
           child: CoinDetailsMenu(
+            allowedActions: const [
+              ActionType.buy,
+              ActionType.exchange,
+              ActionType.receive,
+              ActionType.send,
+              ActionType.earn
+            ],
             onActionCallback: (actionType) {
               switch (actionType) {
                 case ActionType.buy:
@@ -137,6 +144,8 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
                   break;
                 case ActionType.earn:
                   // TODO: Handle this case.
+                  break;
+                default:
                   break;
               }
             },

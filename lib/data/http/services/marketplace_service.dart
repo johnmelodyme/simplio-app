@@ -12,16 +12,29 @@ abstract class MarketplaceService extends ChopperService {
   static FactoryConvertMap converter() => {
         GamesResponse: GamesResponse.fromJson,
         AssetsResponse: AssetsResponse.fromJson,
+        GameDetail: GameDetail.fromJson,
       };
+
+  @Post(path: '/assets/search')
+  Future<Response<AssetsResponse>> assetSearch(
+    @Body() SearchAssetsRequest body,
+  );
+
+  @Get(path: '/games')
+  Future<Response<GamesResponse>> games(
+    @Query('games') String gameIds,
+    @Query('currency') String currency,
+  );
 
   @Post(path: '/games/search')
   Future<Response<GamesResponse>> gameSearch(
     @Body() SearchGamesRequest body,
   );
 
-  @Post(path: '/assets/search')
-  Future<Response<AssetsResponse>> assetSearch(
-    @Body() SearchAssetsRequest body,
+  @Get(path: '/games/detail')
+  Future<Response<GameDetail>> getGameDetail(
+    @Query('gameId') String gameId,
+    @Query('currency') String currency,
   );
 }
 
@@ -132,7 +145,10 @@ class Game {
   final String platform;
   final String playUri;
 
-  const Game({
+  @JsonKey(ignore: true)
+  bool isAdded;
+
+  Game({
     required this.preview,
     required this.gameId,
     required this.name,
@@ -141,6 +157,7 @@ class Game {
     required this.category,
     required this.platform,
     required this.playUri,
+    this.isAdded = false,
   });
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
@@ -229,4 +246,87 @@ class Asset {
         price: price,
         networks: networks.map((e) => e.toNetworkData(assetId)).toSet(),
       );
+}
+
+@JsonSerializable()
+class GameDetail {
+  int gameId;
+  String name;
+  int genre;
+  int release;
+  List<String> preview;
+  List<String> caption;
+  List<Reference> references;
+  AssetEmbedded assetEmbedded;
+  bool isPromoted;
+  int category;
+  GamePlatform platform;
+  String playUri;
+  String color;
+
+  GameDetail({
+    required this.gameId,
+    required this.name,
+    required this.genre,
+    required this.release,
+    required this.preview,
+    required this.caption,
+    required this.references,
+    required this.assetEmbedded,
+    required this.isPromoted,
+    required this.category,
+    required this.platform,
+    required this.playUri,
+    required this.color,
+  });
+
+  factory GameDetail.fromJson(Map<String, dynamic> json) =>
+      _$GameDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GameDetailToJson(this);
+}
+
+@JsonSerializable()
+class Reference {
+  @JsonKey(name: 'reference')
+  ReferenceType referenceType;
+  String name;
+  String url;
+
+  Reference({
+    required this.referenceType,
+    required this.name,
+    required this.url,
+  });
+
+  factory Reference.fromJson(Map<String, dynamic> json) =>
+      _$ReferenceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReferenceToJson(this);
+}
+
+enum ReferenceType {
+  @JsonValue("WEB")
+  web,
+  @JsonValue("DISCORD")
+  discord,
+  @JsonValue("TWITTER")
+  twitter,
+  @JsonValue("TELEGRAM")
+  telegram,
+  @JsonValue("INSTAGRAM")
+  instagram,
+  @JsonValue("YOUTUBE")
+  youtube,
+  @JsonValue("MEDIUM")
+  medium,
+}
+
+enum GamePlatform {
+  @JsonValue("MOBILE")
+  mobile,
+  @JsonValue("DESKTOP")
+  desktop,
+  @JsonValue("WEB")
+  web,
 }

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
-import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/helpers/wallet_connect_uri_validator.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
@@ -29,11 +28,8 @@ class GameplayScreen extends StatelessWidget {
         children: [
           FutureBuilder(
             future: context.read<AccountWalletCubit>().enableNetworkWallet(
-                  NetworkData(
-                    networkId: game.assetEmbedded.networkId,
-                    assetId: game.assetEmbedded.assetId,
-                    networkTicker: '',
-                  ),
+                  networkId: game.assetEmbedded.networkId,
+                  assetId: game.assetEmbedded.assetId,
                 ),
             builder: (context, snapshot) {
               if (snapshot.hasError) GoRouter.of(context).pop();

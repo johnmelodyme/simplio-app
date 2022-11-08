@@ -75,7 +75,9 @@ class AssetSearchScreen extends ScreenWithDialog {
                                 if (proceed) {
                                   await context
                                       .read<AccountWalletCubit>()
-                                      .enableNetworkWallet(data)
+                                      .enableNetworkWallet(
+                                          assetId: data.assetId,
+                                          networkId: data.networkId)
                                       .then((_) {
                                     if (assetAction == AssetAction.buy) {
                                       GoRouter.of(context).replaceNamed(

@@ -8,7 +8,7 @@ class EmptyListPlaceholder extends StatelessWidget {
     super.key,
     required this.child,
     this.label,
-    this.width = 156,
+    this.width = 191,
   });
 
   final Widget child;

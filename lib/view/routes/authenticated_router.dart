@@ -6,6 +6,7 @@ import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
+import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
@@ -43,12 +44,12 @@ import 'package:simplio_app/view/screens/asset_send_summary_screen.dart';
 import 'package:simplio_app/view/screens/backup_inventory_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
 import 'package:simplio_app/view/screens/configuration_security_screen.dart';
-import 'package:simplio_app/view/screens/dapps_screen.dart';
 import 'package:simplio_app/view/screens/discovery_screen.dart';
+import 'package:simplio_app/view/screens/game_detail_screen.dart';
 import 'package:simplio_app/view/screens/gameplay_screen.dart';
-import 'package:simplio_app/view/screens/games_screen.dart';
 import 'package:simplio_app/view/screens/games_search_screen.dart';
 import 'package:simplio_app/view/screens/inventory_screen.dart';
+import 'package:simplio_app/view/screens/my_games_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
 import 'package:simplio_app/view/screens/wallet_connect_qr_code_scanner_screen.dart';
@@ -98,6 +99,8 @@ class AuthenticatedRouter with PageBuilderMixin {
 
   static const String walletConnectQrCodeScanner =
       'wallet-connect-qr-code-scanner';
+
+  static const String gameDetail = 'game-detail';
 
   final BuildContext context;
 
@@ -257,6 +260,34 @@ class AuthenticatedRouter with PageBuilderMixin {
                         ],
                       ),
                     ],
+                  ),
+                  GoRoute(
+                    path: ':gameId/game-detail',
+                    name: gameDetail,
+                    pageBuilder: pageBuilder(
+                      builder: (state) => MultiBlocProvider(
+                        providers: [
+                          BlocProvider(
+                            create: (context) => GamesCubit.builder(
+                              userRepository:
+                                  RepositoryProvider.of<UserRepository>(
+                                      context),
+                              marketplaceRepository:
+                                  RepositoryProvider.of<MarketplaceRepository>(
+                                      context),
+                            ),
+                          ),
+                          BlocProvider(
+                            create: (context) => DialogCubit.builder(),
+                          ),
+                        ],
+                        child: GameDetailScreen(
+                          key: const ValueKey(gameDetail),
+                          gameId: state.params['gameId']!,
+                        ),
+                      ),
+                      settings: const ApplicationSettings.hiddenTabBar(),
+                    ),
                   ),
                 ]),
             GoRoute(
@@ -565,27 +596,15 @@ class AuthenticatedRouter with PageBuilderMixin {
                   ),
                 ]),
             GoRoute(
-              path: 'games',
-              name: games,
-              pageBuilder: pageBuilder(
-                builder: (state) => const GamesScreen(),
-                withTransition: false,
-                settings: const ApplicationSettings(
-                  tabBar: TabBarRouteSettings(
-                    selectedKey: ValueKey(games),
-                  ),
-                ),
-              ),
-            ),
-            GoRoute(
               path: 'find-dapps',
               name: findDapps,
               pageBuilder: pageBuilder(
-                builder: (state) => const DappsScreen(),
-                withTransition: false,
+                builder: (state) => GameplayScreen(
+                  game: state.extra as Game,
+                ),
                 settings: const ApplicationSettings(
                   tabBar: TabBarRouteSettings(
-                    selectedKey: ValueKey(findDapps),
+                    isVisible: false,
                   ),
                 ),
               ),
@@ -636,12 +655,14 @@ class AuthenticatedRouter with PageBuilderMixin {
               pageBuilder: pageBuilder(
                 builder: (state) => BlocProvider(
                   create: (context) => GamesCubit.builder(
+                    userRepository:
+                        RepositoryProvider.of<UserRepository>(context),
                     marketplaceRepository:
                         RepositoryProvider.of<MarketplaceRepository>(context),
                   ),
                   child: Builder(
                     builder: (context) {
-                      return const GamesSearchScreen();
+                      return GamesSearchScreen();
                     },
                   ),
                 ),
@@ -653,6 +674,26 @@ class AuthenticatedRouter with PageBuilderMixin {
               name: walletConnectQrCodeScanner,
               pageBuilder: pageBuilder(
                 builder: (state) => const WalletConnectQrCodeScannerScreen(),
+              ),
+            ),
+            GoRoute(
+              path: 'games',
+              name: games,
+              pageBuilder: pageBuilder(
+                builder: (state) => BlocProvider(
+                  create: (context) => DialogCubit.builder(),
+                  child: Builder(
+                    builder: (context) {
+                      return MyGamesScreen();
+                    },
+                  ),
+                ),
+                withTransition: false,
+                settings: const ApplicationSettings(
+                  tabBar: TabBarRouteSettings(
+                    selectedKey: ValueKey(games),
+                  ),
+                ),
               ),
             ),
           ],
