@@ -43,120 +43,109 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
       },
       child: BlocBuilder<CryptoAssetCubit, CryptoAssetState>(
         builder: (context, state) {
-          final accountWalletState = context.read<AccountWalletCubit>().state;
-          if (accountWalletState is! AccountWalletProvided) {
-            throw Exception('No asset wallet found');
-          }
           return BlocBuilder<AccountWalletCubit, AccountWalletState>(
             buildWhen: (prev, curr) => curr is AccountWalletChanged,
-            builder: (context, _) => PagedSliverList.separated(
-              pagingController: cubit.pagingController,
-              builderDelegate: PagedChildBuilderDelegate<Asset>(
-                itemBuilder: (context, item, index) {
-                  final asset = Assets.getAssetDetail(item.assetId);
-                  void tapFunction(NetworkData data, AssetAction assetAction) =>
-                      context.read<DialogCubit>().showDialog((proceed) async {
-                        if (proceed) {
-                          switch (assetAction) {
-                            case AssetAction.buy:
-                            case AssetAction.addToInventory:
-                              await context
-                                  .read<AccountWalletCubit>()
-                                  .enableNetworkWallet(data)
-                                  .then((_) {
-                                if (assetAction == AssetAction.buy) {
-                                  GoRouter.of(context).replaceNamed(
-                                    AuthenticatedRouter.assetBuy,
-                                    params: {
-                                      'assetId': data.assetId.toString(),
-                                      'networkId': data.networkId.toString(),
-                                    },
-                                  );
-                                }
-                              });
-                              break;
-                            case AssetAction.remove:
-                              await context
-                                  .read<AccountWalletCubit>()
-                                  .disableNetworkWallet(
-                                    assetId: data.assetId,
-                                    networkId: data.networkId,
-                                  );
-                          }
-                        }
-                      },
-                          assetAction == AssetAction.remove
-                              ? DialogType.removeCoin
-                              : DialogType.createCoin);
+            builder: (context, state) {
+              if (state is! AccountWalletProvided) {
+                throw Exception('No asset wallet found');
+              }
 
-                  return Padding(
-                    padding: Paddings.horizontal16,
-                    child: item.networks.length == 1
-                        ? AssetSearchItem(
-                            label: item.name,
-                            priceLabel: item.price.getThousandValueWithCurrency(
-                              currency: 'USD', //TODO.. replace by real currency
-                              locale: Intl.getCurrentLocale(),
+              return PagedSliverList.separated(
+                pagingController: cubit.pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Asset>(
+                  itemBuilder: (context, item, index) {
+                    final asset = Assets.getAssetDetail(item.assetId);
+                    void tapFunction(
+                            NetworkData data, AssetAction assetAction) =>
+                        context.read<DialogCubit>().showDialog((proceed) async {
+                          if (proceed) {
+                            switch (assetAction) {
+                              case AssetAction.buy:
+                              case AssetAction.addToInventory:
+                                await context
+                                    .read<AccountWalletCubit>()
+                                    .enableNetworkWallet(data)
+                                    .then((_) {
+                                  if (assetAction == AssetAction.buy) {
+                                    GoRouter.of(context).replaceNamed(
+                                      AuthenticatedRouter.assetBuy,
+                                      params: {
+                                        'assetId': data.assetId.toString(),
+                                        'networkId': data.networkId.toString(),
+                                      },
+                                    );
+                                  }
+                                });
+                                break;
+                              case AssetAction.remove:
+                                await context
+                                    .read<AccountWalletCubit>()
+                                    .disableNetworkWallet(
+                                      assetId: data.assetId,
+                                      networkId: data.networkId,
+                                    );
+                            }
+                          }
+                        },
+                            assetAction == AssetAction.remove
+                                ? DialogType.removeCoin
+                                : DialogType.createCoin);
+
+                    return Padding(
+                      padding: Paddings.horizontal16,
+                      child: item.networks.length == 1
+                          ? AssetSearchItem(
+                              label: item.name,
+                              priceLabel:
+                                  item.price.getThousandValueWithCurrency(
+                                currency:
+                                    'USD', //TODO.. replace by real currency
+                                locale: Intl.getCurrentLocale(),
+                              ),
+                              assetIcon: asset.style.icon,
+                              assetAction: [
+                                AssetAction.buy,
+                                state.wallet.isNetworkWalletEnabled(
+                                        assetId: item.assetId,
+                                        networkId:
+                                            item.networks.first.networkId)
+                                    ? AssetAction.remove
+                                    : AssetAction.addToInventory,
+                              ],
+                              onActionPressed: (AssetAction assetAction) =>
+                                  tapFunction(
+                                      item.networks.first
+                                          .toNetworkData(item.assetId),
+                                      assetAction),
+                            )
+                          : BlocProvider(
+                              create: (context) => ExpansionListCubit.builder(),
+                              child: CryptoAssetExpansionList(
+                                children: [item.toCryptoAsset()],
+                                withoutPadding: true,
+                                onTap: (NetworkData data,
+                                        AssetAction assetAction) =>
+                                    tapFunction(
+                                        item.networks.first
+                                            .toNetworkData(item.assetId),
+                                        assetAction),
+                              ),
                             ),
-                            assetIcon: asset.style.icon,
-                            assetAction: [
-                              AssetAction.buy,
-                              accountWalletState.wallet.containsNetworkWallet(
-                                      assetId: item.assetId,
-                                      networkId: item.networks.first.networkId)
-                                  ? AssetAction.remove
-                                  : AssetAction.addToInventory,
-                            ],
-                            onActionPressed: (AssetAction assetAction) =>
-                                tapFunction(
-                                    item.networks.first
-                                        .toNetworkData(item.assetId),
-                                    assetAction),
-                          )
-                        : BlocProvider(
-                            create: (context) => ExpansionListCubit.builder(),
-                            child: CryptoAssetExpansionList(
-                              children: [item.toCryptoAsset()],
-                              withoutPadding: true,
-                              onTap:
-                                  (NetworkData data, AssetAction assetAction) =>
-                                      tapFunction(
-                                          item.networks.first
-                                              .toNetworkData(item.assetId),
-                                          assetAction),
-                            ),
-                          ),
-                  );
-                },
-                firstPageProgressIndicatorBuilder: (_) => Column(
-                  children: const [
-                    Center(child: ListLoading()),
-                    Spacer(),
-                  ],
-                ),
-                newPageProgressIndicatorBuilder: (_) => const Center(
-                  child: Padding(
-                    padding: Paddings.bottom32,
-                    child: ListLoading(),
+                    );
+                  },
+                  firstPageProgressIndicatorBuilder: (_) => Column(
+                    children: const [
+                      Center(child: ListLoading()),
+                      Spacer(),
+                    ],
                   ),
-                ),
-                firstPageErrorIndicatorBuilder: (_) => TapToRetryLoader(
-                  isLoading: state is CryptoAssetLoading,
-                  loadingIndicator: const Center(
+                  newPageProgressIndicatorBuilder: (_) => const Center(
                     child: Padding(
                       padding: Paddings.bottom32,
                       child: ListLoading(),
                     ),
                   ),
-                  onTap: () {
-                    cubit.reloadGames();
-                  },
-                ),
-                noMoreItemsIndicatorBuilder: (_) => Gaps.gap20,
-                noItemsFoundIndicatorBuilder: (_) => const SizedBox.shrink(),
-                newPageErrorIndicatorBuilder: (_) => Padding(
-                  padding: Paddings.bottom32,
-                  child: TapToRetryLoader(
+                  firstPageErrorIndicatorBuilder: (_) => TapToRetryLoader(
                     isLoading: state is CryptoAssetLoading,
                     loadingIndicator: const Center(
                       child: Padding(
@@ -165,14 +154,31 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
                       ),
                     ),
                     onTap: () {
-                      cubit.loadCryptoAsset(
-                          page: cubit.pagingController.nextPageKey!);
+                      cubit.reloadGames();
                     },
                   ),
+                  noMoreItemsIndicatorBuilder: (_) => Gaps.gap20,
+                  noItemsFoundIndicatorBuilder: (_) => const SizedBox.shrink(),
+                  newPageErrorIndicatorBuilder: (_) => Padding(
+                    padding: Paddings.bottom32,
+                    child: TapToRetryLoader(
+                      isLoading: state is CryptoAssetLoading,
+                      loadingIndicator: const Center(
+                        child: Padding(
+                          padding: Paddings.bottom32,
+                          child: ListLoading(),
+                        ),
+                      ),
+                      onTap: () {
+                        cubit.loadCryptoAsset(
+                            page: cubit.pagingController.nextPageKey!);
+                      },
+                    ),
+                  ),
                 ),
-              ),
-              separatorBuilder: (context, index) => Gaps.gap10,
-            ),
+                separatorBuilder: (context, index) => Gaps.gap10,
+              );
+            },
           );
         },
       ),

@@ -96,11 +96,15 @@ class AccountWallet extends Equatable {
     return res.isEmpty ? null : res.first;
   }
 
-  bool containsNetworkWallet({required int assetId, required int networkId}) {
+  // todo: refactor the method - move the logic into AssetWallet
+  bool isNetworkWalletEnabled({required int assetId, required int networkId}) {
     final wallet = getWallet(assetId);
     if (wallet == null) return false;
 
-    return wallet.containsWallet(networkId);
+    final networkWallet = wallet.getWallet(networkId);
+    if (networkWallet == null) return false;
+
+    return networkWallet.isEnabled;
   }
 
   bool get isNotValid => !isValid;
