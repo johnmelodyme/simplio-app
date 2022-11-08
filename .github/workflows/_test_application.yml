@@ -86,66 +86,67 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: generated-files-and-packages
-  drive_ios:
-    strategy:
-      matrix:
-        device:
-           - "iPhone 13 Pro Simulator"
-#          - "iPhone 11 Pro Max Simulator"
-#          - "iPhone 12 Pro Simulator"
-      fail-fast: false
-    runs-on: macos-latest
-    needs: run-e2e-tests
-    steps:
-      - name: List all simulators
-        run: xcrun xctrace list devices
-      # get UUID simulator and boot a simulator on mac from  command line
-      - name: Start Simulator
-        run: |
-          UDID=$(xcrun xctrace list devices | awk '!/Watch/ && /${{ matrix.device }}/{gsub( /\(|\)/ , "" );print $NF}')
-          xcrun simctl boot ${UDID}
-          echo running on branch ${GITHUB_REF##*/}
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          # Run flutter integrate tests
-      - uses: actions/download-artifact@v3
-        with:
-          name: generated-files-and-packages
-      - name: Start recording video
-        run: |
-          xcrun simctl io booted recordVideo --codec=h264 recording.mp4 &
-          sleep 5
-          export RECORDING_PID=${!}
-          echo "RECORDING_PID=${RECORDING_PID}" >> $GITHUB_ENV
-      - name: Run Application UI Tests on iOS
-        run: |
-          export API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }}
-          export API_KEY=${{ secrets.DART_DEFINE_API_KEY_DEV }}
-          flutter pub get
-          dart tests/app_tests/test_config_ios.dart
-      # Upload Recordings As Artifact
-      - name: Stop recording
-        if: success() || failure()
-        run: |
-          echo ${{env.RECORDING_PID}}
-          kill -SIGINT ${RECORDING_PID}
-          sleep 10
-      - name: Upload recordedVideo
-        if: success() || failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: recorded_video_${{ matrix.device }}
-          path: recording.mp4
-          retention-days : 3 # days for automatic deletion
-      - name: Upload Cucmber json report
-        if: failure() || success()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Cucumber_report_${{ matrix.device }}
-          path: tests/app_tests/cucumber-report-ios.json
-          retention-days : 3 # days for automatic deletion
+
+#  drive_ios:
+#    strategy:
+#      matrix:
+#        device:
+#           - "iPhone 13 Pro Simulator"
+##          - "iPhone 11 Pro Max Simulator"
+##          - "iPhone 12 Pro Simulator"
+#      fail-fast: false
+#    runs-on: macos-latest
+#    needs: run-e2e-tests
+#    steps:
+#      - name: List all simulators
+#        run: xcrun xctrace list devices
+#      # get UUID simulator and boot a simulator on mac from  command line
+#      - name: Start Simulator
+#        run: |
+#          UDID=$(xcrun xctrace list devices | awk '!/Watch/ && /${{ matrix.device }}/{gsub( /\(|\)/ , "" );print $NF}')
+#          xcrun simctl boot ${UDID}
+#          echo running on branch ${GITHUB_REF##*/}
+#      - uses: actions/checkout@v3
+#      - uses: subosito/flutter-action@v2
+#        with:
+#          channel: 'stable'
+#          # Run flutter integrate tests
+#      - uses: actions/download-artifact@v3
+#        with:
+#          name: generated-files-and-packages
+#      - name: Start recording video
+#        run: |
+#          xcrun simctl io booted recordVideo --codec=h264 recording.mp4 &
+#          sleep 5
+#          export RECORDING_PID=${!}
+#          echo "RECORDING_PID=${RECORDING_PID}" >> $GITHUB_ENV
+#      - name: Run Application UI Tests on iOS
+#        run: |
+#          export API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }}
+#          export API_KEY=${{ secrets.DART_DEFINE_API_KEY_DEV }}
+#          flutter pub get
+#          dart tests/app_tests/test_config_ios.dart
+#      # Upload Recordings As Artifact
+#      - name: Stop recording
+#        if: success() || failure()
+#        run: |
+#          echo ${{env.RECORDING_PID}}
+#          kill -SIGINT ${RECORDING_PID}
+#          sleep 10
+#      - name: Upload recordedVideo
+#        if: success() || failure()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: recorded_video_${{ matrix.device }}
+#          path: recording.mp4
+#          retention-days : 3 # days for automatic deletion
+#      - name: Upload Cucmber json report
+#        if: failure() || success()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: Cucumber_report_${{ matrix.device }}
+#          path: tests/app_tests/cucumber-report-ios.json
+#          retention-days : 3 # days for automatic deletion
 
 #DISABLING ANDROID PART TO AVOID RERUN FLOWS BECAUSE OF LONG STARTUP OF EMULATOR
 #  drive_android:
