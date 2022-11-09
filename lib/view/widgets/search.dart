@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/back_gradient4.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
@@ -53,37 +52,36 @@ class _SearchState extends State<Search> {
               pinned: true,
               delegate: FixedHeightItemDelegate(
                 fixedHeight: Constants.appBarHeight +
-                    MediaQuery.of(context).viewPadding.top,
+                    MediaQuery.of(context).viewPadding.top +
+                    Constants.searchBarHeight +
+                    Dimensions.padding20,
                 child: ClipRect(
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: widget.appBarStyle == AppBarStyle.twoLined
-                        ? TwoLinesAppBar(
-                            firstPart: widget.firstPart,
-                            secondPart: widget.secondPart,
-                            actionType: ActionType.close,
-                          )
-                        : ColorizedAppBar(
-                            firstPart: widget.firstPart,
-                            secondPart: widget.secondPart,
-                            actionType: ActionType.close,
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Column(
+                        children: [
+                          widget.appBarStyle == AppBarStyle.twoLined
+                              ? TwoLinesAppBar(
+                                  firstPart: widget.firstPart,
+                                  secondPart: widget.secondPart,
+                                  actionType: ActionType.close,
+                                )
+                              : ColorizedAppBar(
+                                  firstPart: widget.firstPart,
+                                  secondPart: widget.secondPart,
+                                  actionType: ActionType.close,
+                                ),
+                          Padding(
+                            padding: Paddings.horizontal16,
+                            child: SearchBar(
+                              searchHint: widget.searchHint,
+                              searchController: widget.searchController,
+                              autoFocus: widget.autoFocusSearch,
+                            ),
                           ),
-                  ),
-                ),
-              ),
-            ),
-            const SliverGap(Dimensions.padding20),
-            SliverPadding(
-              padding: Paddings.horizontal16,
-              sliver: SliverPersistentHeader(
-                floating: true,
-                delegate: FixedHeightItemDelegate(
-                  fixedHeight: Constants.searchBarHeight,
-                  child: SearchBar(
-                    searchHint: widget.searchHint,
-                    searchController: widget.searchController,
-                    autoFocus: widget.autoFocusSearch,
-                  ),
+                          Gaps.gap20,
+                        ],
+                      )),
                 ),
               ),
             ),

@@ -44,7 +44,7 @@ class _SearchBarState extends State<SearchBar> {
       child: CupertinoTextField(
         focusNode: _searchBoxNode,
         decoration: BoxDecoration(
-          color: SioColors.softBlack.withOpacity(0.2),
+          color: SioColors.softBlack.withOpacity(0.4),
           borderRadius: BorderRadius.circular(RadiusSize.radius50),
           border: Border.all(
             width: 1,

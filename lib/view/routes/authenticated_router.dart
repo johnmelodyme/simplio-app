@@ -53,7 +53,6 @@ import 'package:simplio_app/view/screens/my_games_screen.dart';
 import 'package:simplio_app/view/screens/password_change_screen.dart';
 import 'package:simplio_app/view/screens/pin_setup_screen.dart';
 import 'package:simplio_app/view/screens/wallet_connect_qr_code_scanner_screen.dart';
-import 'package:simplio_app/view/widgets/account_created_icon.dart';
 import 'package:simplio_app/view/widgets/lock_with_shadow_icon.dart';
 
 class AuthenticatedRouter with PageBuilderMixin {
@@ -113,9 +112,8 @@ class AuthenticatedRouter with PageBuilderMixin {
       // See https://github.com/flutter/flutter/issues/108141
       navigatorBuilder: (context, __, child) {
         return ProtectedGuard(
-          icon: const AccountCreatedIcon(),
-          title: context.locale.pin_setup_screen_account_creation_title,
-          subtitle: context.locale.pin_setup_screen_account_creation_subtitle,
+          icon: const LockWithShadowIcon(),
+          title: context.locale.protected_guard_enter_pin_code,
           protectWhen: (state) =>
               state.account.securityLevel.index > SecurityLevel.none.index &&
               state is AccountLocked,
