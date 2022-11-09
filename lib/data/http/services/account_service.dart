@@ -25,16 +25,16 @@ abstract class AccountService extends ChopperService {
 class AccountProfileResponse {
   @JsonKey(name: 'userId')
   final String accountId;
-  final String locales;
+  final String? locales;
 
   final List<int>? assets;
-  List<int>? gameFavorite;
-  List<int>? gameLibrary;
+  final List<int>? gameFavorite;
+  late List<int>? gameLibrary;
 
   final bool isMarketingApproved;
-  final String? marketingApprovedAt;
+  final DateTime? marketingApprovedAt;
   final bool isTermsAndConditionApproved;
-  final String? termsAndConditionApprovedAt;
+  final DateTime? termsAndConditionApprovedAt;
   final bool isDarkModeActivated;
   final String? lastLoggedDeviceId;
   final bool isSumSubReviewed;
@@ -45,29 +45,48 @@ class AccountProfileResponse {
   final String? applicantId;
 
   final String email;
-  final String phone;
+  final String? phone;
+  final List<AccountWallet>? wallets;
 
-  AccountProfileResponse({
-    required this.accountId,
-    required this.locales,
-    this.assets,
-    this.gameFavorite,
-    this.gameLibrary,
-    required this.isMarketingApproved,
-    this.marketingApprovedAt,
-    required this.isTermsAndConditionApproved,
-    this.termsAndConditionApprovedAt,
-    required this.isDarkModeActivated,
-    this.lastLoggedDeviceId,
-    required this.isSumSubReviewed,
-    required this.isVerified,
-    this.applicantId,
-    required this.email,
-    required this.phone,
-  });
+  AccountProfileResponse(
+      {required this.accountId,
+      required this.locales,
+      required this.assets,
+      required this.gameFavorite,
+      required this.gameLibrary,
+      required this.isMarketingApproved,
+      required this.marketingApprovedAt,
+      required this.isTermsAndConditionApproved,
+      required this.termsAndConditionApprovedAt,
+      required this.isDarkModeActivated,
+      required this.lastLoggedDeviceId,
+      required this.isSumSubReviewed,
+      required this.isVerified,
+      required this.applicantId,
+      required this.email,
+      required this.phone,
+      required this.wallets});
 
   factory AccountProfileResponse.fromJson(Map<String, dynamic> json) =>
       _$AccountProfileResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccountProfileResponseToJson(this);
+}
+
+@JsonSerializable()
+class AccountWallet {
+  final String walletAddress;
+  final int networkId;
+  final List<int> assets;
+
+  AccountWallet({
+    required this.walletAddress,
+    required this.networkId,
+    required this.assets,
+  });
+
+  factory AccountWallet.fromJson(Map<String, dynamic> json) =>
+      _$AccountWalletFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AccountWalletToJson(this);
 }
