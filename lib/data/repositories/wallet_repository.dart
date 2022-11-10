@@ -1,3 +1,4 @@
+import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
@@ -62,17 +63,23 @@ class WalletRepository {
     String? name,
     String? mnemonic,
   }) async {
+    final m = mnemonic ?? sio.Mnemonic().generate;
     final isProvided = mnemonic != null;
-    final m = LockableMnemonic.unlocked(
-      mnemonic: mnemonic ?? sio.Mnemonic().generate,
+
+    final lockableMnemonic = LockableMnemonic.unlocked(
+      mnemonic: m,
       isBackedUp: isProvided,
       isImported: isProvided,
     );
-    m.lock(key);
+
+    lockableMnemonic.lock(key);
 
     return _walletDb.save(AccountWallet.hd(
+      uuid: AccountWallet.makeUUID(
+        HDWallet.createWithMnemonic(m).getAddressForCoin(NetworkIds.bitcoin.id),
+      ),
       accountId: accountId,
-      mnemonic: m,
+      mnemonic: lockableMnemonic,
     ));
   }
 

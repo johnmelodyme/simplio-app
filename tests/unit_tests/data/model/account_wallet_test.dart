@@ -4,6 +4,7 @@ import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/model/account_wallet.dart';
 import 'package:simplio_app/data/model/asset_wallet.dart';
 import 'package:simplio_app/data/model/network_wallet.dart';
+import 'package:uuid/uuid.dart';
 
 const _mnemonic = 'not your keys not your coins';
 
@@ -42,6 +43,7 @@ void main() {
         "is 'hd' type wallet",
         () {
           final accountWallet = AccountWallet.hd(
+            uuid: const Uuid().v4(),
             accountId: '1',
             mnemonic: mnemonic,
           );
@@ -54,6 +56,7 @@ void main() {
         'does not have any asset wallet by default.',
         () {
           final accountWallet = AccountWallet.hd(
+            uuid: const Uuid().v4(),
             accountId: '1',
             mnemonic: mnemonic,
           );
@@ -66,6 +69,7 @@ void main() {
         'has length 100 after added 100 asset wallets.',
         () {
           AccountWallet accountWallet = AccountWallet.hd(
+            uuid: const Uuid().v4(),
             accountId: '1',
             mnemonic: mnemonic,
           );
@@ -86,6 +90,7 @@ void main() {
     'AccountWallet updating wallets:',
     () {
       final accountWallet = AccountWallet.hd(
+        uuid: const Uuid().v4(),
         accountId: 'test',
         mnemonic: LockableMnemonic.unlocked(mnemonic: _mnemonic),
         wallets: {

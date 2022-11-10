@@ -9,6 +9,13 @@ part 'account_wallet.g.dart';
 const accountWalletUpdateLifetimeInSeconds = 180;
 
 class AccountWallet extends Equatable {
+  static String makeUUID(String address) {
+    return const Uuid().v5(
+      Uuid.NAMESPACE_URL,
+      'https://mnemonic.simplio.io/$address',
+    );
+  }
+
   final String uuid;
   final String accountId;
   final DateTime updatedAt;
@@ -26,14 +33,14 @@ class AccountWallet extends Equatable {
   );
 
   AccountWallet.hd({
-    String? uuid,
+    required String uuid,
     required String accountId,
     DateTime? updatedAt,
     String? name,
     required LockableMnemonic mnemonic,
     Map<int, AssetWallet>? wallets,
   }) : this(
-          uuid ?? const Uuid().v4(),
+          uuid,
           accountId,
           updatedAt ?? DateTime.now(),
           mnemonic,
