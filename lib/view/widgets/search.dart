@@ -38,6 +38,21 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    widget.searchController.addListener(() {
+      scrollController.jumpTo(
+        -(Constants.appBarHeight +
+            MediaQuery.of(context).viewPadding.top +
+            Constants.searchBarHeight +
+            Dimensions.padding20),
+      );
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BackGradient4(
@@ -46,6 +61,7 @@ class _SearchState extends State<Search> {
         onVerticalDragDown: (_) =>
             FocusManager.instance.primaryFocus?.unfocus(),
         child: CustomScrollView(
+          controller: scrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
             SliverPersistentHeader(
