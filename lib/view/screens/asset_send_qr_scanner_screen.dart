@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
 import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
-
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
@@ -61,6 +60,11 @@ class _AssetSendQrScannerScreenState extends State<AssetSendQrScannerScreen>
                         child: Container(
                           color: SioColors.secondary5,
                           child: QrCodeScanner(
+                            qrCodeType: QrCodeType.address,
+                            networkId: context
+                                .read<AssetSendFormCubit>()
+                                .state
+                                .networkAssetId,
                             qrCodeCallback: (String value) async {
                               context
                                   .read<AssetSendFormCubit>()

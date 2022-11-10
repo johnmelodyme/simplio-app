@@ -72,6 +72,8 @@
     "backup_inventory_screen_your_secret": "Your secret phrase",
     "backup_inventory_screen_write_down_your_secret": "Write down your secret phrase in the\ncorrect order on paper",
 
+    "qr_code_scanner_wallet_connect_error":"This is incorrect WalletConnect uri",
+    "qr_code_scanner_address_error":"Incorrect address",
 
     "backup_inventory_screen_title_1": "You are always in control of\nyour Inventory with ",
     "backup_inventory_screen_title_2": "12 words",

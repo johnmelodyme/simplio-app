@@ -60,6 +60,7 @@ class _WalletConnectQrCodeScannerScreenState
                         child: Container(
                           color: SioColors.secondary5,
                           child: QrCodeScanner(
+                            qrCodeType: QrCodeType.walletConnectUri,
                             qrCodeCallback: (String value) async {
                               final s =
                                   context.read<AccountWalletCubit>().state;
