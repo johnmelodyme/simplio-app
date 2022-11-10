@@ -46,7 +46,7 @@ class SignInScreen extends StatelessWidget {
             child: Stack(
               children: [
                 SingleChildScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [

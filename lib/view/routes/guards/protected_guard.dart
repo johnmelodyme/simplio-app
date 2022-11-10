@@ -99,6 +99,7 @@ class _Protection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SioScaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
