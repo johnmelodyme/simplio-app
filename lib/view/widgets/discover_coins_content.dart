@@ -69,7 +69,7 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
                                         networkId: data.networkId)
                                     .then((_) {
                                   if (assetAction == AssetAction.buy) {
-                                    GoRouter.of(context).replaceNamed(
+                                    GoRouter.of(context).pushNamed(
                                       AuthenticatedRouter.assetBuy,
                                       params: {
                                         'assetId': data.assetId.toString(),
