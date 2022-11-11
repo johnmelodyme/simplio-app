@@ -31,24 +31,6 @@ void main() {
     );
 
     test(
-      'BigInt with decimal offset 6 rounded on 4 decimal places',
-      () {
-        final decimalString = BigInt.from(12345)
-            .toDecimalString(decimalOffset: 6, decimalPlaces: 4);
-        expect(decimalString, equals('0.0123'));
-      },
-    );
-
-    test(
-      'BigInt with decimal offset 9 rounded on 7 decimal places',
-      () {
-        final decimalString = BigInt.from(12345678)
-            .toDecimalString(decimalOffset: 9, decimalPlaces: 7);
-        expect(decimalString, equals('0.0123457'));
-      },
-    );
-
-    test(
       'BigInt with decimal offset 5 rounded on 10 decimal places does not exist'
       ' anymore - it rounds to 2 decimals only if more than 2 trailing zeros',
       () {

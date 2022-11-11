@@ -82,8 +82,6 @@ extension BigIntParseExtension on BigInt {
     required final int decimalOffset,
     final int? decimalPlaces,
   }) {
-    final maxDecimalPlaces = decimalPlaces ?? decimalOffset;
-
     String originalNumber = toString();
     String formattedNumber;
 
@@ -97,8 +95,7 @@ extension BigIntParseExtension on BigInt {
         "${originalNumber.substring(0, originalNumber.length - decimalOffset)}."
         "${originalNumber.substring(originalNumber.length - decimalOffset, originalNumber.length)}";
 
-    formattedNumber = trimRight(
-        double.parse(formattedNumber).toStringAsFixed(maxDecimalPlaces), '0');
+    formattedNumber = trimRight(formattedNumber, '0');
 
     if (formattedNumber.split('').last == '.') {
       formattedNumber = '${formattedNumber.replaceFirst('.', '')}.00';
