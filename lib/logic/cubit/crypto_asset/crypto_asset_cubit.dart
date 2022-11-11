@@ -13,8 +13,6 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
   final PagingController<int, Asset> pagingController =
       PagingController(firstPageKey: 1);
 
-  bool _isDisposed = false;
-
   CryptoAssetCubit._(
     this._marketplaceRepository,
   ) : super(const CryptoAssetInitial());
@@ -24,7 +22,7 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
   }) : this._(marketplaceRepository);
 
   Future<void> loadCryptoAsset({int page = 1, bool readCache = true}) async {
-    emit(const CryptoAssetLoading());
+    _emitSafely(const CryptoAssetLoading());
     try {
       final assets = await _marketplaceRepository.assetSearch(
         SearchAssetsRequest(
@@ -58,7 +56,7 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
     bool readCache = true,
   }) async {
     try {
-      emit(const CryptoAssetLoading());
+      _emitSafely(const CryptoAssetLoading());
       final assets = query.isNotEmpty
           ? await _marketplaceRepository.assetSearch(SearchAssetsRequest(
               page: 1,
@@ -67,20 +65,16 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
               name: query, categories: [],
             ))
           : <Asset>[];
-      emit(CryptoAssetLoaded(
+      _emitSafely(CryptoAssetLoaded(
           assets: assets.map((e) => e.toCryptoAsset()).toList()));
     } on Exception catch (e) {
-      emit(CryptoAssetLoadedWithError(error: e));
+      _emitSafely(CryptoAssetLoadedWithError(error: e));
     }
   }
 
   void _emitSafely(CryptoAssetState state) {
-    if (_isDisposed) return;
-
-    emit(state);
-  }
-
-  void dispose() {
-    _isDisposed = true;
+    if (!isClosed) {
+      emit(state);
+    }
   }
 }

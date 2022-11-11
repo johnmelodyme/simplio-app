@@ -102,7 +102,6 @@ class _TransactionsContentState extends State<TransactionsContent> {
 
   @override
   void dispose() {
-    cubit?.dispose();
     cubit?.pagingController.removePageRequestListener(addLoadEvent);
     super.dispose();
   }

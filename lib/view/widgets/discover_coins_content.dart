@@ -189,7 +189,6 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
 
   @override
   void dispose() {
-    cubit.dispose();
     cubit.pagingController.removePageRequestListener(addLoadEvent);
     super.dispose();
   }

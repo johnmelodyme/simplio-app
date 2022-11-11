@@ -12,8 +12,6 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   final PagingController<int, Transaction> pagingController =
       PagingController(firstPageKey: 0);
 
-  bool _isDisposed = false;
-
   TransactionsCubit._(
     this._transactionRepository,
   ) : super(TransactionsInitialState());
@@ -49,12 +47,8 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   }
 
   void _emitSafely(TransactionsState transactionsState) {
-    if (_isDisposed) return;
-
-    emit(transactionsState);
-  }
-
-  void dispose() {
-    _isDisposed = true;
+    if (!isClosed) {
+      emit(transactionsState);
+    }
   }
 }

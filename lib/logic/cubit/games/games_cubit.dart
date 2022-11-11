@@ -14,7 +14,6 @@ class GamesCubit extends Cubit<GamesState> {
   final PagingController<int, Game> pagingController =
       PagingController(firstPageKey: 1);
 
-  bool _isDisposed = false;
   String _currentlySearched = '';
 
   GamesCubit._(
@@ -146,11 +145,8 @@ class GamesCubit extends Cubit<GamesState> {
   }
 
   void _emitSafely(GamesState gamesState) {
-    if (_isDisposed) return;
-    emit(gamesState);
-  }
-
-  void dispose() {
-    _isDisposed = true;
+    if (!isClosed) {
+      emit(gamesState);
+    }
   }
 }
