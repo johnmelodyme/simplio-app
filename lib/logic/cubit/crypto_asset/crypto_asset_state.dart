@@ -2,17 +2,16 @@ part of 'crypto_asset_cubit.dart';
 
 abstract class CryptoAssetState extends Equatable {
   const CryptoAssetState();
+}
 
+class CryptoAssetInitial extends CryptoAssetState {
   @override
   List<Object?> get props => [];
 }
 
-class CryptoAssetInitial extends CryptoAssetState {
-  const CryptoAssetInitial();
-}
-
 class CryptoAssetLoading extends CryptoAssetState {
-  const CryptoAssetLoading();
+  @override
+  List<Object?> get props => [];
 }
 
 class CryptoAssetLoaded extends CryptoAssetState {

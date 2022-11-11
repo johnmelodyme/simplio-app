@@ -29,7 +29,7 @@ class DiscoverCoinsContent extends StatefulWidget {
 class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
   late CryptoAssetCubit cubit;
 
-  void addLoadEvent(int offset) => cubit.loadCryptoAsset(page: offset);
+  void addLoadEvent(int offset) => cubit.loadCryptoAsset(offset);
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +156,7 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
                       ),
                     ),
                     onTap: () {
-                      cubit.reloadGames();
+                      cubit.reloadAssets();
                     },
                   ),
                   noMoreItemsIndicatorBuilder: (_) => Gaps.gap20,
@@ -173,7 +173,7 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
                       ),
                       onTap: () {
                         cubit.loadCryptoAsset(
-                            page: cubit.pagingController.nextPageKey!);
+                            cubit.pagingController.nextPageKey!);
                       },
                     ),
                   ),

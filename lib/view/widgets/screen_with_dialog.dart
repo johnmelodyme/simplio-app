@@ -27,13 +27,12 @@ abstract class ScreenWithDialog extends StatelessWidget {
   @override
   @nonVirtual
   Widget build(BuildContext context) {
-    return BlocConsumer<DialogCubit, DialogState>(
+    return BlocListener<DialogCubit, DialogState>(
       listener: (context, state) {
         if (state.displayed) panelController.open();
         if (!state.displayed) panelController.close();
       },
-      buildWhen: (prev, curr) => prev.displayed != curr.displayed,
-      builder: (context, state) => SlidingUpPanel(
+      child: SlidingUpPanel(
         controller: panelController,
         color: Colors.transparent,
         borderRadius: const BorderRadius.only(
@@ -47,18 +46,22 @@ abstract class ScreenWithDialog extends StatelessWidget {
         body: Stack(
           children: [
             innerBuild(context),
-            if (state.displayed)
-              GestureDetector(
-                onTap: () => context.read<DialogCubit>().hideDialog(),
-                child: Opacity(
-                  opacity: 0.1,
-                  child: Container(
-                    color: Colors.transparent,
-                    height: double.infinity,
-                    width: double.infinity,
-                  ),
-                ),
-              ),
+            BlocBuilder<DialogCubit, DialogState>(
+              buildWhen: (prev, curr) => prev.displayed != curr.displayed,
+              builder: (context, state) => (state.displayed)
+                  ? GestureDetector(
+                      onTap: () => context.read<DialogCubit>().hideDialog(),
+                      child: Opacity(
+                        opacity: 0.1,
+                        child: Container(
+                          color: Colors.transparent,
+                          height: double.infinity,
+                          width: double.infinity,
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
           ],
         ),
         panel: BlocBuilder<DialogCubit, DialogState>(

@@ -218,6 +218,7 @@ class Constants {
   //counts
   static const pageSizeTransactions = 7;
   static const pageSizeGames = 7;
+  static const pageSizeAssets = 7;
 
   static const keypadButtonSize = Size(50.0, 50.0);
 

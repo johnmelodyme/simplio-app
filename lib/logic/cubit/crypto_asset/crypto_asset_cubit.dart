@@ -13,30 +13,31 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
   final PagingController<int, Asset> pagingController =
       PagingController(firstPageKey: 1);
 
-  CryptoAssetCubit._(
-    this._marketplaceRepository,
-  ) : super(const CryptoAssetInitial());
+  String _currentlySearched = '';
+
+  CryptoAssetCubit._(this._marketplaceRepository) : super(CryptoAssetInitial());
 
   CryptoAssetCubit.builder({
     required MarketplaceRepository marketplaceRepository,
   }) : this._(marketplaceRepository);
 
-  Future<void> loadCryptoAsset({int page = 1, bool readCache = true}) async {
-    _emitSafely(const CryptoAssetLoading());
+  Future<void> loadCryptoAsset(int pageKey) async {
+    _emitSafely(CryptoAssetLoading());
     try {
       final assets = await _marketplaceRepository.assetSearch(
         SearchAssetsRequest(
-          page: page,
-          pageSize: 100,
+          page: pageKey,
+          pageSize: Constants.pageSizeAssets,
           currency: 'USD', // todo: use correct fiat
-          name: '', categories: [],
+          name: _currentlySearched,
+          categories: [],
         ),
       );
 
-      if (assets.length < Constants.pageSizeGames) {
+      if (assets.length < Constants.pageSizeAssets) {
         pagingController.appendLastPage(assets);
       } else {
-        pagingController.appendPage(assets, page + 1);
+        pagingController.appendPage(assets, pageKey + 1);
       }
 
       _emitSafely(CryptoAssetLoaded(
@@ -46,29 +47,20 @@ class CryptoAssetCubit extends Cubit<CryptoAssetState> {
     }
   }
 
-  void reloadGames() async {
+  void reloadAssets() {
+    _emitSafely(CryptoAssetLoading());
     pagingController.refresh();
-    await loadCryptoAsset(page: pagingController.firstPageKey);
+    _emitSafely(CryptoAssetInitial());
   }
 
-  Future<void> queryCryptoAsset({
-    required String query,
-    bool readCache = true,
-  }) async {
-    try {
-      _emitSafely(const CryptoAssetLoading());
-      final assets = query.isNotEmpty
-          ? await _marketplaceRepository.assetSearch(SearchAssetsRequest(
-              page: 1,
-              pageSize: 100,
-              currency: 'USD', // todo: use correct fiat
-              name: query, categories: [],
-            ))
-          : <Asset>[];
-      _emitSafely(CryptoAssetLoaded(
-          assets: assets.map((e) => e.toCryptoAsset()).toList()));
-    } on Exception catch (e) {
-      _emitSafely(CryptoAssetLoadedWithError(error: e));
+  void search(String criteria) async {
+    if (criteria != _currentlySearched) {
+      _currentlySearched = criteria;
+      if (pagingController.itemList?.isNotEmpty == true) {
+        reloadAssets();
+      } else {
+        loadCryptoAsset(pagingController.firstPageKey);
+      }
     }
   }
 
