@@ -41,7 +41,7 @@ class ValidatedPassword {
 
   bool _hasSpecialCharacters(String? value) {
     Pattern specialCharRegexp =
-        RegExp(r'''^(?=.*[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~])''');
+        RegExp(r'''^(?=.*[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~])''');
 
     return value!.contains(specialCharRegexp);
   }
