@@ -506,8 +506,10 @@ class AuthenticatedRouter with PageBuilderMixin {
                         path: 'summary',
                         name: assetExchangeSummary,
                         pageBuilder: pageBuilder(
-                          builder: (state) =>
-                              const AssetExchangeSummaryScreen(),
+                          builder: (state) => BlocProvider(
+                            create: (context) => ExpansionListCubit.builder(),
+                            child: const AssetExchangeSummaryScreen(),
+                          ),
                           settings: const ApplicationSettings.hiddenTabBar(),
                         ),
                       ),

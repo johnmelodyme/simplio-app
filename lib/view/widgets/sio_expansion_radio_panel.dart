@@ -29,12 +29,7 @@ class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
 
   void _handlePressed(bool isExpanded, int index) {
     widget.expansionCallback?.call(index, isExpanded);
-    if (!isExpanded || index == -1) {
-      context.read<ExpansionListCubit>().selectValue(index);
-    } else {
-      final ExpansionPanelRadio pressedChild =
-          widget.children[index] as ExpansionPanelRadio;
-
+    if (!isExpanded) {
       // If another ExpansionPanelRadio was already open, apply its
       // expansionCallback (if any) to false, because it's closing.
       for (int childIndex = 0;
@@ -47,11 +42,28 @@ class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
             child.value == _currentOpenPanel?.value) {
           widget.expansionCallback!(childIndex, false);
         }
-
-        setState(() {
-          _currentOpenPanel = isExpanded ? null : pressedChild;
-        });
       }
+
+      setState(() {
+        final ExpansionPanelRadio pressedChild =
+            widget.children[index] as ExpansionPanelRadio;
+        _currentOpenPanel = isExpanded ? null : pressedChild;
+
+        if (_currentOpenPanel != null) {
+          context.read<ExpansionListCubit>().selectValue(index);
+        }
+      });
+    } else if (index > -1) {
+      final ExpansionPanelRadio pressedChild =
+          widget.children[index] as ExpansionPanelRadio;
+
+      if (pressedChild == _currentOpenPanel) {
+        context.read<ExpansionListCubit>().selectValue(-1);
+      }
+
+      setState(() {
+        _currentOpenPanel = null;
+      });
     }
   }
 
@@ -124,18 +136,11 @@ class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
       );
     }
 
-    return BlocListener<ExpansionListCubit, ExpansionListState>(
-      listenWhen: (prev, curr) => prev.selectedIndex != curr.selectedIndex,
-      listener: (context, state) {
-        _handlePressed(
-            _isChildExpanded(state.selectedIndex), state.selectedIndex);
-      },
-      child: MergeableMaterial(
-        hasDividers: false,
-        dividerColor: widget.dividerColor,
-        elevation: widget.elevation,
-        children: items,
-      ),
+    return MergeableMaterial(
+      hasDividers: false,
+      dividerColor: widget.dividerColor,
+      elevation: widget.elevation,
+      children: items,
     );
   }
 }

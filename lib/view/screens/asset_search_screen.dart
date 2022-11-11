@@ -11,7 +11,6 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
-import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
@@ -80,7 +79,7 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
                     throw Exception('No asset wallet found');
                   }
 
-                  // todo: refactor - duplicity with diScover_coins_content.dart
+                  // todo: refactor - duplicity with discover_coins_content.dart
                   return PagedListView.separated(
                     padding: Paddings.top32,
                     physics: const BouncingScrollPhysics(),
@@ -118,20 +117,16 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
                                     assetAction,
                                   ),
                                 )
-                              : BlocProvider(
-                                  create: (context) =>
-                                      ExpansionListCubit.builder(),
-                                  child: CryptoAssetExpansionList(
-                                    children: [item.toCryptoAsset()],
-                                    withoutPadding: true,
-                                    onTap: (NetworkData data,
-                                            AssetAction assetAction) =>
-                                        _tapFunction(
-                                      context,
-                                      item.networks.first
-                                          .toNetworkData(item.assetId),
-                                      assetAction,
-                                    ),
+                              : CryptoAssetExpansionList(
+                                  children: [item.toCryptoAsset()],
+                                  withoutPadding: true,
+                                  onTap: (NetworkData data,
+                                          AssetAction assetAction) =>
+                                      _tapFunction(
+                                    context,
+                                    item.networks.first
+                                        .toNetworkData(item.assetId),
+                                    assetAction,
                                   ),
                                 ),
                         );
