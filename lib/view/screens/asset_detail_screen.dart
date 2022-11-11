@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,13 +64,17 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
               SliverPersistentHeader(
                 pinned: true,
                 delegate: FixedHeightItemDelegate(
-                  fixedHeight: Constants.appBarHeight +
-                      MediaQuery.of(context).viewPadding.top,
-                  child: TwoLinesAppBar(
-                    firstPart: networkDetail.name,
-                    secondPart: networkDetail.ticker,
-                  ),
-                ),
+                    fixedHeight: Constants.appBarHeight +
+                        MediaQuery.of(context).viewPadding.top,
+                    child: ClipRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: TwoLinesAppBar(
+                          firstPart: networkDetail.name,
+                          secondPart: networkDetail.ticker,
+                        ),
+                      ),
+                    )),
               ),
               SliverPadding(
                 padding: Paddings.horizontal16,
