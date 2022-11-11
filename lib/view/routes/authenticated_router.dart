@@ -44,6 +44,7 @@ import 'package:simplio_app/view/screens/asset_send_summary_screen.dart';
 import 'package:simplio_app/view/screens/backup_inventory_screen.dart';
 import 'package:simplio_app/view/screens/configuration_screen.dart';
 import 'package:simplio_app/view/screens/configuration_security_screen.dart';
+import 'package:simplio_app/view/screens/dapps_screen.dart';
 import 'package:simplio_app/view/screens/discovery_screen.dart';
 import 'package:simplio_app/view/screens/game_detail_screen.dart';
 import 'package:simplio_app/view/screens/gameplay_screen.dart';
@@ -597,12 +598,11 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'find-dapps',
               name: findDapps,
               pageBuilder: pageBuilder(
-                builder: (state) => GameplayScreen(
-                  game: state.extra as Game,
-                ),
+                builder: (state) => const DappsScreen(),
+                withTransition: false,
                 settings: const ApplicationSettings(
                   tabBar: TabBarRouteSettings(
-                    isVisible: false,
+                    selectedKey: ValueKey(findDapps),
                   ),
                 ),
               ),

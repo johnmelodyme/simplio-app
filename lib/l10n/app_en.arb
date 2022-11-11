@@ -40,6 +40,7 @@
   "common_remove":"Remove",
   "common_read_more":"Read more",
   "common_read_less":"Read less",
+  "common_coming_soon":"Coming soon...",
 
   "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
     "@common_period_section": {
@@ -205,6 +206,9 @@
     "protected_guard_enter_pin_code": "Enter your pin",
     "protected_guard_remaining_attempts": "You have remaining attempts:",
     "protected_guard_last_chance": "This is your last chance",
+
+    "find_dapps_screen_find":"Find ",
+    "find_dapps_screen_dapps":"Dapps ",
 
     "account_setup_success_screen_account_created_label":"Hurray! \n Your account have been created",
     "account_setup_success_screen_account_created_description_label":"Before you start, we suggest you\n verify your account due to the use\n of all functionalities and full\n security of your Simplio app.",
