@@ -88,21 +88,23 @@ class WelcomeScreen extends StatelessWidget {
             bottom: -30,
             left: 0,
             right: 0,
-            child: Row(
-              children: [
-                const Spacer(
-                  flex: 3,
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Image.asset(
-                    'assets/images/simpliona_login.png',
+            child: IgnorePointer(
+              child: Row(
+                children: [
+                  const Spacer(
+                    flex: 3,
                   ),
-                ),
-                const Spacer(
-                  flex: 1,
-                ),
-              ],
+                  Expanded(
+                    flex: 6,
+                    child: Image.asset(
+                      'assets/images/simpliona_login.png',
+                    ),
+                  ),
+                  const Spacer(
+                    flex: 1,
+                  ),
+                ],
+              ),
             ),
           ),
           Positioned(

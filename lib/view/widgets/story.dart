@@ -28,6 +28,7 @@ class Story extends StatefulWidget {
 class _StoryState extends State<Story> with TickerProviderStateMixin {
   late List<AnimationController> controllers;
   int displayedItemIndex = 0;
+  bool ignoreStatusListener = false;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +85,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
           )
             ..addListener(() => setState(() => displayedItemIndex = e.key))
             ..addStatusListener((AnimationStatus status) {
+              if (ignoreStatusListener) return;
               if (status == AnimationStatus.completed) {
                 if (e.key + 1 < widget.items.length) {
                   controllers[e.key + 1].forward();
@@ -150,10 +152,14 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
         controllers[displayedItemIndex - 1].forward(from: 0);
         setState(() => displayedItemIndex -= 1);
       } else {
-        controllers[0].stop();
+        ignoreStatusListener = true;
         for (final controller in controllers) {
+          controller.stop();
           controller.value = 1;
         }
+        ignoreStatusListener = false;
+        displayedItemIndex = widget.items.length - 1;
+        controllers[displayedItemIndex].forward(from: 0);
       }
     }
   }
