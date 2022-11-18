@@ -27,7 +27,6 @@
   "common_priority_high":"High",
   "common_min_label_uc": "MIN",
   "common_max_label_uc": "MAX",
-  "common_continue": "Continue",
   "common_done": "Done",
   "common_search":"Search",
   "common_loading_with_dots":"Loading...",

@@ -6,7 +6,9 @@ import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
+import 'package:simplio_app/logic/cubit/games/game_bloc_event.dart';
+import 'package:simplio_app/logic/cubit/games/games_bloc.dart';
+import 'package:simplio_app/logic/cubit/games/games_search_bloc.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -15,31 +17,44 @@ import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/search.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
 
-class GamesSearchScreen extends StatelessWidget with PopupDialogMixin {
-  GamesSearchScreen({super.key});
-
-  final TextEditingController searchController = TextEditingController();
-
-  void _searchGames(GamesCubit cubit, String criteria) {
-    cubit.search(criteria);
-  }
-
-  void _addLoadEvent(GamesCubit cubit, int offset) {
-    cubit.loadGames(offset);
-  }
+class GamesSearchScreen extends StatefulWidget {
+  const GamesSearchScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final cubit = GamesCubit.builder(
+  State<GamesSearchScreen> createState() => _GamesSearchScreenState();
+}
+
+class _GamesSearchScreenState extends State<GamesSearchScreen>
+    with PopupDialogMixin {
+  late TextEditingController searchController = TextEditingController();
+  late GamesSearchBloc bloc;
+  late bool addedPageRequestLister;
+
+  @override
+  void initState() {
+    bloc = GamesSearchBloc(
       userRepository: RepositoryProvider.of<UserRepository>(context),
       marketplaceRepository:
           RepositoryProvider.of<MarketplaceRepository>(context),
     );
-
+    addedPageRequestLister = false;
     searchController.addListener(() => {
-          _searchGames(cubit, searchController.text),
+          _searchGames(bloc, searchController.text),
         });
 
+    super.initState();
+  }
+
+  void _searchGames(GamesSearchBloc cubit, String criteria) {
+    cubit.add(SearchGamesEvent(criteria));
+  }
+
+  void _addLoadEvent(GamesSearchBloc cubit, int offset) {
+    cubit.add(LoadGamesEvent(page: offset));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Search(
         firstPart: context.locale.games_search_screen_search_and_add,
         secondPart: context.locale.games_search_screen_games,
@@ -48,12 +63,16 @@ class GamesSearchScreen extends StatelessWidget with PopupDialogMixin {
         autoFocusSearch: true,
         appBarStyle: AppBarStyle.multiColored,
         child: BlocProvider(
-          create: (context) => cubit
-            ..pagingController.addPageRequestListener(
-              (offset) => _addLoadEvent(cubit, offset),
-            ),
-          child: BlocConsumer<GamesCubit, GamesState>(
+          create: (context) => bloc,
+          child: BlocConsumer<GamesSearchBloc, GamesState>(
             listener: (context, state) {
+              if (state is GamesLoadedState && !addedPageRequestLister) {
+                addedPageRequestLister = true;
+                bloc.pagingController.addPageRequestListener(
+                  (offset) => _addLoadEvent(bloc, offset),
+                );
+              }
+
               if (state is GameDetailIsAddedState && state.wasUpdated) {
                 final isAdded = state.isAdded!;
                 showPopup(
@@ -73,18 +92,22 @@ class GamesSearchScreen extends StatelessWidget with PopupDialogMixin {
               if (state is GamesInitialState) {
                 return const SizedBox.shrink();
               } else if (state is GamesLoadingState &&
-                  cubit.pagingController.itemList?.isEmpty == true) {
-                return const Center(
-                  child: Padding(
-                    padding: Paddings.top32,
-                    child: ListLoading(),
-                  ),
+                  bloc.pagingController.itemList?.isEmpty == true) {
+                return Column(
+                  children: const [
+                    Center(
+                      child: Padding(
+                        padding: Paddings.top32,
+                        child: ListLoading(),
+                      ),
+                    ),
+                  ],
                 );
               } else {
                 return PagedListView.separated(
                   padding: Paddings.top32,
                   physics: const BouncingScrollPhysics(),
-                  pagingController: cubit.pagingController,
+                  pagingController: bloc.pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Game>(
                     itemBuilder: (context, game, index) {
                       return Padding(
@@ -104,12 +127,15 @@ class GamesSearchScreen extends StatelessWidget with PopupDialogMixin {
                                 extra: game,
                               );
                             } else if (gameAction == GameAction.addToMyGames) {
-                              context
-                                  .read<GamesCubit>()
-                                  .addGameToLibrary(game.gameId, reload: true);
+                              context.read<GamesSearchBloc>().add(
+                                    AddGameToLibraryEvent(
+                                        gameId: game.gameId, reload: true),
+                                  );
                             } else if (gameAction == GameAction.remove) {
-                              cubit.removeGameFromLibrary(game.gameId,
-                                  reload: true);
+                              bloc.add(
+                                RemoveGameFromLibraryEvent(
+                                    gameId: game.gameId, reload: true),
+                              );
                             } else if (gameAction == GameAction.play) {
                               //TODO.. handle play game CTA
                             }
@@ -125,8 +151,15 @@ class GamesSearchScreen extends StatelessWidget with PopupDialogMixin {
                         ),
                       );
                     },
-                    firstPageProgressIndicatorBuilder: (_) => const Center(
-                      child: ListLoading(),
+                    firstPageProgressIndicatorBuilder: (_) => Column(
+                      children: const [
+                        Center(
+                          child: Padding(
+                            padding: Paddings.bottom32,
+                            child: ListLoading(),
+                          ),
+                        ),
+                      ],
                     ),
                     newPageProgressIndicatorBuilder: (_) => const Center(
                         child: Padding(
@@ -142,7 +175,7 @@ class GamesSearchScreen extends StatelessWidget with PopupDialogMixin {
                         ),
                       ),
                       onTap: () {
-                        cubit.reloadGames();
+                        bloc.add(const ReloadGamesEvent());
                       },
                     ),
                     newPageErrorIndicatorBuilder: (_) => Padding(
@@ -156,10 +189,8 @@ class GamesSearchScreen extends StatelessWidget with PopupDialogMixin {
                           ),
                         ),
                         onTap: () {
-                          cubit.loadGames(context
-                              .read<GamesCubit>()
-                              .pagingController
-                              .nextPageKey!);
+                          bloc.add(LoadGamesEvent(
+                              page: bloc.pagingController.nextPageKey!));
                         },
                       ),
                     ),

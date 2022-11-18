@@ -11,10 +11,10 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
+import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_bloc.dart';
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
-import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
+import 'package:simplio_app/logic/cubit/games/games_bloc.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/pin_setup_form/pin_setup_cubit.dart';
 import 'package:simplio_app/view/routes/guards/protected_guard.dart';
@@ -267,7 +267,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                       builder: (state) => MultiBlocProvider(
                         providers: [
                           BlocProvider(
-                            create: (context) => GamesCubit.builder(
+                            create: (context) => GamesBloc.builder(
                               userRepository:
                                   RepositoryProvider.of<UserRepository>(
                                       context),
@@ -296,7 +296,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                   builder: (state) => MultiBlocProvider(
                     providers: [
                       BlocProvider(
-                        create: (context) => CryptoAssetCubit.builder(
+                        create: (context) => CryptoAssetBloc.builder(
                           marketplaceRepository:
                               RepositoryProvider.of<MarketplaceRepository>(
                                   context),
@@ -322,7 +322,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     name: inventoryCoins,
                     pageBuilder: pageBuilder(
                       builder: (state) => BlocProvider(
-                        create: (context) => CryptoAssetCubit.builder(
+                        create: (context) => CryptoAssetBloc.builder(
                           marketplaceRepository:
                               RepositoryProvider.of<MarketplaceRepository>(
                                   context),
@@ -346,7 +346,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     name: inventoryNft,
                     pageBuilder: pageBuilder(
                       builder: (state) => BlocProvider(
-                        create: (context) => CryptoAssetCubit.builder(
+                        create: (context) => CryptoAssetBloc.builder(
                           marketplaceRepository:
                               RepositoryProvider.of<MarketplaceRepository>(
                                   context),
@@ -370,7 +370,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     name: inventoryTransactions,
                     pageBuilder: pageBuilder(
                       builder: (state) => BlocProvider(
-                        create: (context) => CryptoAssetCubit.builder(
+                        create: (context) => CryptoAssetBloc.builder(
                           marketplaceRepository:
                               RepositoryProvider.of<MarketplaceRepository>(
                                   context),
@@ -630,7 +630,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 builder: (state) => MultiBlocProvider(
                   providers: [
                     BlocProvider(
-                      create: (context) => CryptoAssetCubit.builder(
+                      create: (context) => CryptoAssetBloc.builder(
                         marketplaceRepository:
                             RepositoryProvider.of<MarketplaceRepository>(
                                 context),
@@ -654,7 +654,7 @@ class AuthenticatedRouter with PageBuilderMixin {
               name: gamesSearch,
               pageBuilder: pageBuilder(
                 builder: (state) => BlocProvider(
-                  create: (context) => GamesCubit.builder(
+                  create: (context) => GamesBloc.builder(
                     userRepository:
                         RepositoryProvider.of<UserRepository>(context),
                     marketplaceRepository:
@@ -662,7 +662,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                   ),
                   child: Builder(
                     builder: (context) {
-                      return GamesSearchScreen();
+                      return const GamesSearchScreen();
                     },
                   ),
                 ),

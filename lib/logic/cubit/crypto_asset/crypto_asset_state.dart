@@ -1,4 +1,4 @@
-part of 'crypto_asset_cubit.dart';
+part of 'crypto_asset_bloc.dart';
 
 abstract class CryptoAssetState extends Equatable {
   const CryptoAssetState();

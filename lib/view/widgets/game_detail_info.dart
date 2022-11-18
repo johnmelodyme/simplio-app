@@ -4,7 +4,8 @@ import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
+import 'package:simplio_app/logic/cubit/games/game_bloc_event.dart';
+import 'package:simplio_app/logic/cubit/games/games_bloc.dart';
 import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -28,7 +29,7 @@ class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
     final MarketplaceRepository marketplaceRepository =
         context.read<MarketplaceRepository>();
 
-    final GamesCubit cubit = GamesCubit.builder(
+    final GamesBloc bloc = GamesBloc.builder(
         userRepository: userRepository,
         marketplaceRepository: marketplaceRepository);
 
@@ -66,8 +67,9 @@ class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
                 ],
               ),
               Gaps.gap20,
-              BlocConsumer<GamesCubit, GamesState>(
-                bloc: cubit..checkIfIsAdded(gameDetail.gameId),
+              BlocConsumer<GamesBloc, GamesState>(
+                bloc: bloc
+                  ..add(CheckIfGameIsAddedEvent(gameId: gameDetail.gameId)),
                 listener: (context, state) {
                   if (state is GameDetailIsAddedState && state.wasUpdated) {
                     final isAdded = state.isAdded!;
@@ -91,7 +93,8 @@ class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
                     if (state.isAdded == true) {
                       return BorderedTextButton(
                         onPressed: () {
-                          cubit.removeGameFromLibrary(gameDetail.gameId);
+                          bloc.add(RemoveGameFromLibraryEvent(
+                              gameId: gameDetail.gameId));
                         },
                         label: context
                             .locale.game_detail_screen_remove_from_my_games,
@@ -103,7 +106,8 @@ class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
                     } else if (state.isAdded == false) {
                       return HighlightedElevatedButton(
                         onPressed: () {
-                          cubit.addGameToLibrary(gameDetail.gameId);
+                          bloc.add(
+                              AddGameToLibraryEvent(gameId: gameDetail.gameId));
                         },
                         label:
                             context.locale.game_detail_screen_add_to_my_games,

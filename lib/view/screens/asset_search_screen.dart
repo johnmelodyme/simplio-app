@@ -9,7 +9,9 @@ import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_cubit.dart';
+import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_bloc.dart';
+import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_bloc_event.dart';
+import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_search_bloc.dart';
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
@@ -28,48 +30,59 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
 
   final TextEditingController searchController = TextEditingController();
 
-  void _searchAssets(CryptoAssetCubit cubit, String criteria) {
-    cubit.search(criteria);
+  void _searchAssets(CryptoAssetSearchBloc bloc, String criteria) {
+    bloc.add(SearchCryptoAssetsEvent(criteria));
   }
 
-  void _addLoadEvent(CryptoAssetCubit cubit, int offset) {
-    cubit.loadCryptoAsset(offset);
+  void _addLoadEvent(CryptoAssetSearchBloc bloc, int offset) {
+    bloc.add(LoadCryptoAssetsEvent(page: offset));
   }
 
   @override
   Widget innerBuild(BuildContext context) {
-    final cubit = CryptoAssetCubit.builder(
+    bool addedPageRequestLister = false;
+
+    final bloc = CryptoAssetSearchBloc.builder(
       marketplaceRepository:
           RepositoryProvider.of<MarketplaceRepository>(context),
     );
 
     searchController.addListener(() {
-      _searchAssets(cubit, searchController.text);
+      _searchAssets(bloc, searchController.text);
     });
 
     return Search(
-      firstPart: context.locale.games_search_screen_search_and_add,
-      secondPart: context.locale.games_search_screen_games,
-      searchHint: context.locale.games_search_screen_search,
+      firstPart: context.locale.asset_search_screen_search_and_add,
+      secondPart: context.locale.asset_search_screen_coins,
+      searchHint: context.locale.asset_search_screen_search,
       searchController: searchController,
       autoFocusSearch: true,
       appBarStyle: AppBarStyle.multiColored,
       child: BlocProvider(
-        create: (context) => cubit
-          ..pagingController.addPageRequestListener(
-            (offset) => _addLoadEvent(cubit, offset),
-          ),
-        child: BlocBuilder<CryptoAssetCubit, CryptoAssetState>(
+        create: (context) => bloc,
+        child: BlocConsumer<CryptoAssetSearchBloc, CryptoAssetState>(
+          listener: (context, state) {
+            if (state is CryptoAssetLoaded && !addedPageRequestLister) {
+              addedPageRequestLister = true;
+              bloc.pagingController.addPageRequestListener(
+                (offset) => _addLoadEvent(bloc, offset),
+              );
+            }
+          },
           builder: (context, state) {
             if (state is CryptoAssetInitial) {
               return const SizedBox.shrink();
             } else if (state is CryptoAssetLoading &&
-                cubit.pagingController.itemList?.isEmpty == true) {
-              return const Center(
-                child: Padding(
-                  padding: Paddings.top32,
-                  child: ListLoading(),
-                ),
+                bloc.pagingController.itemList?.isEmpty == true) {
+              return Column(
+                children: const [
+                  Center(
+                    child: Padding(
+                      padding: Paddings.top32,
+                      child: ListLoading(),
+                    ),
+                  ),
+                ],
               );
             } else {
               return BlocBuilder<AccountWalletCubit, AccountWalletState>(
@@ -83,7 +96,7 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
                   return PagedListView.separated(
                     padding: Paddings.top32,
                     physics: const BouncingScrollPhysics(),
-                    pagingController: cubit.pagingController,
+                    pagingController: bloc.pagingController,
                     builderDelegate: PagedChildBuilderDelegate<Asset>(
                       itemBuilder: (context, item, index) {
                         final asset = Assets.getAssetDetail(item.assetId);
@@ -131,8 +144,15 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
                                 ),
                         );
                       },
-                      firstPageProgressIndicatorBuilder: (_) => const Center(
-                        child: ListLoading(),
+                      firstPageProgressIndicatorBuilder: (_) => Column(
+                        children: const [
+                          Center(
+                            child: Padding(
+                              padding: Paddings.bottom32,
+                              child: ListLoading(),
+                            ),
+                          ),
+                        ],
                       ),
                       newPageProgressIndicatorBuilder: (_) => const Center(
                         child: Padding(
@@ -149,7 +169,7 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
                           ),
                         ),
                         onTap: () {
-                          cubit.reloadAssets();
+                          bloc.add(const ReloadCryptoAssetsEvent());
                         },
                       ),
                       noMoreItemsIndicatorBuilder: (_) => Gaps.gap20,
@@ -166,8 +186,8 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
                             ),
                           ),
                           onTap: () {
-                            cubit.loadCryptoAsset(
-                                cubit.pagingController.nextPageKey!);
+                            bloc.add(LoadCryptoAssetsEvent(
+                                page: bloc.pagingController.nextPageKey!));
                           },
                         ),
                       ),

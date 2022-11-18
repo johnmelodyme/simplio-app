@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_bloc.dart';
+import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_bloc_event.dart';
+import 'package:simplio_app/logic/cubit/games/game_bloc_event.dart';
+import 'package:simplio_app/logic/cubit/games/games_bloc.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -27,6 +32,8 @@ class DiscoveryScreen extends ScreenWithDialog {
       tabs: [
         NavigationBarTabItem(
           label: context.locale.discovery_tab_games,
+          onRefresh: () async =>
+              context.read<GamesBloc>().add(const ReloadGamesEvent()),
           searchBar: SearchBarPlaceholder(
             onTap: () {
               GoRouter.of(context).pushNamed(
@@ -49,6 +56,11 @@ class DiscoveryScreen extends ScreenWithDialog {
         ),
         NavigationBarTabItem(
           label: context.locale.discovery_tab_coins,
+          onRefresh: () async => {
+            context.read<CryptoAssetBloc>().add(
+                  const ReloadCryptoAssetsEvent(),
+                ),
+          },
           searchBar: SearchBarPlaceholder(
             label: context.locale.discovery_screen_search_and_add_coins,
             onTap: () {

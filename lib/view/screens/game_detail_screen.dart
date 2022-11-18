@@ -10,7 +10,8 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
-import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
+import 'package:simplio_app/logic/cubit/games/game_bloc_event.dart';
+import 'package:simplio_app/logic/cubit/games/games_bloc.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/app_bar_mask.dart';
@@ -56,7 +57,7 @@ class GameDetailScreen extends ScreenWithDialog {
   Widget innerBuild(BuildContext context) {
     final AccountWalletCubit accountWalletCubit =
         context.read<AccountWalletCubit>();
-    final GamesCubit cubit = context.read<GamesCubit>();
+    final GamesBloc cubit = context.read<GamesBloc>();
     final topGap = MediaQuery.of(context).viewPadding.top;
     final bottomGap = MediaQuery.of(context).viewPadding.bottom +
         Constants.coinsBottomTabBarHeight;
@@ -72,8 +73,8 @@ class GameDetailScreen extends ScreenWithDialog {
               child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              BlocBuilder<GamesCubit, GamesState>(
-                bloc: cubit..loadGame(gameId),
+              BlocBuilder<GamesBloc, GamesState>(
+                bloc: cubit..add(LoadGameEvent(gameId: gameId)),
                 builder: (context, state) {
                   if (state is GamesLoadingState) {
                     return const SliverFillRemaining(

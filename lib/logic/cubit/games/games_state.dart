@@ -1,4 +1,4 @@
-part of 'games_cubit.dart';
+part of 'games_bloc.dart';
 
 abstract class GamesState extends Equatable {
   const GamesState();

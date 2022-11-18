@@ -6,7 +6,9 @@ import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
-import 'package:simplio_app/logic/cubit/games/games_cubit.dart';
+import 'package:simplio_app/logic/cubit/games/game_bloc_event.dart';
+import 'package:simplio_app/logic/cubit/games/games_bloc.dart';
+import 'package:simplio_app/logic/cubit/games/my_games_bloc.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/empty_list_placeholder.dart';
@@ -28,7 +30,7 @@ class MyGamesContent extends StatefulWidget {
 }
 
 class _MyGamesContentState extends State<MyGamesContent> {
-  GamesCubit? cubit;
+  MyGamesBloc? cubit;
 
   void _buyCoin(BuildContext context, String assetId, String networkId) {
     context.read<AssetBuyFormCubit>().clear();
@@ -40,12 +42,12 @@ class _MyGamesContentState extends State<MyGamesContent> {
 
   @override
   Widget build(BuildContext context) {
-    cubit ??= GamesCubit.builder(
+    cubit ??= MyGamesBloc(
       userRepository: RepositoryProvider.of<UserRepository>(context),
       marketplaceRepository:
           RepositoryProvider.of<MarketplaceRepository>(context),
     );
-    cubit?.loadMyGames();
+    cubit?.add(const LoadMyGamesEvent());
     final accountWalletCubit = context.read<AccountWalletCubit>();
     return SliverPadding(
       padding: Paddings.horizontal16,
@@ -53,7 +55,7 @@ class _MyGamesContentState extends State<MyGamesContent> {
         create: (context) {
           return cubit!;
         },
-        child: BlocBuilder<GamesCubit, GamesState>(
+        child: BlocBuilder<MyGamesBloc, GamesState>(
           builder: (context, state) {
             if (state is GamesLoadingState) {
               return const SliverToBoxAdapter(
@@ -74,7 +76,7 @@ class _MyGamesContentState extends State<MyGamesContent> {
                       ),
                     ),
                     onTap: () {
-                      cubit?.loadMyGames();
+                      cubit?.add(const LoadMyGamesEvent());
                     },
                   ),
                 ),

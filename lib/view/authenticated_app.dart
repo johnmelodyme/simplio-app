@@ -6,7 +6,9 @@ import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/buy_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
+import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
+import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
@@ -15,6 +17,8 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
+import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_bloc.dart';
+import 'package:simplio_app/logic/cubit/games/games_bloc.dart';
 import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
@@ -72,6 +76,19 @@ class AuthenticatedApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AssetBuyFormCubit.builder(
             buyRepository: RepositoryProvider.of<BuyRepository>(context),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => GamesBloc.builder(
+            userRepository: RepositoryProvider.of<UserRepository>(context),
+            marketplaceRepository:
+                RepositoryProvider.of<MarketplaceRepository>(context),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => CryptoAssetBloc.builder(
+            marketplaceRepository:
+                RepositoryProvider.of<MarketplaceRepository>(context),
           ),
         ),
       ],

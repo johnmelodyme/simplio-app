@@ -42,7 +42,7 @@ class _SearchState extends State<Search> {
 
   @override
   void initState() {
-    widget.searchController.addListener(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController.jumpTo(
         -(Constants.appBarHeight +
             MediaQuery.of(context).viewPadding.top +

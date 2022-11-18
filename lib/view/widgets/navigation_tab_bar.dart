@@ -72,6 +72,7 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
         Constants.bottomTabBarHeight;
 
     final topGap = MediaQuery.of(context).viewPadding.top;
+    final fixedHeight = Constants.appBarHeight + topGap;
 
     return WillPopScope(
       onWillPop: () async {
@@ -84,72 +85,79 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
             state,
           ) {
             return Positioned.fill(
-              child: CustomScrollView(
-                physics: const BouncingScrollPhysics(),
-                controller: scrollController,
-                slivers: [
-                  SliverGap(MediaQuery.of(context).viewPadding.top +
-                      Constants.appBarHeight),
-                  if (widget.tabs[currentTab].topSlivers?.isNotEmpty == true)
-                    ...widget.tabs[currentTab].topSlivers!,
-                  SliverPadding(
-                    padding: Paddings.horizontal16,
-                    sliver: SliverPersistentHeader(
-                        pinned: true,
-                        delegate: FixedHeightItemDelegate(
-                            fixedHeight: Constants.navigationTabBarHeight,
-                            child: Container(
-                              height: Constants.navigationTabBarHeight,
-                              decoration: BoxDecoration(
-                                color: SioColors.backGradient4Start,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(RadiusSize.radius64),
-                                ),
-                              ),
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  ...widget.tabs
-                                      .map(
-                                        (tab) => Expanded(
-                                          child: NavigationTabChip(
-                                            label: tab.label,
-                                            iconData: tab.iconData,
-                                            iconColor: tab.iconColor,
-                                            isSelected: currentTab ==
-                                                widget.tabs.indexOf(tab),
-                                            onTap: () {
-                                              if (currentTab ==
-                                                  widget.tabs.indexOf(tab)) {
-                                                return;
-                                              }
-                                              state(() => currentTab =
-                                                  widget.tabs.indexOf(tab));
-                                            },
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                ],
-                              ),
-                            ))),
-                  ),
-                  if (widget.tabs[currentTab].searchBar != null) ...[
-                    const SliverGap(Dimensions.padding20),
+              child: RefreshIndicator(
+                edgeOffset: fixedHeight,
+                color: SioColors.softBlack,
+                backgroundColor: SioColors.whiteBlue,
+                onRefresh: () async =>
+                    widget.tabs[currentTab].onRefresh?.call(),
+                child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  controller: scrollController,
+                  slivers: [
+                    SliverGap(MediaQuery.of(context).viewPadding.top +
+                        Constants.appBarHeight),
+                    if (widget.tabs[currentTab].topSlivers?.isNotEmpty == true)
+                      ...widget.tabs[currentTab].topSlivers!,
                     SliverPadding(
                       padding: Paddings.horizontal16,
                       sliver: SliverPersistentHeader(
-                        floating: true,
-                        delegate: FixedHeightItemDelegate(
-                            fixedHeight: Constants.searchBarHeight,
-                            child: widget.tabs[currentTab].searchBar!),
-                      ),
-                    )
+                          pinned: true,
+                          delegate: FixedHeightItemDelegate(
+                              fixedHeight: Constants.navigationTabBarHeight,
+                              child: Container(
+                                height: Constants.navigationTabBarHeight,
+                                decoration: BoxDecoration(
+                                  color: SioColors.backGradient4Start,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(RadiusSize.radius64),
+                                  ),
+                                ),
+                                width: double.infinity,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    ...widget.tabs
+                                        .map(
+                                          (tab) => Expanded(
+                                            child: NavigationTabChip(
+                                              label: tab.label,
+                                              iconData: tab.iconData,
+                                              iconColor: tab.iconColor,
+                                              isSelected: currentTab ==
+                                                  widget.tabs.indexOf(tab),
+                                              onTap: () {
+                                                if (currentTab ==
+                                                    widget.tabs.indexOf(tab)) {
+                                                  return;
+                                                }
+                                                state(() => currentTab =
+                                                    widget.tabs.indexOf(tab));
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ],
+                                ),
+                              ))),
+                    ),
+                    if (widget.tabs[currentTab].searchBar != null) ...[
+                      const SliverGap(Dimensions.padding20),
+                      SliverPadding(
+                        padding: Paddings.horizontal16,
+                        sliver: SliverPersistentHeader(
+                          floating: true,
+                          delegate: FixedHeightItemDelegate(
+                              fixedHeight: Constants.searchBarHeight,
+                              child: widget.tabs[currentTab].searchBar!),
+                        ),
+                      )
+                    ],
+                    ...widget.tabs[currentTab].bottomSlivers,
+                    SliverGap(bottomGap)
                   ],
-                  ...widget.tabs[currentTab].bottomSlivers,
-                  SliverGap(bottomGap)
-                ],
+                ),
               ),
             );
           }),
