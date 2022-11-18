@@ -64,7 +64,8 @@ class _AssetSendQrScannerScreenState extends State<AssetSendQrScannerScreen>
                             networkId: context
                                 .read<AssetSendFormCubit>()
                                 .state
-                                .networkAssetId,
+                                .sourceNetworkWallet
+                                .networkId,
                             qrCodeCallback: (String value) async {
                               context
                                   .read<AssetSendFormCubit>()
