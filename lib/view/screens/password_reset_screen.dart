@@ -35,6 +35,7 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
               child:
                   BlocConsumer<PasswordResetFormCubit, PasswordResetFormState>(
                 bloc: cubit,
+                listenWhen: ((prev, curr) => prev.response != curr.response),
                 listener: (context, state) {
                   final response = state.response;
                   if (response is PasswordResetFormSuccess) {

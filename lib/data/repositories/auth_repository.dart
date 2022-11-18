@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
 import 'package:simplio_app/data/http/services/sign_in_service.dart';
@@ -53,6 +55,15 @@ class AuthRepository with JwtMixin {
 
     if (response.isSuccessful) {
       return await signIn(email, password);
+    }
+
+    //TODO: Handle the error in the future with HttpErrorCodes and codes that
+    // come from backend. In this case the response comming from backend is:
+    // { "ErrorCode":"AUTH_USER_REGISTRATION_FAILED",
+    // "ErrorMessage":"{ code = DUPLICATE }", "StatusCode":409 }
+    // but we do not take it into consideration
+    if (response.statusCode == HttpStatus.conflict) {
+      throw Exception('Account already exists');
     }
 
     throw Exception("Sign up has failed");

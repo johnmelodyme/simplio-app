@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
+import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -19,7 +20,8 @@ class PasswordChangeScreen extends StatefulWidget {
   State<PasswordChangeScreen> createState() => _PasswordChangeScreenState();
 }
 
-class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
+class _PasswordChangeScreenState extends State<PasswordChangeScreen>
+    with PopupDialogMixin {
   final formKey = GlobalKey<FormState>();
   final oldPasswordKey = const Key('old-password.key');
   final newPasswordKey = const Key('new-password-key');
@@ -34,8 +36,27 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
         top: true,
         child: SingleChildScrollView(
           child: BlocListener<PasswordChangeFormCubit, PasswordChangeFormState>(
+            listenWhen: ((prev, curr) => prev.response != curr.response),
             listener: (context, state) {
-              // TODO: handle responses
+              final res = state.response;
+
+              if (res is PasswordChangeFormSuccess) {
+                showPopup(
+                  context,
+                  message: context.locale
+                      .password_change_screen_password_changed_successfully_notification,
+                  icon: Icon(
+                    SioIcons.verified,
+                    size: 50,
+                    color: SioColors.softBlack,
+                  ),
+                );
+              }
+
+              if (res is PasswordChangeFormFailure) {
+                showError(context,
+                    message: state.response!.props.first.toString());
+              }
             },
             child: Column(
               children: [

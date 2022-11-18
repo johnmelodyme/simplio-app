@@ -5,6 +5,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/sign_up_form/sign_up_form_cubit.dart';
 import 'package:simplio_app/view/decorations/underlined_text_form_field_decoration.dart';
+import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
@@ -17,7 +18,7 @@ import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/sio_text_form_field.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatelessWidget with PopupDialogMixin {
   const SignUpScreen({super.key});
 
   @override
@@ -25,6 +26,7 @@ class SignUpScreen extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
 
     return BlocListener<SignUpFormCubit, SignUpFormState>(
+      listenWhen: ((prev, curr) => prev.response != curr.response),
       listener: (context, state) {
         final r = state.response;
 
@@ -35,7 +37,7 @@ class SignUpScreen extends StatelessWidget {
         }
 
         if (r is SignUpFormFailure) {
-          //  TODO: Implement logic for failure.
+          showError(context, message: state.response!.props.first.toString());
         }
       },
       child: SioScaffold(
