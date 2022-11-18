@@ -20,56 +20,69 @@ class PopupError extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: Paddings.all16,
-              padding: Paddings.all12,
-              decoration: BoxDecoration(
-                color: SioColors.whiteBlue,
-                borderRadius: BorderRadii.radius20,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    SioColors.attentionGradient,
-                    SioColors.attention,
-                  ],
-                ),
-              ),
-              child: Row(
-                children: [
-                  icon,
-                  Gaps.gap10,
-                  Expanded(
-                    child: Text(
-                      message,
-                      style: SioTextStyles.h5
-                          .apply(color: SioColorsDark.whiteBlue),
-                    ),
-                  ),
-                  Gaps.gap10,
-                  IconButton(
-                    onPressed: () {
-                      onCancel?.call();
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(
-                      SioIcons.cancel,
-                      color: SioColorsDark.whiteBlue,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () {
+            if (onCancel != null) onCancel!();
+          },
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.transparent,
+          ),
         ),
-      ),
+        Material(
+          type: MaterialType.transparency,
+          child: Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: Paddings.all16,
+                  padding: Paddings.all12,
+                  decoration: BoxDecoration(
+                    color: SioColors.whiteBlue,
+                    borderRadius: BorderRadii.radius20,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        SioColors.attentionGradient,
+                        SioColors.attention,
+                      ],
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      icon,
+                      Gaps.gap10,
+                      Expanded(
+                        child: Text(
+                          message,
+                          style: SioTextStyles.h5
+                              .apply(color: SioColorsDark.whiteBlue),
+                        ),
+                      ),
+                      Gaps.gap10,
+                      IconButton(
+                        onPressed: () {
+                          onCancel?.call();
+                        },
+                        icon: const Icon(
+                          SioIcons.cancel,
+                          color: SioColorsDark.whiteBlue,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/popup_dialog.dart';
@@ -9,10 +11,11 @@ mixin PopupDialogMixin {
     final BuildContext context, {
     required String message,
     required Widget icon,
-    Duration? hideAfter = const Duration(seconds: 3),
+    Duration hideAfter = const Duration(seconds: 3),
     Function? afterHideAction,
   }) async {
     bool popupIsActive = true;
+    Timer? timer;
 
     showDialog<void>(
       context: context,
@@ -22,29 +25,38 @@ mixin PopupDialogMixin {
         icon: icon,
         message: message,
         onCancel: () {
-          popupIsActive = false;
           afterHideAction != null ? afterHideAction() : null;
+
+          if (popupIsActive) {
+            Navigator.of(context).pop();
+          }
+          if (timer != null) timer.cancel();
+          popupIsActive = false;
         },
       ),
     );
 
-    if (hideAfter != null) {
-      Future.delayed(hideAfter, () {
-        if (popupIsActive) {
+    timer = Timer(hideAfter, () {
+      if (popupIsActive) {
+        if (Navigator.maybeOf(context) != null &&
+            Navigator.canPop(context) == true) {
           Navigator.of(context).pop();
-          afterHideAction != null ? afterHideAction() : null;
         }
-      });
-    }
+        afterHideAction != null ? afterHideAction() : null;
+        if (timer != null) timer.cancel();
+        popupIsActive = false;
+      }
+    });
   }
 
   Future<void> showError(
     final BuildContext context, {
     required String message,
-    Duration? hideAfter = const Duration(seconds: 3),
+    Duration hideAfter = const Duration(seconds: 3),
     Function? afterHideAction,
   }) async {
     bool popupIsActive = true;
+    Timer? timer;
 
     showDialog<void>(
       context: context,
@@ -58,19 +70,26 @@ mixin PopupDialogMixin {
         ),
         message: message,
         onCancel: () {
-          popupIsActive = false;
           afterHideAction != null ? afterHideAction() : null;
+
+          if (popupIsActive) {
+            Navigator.of(context).pop();
+          }
+          if (timer != null) timer.cancel();
+          popupIsActive = false;
         },
       ),
     );
 
-    if (hideAfter != null) {
-      Future.delayed(hideAfter, () {
-        if (popupIsActive) {
+    timer = Timer(hideAfter, () {
+      if (popupIsActive) {
+        if (Navigator.maybeOf(context) != null && Navigator.canPop(context)) {
           Navigator.of(context).pop();
-          afterHideAction != null ? afterHideAction() : null;
         }
-      });
-    }
+        afterHideAction != null ? afterHideAction() : null;
+        if (timer != null) timer.cancel();
+        popupIsActive = false;
+      }
+    });
   }
 }

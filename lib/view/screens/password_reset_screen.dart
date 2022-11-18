@@ -52,10 +52,14 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                       ),
                     );
                   }
+                  if (response is PasswordResetFormFailure) {
+                    showError(
+                      context,
+                      message: response.exception.toString(),
+                    );
+                  }
                 },
-                buildWhen: (prev, curr) =>
-                    prev.response != curr.response ||
-                    prev.isValid != curr.isValid,
+                buildWhen: (prev, curr) => prev != curr,
                 builder: (context, state) {
                   return Column(
                     children: [
@@ -153,7 +157,9 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                             onPressed: (state.isValid &&
                                     state.response
                                         is! PasswordResetFormPending &&
-                                    state.response is! PasswordResetFormSuccess)
+                                    state.response
+                                        is! PasswordResetFormSuccess &&
+                                    state.response is! PasswordResetFormFailure)
                                 ? () {
                                     cubit.submitForm();
                                     FocusManager.instance.primaryFocus
@@ -164,7 +170,8 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                           ),
                         ),
                       ),
-                      if (state.response is PasswordResetFormSuccess) ...[
+                      if (state.response is PasswordResetFormSuccess ||
+                          state.response is PasswordResetFormFailure) ...[
                         Gaps.gap20,
                         GestureDetector(
                           onTap: () {
