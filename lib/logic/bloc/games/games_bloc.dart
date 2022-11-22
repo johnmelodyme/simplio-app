@@ -4,7 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
-import 'package:simplio_app/logic/cubit/games/game_bloc_event.dart';
+import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 
 part 'games_state.dart';

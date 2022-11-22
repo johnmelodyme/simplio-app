@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 
@@ -15,6 +16,7 @@ class SioTextFormField extends StatefulWidget {
   final int? maxLines;
   final TextAlignVertical? textAlignVertical;
   final Color? cursorColor;
+  final List<TextInputFormatter>? inputFormatters;
 
   const SioTextFormField({
     super.key,
@@ -30,6 +32,7 @@ class SioTextFormField extends StatefulWidget {
     this.maxLines,
     this.textAlignVertical,
     this.cursorColor,
+    this.inputFormatters,
   });
 
   @override
@@ -58,8 +61,9 @@ class _SioTextFormFieldState extends State<SioTextFormField> {
         setState(() {});
       },
       child: TextFormField(
-        key: const Key('themed-text-form-field'),
+        key: widget.key,
         focusNode: focusNode,
+        inputFormatters: widget.inputFormatters,
         controller: widget.controller,
         autofocus: widget.autofocus,
         validator: widget.validator,
@@ -74,6 +78,17 @@ class _SioTextFormFieldState extends State<SioTextFormField> {
         ).merge(
             focusNode.hasFocus ? widget.focusedStyle : widget.unfocusedStyle),
       ),
+    );
+  }
+}
+
+class LowerCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toLowerCase(),
+      selection: newValue.selection,
     );
   }
 }

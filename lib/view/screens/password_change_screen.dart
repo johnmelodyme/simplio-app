@@ -130,6 +130,7 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen>
                                     oldPassword: password,
                                   );
                                 },
+                                autofocus: true,
                               ),
                               Gaps.gap10,
                               PasswordTextField(

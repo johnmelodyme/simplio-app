@@ -67,7 +67,6 @@ class SignUpScreen extends StatelessWidget with PopupDialogMixin {
                                 child: SioTextFormField(
                                   key: const Key(
                                       'sign-up-screen-email-text-field'),
-                                  autofocus: true,
                                   validator: (email) => context
                                       .read<SignUpFormCubit>()
                                       .state
@@ -99,6 +98,8 @@ class SignUpScreen extends StatelessWidget with PopupDialogMixin {
                                         ? null
                                         : formKey.currentState?.validate();
                                   },
+                                  autofocus: true,
+                                  maxLines: 1,
                                 ),
                               ),
                               PasswordTextField(

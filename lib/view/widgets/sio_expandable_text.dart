@@ -65,6 +65,7 @@ class _SioExpandableTextState extends State<SioExpandableText> {
               ],
             ),
           ),
+        Gaps.gap14,
         if (secondHalf.isNotEmpty)
           InkWell(
             onTap: () {

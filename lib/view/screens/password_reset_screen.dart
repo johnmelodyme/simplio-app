@@ -131,7 +131,6 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                             Gaps.gap32,
                             SioTextFormField(
                               key: const Key('reset-screen-email-text-field'),
-                              autofocus: true,
                               focusedStyle: SioTextStyles.bodyPrimary
                                   .apply(color: SioColorsDark.whiteBlue),
                               unfocusedStyle: SioTextStyles.bodyPrimary
@@ -144,6 +143,8 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                               onChanged: (String? email) {
                                 cubit.changeFormValue(email: email);
                               },
+                              autofocus: true,
+                              maxLines: 1,
                             ),
                           ],
                         ),

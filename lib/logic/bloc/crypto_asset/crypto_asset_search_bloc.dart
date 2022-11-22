@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
-import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_bloc.dart';
-import 'package:simplio_app/logic/cubit/crypto_asset/crypto_asset_bloc_event.dart';
+import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc.dart';
+import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc_event.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 
 class CryptoAssetSearchBloc extends CryptoAssetBloc {

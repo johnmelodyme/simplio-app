@@ -47,6 +47,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         setState(() {});
       },
       child: TextFormField(
+        key: widget.key,
         controller: controller,
         obscureText: _isDisplayed,
         autofocus: widget.autofocus,
