@@ -84,8 +84,8 @@
     "backup_inventory_screen_subtitle_2": "Keep your phrase safe so you\ncan access your crypto anytime",
 
     "welcome_screen_already_have_an_account": "Already have an account?",
-    "welcome_screen_login": "Log in",
-    "welcome_screen_start_using_app_btn":"Start using app",
+    "welcome_screen_sign_in": "Sign in",
+    "welcome_screen_create_account_btn":"Create account",
     "welcome_screen_page1_discover":"Discover",
     "welcome_screen_page1_gamefi":"GameFi",
     "welcome_screen_page1_world":"world",
@@ -94,7 +94,7 @@
     "welcome_screen_page2_tokens_and_nfts":"tokens & NFT´s",
     "welcome_screen_page2_subtitle":"with your debit card.",
     "welcome_screen_page3_connect":"Connect",
-    "welcome_screen_page3_to_play_games":"to\nPlay 2 Earn games",
+    "welcome_screen_page3_to_web3_games":"to\nWeb3 games",
     "welcome_screen_page3_subtitle":"instantly with one simple click.",
 
     "application_screen_discovery_tabbar_label": "Discover",
@@ -210,10 +210,9 @@
     "find_dapps_screen_find":"Find ",
     "find_dapps_screen_dapps":"Dapps ",
 
-    "account_setup_success_screen_account_created_label":"Hurray! \n Your account have been created",
-    "account_setup_success_screen_account_created_description_label":"Before you start, we suggest you\n verify your account due to the use\n of all functionalities and full\n security of your Simplio app.",
-    "account_setup_success_screen_account_created_verify_button": "Verify your account to get more",
-    "account_setup_success_screen_account_created_start_button": "Start using app",
+    "account_setup_success_screen_account_created_title1":"Complete",
+    "account_setup_success_screen_account_created_title2":"already\nstarted Identity\nverification",
+    "account_setup_success_screen_account_created_description_label":"You'll level up to User Status Level 3 so you can start buying coins.",
 
     "asset_receive_screen_receive_coins_btn": "Receive",
     "asset_receive_screen_network": "Network",

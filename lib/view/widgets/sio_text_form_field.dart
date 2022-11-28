@@ -4,6 +4,7 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 
 class SioTextFormField extends StatefulWidget {
+  final Key? textFormKey;
   final bool autofocus;
   final FormFieldValidator<String>? validator;
   final InputDecoration? decoration;
@@ -20,6 +21,7 @@ class SioTextFormField extends StatefulWidget {
 
   const SioTextFormField({
     super.key,
+    this.textFormKey,
     this.autofocus = false,
     this.validator,
     this.decoration,
@@ -61,7 +63,7 @@ class _SioTextFormFieldState extends State<SioTextFormField> {
         setState(() {});
       },
       child: TextFormField(
-        key: widget.key,
+        key: widget.textFormKey,
         focusNode: focusNode,
         inputFormatters: widget.inputFormatters,
         controller: widget.controller,

@@ -73,7 +73,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: context.locale.welcome_screen_page3_to_play_games,
+                      text: context.locale.welcome_screen_page3_to_web3_games,
                       style: SioTextStyles.h1
                           .apply(color: SioColorsDark.whiteBlue),
                     ),
@@ -85,7 +85,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: -30,
+            bottom: 30,
             left: 0,
             right: 0,
             child: IgnorePointer(
@@ -118,8 +118,11 @@ class WelcomeScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: HighlightedElevatedButton(
-                      onPressed: () => {},
-                      label: context.locale.welcome_screen_start_using_app_btn,
+                      onPressed: () => {
+                        GoRouter.of(context)
+                            .pushNamed(UnauthenticatedRouter.signUp)
+                      },
+                      label: context.locale.welcome_screen_create_account_btn,
                     ),
                   ),
                   Padding(
@@ -137,7 +140,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           Gaps.gap8,
                           Text(
-                            context.locale.welcome_screen_login,
+                            context.locale.welcome_screen_sign_in,
                             style: SioTextStyles.bodyPrimary.copyWith(
                               color: SioColorsDark.mentolGreen,
                               height: 1,

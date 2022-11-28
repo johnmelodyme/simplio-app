@@ -7,6 +7,7 @@ import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class PasswordTextField extends StatefulWidget {
+  final Key? passwordFieldKey;
   final ValueChanged<String>? onChanged;
   final ValueChanged<bool>? onFocusChange;
   final GestureTapCallback? onTap;
@@ -19,6 +20,7 @@ class PasswordTextField extends StatefulWidget {
 
   const PasswordTextField({
     super.key,
+    this.passwordFieldKey,
     required this.passwordComplexityCondition,
     this.onChanged,
     this.onFocusChange,
@@ -47,7 +49,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         setState(() {});
       },
       child: TextFormField(
-        key: widget.key,
+        key: widget.passwordFieldKey,
         controller: controller,
         obscureText: _isDisplayed,
         autofocus: widget.autofocus,
