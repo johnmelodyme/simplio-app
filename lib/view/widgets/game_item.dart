@@ -22,7 +22,7 @@ class GameItem extends StatelessWidget {
   });
 
   final Game game;
-  final Function? onTap;
+  final VoidCallback? onTap;
   final List<GameAction> gameActions;
   final Function(GameAction) onActionPressed;
   final bool? isFavourite;
@@ -129,7 +129,7 @@ class GameItem extends StatelessWidget {
                 child: InkWell(
                   highlightColor:
                       SioColors.searchItemEndGradient.withOpacity(0.73),
-                  onTap: () => onTap?.call(),
+                  onTap: onTap,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       top: Dimensions.padding17,
@@ -158,44 +158,44 @@ class GameItem extends StatelessWidget {
                             ),
                           ],
                         ),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Icon(
+                                SioIcons.sports_esports,
+                                color: SioColors.games,
+                              ),
+                            ),
+                            Gaps.gap5,
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: context
+                                        .locale.common_item_coin_price_label,
+                                    style: SioTextStyles.bodyDetail.apply(
+                                      color: SioColors.secondary7,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: game.assetEmbedded.price
+                                        .getThousandValueWithCurrency(
+                                      currency: game.assetEmbedded.currency,
+                                      locale: Intl.getCurrentLocale(),
+                                    ),
+                                    style: SioTextStyles.bodyDetail
+                                        .apply(color: SioColors.whiteBlue),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                         const Spacer(),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: Icon(
-                                    SioIcons.sports_esports,
-                                    color: SioColors.games,
-                                  ),
-                                ),
-                                Gaps.gap5,
-                                RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: context.locale
-                                            .common_item_coin_price_label,
-                                        style: SioTextStyles.bodyDetail.apply(
-                                          color: SioColors.secondary7,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: game.assetEmbedded.price
-                                            .getThousandValueWithCurrency(
-                                          currency: game.assetEmbedded.currency,
-                                          locale: Intl.getCurrentLocale(),
-                                        ),
-                                        style: SioTextStyles.bodyDetail
-                                            .apply(color: SioColors.whiteBlue),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
                             Gaps.gap8,
                             Wrap(
                               spacing: Dimensions.padding5,

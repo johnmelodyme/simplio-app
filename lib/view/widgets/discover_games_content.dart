@@ -56,10 +56,12 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
               itemBuilder: (context, game, index) {
                 return GameItem(
                   game: game,
-                  gameActions: const [
-                    GameAction.play,
-                    GameAction.buyCoin,
-                  ],
+                  gameActions: game.isPromoted
+                      ? const [
+                          GameAction.play,
+                          GameAction.buyCoin,
+                        ]
+                      : [],
                   onActionPressed: (GameAction gameAction) {
                     if (gameAction == GameAction.play) {
                       GoRouter.of(context).pushNamed(
@@ -95,14 +97,17 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
                       }
                     }
                   },
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(
-                      AuthenticatedRouter.gameDetail,
-                      params: {
-                        'gameId': game.gameId.toString(),
-                      },
-                    );
-                  },
+                  onTap: game.isPromoted
+                      ? () {
+                          if (!game.isPromoted) return;
+                          GoRouter.of(context).pushNamed(
+                            AuthenticatedRouter.gameDetail,
+                            params: {
+                              'gameId': game.gameId.toString(),
+                            },
+                          );
+                        }
+                      : null,
                 );
               },
               firstPageProgressIndicatorBuilder: (_) => Column(children: const [
