@@ -23,10 +23,9 @@ import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
 import 'package:simplio_app/view/widgets/search.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
-  AssetSearchScreen({super.key}) : super(panelController: PanelController());
+  AssetSearchScreen({super.key});
 
   final TextEditingController searchController = TextEditingController();
 

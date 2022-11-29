@@ -17,12 +17,11 @@ import 'package:simplio_app/view/widgets/my_games_content.dart';
 import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
 import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MyGamesScreen extends ScreenWithDialog {
-  MyGamesScreen({super.key})
+  const MyGamesScreen({super.key})
       : super(
-          panelController: PanelController(),
+          withBottomTabBar: true,
         );
 
   @override

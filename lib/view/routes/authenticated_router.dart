@@ -162,7 +162,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 pageBuilder: pageBuilder(
                   builder: (state) => BlocProvider(
                     create: (context) => DialogCubit.builder(),
-                    child: DiscoveryScreen(),
+                    child: const DiscoveryScreen(),
                   ),
                   withTransition: false,
                   settings: const ApplicationSettings(
@@ -684,7 +684,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                   create: (context) => DialogCubit.builder(),
                   child: Builder(
                     builder: (context) {
-                      return MyGamesScreen();
+                      return const MyGamesScreen();
                     },
                   ),
                 ),

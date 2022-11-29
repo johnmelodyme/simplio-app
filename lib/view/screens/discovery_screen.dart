@@ -17,12 +17,10 @@ import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
 import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
 import 'package:simplio_app/view/widgets/slidable_banner.dart';
 import 'package:sio_glyphs/sio_icons.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DiscoveryScreen extends ScreenWithDialog {
-  DiscoveryScreen({super.key})
+  const DiscoveryScreen({super.key})
       : super(
-          panelController: PanelController(),
           withBottomTabBar: true,
         );
 

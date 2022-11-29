@@ -12,17 +12,22 @@ import 'package:simplio_app/view/widgets/outlined_container.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-abstract class ScreenWithDialog extends StatelessWidget {
+abstract class ScreenWithDialog extends StatefulWidget {
   const ScreenWithDialog({
-    required this.panelController,
     this.withBottomTabBar = false,
     super.key,
   });
 
-  final PanelController panelController;
   final bool withBottomTabBar;
 
+  @override
+  State<ScreenWithDialog> createState() => _ScreenWithDialogState();
+
   Widget innerBuild(BuildContext context);
+}
+
+class _ScreenWithDialogState extends State<ScreenWithDialog> {
+  final PanelController panelController = PanelController();
 
   @override
   @nonVirtual
@@ -42,10 +47,10 @@ abstract class ScreenWithDialog extends StatelessWidget {
         boxShadow: null,
         minHeight: 0,
         maxHeight: Constants.dialogHeight +
-            (withBottomTabBar ? Constants.bottomTabBarHeight : 0),
+            (widget.withBottomTabBar ? Constants.bottomTabBarHeight : 0),
         body: Stack(
           children: [
-            innerBuild(context),
+            widget.innerBuild(context),
             BlocBuilder<DialogCubit, DialogState>(
               buildWhen: (prev, curr) => prev.displayed != curr.displayed,
               builder: (context, state) => (state.displayed)
@@ -168,7 +173,7 @@ abstract class ScreenWithDialog extends StatelessWidget {
                   ),
                 ),
                 Gaps.gap30,
-                if (withBottomTabBar)
+                if (widget.withBottomTabBar)
                   const SizedBox(
                       height:
                           Constants.bottomTabBarHeight + Dimensions.padding20)

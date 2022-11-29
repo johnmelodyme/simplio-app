@@ -25,16 +25,13 @@ import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
 import 'package:simplio_app/view/widgets/sio_expandable_text.dart';
 import 'package:simplio_app/view/widgets/slidable_game_images.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GameDetailScreen extends ScreenWithDialog {
-  GameDetailScreen({
+  const GameDetailScreen({
     super.key,
     required this.gameId,
-  }) : super(
-          panelController: PanelController(),
-        );
+  });
 
   final String gameId;
 
