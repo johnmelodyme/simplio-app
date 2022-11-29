@@ -200,7 +200,7 @@
 
    
 
-    "pin_setup_screen_account_creation_title": "Account created",
+    "pin_setup_screen_account_creation_title": "Create your PIN",
     "pin_setup_screen_account_creation_subtitle": "One last thing to do. Set your Security\nCode to keep your account safe.",
 
     "protected_guard_enter_pin_code": "Enter your pin",
