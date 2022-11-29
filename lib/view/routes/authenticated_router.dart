@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
@@ -613,9 +614,34 @@ class AuthenticatedRouter with PageBuilderMixin {
               path: 'gameplay',
               name: gameplay,
               pageBuilder: pageBuilder(
-                builder: (state) => GameplayScreen(
-                  game: state.extra as Game,
-                ),
+                builder: (state) {
+                  return FutureBuilder(
+                    //Must be forced switch to full screen, otherwise it will cause this issue:
+                    //1. Webview can be resized by external factors (zoom, scroll, touch or by system itself) ,
+                    //2. Flutter then wants update all children in Stack as their possitions were changed,
+                    //3. So it will trigger build() method again even in StatelessWidget,
+                    //4. So it will create new InAppWebView with loading game inside again.
+                    //5. This process will repeated several times,
+                    // what will cause OOM or freeze main thread so app will be frozen.
+                    future: SystemChrome.setEnabledSystemUIMode(
+                        SystemUiMode.manual,
+                        overlays: []),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return GameplayScreen(
+                          game: state.extra as Game,
+                          onClosed: () {
+                            SystemChrome.setEnabledSystemUIMode(
+                                SystemUiMode.manual,
+                                overlays: SystemUiOverlay.values);
+                          },
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  );
+                },
                 settings: const ApplicationSettings(
                   tabBar: TabBarRouteSettings(
                     isVisible: false,
