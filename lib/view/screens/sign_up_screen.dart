@@ -5,6 +5,7 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/sign_up_form/sign_up_form_cubit.dart';
 import 'package:simplio_app/view/decorations/underlined_text_form_field_decoration.dart';
+import 'package:simplio_app/view/routes/unauthenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -247,7 +248,8 @@ class SignUpScreen extends StatelessWidget with PopupDialogMixin {
                                 ],
                               ),
                               onTap: () {
-                                GoRouter.of(context).pop();
+                                GoRouter.of(context)
+                                    .replaceNamed(UnauthenticatedRouter.signIn);
                               },
                             ),
                           ),

@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/themed_linear_progress_indicator.dart';
-
-const double indicatorHeight = 2;
-const double indicatorWidth = 31;
-const double indicatorPadding = 5;
 
 class Story extends StatefulWidget {
   final List<Widget> items;
@@ -43,8 +38,8 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
               child: ClipRRect(
                 borderRadius: BorderRadii.radius2,
                 child: SizedBox(
-                  height: indicatorHeight,
-                  width: indicatorWidth,
+                  height: Constants.storyIndicatorHeight,
+                  width: Constants.storyIndicatorWidth,
                   child: ThemedLinearProgressIndicator(
                     value: controllers[e.key].value,
                   ),
@@ -55,20 +50,22 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
           .toList(),
     );
 
-    return Column(
-      children: [
-        Gaps.gap16,
-        bars,
-        const Gap(46),
-        Expanded(
-          child: GestureDetector(
-            onTapDown: (_) => _toggleAnimation(),
-            onLongPressEnd: (_) => _toggleAnimation(stop: false),
-            onTapUp: _handleLeftRightTaps,
-            child: widget.items[displayedItemIndex],
-          ),
-        ),
-      ],
+    return GestureDetector(
+      onTapDown: (_) => _toggleAnimation(),
+      onLongPressEnd: (_) => _toggleAnimation(stop: false),
+      onTapUp: _handleLeftRightTaps,
+      child: Stack(
+        children: [
+          Positioned(
+              child: Column(
+            children: [
+              Gaps.gap16,
+              bars,
+            ],
+          )),
+          Positioned.fill(child: widget.items[displayedItemIndex]),
+        ],
+      ),
     );
   }
 
@@ -113,7 +110,7 @@ class _StoryState extends State<Story> with TickerProviderStateMixin {
 
   EdgeInsetsGeometry _progressIndicatorPadding(int index, int length) {
     if (index + 1 < length) {
-      return const EdgeInsets.only(right: indicatorPadding);
+      return const EdgeInsets.only(right: Constants.storyIndicatorPadding);
     } else {
       return const EdgeInsets.only();
     }

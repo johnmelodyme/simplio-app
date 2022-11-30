@@ -172,6 +172,7 @@ class Dimensions {
   static const double padding32 = 32;
   static const double padding35 = 35;
   static const double padding40 = 40;
+  static const double padding46 = 46;
   static const double padding48 = 48;
   static const double padding60 = 60;
   static const double padding64 = 64;
@@ -214,6 +215,9 @@ class Constants {
   static const double slidableBannerHeight = 140;
   static const double slidableBannerBulletSize = 4;
   static const double dialogHeight = 250;
+  static const double storyIndicatorHeight = 2;
+  static const double storyIndicatorWidth = 31;
+  static const double storyIndicatorPadding = 5;
 
   //counts
   static const pageSizeTransactions = 7;

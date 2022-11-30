@@ -17,40 +17,46 @@ class WelcomeScreenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              children: [
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: textSpans,
+    return Container(
+      color: Colors.transparent,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            top: Dimensions.padding16 +
+                Dimensions.padding46 +
+                Constants.storyIndicatorHeight,
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: textSpans,
+                    ),
                   ),
-                ),
-                Gaps.gap5,
-                Text(
-                  subtitle,
-                  style: SioTextStyles.s1.apply(
-                    color: SioColorsDark.secondary7,
+                  Gaps.gap5,
+                  Text(
+                    subtitle,
+                    style: SioTextStyles.s1.apply(
+                      color: SioColorsDark.secondary7,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: _bottomMargin(context),
-          child: Image.asset(
-            imageRes,
-            fit: BoxFit.fitWidth,
-          ),
-        )
-      ],
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: _bottomMargin(context),
+            child: Image.asset(
+              imageRes,
+              fit: BoxFit.fitWidth,
+            ),
+          )
+        ],
+      ),
     );
   }
 

@@ -277,7 +277,7 @@ class SignInScreen extends StatelessWidget with PopupDialogMixin {
                                           .state
                                           .response;
                                       if (res is! SignInFormPending) {
-                                        GoRouter.of(context).pushNamed(
+                                        GoRouter.of(context).replaceNamed(
                                             UnauthenticatedRouter.signUp);
                                       }
                                     },
