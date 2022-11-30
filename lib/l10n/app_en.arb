@@ -264,7 +264,7 @@
     "asset_buy_screen_what_you_buy":"What you buy",
     "asset_buy_screen_buy":"Buy",
     "asset_buy_screen_choose_payment_method":"Choose payment method",
-    "asset_buy_screen_use_debit_card":"Use debit card",
+    "asset_buy_screen_use_debit_card":"My debit card",
     "asset_buy_screen_range_exception": "Amount must be bigger than {min} and less than {max}",
     "@asset_buy_screen_range_exception": {
        "placeholders": {
@@ -284,7 +284,7 @@
     "asset_buy_summary_screen_fee":"Fee",
     "asset_buy_summary_screen_in_total_to_buy":"In total to buy",
     "asset_buy_summary_screen_confirm_buy":"Swipe up to confirm buy",
-    "asset_buy_summary_screen_debit_card":"Debit card",
+    "asset_buy_summary_screen_debit_card":"My debit card",
     "asset_buy_summary_screen_paypal":"PayPal",
     "asset_buy_summary_screen_apple_pay":"Apple Pay",
     "asset_buy_summary_screen_google_pay":"Google Pay",

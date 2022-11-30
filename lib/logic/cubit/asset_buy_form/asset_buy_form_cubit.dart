@@ -147,75 +147,75 @@ class AssetBuyFormCubit extends Cubit<AssetBuyFormState> {
   void submitForm({
     required String walletAddress,
   }) async {
-    emit(state.copyWith(response: const AssetBuyFormPriceRefreshPending()));
+    emit(state.copyWith(response: const AssetBuyFormSuccess()));
 
-    try {
-      final buyOrderResponse = await _buyRepository.buy(
-        convertResponse: state.buyConvertResponse,
-        walletAddress: walletAddress,
-      );
-      _checkPaymentStatus();
+    // try {
+    //   final buyOrderResponse = await _buyRepository.buy(
+    //     convertResponse: state.buyConvertResponse,
+    //     walletAddress: walletAddress,
+    //   );
+    //   _checkPaymentStatus();
 
-      emit(state.copyWith(
-        response: const AssetBuyFormPending(),
-        paymentGatewayUrl: buyOrderResponse.paymentUrl,
-        orderId: buyOrderResponse.orderId,
-      ));
-    } catch (err) {
-      if (err is BadRequestHttpError) {
-        _refreshPrice();
-      }
-    }
+    //   emit(state.copyWith(
+    //     response: const AssetBuyFormPending(),
+    //     paymentGatewayUrl: buyOrderResponse.paymentUrl,
+    //     orderId: buyOrderResponse.orderId,
+    //   ));
+    // } catch (err) {
+    //   if (err is BadRequestHttpError) {
+    //     _refreshPrice();
+    //   }
+    // }
   }
 
   void navigateToSuccessPage() {
     emit(state.copyWith(response: const AssetBuyFormSuccess()));
   }
 
-  void _checkPaymentStatus() async {
-    _statusCheckTimer =
-        Timer.periodic(const Duration(seconds: 1), (timer) async {
-      final orderStatus = await _buyRepository.status(state.orderId);
+  // void _checkPaymentStatus() async {
+  //   _statusCheckTimer =
+  //       Timer.periodic(const Duration(seconds: 1), (timer) async {
+  //     final orderStatus = await _buyRepository.status(state.orderId);
 
-      if (orderStatus.status == 'COMPLETED') {
-        _statusCheckTimer!.cancel();
-        navigateToSuccessPage();
-      } else if (orderStatus.status == 'FAILED') {
-        _statusCheckTimer!.cancel();
-        emit(
-          state.copyWith(
-            response: AssetBuyFormFailure(
-              exception: Exception('Payment failed'),
-            ),
-          ),
-        );
-      }
-    });
-  }
+  //     if (orderStatus.status == 'COMPLETED') {
+  //       _statusCheckTimer!.cancel();
+  //       navigateToSuccessPage();
+  //     } else if (orderStatus.status == 'FAILED') {
+  //       _statusCheckTimer!.cancel();
+  //       emit(
+  //         state.copyWith(
+  //           response: AssetBuyFormFailure(
+  //             exception: Exception('Payment failed'),
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   });
+  // }
 
-  void _refreshPrice() async {
-    emit(state.copyWith(response: const AssetBuyFormPriceRefreshPending()));
+  // void _refreshPrice() async {
+  //   emit(state.copyWith(response: const AssetBuyFormPriceRefreshPending()));
 
-    try {
-      final convertResult = await _buyRepository.convert(
-        fiatAssetId: state.buyConvertResponse.fiatAsset.assetId,
-        cryptoAssetId: state.buyConvertResponse.cryptoAsset.assetId,
-        cryptoNetworkId: state.buyConvertResponse.cryptoAsset.networkId,
-        amount: state.buyConvertResponse.cryptoAsset.amount,
-        fromCrypto: true,
-      );
+  //   try {
+  //     final convertResult = await _buyRepository.convert(
+  //       fiatAssetId: state.buyConvertResponse.fiatAsset.assetId,
+  //       cryptoAssetId: state.buyConvertResponse.cryptoAsset.assetId,
+  //       cryptoNetworkId: state.buyConvertResponse.cryptoAsset.networkId,
+  //       amount: state.buyConvertResponse.cryptoAsset.amount,
+  //       fromCrypto: true,
+  //     );
 
-      emit(
-        state.copyWith(
-          buyConvertResponse: convertResult,
-          response: const AssetBuyFormPriceRefreshSuccess(),
-        ),
-      );
-    } catch (_) {
-      emit(state.copyWith(
-          response: AssetBuyFormFailure(exception: Exception())));
-    }
-  }
+  //     emit(
+  //       state.copyWith(
+  //         buyConvertResponse: convertResult,
+  //         response: const AssetBuyFormPriceRefreshSuccess(),
+  //       ),
+  //     );
+  //   } catch (_) {
+  //     emit(state.copyWith(
+  //         response: AssetBuyFormFailure(exception: Exception())));
+  //   }
+  // }
 
   void _fetchAmount() async {
     emit(state.copyWith(response: const AmountPending()));

@@ -1,3 +1,6 @@
+// ignore_for_file: unused_import
+// TODO: delete these ignores when mock is done
+
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -417,7 +420,7 @@ class _AmountFormField extends StatelessWidget {
                       send_cubit.AmountUnit.crypto
                   ? ThousandsSeparatorInputFormatter().format(state.amount)
                   : ThousandsSeparatorInputFormatter().format(state.amountFiat);
-              final assetFormCubit = context.read<AssetBuyFormCubit>();
+              // final assetFormCubit = context.read<AssetBuyFormCubit>();
 
               return HighlightedNumFormField(
                 controller: amountController,
@@ -428,20 +431,21 @@ class _AmountFormField extends StatelessWidget {
                   padding: Paddings.all8,
                   child: Toggle(
                     trueOption: Text(
-                      Assets.getAssetDetail(assetId).ticker,
-                      style: SioTextStyles.bodyS.copyWith(
-                        color: SioColors.whiteBlue,
-                      ),
-                    ),
-                    falseOption: Text(
                       'USD', // todo: use correct currency
                       style: SioTextStyles.bodyS.copyWith(
                         color: SioColors.whiteBlue,
                       ),
                     ),
-                    value: state.amountUnit == AmountUnit.crypto,
-                    onChanged: (value) => assetFormCubit.changeAmountUnit(
-                        value ? AmountUnit.crypto : AmountUnit.fiat),
+                    // falseOption: Text(
+                    //   Assets.getAssetDetail(assetId).ticker,
+                    //   style: SioTextStyles.bodyS.copyWith(
+                    //     color: SioColors.whiteBlue,
+                    //   ),
+                    // ),
+                    // value: state.amountUnit == AmountUnit.crypto,
+                    value: true,
+                    // onChanged: (value) => assetFormCubit.changeAmountUnit(
+                    //     value ? AmountUnit.crypto : AmountUnit.fiat),
                   ),
                 ),
               );

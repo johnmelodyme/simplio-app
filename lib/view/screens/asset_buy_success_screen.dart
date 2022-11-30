@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
+import 'package:simplio_app/view/screens/inventory_screen.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -35,13 +36,11 @@ class AssetBuySuccessScreen extends StatelessWidget {
         ],
       ),
       successAction: () {
-        final state = context.read<AssetBuyFormCubit>().state;
-        GoRouter.of(context).pop();
-        GoRouter.of(context)
-            .replaceNamed(AuthenticatedRouter.assetDetail, params: {
-          'assetId': state.sourceAssetWallet.assetId.toString(),
-          'networkId': state.sourceNetworkWallet.networkId.toString(),
-        });
+        context.read<AssetBuyFormCubit>().state;
+        GoRouter.of(context).goNamed(
+          AuthenticatedRouter.inventory,
+          extra: InventoryTab.transactions,
+        );
       },
       option: Text(
         context.locale.asset_send_success_screen_transaction_success_option,
