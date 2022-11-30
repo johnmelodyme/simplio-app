@@ -141,7 +141,7 @@ class AuthenticatedRouter with PageBuilderMixin {
         );
       },
       observers: [
-        TabBarObserver.of(context),
+        NavigatorsObserver.of(context),
       ],
       routes: [
         GoRoute(
@@ -167,7 +167,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                   ),
                   withTransition: false,
                   settings: const ApplicationSettings(
-                    tabBar: TabBarRouteSettings(
+                    navigators: NavigatorsRouteSettings(
                       selectedKey: ValueKey(discovery),
                     ),
                   ),
@@ -181,7 +181,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                         key: ValueKey(configuration),
                       ),
                       withTransition: false,
-                      settings: const ApplicationSettings.hiddenTabBar(),
+                      settings: const ApplicationSettings.hiddenNavigators(),
                     ),
                     routes: [
                       GoRoute(
@@ -192,7 +192,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                             key: ValueKey(securitySettings),
                           ),
                           withTransition: false,
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                         routes: [
                           GoRoute(
@@ -200,9 +201,10 @@ class AuthenticatedRouter with PageBuilderMixin {
                             name: passwordChange,
                             pageBuilder: pageBuilder(
                               settings: const ApplicationSettings(
-                                tabBar: TabBarRouteSettings(
+                                navigators: NavigatorsRouteSettings(
                                   selectedKey: ValueKey(configuration),
-                                  isVisible: false,
+                                  isAppBarVisible: false,
+                                  isTabBarVisible: false,
                                 ),
                               ),
                               builder: (state) => BlocProvider(
@@ -231,9 +233,10 @@ class AuthenticatedRouter with PageBuilderMixin {
                             name: backupInventory,
                             pageBuilder: pageBuilder(
                               settings: const ApplicationSettings(
-                                tabBar: TabBarRouteSettings(
+                                navigators: NavigatorsRouteSettings(
                                   selectedKey: ValueKey(backupInventory),
-                                  isVisible: false,
+                                  isAppBarVisible: false,
+                                  isTabBarVisible: false,
                                 ),
                               ),
                               builder: (state) => BlocProvider(
@@ -286,7 +289,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                           gameId: state.params['gameId']!,
                         ),
                       ),
-                      settings: const ApplicationSettings.hiddenTabBar(),
+                      settings: const ApplicationSettings.hiddenNavigators(),
                     ),
                   ),
                 ]),
@@ -318,7 +321,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                   ),
                   withTransition: false,
                   settings: const ApplicationSettings(
-                    tabBar: TabBarRouteSettings(
+                    navigators: NavigatorsRouteSettings(
                       selectedKey: ValueKey(inventory),
                     ),
                   ),
@@ -332,7 +335,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                         assetId: state.params['assetId'],
                         networkId: state.params['networkId'],
                       ),
-                      settings: const ApplicationSettings.hiddenTabBar(),
+                      settings: const ApplicationSettings.hiddenNavigators(),
                     ),
                   ),
                   GoRoute(
@@ -345,7 +348,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                           sourceNetworkId: state.params['networkId'],
                         ),
                       ),
-                      settings: const ApplicationSettings.hiddenTabBar(),
+                      settings: const ApplicationSettings.hiddenNavigators(),
                     ),
                     routes: [
                       GoRoute(
@@ -359,7 +362,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                               networkId: state.params['networkId']!,
                             ),
                           ),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -367,7 +371,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                         name: assetSendQrScanner,
                         pageBuilder: pageBuilder(
                           builder: (state) => const AssetSendQrScannerScreen(),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -378,7 +383,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                             builder: (context) =>
                                 const AssetSendSummaryScreen(),
                           ),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -389,7 +395,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                             builder: (context) =>
                                 const AssetSendSuccessScreen(),
                           ),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                     ],
@@ -402,7 +409,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                         sourceAssetId: state.params['assetId'],
                         sourceNetworkId: state.params['networkId'],
                       ),
-                      settings: const ApplicationSettings.hiddenTabBar(),
+                      settings: const ApplicationSettings.hiddenNavigators(),
                     ),
                     routes: [
                       GoRoute(
@@ -418,7 +425,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                               targetSearch: false,
                             ),
                           ),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -434,7 +442,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                               targetSearch: true,
                             ),
                           ),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -445,7 +454,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                             create: (context) => ExpansionListCubit.builder(),
                             child: const AssetExchangeSummaryScreen(),
                           ),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -454,7 +464,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                         pageBuilder: pageBuilder(
                           builder: (state) =>
                               const AssetExchangeSuccessScreen(),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                     ],
@@ -467,7 +478,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                         assetId: state.params['assetId'],
                         networkId: state.params['networkId'],
                       ),
-                      settings: const ApplicationSettings.hiddenTabBar(),
+                      settings: const ApplicationSettings.hiddenNavigators(),
                     ),
                     routes: [
                       GoRoute(
@@ -481,7 +492,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                               networkId: state.params['networkId']!,
                             ),
                           ),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -489,7 +501,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                         name: assetBuySummary,
                         pageBuilder: pageBuilder(
                           builder: (state) => const AssetBuySummaryScreen(),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -498,7 +511,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                         pageBuilder: pageBuilder(
                           builder: (state) =>
                               const AssetBuyConfirmationScreen(),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -507,7 +521,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                         pageBuilder: pageBuilder(
                           builder: (state) =>
                               const AssetBuyPaymentGateWayScreen(),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                       GoRoute(
@@ -515,7 +530,8 @@ class AuthenticatedRouter with PageBuilderMixin {
                         name: assetBuySuccess,
                         pageBuilder: pageBuilder(
                           builder: (state) => const AssetBuySuccessScreen(),
-                          settings: const ApplicationSettings.hiddenTabBar(),
+                          settings:
+                              const ApplicationSettings.hiddenNavigators(),
                         ),
                       ),
                     ],
@@ -538,7 +554,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 builder: (state) => const DappsScreen(),
                 withTransition: false,
                 settings: const ApplicationSettings(
-                  tabBar: TabBarRouteSettings(
+                  navigators: NavigatorsRouteSettings(
                     selectedKey: ValueKey(findDapps),
                   ),
                 ),
@@ -577,8 +593,9 @@ class AuthenticatedRouter with PageBuilderMixin {
                   );
                 },
                 settings: const ApplicationSettings(
-                  tabBar: TabBarRouteSettings(
-                    isVisible: false,
+                  navigators: NavigatorsRouteSettings(
+                    isAppBarVisible: false,
+                    isTabBarVisible: false,
                   ),
                 ),
               ),
@@ -606,7 +623,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     },
                   ),
                 ),
-                settings: const ApplicationSettings.hiddenTabBar(),
+                settings: const ApplicationSettings.hiddenNavigators(),
               ),
             ),
             GoRoute(
@@ -626,7 +643,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                     },
                   ),
                 ),
-                settings: const ApplicationSettings.hiddenTabBar(),
+                settings: const ApplicationSettings.hiddenNavigators(),
               ),
             ),
             GoRoute(
@@ -634,6 +651,7 @@ class AuthenticatedRouter with PageBuilderMixin {
               name: walletConnectQrCodeScanner,
               pageBuilder: pageBuilder(
                 builder: (state) => const WalletConnectQrCodeScannerScreen(),
+                settings: const ApplicationSettings.hiddenNavigators(),
               ),
             ),
             GoRoute(
@@ -650,7 +668,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                 ),
                 withTransition: false,
                 settings: const ApplicationSettings(
-                  tabBar: TabBarRouteSettings(
+                  navigators: NavigatorsRouteSettings(
                     selectedKey: ValueKey(games),
                   ),
                 ),

@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
 
 class ApplicationSettings extends RouteSettings {
-  final TabBarRouteSettings? tabBar;
+  final NavigatorsRouteSettings? navigators;
 
   @override
   ApplicationArguments get arguments => ApplicationArguments(
-        tabBar: tabBar,
+        navigators: navigators,
       );
 
   const ApplicationSettings({
-    this.tabBar,
+    this.navigators,
   });
 
-  const ApplicationSettings.hiddenTabBar({
-    this.tabBar = const TabBarRouteSettings(isVisible: false),
+  const ApplicationSettings.hiddenNavigators({
+    this.navigators = const NavigatorsRouteSettings(
+        isAppBarVisible: false, isTabBarVisible: false),
   });
 }
 
 class ApplicationArguments {
-  final TabBarRouteSettings? tabBar;
+  final NavigatorsRouteSettings? navigators;
 
   ApplicationArguments({
-    this.tabBar,
+    this.navigators,
   });
 }
 
-class TabBarRouteSettings {
+class NavigatorsRouteSettings {
   final Key? selectedKey;
-  final bool isVisible;
+  final bool isAppBarVisible;
+  final bool isTabBarVisible;
 
-  const TabBarRouteSettings({
+  const NavigatorsRouteSettings({
     this.selectedKey,
-    this.isVisible = true,
+    this.isAppBarVisible = true,
+    this.isTabBarVisible = true,
   });
 }

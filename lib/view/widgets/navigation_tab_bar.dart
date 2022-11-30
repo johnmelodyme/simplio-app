@@ -1,13 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
-import 'package:simplio_app/view/widgets/app_bar_mask.dart';
-import 'package:simplio_app/view/widgets/avatar_app_bar.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_chip.dart';
 
@@ -72,7 +66,7 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
         Constants.bottomTabBarHeight;
 
     final topGap = MediaQuery.of(context).viewPadding.top;
-    final fixedHeight = Constants.appBarHeight + topGap;
+    final fixedHeight = topGap + Constants.appBarHeight;
 
     return WillPopScope(
       onWillPop: () async {
@@ -161,39 +155,6 @@ class _NavigationTabBarState extends State<NavigationTabBar> {
               ),
             );
           }),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: SizedBox(height: topGap + Constants.appBarHeight),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: AppBarMask(
-              height: topGap + Constants.appBarHeight + Dimensions.padding20,
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 0,
-            child: AvatarAppBar(
-              title: 'Nick name',
-              userLevel: 1,
-              onTap: () {
-                GoRouter.of(context).pushNamed(
-                  AuthenticatedRouter.configuration,
-                );
-              },
-            ),
-          ),
         ],
       ),
     );

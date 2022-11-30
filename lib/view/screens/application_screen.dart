@@ -4,10 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
+import 'package:simplio_app/logic/cubit/navigators/navigators_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/avatar_app_bar_blured.dart';
 import 'package:simplio_app/view/widgets/bottom_tab_bar.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
@@ -43,14 +44,15 @@ class _ApplicationScreenState extends State<ApplicationScreen>
     super.build(context);
     return SioScaffold(
       body: Stack(
-        alignment: AlignmentDirectional.bottomCenter,
         children: [
           widget.child,
-          BlocBuilder<TabBarCubit, TabBarState>(
+          BlocBuilder<NavigatorsCubit, NavigatorsState>(
             buildWhen: (previous, current) => previous != current,
             builder: (context, state) {
-              return state.isDisplayed
-                  ? Align(
+              return Stack(
+                children: [
+                  if (state.tabBarDisplayed)
+                    Align(
                       alignment: Alignment.bottomCenter,
                       child: BottomTabBar(
                         activeItem: state.selectedItem,
@@ -105,8 +107,11 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               }),
                         ],
                         height: 70.0,
-                      ))
-                  : const SizedBox.shrink();
+                      ),
+                    ),
+                  if (state.appBarDisplayed) const AvatarAppBarBlured(),
+                ],
+              );
             },
           ),
           BlocBuilder<WalletConnectCubit, WalletConnectState>(

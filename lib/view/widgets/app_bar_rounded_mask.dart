@@ -1,59 +1,61 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 
-class AppBarMaskPainter extends CustomPainter {
-  AppBarMaskPainter({
-    required this.startColor,
-    required this.endColor,
+class AppBarRoundedMaskPainter extends CustomPainter {
+  AppBarRoundedMaskPainter({
+    required this.color,
+    required this.offset,
   });
 
-  final Color startColor;
-  final Color endColor;
+  final double offset;
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = const Offset(0, 0) & size;
+    final Paint pathPaint = Paint()..color = color;
 
-    final Paint pathPaint = Paint()
-      ..blendMode = BlendMode.color
-      ..shader = ui.Gradient.linear(
-        rect.topCenter,
-        rect.bottomCenter,
-        [
-          startColor,
-          endColor,
-        ],
-      );
+    final Path topLeftRect = _getTopLeftPath(size);
+    final Path topRightRect = _getTopRightPath(size);
 
+    canvas.drawPath(topLeftRect, pathPaint);
+    canvas.drawPath(topRightRect, pathPaint);
+  }
+
+  Path _getTopLeftPath(Size size) {
     final Path line = Path();
-    line.moveTo(0, 0);
+    line.moveTo(0, size.height);
+    line.cubicTo(
+      0,
+      size.height,
+      0,
+      0,
+      offset,
+      0,
+    );
+
+    line.lineTo(offset, size.height);
     line.lineTo(0, size.height);
-    line.cubicTo(
-      0,
-      size.height,
-      0,
-      size.height - 20,
-      20,
-      size.height - 20,
-    );
-
-    line.lineTo(size.width - 20, size.height - 20);
-
-    line.cubicTo(
-      size.width - 20,
-      size.height - 20,
-      size.width,
-      size.height - 20,
-      size.width,
-      size.height,
-    );
-
-    line.lineTo(size.width, 0);
-
     line.close();
 
-    canvas.drawPath(line, pathPaint);
+    return line;
+  }
+
+  Path _getTopRightPath(Size size) {
+    final Path line = Path();
+    line.moveTo(size.width - offset, 0);
+    line.cubicTo(
+      size.width - offset,
+      0,
+      size.width,
+      0,
+      size.width,
+      size.height,
+    );
+
+    line.lineTo(size.width - offset, size.height);
+    line.lineTo(size.width - offset, 0);
+    line.close();
+
+    return line;
   }
 
   @override

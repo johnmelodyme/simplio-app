@@ -36,7 +36,6 @@ class AvatarAppBar extends StatelessWidget {
               padding: EdgeInsets.only(
                 top: topGap + Dimensions.padding16,
                 bottom: Dimensions.padding20,
-                left: Dimensions.padding16,
               ),
               child: SizedBox(
                 height: 40,

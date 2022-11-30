@@ -14,7 +14,6 @@ import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/app_bar_mask.dart';
 import 'package:simplio_app/view/widgets/back_gradient4.dart';
 import 'package:simplio_app/view/widgets/coin_details_menu.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart' as app_bar;
@@ -152,14 +151,6 @@ class GameDetailScreen extends ScreenWithDialog {
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: SizedBox(height: topGap + Constants.appBarHeight),
             ),
-          ),
-        ),
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: AppBarMask(
-            height: topGap + Constants.appBarHeight + Dimensions.padding20,
           ),
         ),
         app_bar.ColorizedAppBar(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
+import 'package:simplio_app/logic/cubit/navigators/navigators_cubit.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
 
-class TabBarObserver extends NavigatorObserver {
+class NavigatorsObserver extends NavigatorObserver {
   final BuildContext context;
 
-  TabBarObserver.of(this.context);
+  NavigatorsObserver.of(this.context);
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
@@ -27,22 +27,23 @@ class TabBarObserver extends NavigatorObserver {
     if (args == null) return;
 
     if (args is ApplicationSettings) {
-      _setTabBarVisibility(args.tabBar);
+      _setTabBarVisibility(args.navigators);
     } else {
       _hideTabBar();
     }
   }
 
-  void _setTabBarVisibility(TabBarRouteSettings? tabBarSettings) {
-    if (tabBarSettings == null) return;
+  void _setTabBarVisibility(NavigatorsRouteSettings? navigatorsSettings) {
+    if (navigatorsSettings == null) return;
 
-    context.read<TabBarCubit>().setVisibility(
-          isVisible: tabBarSettings.isVisible,
-          activeItem: tabBarSettings.selectedKey,
+    context.read<NavigatorsCubit>().setVisibility(
+          appBarVisible: navigatorsSettings.isAppBarVisible,
+          tabBarVisible: navigatorsSettings.isTabBarVisible,
+          activeItem: navigatorsSettings.selectedKey,
         );
   }
 
   void _hideTabBar() {
-    context.read<TabBarCubit>().setVisibility();
+    context.read<NavigatorsCubit>().setVisibility();
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -10,8 +8,6 @@ import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/app_bar_mask.dart';
-import 'package:simplio_app/view/widgets/avatar_app_bar.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 import 'package:simplio_app/view/widgets/my_games_content.dart';
 import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
@@ -29,8 +25,6 @@ class MyGamesScreen extends ScreenWithDialog {
     final scrollController = ScrollController();
     final bottomGap = MediaQuery.of(context).viewPadding.bottom +
         Constants.bottomTabBarHeight;
-
-    final topGap = MediaQuery.of(context).viewPadding.top;
 
     return WillPopScope(
       onWillPop: () async {
@@ -88,39 +82,6 @@ class MyGamesScreen extends ScreenWithDialog {
                   ),
                   SliverGap(bottomGap)
                 ],
-              ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: ClipRRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: SizedBox(height: topGap + Constants.appBarHeight),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: AppBarMask(
-                height: topGap + Constants.appBarHeight + Dimensions.padding20,
-              ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              child: AvatarAppBar(
-                title: 'Nick name',
-                userLevel: 1,
-                onTap: () {
-                  GoRouter.of(context).pushNamed(
-                    AuthenticatedRouter.configuration,
-                  );
-                },
               ),
             ),
           ],

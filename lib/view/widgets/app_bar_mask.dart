@@ -6,18 +6,20 @@ class AppBarMask extends StatelessWidget {
   const AppBarMask({
     super.key,
     required this.height,
+    required this.offset,
   });
 
   final double height;
+  final double offset;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: height,
       child: CustomPaint(
-        painter: AppBarMaskPainter(
-          startColor: SioColors.softBlack.withOpacity(0.8),
-          endColor: SioColors.appBarTop.withOpacity(0.8),
+        painter: AppBarRoundedMaskPainter(
+          color: SioColors.softBlack,
+          offset: offset,
         ),
       ),
     );

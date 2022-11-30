@@ -19,7 +19,7 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
-import 'package:simplio_app/logic/cubit/tab_bar/tab_bar_cubit.dart';
+import 'package:simplio_app/logic/cubit/navigators/navigators_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -59,7 +59,7 @@ class AuthenticatedApp extends StatelessWidget {
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
           ),
         ),
-        BlocProvider(create: (_) => TabBarCubit()),
+        BlocProvider(create: (_) => NavigatorsCubit()),
         BlocProvider(
           create: (context) => AssetExchangeFormCubit(
             swapRepository: RepositoryProvider.of<SwapRepository>(context),
