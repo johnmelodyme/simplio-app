@@ -383,7 +383,7 @@
     "game_detail_screen_detail_title": "detail",
     "game_detail_screen_add_to_my_games": "Add to My Games",
     "game_detail_screen_remove_from_my_games": "Remove from My Games",
-    "game_detail_screen_game_coin_balance": "Game coin\nbalance",
+    "game_detail_screen_game_coin_balance": "Game coin\nprice",
     "game_detail_screen_community": "Community",
     "game_detail_screen_my_game_nfts": "My game NFT's",
     "game_detail_screen_game_added": "“Game added to\nMy Games”",

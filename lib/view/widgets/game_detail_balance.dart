@@ -20,8 +20,7 @@ class GameDetailBalance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final networkDetail =
-        Assets.getNetworkDetail(gameDetail.assetEmbedded.networkId);
+    final assetDetail = Assets.getAssetDetail(gameDetail.assetEmbedded.assetId);
 
     return ClipRRect(
       borderRadius: BorderRadii.radius20,
@@ -68,7 +67,7 @@ class GameDetailBalance extends StatelessWidget {
               Gaps.gap10,
               AvatarWithShadow(
                 size: 40,
-                child: networkDetail.style.icon,
+                child: assetDetail.style.icon,
               ),
             ],
           ),
