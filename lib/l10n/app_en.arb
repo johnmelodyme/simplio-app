@@ -125,7 +125,7 @@
     "games_search_screen_games": "Games",
     "games_search_screen_search": "Search",
 
-    "common_games_categories": "{categoryIndex, select, zero{Air Drops} one{Free To Play} two{NFT Included} three{Play To Earn} other{none}}",
+    "common_games_categories": "{categoryIndex, select, 0{Air Drops} 1{Free To Play} 2{NFT Included} 3{Play To Earn} other{none}}",
     "@common_games_categories": {
       "description": "Category of game",
       "placeholders": {
