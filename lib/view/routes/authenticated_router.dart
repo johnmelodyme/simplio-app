@@ -304,10 +304,16 @@ class AuthenticatedRouter with PageBuilderMixin {
                         ),
                       ),
                       BlocProvider(
-                          create: (context) => ExpansionListCubit.builder()),
+                        create: (context) => ExpansionListCubit.builder(),
+                      ),
                     ],
                     child: Builder(builder: (context) {
-                      return const InventoryScreen();
+                      final e = state.extra;
+                      return InventoryScreen(
+                        key: UniqueKey(),
+                        inventoryTab:
+                            e is InventoryTab ? e : InventoryTab.coins,
+                      );
                     }),
                   ),
                   withTransition: false,
@@ -318,78 +324,6 @@ class AuthenticatedRouter with PageBuilderMixin {
                   ),
                 ),
                 routes: [
-                  GoRoute(
-                    path: 'coins',
-                    name: inventoryCoins,
-                    pageBuilder: pageBuilder(
-                      builder: (state) => BlocProvider(
-                        create: (context) => CryptoAssetBloc.builder(
-                          marketplaceRepository:
-                              RepositoryProvider.of<MarketplaceRepository>(
-                                  context),
-                        ),
-                        child: Builder(builder: (context) {
-                          return const InventoryScreen(
-                            inventoryTab: InventoryTab.coins,
-                          );
-                        }),
-                      ),
-                      withTransition: false,
-                      settings: const ApplicationSettings(
-                        tabBar: TabBarRouteSettings(
-                          selectedKey: ValueKey(inventory),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GoRoute(
-                    path: 'nft',
-                    name: inventoryNft,
-                    pageBuilder: pageBuilder(
-                      builder: (state) => BlocProvider(
-                        create: (context) => CryptoAssetBloc.builder(
-                          marketplaceRepository:
-                              RepositoryProvider.of<MarketplaceRepository>(
-                                  context),
-                        ),
-                        child: Builder(builder: (context) {
-                          return const InventoryScreen(
-                            inventoryTab: InventoryTab.nft,
-                          );
-                        }),
-                      ),
-                      withTransition: false,
-                      settings: const ApplicationSettings(
-                        tabBar: TabBarRouteSettings(
-                          selectedKey: ValueKey(inventory),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GoRoute(
-                    path: 'transactions',
-                    name: inventoryTransactions,
-                    pageBuilder: pageBuilder(
-                      builder: (state) => BlocProvider(
-                        create: (context) => CryptoAssetBloc.builder(
-                          marketplaceRepository:
-                              RepositoryProvider.of<MarketplaceRepository>(
-                                  context),
-                        ),
-                        child: Builder(builder: (context) {
-                          return const InventoryScreen(
-                            inventoryTab: InventoryTab.transactions,
-                          );
-                        }),
-                      ),
-                      withTransition: false,
-                      settings: const ApplicationSettings(
-                        tabBar: TabBarRouteSettings(
-                          selectedKey: ValueKey(inventory),
-                        ),
-                      ),
-                    ),
-                  ),
                   GoRoute(
                     path: ':assetId/:networkId/detail',
                     name: assetDetail,

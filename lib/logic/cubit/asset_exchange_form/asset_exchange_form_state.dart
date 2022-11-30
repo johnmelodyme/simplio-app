@@ -31,17 +31,8 @@ class AssetExchangeFormState extends Equatable
   final String amountFromFiat;
   final String amountTo;
   final String amountToFiat;
-  final BigInt amountToAfterFee;
   final AmountUnit amountFromUnit;
   final AmountUnit amountToUnit;
-  final BigInt totalSwapFee;
-  final BigInt sourceTransactionFee;
-  final BigInt targetTransactionFee;
-  final BigInt swapFee;
-  final BigInt baseNetworkFee;
-  final BigInt networkFee;
-  final BigInt gasLimit;
-  final String sourceDepositAddress;
   final List<AssetWallet> availableFromAssets;
   final List<AssetWallet> availableTargetAssets;
   final FocusedDirection focusedDirection;
@@ -57,20 +48,11 @@ class AssetExchangeFormState extends Equatable
     required this.amountFromFiat,
     required this.amountTo,
     required this.amountToFiat,
-    required this.amountToAfterFee,
     required this.amountFromUnit,
     required this.amountToUnit,
-    required this.totalSwapFee,
-    required this.sourceTransactionFee,
-    required this.targetTransactionFee,
-    required this.swapFee,
-    required this.baseNetworkFee,
-    required this.networkFee,
-    required this.gasLimit,
-    required this.sourceDepositAddress,
+    required this.focusedDirection,
     required this.availableFromAssets,
     required this.availableTargetAssets,
-    required this.focusedDirection,
     this.response,
   });
 
@@ -102,17 +84,8 @@ class AssetExchangeFormState extends Equatable
           amountFromFiat: '',
           amountTo: '',
           amountToFiat: '',
-          amountToAfterFee: BigInt.zero,
           amountFromUnit: AmountUnit.crypto,
           amountToUnit: AmountUnit.crypto,
-          totalSwapFee: BigInt.zero,
-          sourceTransactionFee: BigInt.zero,
-          targetTransactionFee: BigInt.zero,
-          swapFee: BigInt.zero,
-          baseNetworkFee: BigInt.zero,
-          networkFee: BigInt.zero,
-          gasLimit: BigInt.zero,
-          sourceDepositAddress: '',
           availableFromAssets: const [],
           availableTargetAssets: const [],
           focusedDirection: FocusedDirection.from,
@@ -125,15 +98,14 @@ class AssetExchangeFormState extends Equatable
       targetNetworkWallet.networkId >= 0 &&
       amountFrom.isNotEmpty &&
       amountTo.isNotEmpty &&
-      double.parse(amountFrom) > 0 &&
+      double.parse(amountFrom) >= minAmount &&
+      double.parse(amountFrom) <= maxAmount &&
       double.parse(amountTo) > 0;
 
-  BigInt get amountToSend =>
-      doubleStringToBigInt(
+  BigInt get amountToSend => doubleStringToBigInt(
         amountFrom,
         sourceNetworkWallet.preset.decimalPlaces,
-      ) -
-      networkFee;
+      );
 
   int get networkAssetId {
     return AssetRepository.assetId(networkId: sourceNetworkWallet.networkId);
@@ -149,17 +121,8 @@ class AssetExchangeFormState extends Equatable
         amountFromFiat,
         amountTo,
         amountToFiat,
-        amountToAfterFee,
         amountFromUnit,
         amountToUnit,
-        totalSwapFee,
-        sourceTransactionFee,
-        targetTransactionFee,
-        swapFee,
-        baseNetworkFee,
-        networkFee,
-        gasLimit,
-        sourceDepositAddress,
         response,
         availableFromAssets,
         availableTargetAssets,
@@ -171,23 +134,12 @@ class AssetExchangeFormState extends Equatable
     NetworkWallet? sourceNetworkWallet,
     AssetWallet? targetAssetWallet,
     NetworkWallet? targetNetworkWallet,
-    String? address,
     String? amountFrom,
     String? amountFromFiat,
     String? amountTo,
     String? amountToFiat,
-    BigInt? amountToAfterFee,
-    String? totalAmount,
     AmountUnit? amountFromUnit,
     AmountUnit? amountToUnit,
-    BigInt? totalSwapFee,
-    BigInt? sourceTransactionFee,
-    BigInt? targetTransactionFee,
-    BigInt? swapFee,
-    BigInt? baseNetworkFee,
-    BigInt? networkFee,
-    BigInt? gasLimit,
-    String? sourceDepositAddress,
     AssetExchangeFormResponse? response,
     List<AssetWallet>? availableFromAssets,
     List<AssetWallet>? availableTargetAssets,
@@ -202,17 +154,8 @@ class AssetExchangeFormState extends Equatable
       amountFromFiat: amountFromFiat ?? this.amountFromFiat,
       amountTo: amountTo ?? this.amountTo,
       amountToFiat: amountToFiat ?? this.amountToFiat,
-      amountToAfterFee: amountToAfterFee ?? this.amountToAfterFee,
       amountFromUnit: amountFromUnit ?? this.amountFromUnit,
       amountToUnit: amountToUnit ?? this.amountToUnit,
-      totalSwapFee: totalSwapFee ?? this.totalSwapFee,
-      sourceTransactionFee: sourceTransactionFee ?? this.sourceTransactionFee,
-      targetTransactionFee: targetTransactionFee ?? this.targetTransactionFee,
-      swapFee: swapFee ?? this.swapFee,
-      baseNetworkFee: baseNetworkFee ?? this.baseNetworkFee,
-      networkFee: networkFee ?? this.networkFee,
-      gasLimit: gasLimit ?? this.gasLimit,
-      sourceDepositAddress: sourceDepositAddress ?? this.sourceDepositAddress,
       response: response ?? this.response,
       availableFromAssets: availableFromAssets ?? this.availableFromAssets,
       availableTargetAssets:

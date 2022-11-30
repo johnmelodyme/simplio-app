@@ -6,7 +6,6 @@ import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -17,7 +16,7 @@ import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/widgets/swipe_up_button.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-class AssetExchangeSummaryScreen extends StatefulWidget with WalletUtilsMixin {
+class AssetExchangeSummaryScreen extends StatefulWidget {
   const AssetExchangeSummaryScreen({super.key});
 
   @override
@@ -32,10 +31,6 @@ class _AssetExchangeSummaryScreen extends State<AssetExchangeSummaryScreen> {
       throw Exception('No AccountWallet Provided');
       // todo: add notification for the user when the snackbar task is done
     }
-
-    context
-        .read<AssetExchangeFormCubit>()
-        .summaryPageReadyState(accountWalletState.wallet.uuid);
 
     return Container(
       decoration: BoxDecoration(
@@ -86,38 +81,21 @@ class _ExchangeTo extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AssetExchangeFormCubit, AssetExchangeFormState>(
       builder: (context, state) {
-        Widget exchangeTo;
-        if (state.response is FetchingFeesPending) {
-          exchangeTo = RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: context.locale.common_loading_with_dots,
-                  style: SioTextStyles.h4.apply(
-                    color: SioColors.mentolGreen,
-                  ),
+        Widget exchangeTo = RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: state.amountTo +
+                    Assets.getAssetDetail(state.targetAssetWallet.assetId)
+                        .ticker,
+                style: SioTextStyles.h4.apply(
+                  color: SioColors.mentolGreen,
                 ),
-              ],
-            ),
-          );
-        } else {
-          exchangeTo = RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text:
-                      '${state.amountToAfterFee.toDecimalString(decimalOffset: state.targetNetworkWallet.preset.decimalPlaces)} '
-                      '${Assets.getAssetDetail(state.targetAssetWallet.assetId).ticker}',
-                  style: SioTextStyles.h4.apply(
-                    color: SioColors.mentolGreen,
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
+              ),
+            ],
+          ),
+        );
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +113,8 @@ class _ExchangeTo extends StatelessWidget {
                   exchangeTo,
                   Expanded(
                     child: Text(
-                      '12.07 \$', // todo: calculate correct fiat value
+                      '${state.amountToFiat}\$',
+                      // '12.07 \$', // todo: calculate correct fiat value
                       textAlign: TextAlign.right,
                       style: SioTextStyles.bodyPrimary
                           .copyWith(color: SioColors.secondary6),
@@ -158,24 +137,6 @@ class _Fee extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AssetExchangeFormCubit, AssetExchangeFormState>(
       builder: (context, state) {
-        Widget fee;
-        if (state.response is FetchingFeesPending) {
-          fee = Text(
-            context.locale.common_loading_with_dots,
-            style: SioTextStyles.bodyS.copyWith(
-              color: SioColors.mentolGreen,
-            ),
-          );
-        } else {
-          fee = Text(
-            '${state.totalSwapFee.getFormattedBalance(state.sourceNetworkWallet.preset.decimalPlaces)} '
-            '${Assets.getAssetDetail(state.networkAssetId).ticker}',
-            style: SioTextStyles.bodyPrimary.apply(
-              color: SioColors.whiteBlue,
-            ),
-          );
-        }
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -194,7 +155,12 @@ class _Fee extends StatelessWidget {
                   headerBuilder: (context, isExpanded) {
                     return Row(
                       children: [
-                        fee,
+                        Text(
+                          '0.36',
+                          style: SioTextStyles.bodyPrimary.apply(
+                            color: SioColors.whiteBlue,
+                          ),
+                        ),
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -257,11 +223,7 @@ class _Fee extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Text(
-                                  state.targetTransactionFee
-                                      .getFormattedBalance(state
-                                          .sourceNetworkWallet
-                                          .preset
-                                          .decimalPlaces), // todo: calculate correct fiat value
+                                  '0.22',
                                   style: SioTextStyles.bodyPrimary.copyWith(
                                     color: SioColors.whiteBlue,
                                   ),
@@ -284,11 +246,7 @@ class _Fee extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Text(
-                                  state.sourceTransactionFee
-                                      .getFormattedBalance(state
-                                          .sourceNetworkWallet
-                                          .preset
-                                          .decimalPlaces), // todo: calculate correct fiat value
+                                  '0.12',
                                   style: SioTextStyles.bodyPrimary.copyWith(
                                     color: SioColors.whiteBlue,
                                   ),
@@ -311,10 +269,7 @@ class _Fee extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Text(
-                                  state.swapFee.getFormattedBalance(state
-                                      .sourceNetworkWallet
-                                      .preset
-                                      .decimalPlaces), // todo: calculate correct fiat value
+                                  '0.02',
                                   style: SioTextStyles.bodyPrimary.copyWith(
                                     color: SioColors.whiteBlue,
                                   ),
@@ -376,7 +331,7 @@ class _ExchangeFrom extends StatelessWidget {
                 exchangeFrom,
                 Expanded(
                   child: Text(
-                    '12.63 \$', // todo: calculate correct fiat value
+                    '${state.amountFromFiat} \$',
                     textAlign: TextAlign.right,
                     style: SioTextStyles.bodyPrimary
                         .copyWith(color: SioColors.secondary6),
@@ -436,7 +391,6 @@ class _SwipeButton extends StatelessWidget {
           onSwipeCallback: () {
             final cubit = context.read<AssetExchangeFormCubit>();
 
-            cubit.submitForm(accountWalletState.wallet.uuid);
             GoRouter.of(context).replaceNamed(
               AuthenticatedRouter.assetExchangeSuccess,
               params: {

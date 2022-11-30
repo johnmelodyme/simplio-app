@@ -45,7 +45,7 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
   late AssetWallet? targetAssetWallet;
   late NetworkWallet? targetNetworkWallet;
 
-  final amountFromController = TextEditingController();
+  final sourceValueFormController = TextEditingController();
   final amountFromHighlightController = HighlightController();
 
   final amountToController = TextEditingController();
@@ -84,7 +84,7 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
   void dispose() {
     amountToHighlightController.dispose();
     amountFromHighlightController.dispose();
-    amountFromController.dispose();
+    sourceValueFormController.dispose();
     amountToController.dispose();
     super.dispose();
   }
@@ -100,6 +100,18 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
 
     if (widget.sourceNetworkId == null) {
       throw Exception('No networkId');
+    }
+
+    if (amountFromHighlightController.highlighted) {
+      context
+          .read<AssetExchangeFormCubit>()
+          .changeDirection(FocusedDirection.from);
+    }
+
+    if (amountToHighlightController.highlighted) {
+      context
+          .read<AssetExchangeFormCubit>()
+          .changeDirection(FocusedDirection.to);
     }
 
     return BlocListener<AssetExchangeFormCubit, AssetExchangeFormState>(
@@ -135,174 +147,151 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
           boxShadow: null,
           minHeight: 0,
           maxHeight: Constants.panelKeyboardHeightWithButton,
-          body: GestureDetector(
-            onTap: () {
-              // handle clicks to the background
-              setState(() {
-                amountFromHighlightController.deselect();
-                amountToHighlightController.deselect();
-                panelController.close();
-              });
-              FocusManager.instance.primaryFocus?.unfocus();
-              scrollTo(exchangeFromKey, 50);
-            },
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              bottomNavigationBar: _NextButton(
-                assetId: widget.sourceAssetId!,
-                networkId: widget.sourceNetworkId!,
-              ),
-              body: SingleChildScrollView(
-                controller: scrollController,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      panelController.close();
-                      _isPanelOpen = false;
-                    });
-
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ColorizedAppBar(
-                        firstPart:
-                            context.locale.asset_exchange_screen_exchange_btn,
-                        secondPart:
-                            context.locale.asset_exchange_screen_coin_label_lc,
-                        actionType: ActionType.close,
-                      ),
-                      HighlightedFormElement(
-                          key: exchangeFromKey,
-                          controller: amountFromHighlightController,
-                          clickableHeight: 160,
-                          onTap: () => setState(() {
-                                amountFromHighlightController
-                                    .deselectConcurrent();
-                                FocusManager.instance.primaryFocus?.unfocus();
-                              }),
-                          children: [
-                            BlocBuilder<AssetExchangeFormCubit,
-                                AssetExchangeFormState>(
-                              buildWhen: (prev, curr) =>
-                                  prev.sourceAssetWallet !=
-                                      curr.sourceAssetWallet ||
-                                  curr.availableFromAssets.isEmpty ||
-                                  curr.availableFromAssets.isNotEmpty,
-                              builder: (context, state) => AssetFormAssetItem<
-                                  AssetExchangeFormCubit,
-                                  AssetExchangeFormState>(
-                                isLoading: state.availableFromAssets.isEmpty,
-                                highlighted:
-                                    amountFromHighlightController.highlighted,
-                                label: context
-                                    .locale.asset_exchange_screen_exchange_from,
-                                onTap: () {
-                                  GoRouter.of(context).pushNamed(
-                                      AuthenticatedRouter
-                                          .assetExchangeSearchFrom,
-                                      params: {
-                                        'assetId': widget.sourceAssetId!,
-                                        'networkId': widget.sourceNetworkId!,
-                                      });
-                                },
-                              ),
-                            ),
-                            _FromAmountFormField(
-                              amountFromController: amountFromController,
-                              highlightController:
-                                  amountFromHighlightController,
-                              scrollController: scrollController,
-                              onTap: () {
-                                setState(() {
-                                  panelController.open();
-                                  _isPanelOpen = true;
-
-                                  amountFromController.text = '';
-                                });
-
-                                scrollTo(exchangeFromKey, 50);
-                              },
-                            ),
-                            Gaps.gap8,
-                          ]),
-                      if (amountFromHighlightController.highlighted)
-                        Container(
-                          padding: Paddings.left16,
-                          child: const AssetFormException<
-                              AssetExchangeFormCubit, AssetExchangeFormState>(
-                            formElementIndex: 0,
-                          ),
-                        ),
-                      HighlightedFormElement(
-                          key: exchangeToKey,
-                          controller: amountToHighlightController,
-                          onTap: () => setState(() {
-                                amountToHighlightController
-                                    .deselectConcurrent();
-                                amountToHighlightController.select();
-                              }),
-                          clickableHeight: 160,
-                          children: [
-                            BlocBuilder<AssetExchangeFormCubit,
-                                AssetExchangeFormState>(
-                              buildWhen: (prev, curr) =>
-                                  prev.targetAssetWallet !=
-                                      curr.targetAssetWallet ||
-                                  curr.availableTargetAssets.isEmpty ||
-                                  curr.availableTargetAssets.isNotEmpty,
-                              builder: (context, state) => AssetFormAssetItem<
-                                  AssetExchangeFormCubit,
-                                  AssetExchangeFormState>(
-                                isLoading: state.availableTargetAssets.isEmpty,
-                                highlighted:
-                                    amountToHighlightController.highlighted,
-                                label: context
-                                    .locale.asset_exchange_screen_exchange_to,
-                                sourceAssetWalletPropertyName:
-                                    'targetAssetWallet',
-                                sourceNetworkWalletPropertyName:
-                                    'targetNetworkWallet',
-                                onTap: () => GoRouter.of(context).pushNamed(
-                                    AuthenticatedRouter
-                                        .assetExchangeSearchTarget,
-                                    params: {
-                                      'assetId': widget.sourceAssetId!,
-                                      'networkId': widget.sourceNetworkId!,
-                                    }),
-                              ),
-                            ),
-                            _TargetAmountFormField(
-                              amountToController: amountToController,
-                              highlightController: amountToHighlightController,
-                              scrollController: scrollController,
-                              onTap: () {
-                                setState(() {
-                                  panelController.open();
-                                  _isPanelOpen = true;
-                                });
-
-                                scrollTo(exchangeToKey, -50);
-                              },
-                            ),
-                            Gaps.gap16,
-                          ]),
-                      if (amountToHighlightController.highlighted)
-                        Container(
-                          padding: Paddings.left16,
-                          child: const AssetFormException<
-                              AssetExchangeFormCubit, AssetExchangeFormState>(
-                            formElementIndex: 1,
-                          ),
-                        ),
-                      if (_isPanelOpen)
-                        const SizedBox(
-                          height: Constants.panelKeyboardHeightWithButton,
-                        ),
-                    ],
+          onPanelClosed: () {
+            setState(() {
+              amountFromHighlightController.deselect();
+              amountToHighlightController.deselect();
+            });
+          },
+          body: Scaffold(
+            backgroundColor: Colors.transparent,
+            bottomNavigationBar: _NextButton(
+              assetId: widget.sourceAssetId!,
+              networkId: widget.sourceNetworkId!,
+            ),
+            body: SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ColorizedAppBar(
+                    firstPart:
+                        context.locale.asset_exchange_screen_exchange_btn,
+                    secondPart:
+                        context.locale.asset_exchange_screen_coin_label_lc,
+                    actionType: ActionType.close,
                   ),
-                ),
+                  HighlightedFormElement(
+                      key: exchangeFromKey,
+                      controller: amountFromHighlightController,
+                      clickableHeight: 160,
+                      onTap: () => setState(() {
+                            amountFromHighlightController.deselectConcurrent();
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          }),
+                      children: [
+                        BlocBuilder<AssetExchangeFormCubit,
+                            AssetExchangeFormState>(
+                          buildWhen: (prev, curr) =>
+                              prev.sourceAssetWallet !=
+                                  curr.sourceAssetWallet ||
+                              curr.availableFromAssets.isEmpty ||
+                              curr.availableFromAssets.isNotEmpty,
+                          builder: (context, state) => AssetFormAssetItem<
+                              AssetExchangeFormCubit, AssetExchangeFormState>(
+                            isLoading: state.availableFromAssets.isEmpty,
+                            highlighted:
+                                amountFromHighlightController.highlighted,
+                            label: context
+                                .locale.asset_exchange_screen_exchange_from,
+                            onTap: () {
+                              GoRouter.of(context).pushNamed(
+                                  AuthenticatedRouter.assetExchangeSearchFrom,
+                                  params: {
+                                    'assetId': widget.sourceAssetId!,
+                                    'networkId': widget.sourceNetworkId!,
+                                  });
+                            },
+                          ),
+                        ),
+                        _FromAmountFormField(
+                          amountFromController: sourceValueFormController,
+                          highlightController: amountFromHighlightController,
+                          scrollController: scrollController,
+                          onTap: () {
+                            setState(() {
+                              panelController.open();
+                              _isPanelOpen = true;
+
+                              sourceValueFormController.text = '';
+                            });
+
+                            scrollTo(exchangeFromKey, 50);
+                          },
+                        ),
+                        Gaps.gap8,
+                      ]),
+                  if (amountFromHighlightController.highlighted)
+                    Container(
+                      padding: Paddings.left16,
+                      child: const AssetFormException<AssetExchangeFormCubit,
+                          AssetExchangeFormState>(
+                        formElementIndex: 0,
+                      ),
+                    ),
+                  HighlightedFormElement(
+                      key: exchangeToKey,
+                      controller: amountToHighlightController,
+                      onTap: () => setState(() {
+                            amountToHighlightController.deselectConcurrent();
+                            amountToHighlightController.select();
+                          }),
+                      clickableHeight: 160,
+                      children: [
+                        BlocBuilder<AssetExchangeFormCubit,
+                            AssetExchangeFormState>(
+                          buildWhen: (prev, curr) =>
+                              prev.targetAssetWallet !=
+                                  curr.targetAssetWallet ||
+                              curr.availableTargetAssets.isEmpty ||
+                              curr.availableTargetAssets.isNotEmpty,
+                          builder: (context, state) => AssetFormAssetItem<
+                              AssetExchangeFormCubit, AssetExchangeFormState>(
+                            isLoading: state.availableTargetAssets.isEmpty,
+                            highlighted:
+                                amountToHighlightController.highlighted,
+                            label: context
+                                .locale.asset_exchange_screen_exchange_to,
+                            sourceAssetWalletPropertyName: 'targetAssetWallet',
+                            sourceNetworkWalletPropertyName:
+                                'targetNetworkWallet',
+                            onTap: () => GoRouter.of(context).pushNamed(
+                                AuthenticatedRouter.assetExchangeSearchTarget,
+                                params: {
+                                  'assetId': widget.sourceAssetId!,
+                                  'networkId': widget.sourceNetworkId!,
+                                }),
+                          ),
+                        ),
+                        _TargetAmountFormField(
+                          key: const ValueKey('targetAmountFormField'),
+                          amountToController: amountToController,
+                          highlightController: amountToHighlightController,
+                          scrollController: scrollController,
+                          onTap: () {
+                            setState(() {
+                              panelController.open();
+                              _isPanelOpen = true;
+                            });
+
+                            scrollTo(exchangeToKey, -50);
+                          },
+                        ),
+                        Gaps.gap16,
+                      ]),
+                  if (amountToHighlightController.highlighted)
+                    Container(
+                      padding: Paddings.left16,
+                      child: const AssetFormException<AssetExchangeFormCubit,
+                          AssetExchangeFormState>(
+                        formElementIndex: 1,
+                      ),
+                    ),
+                  if (_isPanelOpen)
+                    const SizedBox(
+                      height: Constants.panelKeyboardHeightWithButton,
+                    ),
+                ],
               ),
             ),
           ),
@@ -326,8 +315,7 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
             child: Column(
               children: [
                 BlocBuilder<AssetExchangeFormCubit, AssetExchangeFormState>(
-                  buildWhen: (prev, curr) =>
-                      prev.amountFromUnit != curr.amountFromUnit,
+                  buildWhen: (prev, curr) => prev.amountFrom != curr.amountFrom,
                   builder: (context, state) => Numpad(
                     isDecimal: true,
                     onTap: _onTap(context),
@@ -348,7 +336,7 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
   }
 
   ValueChanged<int> _onTap(BuildContext context) {
-    return (number) {
+    return (int number) {
       final cubit = context.read<AssetExchangeFormCubit>();
       if (amountFromHighlightController.highlighted) {
         return cubit.state.amountFromUnit == AmountUnit.crypto
@@ -363,16 +351,7 @@ class _AssetExchangeScreen extends State<AssetExchangeScreen> with Scroll {
   }
 
   VoidCallback _onErase(BuildContext context) {
-    final cubit = context.read<AssetExchangeFormCubit>();
-    if (amountFromHighlightController.highlighted) {
-      return cubit.state.amountFromUnit == AmountUnit.crypto
-          ? cubit.eraseAmountFrom
-          : cubit.eraseAmountFromFiat;
-    } else {
-      return cubit.state.amountToUnit == AmountUnit.crypto
-          ? cubit.eraseAmountTo
-          : cubit.eraseAmountToFiat;
-    }
+    return context.read<AssetExchangeFormCubit>().eraseAmount;
   }
 
   VoidCallback _onDecimalDotTap(BuildContext context) {
@@ -472,6 +451,7 @@ class _FromAmountFormField extends StatelessWidget {
               final assetFormCubit = context.read<AssetExchangeFormCubit>();
 
               return HighlightedNumFormField(
+                key: UniqueKey(),
                 controller: amountFromController,
                 onTap: onTap,
                 suffixIconMaxWidth: 140,
@@ -480,6 +460,7 @@ class _FromAmountFormField extends StatelessWidget {
                 suffixIcon: Padding(
                   padding: Paddings.all8,
                   child: Toggle(
+                    key: const ValueKey('amountFromToggle'),
                     trueOption: Text(
                       Assets.getAssetDetail(state.sourceAssetWallet.assetId)
                           .ticker,
@@ -494,28 +475,31 @@ class _FromAmountFormField extends StatelessWidget {
                       ),
                     ),
                     value: state.amountFromUnit == AmountUnit.crypto,
-                    onChanged: (value) => assetFormCubit.changeAmountUnit(
-                        amountFromUnit:
-                            value ? AmountUnit.crypto : AmountUnit.fiat),
+                    onChanged: (v) => assetFormCubit.changeAmountUnit(
+                      amountFromUnit: v ? AmountUnit.crypto : AmountUnit.fiat,
+                    ),
                   ),
                 ),
               );
             },
           ),
           Gaps.gap10,
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            AssetMinMaxButton(
-              buttonType: ButtonType.min,
-              onTap: () =>
-                  context.read<AssetExchangeFormCubit>().minAmountClicked(),
-            ),
-            Gaps.gap20,
-            AssetMinMaxButton(
-              buttonType: ButtonType.max,
-              onTap: () =>
-                  context.read<AssetExchangeFormCubit>().maxAmountClicked(),
-            ),
-          ]),
+          if (highlightController.highlighted)
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              AssetMinMaxButton(
+                buttonType: ButtonType.min,
+                onTap: () {
+                  context.read<AssetExchangeFormCubit>().minAmountClicked();
+                },
+              ),
+              Gaps.gap20,
+              AssetMinMaxButton(
+                buttonType: ButtonType.max,
+                onTap: () {
+                  context.read<AssetExchangeFormCubit>().maxAmountClicked();
+                },
+              ),
+            ]),
         ],
       ),
     );
@@ -529,6 +513,7 @@ class _TargetAmountFormField extends StatelessWidget {
   final GestureTapCallback onTap;
 
   const _TargetAmountFormField({
+    super.key,
     required this.amountToController,
     required this.scrollController,
     required this.onTap,
@@ -560,6 +545,7 @@ class _TargetAmountFormField extends StatelessWidget {
                       .format(state.amountToFiat);
 
               return HighlightedNumFormField(
+                key: UniqueKey(),
                 controller: amountToController,
                 highlighted: highlightController.highlighted,
                 onTap: onTap,
@@ -568,6 +554,7 @@ class _TargetAmountFormField extends StatelessWidget {
                 suffixIcon: Padding(
                   padding: Paddings.all8,
                   child: Toggle(
+                    key: const ValueKey('amountToToggle'),
                     trueOption: Text(
                       Assets.getAssetDetail(state.targetAssetWallet.assetId)
                           .ticker,
@@ -582,11 +569,11 @@ class _TargetAmountFormField extends StatelessWidget {
                       ),
                     ),
                     value: state.amountToUnit == AmountUnit.crypto,
-                    onChanged: (value) => context
+                    onChanged: (v) => context
                         .read<AssetExchangeFormCubit>()
                         .changeAmountUnit(
-                            amountToUnit:
-                                value ? AmountUnit.crypto : AmountUnit.fiat),
+                          amountToUnit: v ? AmountUnit.crypto : AmountUnit.fiat,
+                        ),
                   ),
                 ),
               );
@@ -617,7 +604,6 @@ class _NextButton extends StatelessWidget {
           context.locale.asset_send_screen_summary_btn_label,
           enabled: state.isValid,
           onPressed: () {
-            GoRouter.of(context).pop();
             GoRouter.of(context).pushNamed(
               AuthenticatedRouter.assetExchangeSummary,
               params: {

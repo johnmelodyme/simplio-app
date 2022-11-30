@@ -41,7 +41,7 @@
   "common_read_less":"Read less",
   "common_coming_soon":"Coming soon...",
 
-  "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year}}",
+  "common_period_section": "{periodType, select, week{1 week} month{1 month} months3{3 months} months6{6 months} year{1 year} other{none}}",
     "@common_period_section": {
       "description": "Period type",
       "placeholders": {
@@ -49,7 +49,7 @@
       }
     },
 
-    "common_transaction_type": "{transactionType, select, processing{Processing} earning{Earning}}",
+    "common_transaction_type": "{transactionType, select, processing{Processing} earning{Earning} other{none}}",
     "@common_transaction_type": {
       "description": "Transaction type",
       "placeholders": {
@@ -125,7 +125,7 @@
     "games_search_screen_games": "Games",
     "games_search_screen_search": "Search",
 
-    "common_games_categories": "{categoryIndex, select, 0{Air Drops} 1{Free To Play} 2{NFT Included} 3{Play To Earn}}",
+    "common_games_categories": "{categoryIndex, select, zero{Air Drops} one{Free To Play} two{NFT Included} three{Play To Earn} other{none}}",
     "@common_games_categories": {
       "description": "Category of game",
       "placeholders": {
@@ -134,7 +134,7 @@
     },
     "common_item_coin_price_label": "Coin price: ",
 
-    "game_item_action_types": "{actionType, select, play{Play} buyCoin{Buy Coin} remove{Remove} addToMyGames{Add to My Games}}",
+    "game_item_action_types": "{actionType, select, play{Play} buyCoin{Buy Coin} remove{Remove} addToMyGames{Add to My Games} other{none}}",
     "@game_item_action_types": {
       "description": "Game Action type",
       "placeholders": {
@@ -142,7 +142,7 @@
       }
     },
 
-    "common_configuration_dark_mode": "{isDarkMode, select, true{Dark Mode} false{Light Mode}}",
+    "common_configuration_dark_mode": "{isDarkMode, select, true{Dark Mode} false{Light Mode} other{none}}",
     "@common_configuration_dark_mode": {
       "description": "Category of game",
       "placeholders": {
@@ -327,7 +327,7 @@
     "asset_search_screen_search": "Search",
 
 
-    "asset_item_action_types": "{actionType, select, buy{Buy} addToInventory{Add to Inventory}, remove{Remove}}",
+    "asset_item_action_types": "{actionType, select, buy{Buy} addToInventory{Add to Inventory} remove{Remove} other{none}}",
     "@asset_item_action_types": {
       "description": "Game Action type",
       "placeholders": {

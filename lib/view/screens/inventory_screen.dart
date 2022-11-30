@@ -29,6 +29,7 @@ class InventoryScreen extends StatelessWidget {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         return NavigationTabBar(
+          currentTab: inventoryTab.index,
           tabs: [
             NavigationBarTabItem(
                 label: context.locale.inventory_tab_coins,

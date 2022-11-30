@@ -63,8 +63,6 @@ class AuthenticatedApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AssetExchangeFormCubit(
             swapRepository: RepositoryProvider.of<SwapRepository>(context),
-            feeRepository: RepositoryProvider.of<FeeRepository>(context),
-            walletRepository: RepositoryProvider.of<WalletRepository>(context),
           ),
         ),
         BlocProvider(

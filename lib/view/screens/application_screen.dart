@@ -87,8 +87,9 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               label: context.locale
                                   .application_screen_inventory_tabbar_label,
                               onTap: (context, key) {
-                                GoRouter.of(context)
-                                    .goNamed(AuthenticatedRouter.inventory);
+                                GoRouter.of(context).goNamed(
+                                  AuthenticatedRouter.inventory,
+                                );
                               }),
                           TabBarItem(
                               key:
