@@ -23,11 +23,14 @@ class AccountSetupSuccessScreen extends StatelessWidget {
         child: BackGradient4(
           child: Column(
             children: [
-              const ColorizedAppBar(
-                key: Key('account_setup_success-screen-app-bar'),
+              ColorizedAppBar(
+                key: const Key('account_setup_success-screen-app-bar'),
                 firstPart: '',
                 secondPart: '',
                 actionType: ActionType.close,
+                onBackTap: () {
+                  GoRouter.of(context).goNamed(AuthenticatedRouter.discovery);
+                },
               ),
               Expanded(
                 child: Padding(

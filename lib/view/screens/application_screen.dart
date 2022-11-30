@@ -94,7 +94,7 @@ class _ApplicationScreenState extends State<ApplicationScreen>
                               key:
                                   const ValueKey(AuthenticatedRouter.findDapps),
                               tabBarItemType: TabItemType.button,
-                              selectedColor: SioColors.coins,
+                              selectedColor: SioColors.vividBlue,
                               icon: SioIcons.world,
                               label: context.locale
                                   .application_screen_find_dapps_tabbar_label,

@@ -201,7 +201,7 @@ class Numpad extends StatelessWidget {
                           key: const Key('numpad-action-proceed'),
                           actionType: ActionButtonType.elevated,
                           content: const Icon(SioIcons.done,
-                              color: SioColorsDark.secondary6),
+                              color: SioColorsDark.softBlack),
                           onTap: () => onProceed?.call(),
                         )
                       : const KeypadItem(),

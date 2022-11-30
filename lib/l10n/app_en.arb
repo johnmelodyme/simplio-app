@@ -208,7 +208,10 @@
     "protected_guard_last_chance": "This is your last chance",
 
     "find_dapps_screen_find":"Find ",
-    "find_dapps_screen_dapps":"Dapps ",
+    "find_dapps_screen_discover":"Discover",
+    "find_dapps_screen_dapps":"Dapps",
+    "find_dapps_screen_world":"world",
+    "find_dapps_screen_description":"Explore and enjoy thousands of ranked blockchain games, social network, tools & more.",
 
     "account_setup_success_screen_account_created_title1":"Complete",
     "account_setup_success_screen_account_created_title2":"already\nstarted Identity\nverification",
