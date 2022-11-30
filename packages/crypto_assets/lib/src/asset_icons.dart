@@ -106,6 +106,11 @@ class AssetIcons {
     package: _package,
   );
 
+  static Widget mobox = SvgPicture.asset(
+    'assets/svg_icons/mobox.svg',
+    package: _package,
+  );
+
   static Widget usdCoin = SvgPicture.asset(
     'assets/svg_icons/usd-coin.svg',
     package: _package,

@@ -64,6 +64,16 @@ class AssetDetails {
     ),
   );
 
+  static AssetDetail mobox = AssetDetail(
+    name: 'Mobox',
+    ticker: 'MBOX',
+    style: AssetStyle(
+      icon: AssetIcons.mobox,
+      primaryColor: const Color(0xfff7591b),
+      foregroundColor: Colors.white,
+    ),
+  );
+
   static AssetDetail bnb = AssetDetail(
     name: 'BNB',
     ticker: 'BNB',

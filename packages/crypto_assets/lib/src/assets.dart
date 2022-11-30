@@ -23,6 +23,7 @@ class Assets {
     AssetIds.bnb.id: AssetDetails.bnb,
     AssetIds.dai.id: AssetDetails.dai,
     AssetIds.tinyCoin.id: AssetDetails.tinyCoin,
+    AssetIds.mobox.id: AssetDetails.mobox,
   };
 
   static final Map<NetworkId, AssetDetail> _networks = {

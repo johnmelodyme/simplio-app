@@ -10,6 +10,7 @@ enum AssetIds {
   binanceUSD(6),
   bnb(7),
   tinyCoin(8),
+  mobox(9),
   dai(150);
 
   const AssetIds(this.id);

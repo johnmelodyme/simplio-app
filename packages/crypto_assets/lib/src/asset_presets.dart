@@ -44,5 +44,13 @@ class AssetPresets {
       decimalPlaces: 18,
       contractAddress: '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
     ),
+    AssetIds.tinyCoin.id: const AssetPreset(
+      decimalPlaces: 18,
+      contractAddress: '0x05aD6E30A855BE07AfA57e08a4f30d00810a402e',
+    ),
+    AssetIds.mobox.id: const AssetPreset(
+      decimalPlaces: 18,
+      contractAddress: '0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377',
+    )
   };
 }
