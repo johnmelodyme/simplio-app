@@ -11,7 +11,7 @@
   "common_approve": "Approve",
   "common_reject": "Reject",
   "common_password_input_label": "Password",
-  "common_log_in_button_label": "Log in",
+  "common_sign_in_button_label": "Sign in",
   "common_password_rule_atleast_8_chars":"Has at least 8 characters",
   "common_password_rule_special_char":"Must include special character",
   "common_password_rule_num_char":"Must include number",
@@ -150,7 +150,7 @@
       }
     },
 
-    "sign_in_screen_log":"Log",
+    "sign_in_screen_log":"Sign",
     "sign_in_screen_in":"in",
     "sign_in_screen_dont_have_account_yet_label": "Don't have account yet?",
     "sign_in_screen_sign_up": "Sign up",

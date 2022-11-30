@@ -233,7 +233,7 @@ class SignUpScreen extends StatelessWidget with PopupDialogMixin {
                                   ),
                                   Gaps.gap8,
                                   Text(
-                                    context.locale.common_log_in_button_label,
+                                    context.locale.common_sign_in_button_label,
                                     style: SioTextStyles.bodyPrimary.copyWith(
                                       color: SioColorsDark.mentolGreen,
                                       height: 1,

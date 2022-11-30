@@ -232,7 +232,7 @@ class SignInScreen extends StatelessWidget with PopupDialogMixin {
                                             }
                                           },
                                           label: context.locale
-                                              .common_log_in_button_label);
+                                              .common_sign_in_button_label);
                                     },
                                   ),
                                 ),
