@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
-import 'package:simplio_app/data/repositories/buy_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
@@ -72,9 +71,7 @@ class AuthenticatedApp extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (context) => AssetBuyFormCubit.builder(
-            buyRepository: RepositoryProvider.of<BuyRepository>(context),
-          ),
+          create: (context) => AssetBuyFormCubit.builder(),
         ),
         BlocProvider(
           create: (context) => GamesBloc.builder(

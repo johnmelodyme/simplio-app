@@ -80,20 +80,22 @@ class _AssetBuySearchScreen extends State<AssetBuySearchScreen> {
             // todo: add proper error handling
           }
 
-          availableWallets = state.availableWallets.keys.toList();
+          // availableWallets = state.availableWallets.keys.toList();
           search(widget.searchController.text);
           return SingleChildScrollView(
             child: AssetWalletExpansionList(
               assetWallets: filteredWallets,
               onTap: (assetWallet, networkWallet) {
                 context.read<AssetBuyFormCubit>().changeFormValue(
-                    sourceAssetWallet: assetWallet,
-                    sourceNetworkWallet: networkWallet,
-                    selectedPair: CryptoFiatPair(
-                      fiatAsset: state.availableWallets[assetWallet]!.fiatAsset,
-                      cryptoAsset:
-                          state.availableWallets[assetWallet]!.cryptoAsset,
-                    ));
+                      sourceAssetWallet: assetWallet,
+                      sourceNetworkWallet: networkWallet,
+                      // selectedPair: CryptoFiatPair(
+                      //   fiatAsset:
+                      //       state.availableWallets[assetWallet]!.fiatAsset,
+                      //   cryptoAsset:
+                      //       state.availableWallets[assetWallet]!.cryptoAsset,
+                      // ),
+                    );
 
                 GoRouter.of(context).pop();
               },

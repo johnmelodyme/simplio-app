@@ -24,12 +24,12 @@ class AssetBuyFormState extends Equatable
   final String amountFiat;
   final AmountUnit amountUnit;
   final PaymentMethod paymentMethod;
-  final BuyConvertResponse buyConvertResponse;
-  final CryptoFiatPair selectedPair;
+  // final BuyConvertResponse buyConvertResponse;
+  // final CryptoFiatPair selectedPair;
   final DebitCardType? debitCardType;
   final String paymentGatewayUrl;
   final String orderId;
-  final Map<AssetWallet, CryptoFiatPair> availableWallets;
+  // final Map<AssetWallet, CryptoFiatPair> availableWallets;
 
   final AssetBuyFormResponse? response;
 
@@ -40,9 +40,9 @@ class AssetBuyFormState extends Equatable
     required this.amountFiat,
     required this.amountUnit,
     required this.paymentMethod,
-    required this.buyConvertResponse,
-    required this.selectedPair,
-    required this.availableWallets,
+    // required this.buyConvertResponse,
+    // required this.selectedPair,
+    // required this.availableWallets,
     this.response,
     this.paymentGatewayUrl = '',
     this.orderId = '',
@@ -67,26 +67,26 @@ class AssetBuyFormState extends Equatable
           amountUnit: AmountUnit.crypto,
           paymentMethod: PaymentMethod
               .debitCard, // we will support only debit cards in the beginning
-          buyConvertResponse: BuyConvertResponse(
-              fiatAsset: FiatAsset(assetId: '', amount: 0),
-              cryptoAsset: CryptoAsset(
-                  assetId: sourceAssetId,
-                  networkId: sourceNetworkId,
-                  amount: 0),
-              targetAmount: FeeAsset(assetId: '', amount: 0)),
-          selectedPair: CryptoFiatPair(
-              fiatAsset: PairFiatAsset(
-                assetId: '',
-                decimalPlaces: -1,
-                minimum: double.infinity,
-                maximum: -1,
-              ),
-              cryptoAsset: PairCryptoAsset(
-                assetId: -1,
-                networkId: -1,
-              )),
+          // buyConvertResponse: BuyConvertResponse(
+          //     fiatAsset: FiatAsset(assetId: 'USD', amount: 0),
+          //     cryptoAsset: CryptoAsset(
+          //         assetId: sourceAssetId,
+          //         networkId: sourceNetworkId,
+          //         amount: 0),
+          //     targetAmount: FeeAsset(assetId: 'USD', amount: 0)),
+          // selectedPair: CryptoFiatPair(
+          //     fiatAsset: PairFiatAsset(
+          //       assetId: '',
+          //       decimalPlaces: -1,
+          //       minimum: double.infinity,
+          //       maximum: -1,
+          //     ),
+          //     cryptoAsset: PairCryptoAsset(
+          //       assetId: -1,
+          //       networkId: -1,
+          //     )),
           paymentGatewayUrl: '',
-          availableWallets: {},
+          // availableWallets: {},
         );
 
   bool get isValid =>
@@ -105,9 +105,9 @@ class AssetBuyFormState extends Equatable
         debitCardType,
         paymentGatewayUrl,
         orderId,
-        buyConvertResponse,
-        selectedPair,
-        availableWallets,
+        // buyConvertResponse,
+        // selectedPair,
+        // availableWallets,
         response,
         hasErrors,
         hasWarnings,
@@ -120,12 +120,12 @@ class AssetBuyFormState extends Equatable
     String? amountFiat,
     String? totalAmount,
     AmountUnit? amountUnit,
-    BuyConvertResponse? buyConvertResponse,
+    // BuyConvertResponse? buyConvertResponse,
     PaymentMethod? paymentMethod,
     DebitCardType? debitCardType,
     AssetBuyFormResponse? response,
-    CryptoFiatPair? selectedPair,
-    Map<AssetWallet, CryptoFiatPair>? availableWallets,
+    // CryptoFiatPair? selectedPair,
+    // Map<AssetWallet, CryptoFiatPair>? availableWallets,
     String? paymentGatewayUrl,
     String? orderId,
   }) {
@@ -136,11 +136,11 @@ class AssetBuyFormState extends Equatable
       amountFiat: amountFiat ?? this.amountFiat,
       amountUnit: amountUnit ?? this.amountUnit,
       paymentMethod: paymentMethod ?? this.paymentMethod,
-      buyConvertResponse: buyConvertResponse ?? this.buyConvertResponse,
+      // buyConvertResponse: buyConvertResponse ?? this.buyConvertResponse,
       debitCardType: debitCardType ?? this.debitCardType,
       response: response ?? this.response,
-      selectedPair: selectedPair ?? this.selectedPair,
-      availableWallets: availableWallets ?? this.availableWallets,
+      // selectedPair: selectedPair ?? this.selectedPair,
+      // availableWallets: availableWallets ?? this.availableWallets,
       paymentGatewayUrl: paymentGatewayUrl ?? this.paymentGatewayUrl,
       orderId: orderId ?? this.orderId,
     );
@@ -148,16 +148,17 @@ class AssetBuyFormState extends Equatable
 
   @override
   List<String> errors(BuildContext context) => [
-        context.locale.asset_buy_screen_range_exception(
-            selectedPair.fiatAsset.minimum.toString(),
-            selectedPair.fiatAsset.maximum.toString())
+        // context.locale.asset_buy_screen_range_exception(
+        //     selectedPair.fiatAsset.minimum.toString(),
+        //     selectedPair.fiatAsset.maximum.toString())
       ];
 
   @override
   List<bool> get hasErrors => [
-        double.tryParse(amountFiat) != null &&
-            (double.parse(amountFiat) > selectedPair.fiatAsset.maximum ||
-                double.parse(amountFiat) < selectedPair.fiatAsset.minimum),
+        false,
+        // double.tryParse(amountFiat) != null &&
+        //     (double.parse(amountFiat) > selectedPair.fiatAsset.maximum ||
+        //         double.parse(amountFiat) < selectedPair.fiatAsset.minimum),
       ];
 
   @override
@@ -174,13 +175,16 @@ class AssetBuyFormState extends Equatable
     };
   }
 
-  double get estimatedPrice =>
-      buyConvertResponse.fiatAsset.amount /
-      buyConvertResponse.cryptoAsset.amount;
+  double get finalAmount => double.tryParse(amount) ?? 0;
+  double get finalFiatAmount => double.tryParse(amountFiat) ?? 0;
 
-  double get totalAmountToPayInFiat =>
-      buyConvertResponse.fiatAsset.amount +
-      buyConvertResponse.targetAmount.amount;
+  // double get estimatedPrice =>
+  //     buyConvertResponse.fiatAsset.amount /
+  //     buyConvertResponse.cryptoAsset.amount;
+
+  // double get totalAmountToPayInFiat =>
+  //     buyConvertResponse.fiatAsset.amount +
+  //     buyConvertResponse.targetAmount.amount;
 }
 
 abstract class AssetBuyFormResponse extends Equatable {
@@ -273,8 +277,12 @@ class AssetSearchFailure extends AssetBuyFormResponse {
 }
 
 class AssetSearchLoaded extends AssetBuyFormResponse {
-  const AssetSearchLoaded();
+  final List<BuyPairResponseItem> pairs;
+
+  const AssetSearchLoaded({
+    required this.pairs,
+  });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [pairs];
 }

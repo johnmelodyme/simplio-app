@@ -1,20 +1,11 @@
-// ignore_for_file: unused_import, unused_field
-// TODO: delete these ignores when mock is done
-
-import 'dart:io';
-import 'package:simplio_app/data/http/errors/bad_request_http_error.dart';
 import 'package:simplio_app/data/http/services/buy_service.dart';
 
 class BuyRepository {
-  final BuyService _buyService;
-
-  BuyRepository._(
-    this._buyService,
-  );
+  BuyRepository._();
 
   BuyRepository({
     required BuyService buyService,
-  }) : this._(buyService);
+  }) : this._();
 
   Future<List<BuyPairResponseItem>> pairs({
     bool readCache = true,

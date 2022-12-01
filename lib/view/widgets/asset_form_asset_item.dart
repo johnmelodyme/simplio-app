@@ -14,6 +14,7 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_wallet_item.dart';
 
+// TODO - remove this widget after refactoring
 class AssetFormAssetItem<B extends StateStreamable<S>, S extends AssetFormState>
     extends StatelessWidget with WalletUtilsMixin {
   final String label;

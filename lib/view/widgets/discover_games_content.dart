@@ -5,9 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
-import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
-import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/game_item.dart';
@@ -35,17 +33,8 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
     bloc.add(LoadGamesEvent(page: offset));
   }
 
-  void _buyCoin(BuildContext context, String assetId, String networkId) {
-    context.read<AssetBuyFormCubit>().clear();
-    GoRouter.of(context).pushNamed(AuthenticatedRouter.assetBuy, params: {
-      'assetId': assetId,
-      'networkId': networkId,
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final accountWalletCubit = context.read<AccountWalletCubit>();
     return SliverPadding(
       padding: Paddings.horizontal16,
       sliver: BlocBuilder<GamesBloc, GamesState>(
@@ -68,33 +57,17 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
                         AuthenticatedRouter.gameplay,
                         extra: game,
                       );
-                    } else if (gameAction == GameAction.buyCoin) {
-                      final String assetId =
-                          game.assetEmbedded.assetId.toString();
-                      final String networkId =
-                          game.assetEmbedded.networkId.toString();
-                      if (accountWalletCubit.hasNetworkWalledAdded(
-                        assetId: int.parse(assetId),
-                        networkId: int.parse(networkId),
-                      )) {
-                        _buyCoin(context, assetId, networkId);
-                      } else {
-                        context.read<DialogCubit>().showDialog(
-                          (proceed) async {
-                            if (proceed) {
-                              await accountWalletCubit
-                                  .enableNetworkWallet(
-                                assetId: int.parse(assetId),
-                                networkId: int.parse(networkId),
-                              )
-                                  .then((_) {
-                                _buyCoin(context, assetId, networkId);
-                              });
-                            }
-                          },
-                          DialogType.createCoin,
-                        );
-                      }
+                    }
+
+                    if (gameAction == GameAction.buyCoin) {
+                      context.read<AssetBuyFormCubit>().clear();
+                      GoRouter.of(context).pushNamed(
+                        AuthenticatedRouter.assetBuy,
+                        params: {
+                          'assetId': game.assetEmbedded.assetId.toString(),
+                          'networkId': game.assetEmbedded.networkId.toString(),
+                        },
+                      );
                     }
                   },
                   onTap: game.isPromoted

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/screens/mixins/wallet_utils_mixin.dart';
@@ -17,6 +16,7 @@ import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/swipe_up_button.dart';
 import 'package:sio_glyphs/sio_icons.dart';
+import 'package:simplio_app/view/extensions/number_extensions.dart';
 
 class AssetBuySummaryScreen extends StatelessWidget with PopupDialogMixin {
   const AssetBuySummaryScreen({super.key});
@@ -25,118 +25,65 @@ class AssetBuySummaryScreen extends StatelessWidget with PopupDialogMixin {
   Widget build(BuildContext context) {
     context.read<AssetBuyFormCubit>().clearTimers();
 
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<AssetBuyFormCubit, AssetBuyFormState>(
-          listenWhen: (prev, curr) => curr.response is AssetBuyFormPending,
-          listener: (context, state) {
-            GoRouter.of(context).replaceNamed(
-              AuthenticatedRouter.assetBuyPaymentGateway,
-              params: {
-                'assetId': state.sourceAssetWallet.assetId.toString(),
-                'networkId': state.sourceNetworkWallet.networkId.toString(),
-              },
-            );
-          },
-        ),
-        BlocListener<AssetBuyFormCubit, AssetBuyFormState>(
-          listenWhen: (prev, curr) =>
-              curr.response is AssetBuyFormPriceRefreshSuccess,
-          listener: (context, state) {
-            GoRouter.of(context).pop();
-            GoRouter.of(context).replaceNamed(
-              AuthenticatedRouter.assetBuyConfirmation,
-              params: {
-                'assetId': state.sourceAssetWallet.assetId.toString(),
-                'networkId': state.sourceNetworkWallet.networkId.toString(),
-              },
-            );
-          },
-        ),
-        BlocListener<AssetBuyFormCubit, AssetBuyFormState>(
-          listenWhen: (prev, curr) => curr.response is AssetBuyFormSuccess,
-          listener: (context, state) {
-            GoRouter.of(context).replaceNamed(
-              AuthenticatedRouter.assetBuySuccess,
-              params: {
-                'assetId': state.sourceAssetWallet.assetId.toString(),
-                'networkId': state.sourceNetworkWallet.networkId.toString(),
-              },
-            );
-          },
-        ),
-        BlocListener<AssetBuyFormCubit, AssetBuyFormState>(
-          listenWhen: (prev, curr) => curr.response is AssetBuyFormFailure,
-          listener: (context, state) {
-            showError(
-              context,
-              message: context.locale.common_unknown_error,
-              hideAfter: const Duration(milliseconds: 2000),
-              afterHideAction: () => GoRouter.of(context).pop(),
-            );
-          },
-        ),
-      ],
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.center,
-                colors: [
-                  SioColors.backGradient4Start,
-                  SioColors.softBlack,
-                ],
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                const _AppBar(),
-                Expanded(
-                  child: Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: [
-                      Padding(
-                        padding: Paddings.horizontal20,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const _AmountToBuy(),
-                            Gaps.gap20,
-                            const _EstimateBuyPrice(),
-                            Gaps.gap20,
-                            const _PaymentMethod(),
-                            Gaps.gap20,
-                            const _Fee(),
-                            Gaps.gap20,
-                            const _InTotalToBuy(),
-                          ],
-                        ),
-                      ),
-                      const _SwipeButton(),
-                    ],
-                  ),
-                ),
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.center,
+              colors: [
+                SioColors.backGradient4Start,
+                SioColors.softBlack,
               ],
             ),
           ),
-          BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
-            buildWhen: (prev, curr) =>
-                curr.response is AssetBuyFormPriceRefreshPending,
-            builder: (context, state) =>
-                state.response is AssetBuyFormPriceRefreshPending
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [ListLoading()],
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const _AppBar(),
+              Expanded(
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: [
+                    Padding(
+                      padding: Paddings.horizontal20,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const _AmountToBuy(),
+                          Gaps.gap20,
+                          const _EstimateBuyPrice(),
+                          Gaps.gap20,
+                          const _PaymentMethod(),
+                          Gaps.gap20,
+                          const _Fee(),
+                          Gaps.gap20,
+                          const _InTotalToBuy(),
+                        ],
+                      ),
+                    ),
+                    const _SwipeButton(),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        BlocBuilder<AssetBuyFormCubit, AssetBuyFormState>(
+          buildWhen: (prev, curr) =>
+              curr.response is AssetBuyFormPriceRefreshPending,
+          builder: (context, state) =>
+              state.response is AssetBuyFormPriceRefreshPending
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [ListLoading()],
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+        ),
+      ],
     );
   }
 }
@@ -163,16 +110,15 @@ class _AmountToBuy extends StatelessWidget {
           Row(
             children: [
               Text(
-                '${state.buyConvertResponse.cryptoAsset.amount} ${Assets.getAssetDetail(state.buyConvertResponse.cryptoAsset.assetId).ticker}',
+                '${state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
                 style: SioTextStyles.bodyPrimary.copyWith(
                   color: SioColors.whiteBlue,
                 ),
               ),
               Expanded(
                 child: Text(
-                  state.buyConvertResponse.fiatAsset.amount
-                      .getThousandValueWithCurrency(
-                    currency: state.buyConvertResponse.fiatAsset.assetId,
+                  state.finalFiatAmount.getThousandValueWithCurrency(
+                    currency: 'USD',
                     locale: Intl.getCurrentLocale(),
                   ),
                   textAlign: TextAlign.right,
@@ -211,17 +157,13 @@ class _Fee extends StatelessWidget {
           Row(
             children: [
               Text(
-                '${state.buyConvertResponse.targetAmount.amount} ${state.buyConvertResponse.targetAmount.assetId}',
+                '0.25 ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
                 style: SioTextStyles.bodyPrimary
                     .copyWith(color: SioColors.whiteBlue),
               ),
               Expanded(
                 child: Text(
-                  state.buyConvertResponse.targetAmount.amount
-                      .getThousandValueWithCurrency(
-                    currency: state.buyConvertResponse.targetAmount.assetId,
-                    locale: Intl.getCurrentLocale(),
-                  ),
+                  '\$1.00',
                   textAlign: TextAlign.right,
                   style: SioTextStyles.bodyPrimary.copyWith(
                     color: SioColors.secondary6,
@@ -255,7 +197,7 @@ class _EstimateBuyPrice extends StatelessWidget {
           Row(
             children: [
               Text(
-                state.estimatedPrice.getThousandValueWithCurrency(
+                30.00.getThousandValueWithCurrency(
                   currency: 'USD', //TODO.. replace by real currency
                   locale: Intl.getCurrentLocale(),
                 ),
@@ -359,7 +301,7 @@ class _InTotalToBuy extends StatelessWidget {
                     children: [
                       TextSpan(
                         text:
-                            '${state.buyConvertResponse.cryptoAsset.amount} ${Assets.getAssetDetail(state.buyConvertResponse.cryptoAsset.assetId).ticker}',
+                            '${state.amount} ${Assets.getAssetDetail(state.sourceAssetWallet.assetId).ticker}',
                         style: SioTextStyles.h4.apply(
                           color: SioColors.mentolGreen,
                         ),
@@ -369,8 +311,8 @@ class _InTotalToBuy extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    state.totalAmountToPayInFiat.getThousandValueWithCurrency(
-                      currency: state.buyConvertResponse.targetAmount.assetId,
+                    state.finalFiatAmount.getThousandValueWithCurrency(
+                      currency: 'USD',
                       locale: Intl.getCurrentLocale(),
                     ),
                     textAlign: TextAlign.right,
@@ -399,6 +341,7 @@ class _AppBar extends StatelessWidget {
           .locale.asset_send_summary_screen_transaction_summary_headline_second,
       actionType: ActionType.back,
       onBackTap: () {
+        // GoRouter.of(context).pop();
         final state = context.read<AssetBuyFormCubit>().state;
         GoRouter.of(context).replaceNamed(
           AuthenticatedRouter.assetBuy,
@@ -417,13 +360,6 @@ class _SwipeButton extends StatelessWidget with WalletUtilsMixin {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<AssetBuyFormCubit>().state;
-    final address = getAddress(
-            context,
-            state.sourceAssetWallet.assetId.toString(),
-            state.sourceNetworkWallet.networkId.toString()) ??
-        '';
-
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -431,9 +367,17 @@ class _SwipeButton extends StatelessWidget with WalletUtilsMixin {
         child: SwipeUpButton(
           context.locale.asset_exchange_summary_screen_confirm_btn,
           onSwipeCallback: () {
-            context.read<AssetBuyFormCubit>().submitForm(
-                  walletAddress: address,
-                );
+            final cubit = context.read<AssetBuyFormCubit>();
+
+            GoRouter.of(context).replaceNamed(
+              AuthenticatedRouter.assetBuySuccess,
+              params: {
+                'assetId': cubit.state.sourceAssetWallet.assetId.toString(),
+                'networkId':
+                    cubit.state.sourceNetworkWallet.networkId.toString(),
+              },
+            );
+            // context.read<AssetBuyFormCubit>().submitForm();
           },
         ),
       ),

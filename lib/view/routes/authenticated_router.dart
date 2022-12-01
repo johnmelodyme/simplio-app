@@ -24,8 +24,6 @@ import 'package:simplio_app/view/routes/observers/tab_bar_observer.dart';
 import 'package:simplio_app/view/routes/settings/application_settings.dart';
 import 'package:simplio_app/view/screens/account_setup_success_screen.dart';
 import 'package:simplio_app/view/screens/application_screen.dart';
-import 'package:simplio_app/view/screens/asset_buy_confirmation_screen.dart';
-import 'package:simplio_app/view/screens/asset_buy_payment_gateway_screen.dart';
 import 'package:simplio_app/view/screens/asset_buy_screen.dart';
 import 'package:simplio_app/view/screens/asset_buy_search_screen.dart';
 import 'package:simplio_app/view/screens/asset_buy_success_screen.dart';
@@ -94,8 +92,6 @@ class AuthenticatedRouter with PageBuilderMixin {
   static const String assetBuy = 'asset-buy';
   static const String assetBuySearch = 'asset-buy-search';
   static const String assetBuySummary = 'asset-buy-summary';
-  static const String assetBuyConfirmation = 'asset-buy-confirmation';
-  static const String assetBuyPaymentGateway = 'asset-buy-payment-gateway';
   static const String assetBuySuccess = 'asset-buy-success';
 
   static const String walletConnectQrCodeScanner =
@@ -501,26 +497,6 @@ class AuthenticatedRouter with PageBuilderMixin {
                         name: assetBuySummary,
                         pageBuilder: pageBuilder(
                           builder: (state) => const AssetBuySummaryScreen(),
-                          settings:
-                              const ApplicationSettings.hiddenNavigators(),
-                        ),
-                      ),
-                      GoRoute(
-                        path: 'confirmation',
-                        name: assetBuyConfirmation,
-                        pageBuilder: pageBuilder(
-                          builder: (state) =>
-                              const AssetBuyConfirmationScreen(),
-                          settings:
-                              const ApplicationSettings.hiddenNavigators(),
-                        ),
-                      ),
-                      GoRoute(
-                        path: 'payment-gateway',
-                        name: assetBuyPaymentGateway,
-                        pageBuilder: pageBuilder(
-                          builder: (state) =>
-                              const AssetBuyPaymentGateWayScreen(),
                           settings:
                               const ApplicationSettings.hiddenNavigators(),
                         ),

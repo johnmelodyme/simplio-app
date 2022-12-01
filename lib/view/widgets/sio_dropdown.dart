@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
-import 'package:simplio_app/view/widgets/highlighted_form_element.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class SioDropdown extends StatefulWidget {
-  final HighlightController highlightController;
+  // final HighlightController highlightController;
   final List<Widget> items;
   final Widget? placeholder;
   final int selectedIndex;
@@ -14,7 +13,7 @@ class SioDropdown extends StatefulWidget {
 
   const SioDropdown({
     super.key,
-    required this.highlightController,
+    // required this.highlightController,
     this.items = const [],
     this.selectedIndex = -1,
     required this.itemSelectedCallback,
@@ -248,10 +247,10 @@ class _SioDropdown extends State<SioDropdown> {
     super.initState();
 
     selectedIndex = widget.selectedIndex;
-    widget.highlightController.addListener(() {
-      if (!widget.highlightController.highlighted && overlayEntry.mounted) {
-        overlayEntry.remove();
-      }
-    });
+    // widget.highlightController.addListener(() {
+    //   if (!widget.highlightController.highlighted && overlayEntry.mounted) {
+    //     overlayEntry.remove();
+    //   }
+    // });
   }
 }
