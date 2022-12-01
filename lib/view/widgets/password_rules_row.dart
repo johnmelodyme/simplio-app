@@ -13,20 +13,22 @@ class PasswordRulesRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: 15,
       width: double.infinity,
       child: Row(
         children: [
           Icon(
             passed ? SioIcons.done : SioIcons.cancel,
-            size: 16,
+            size: 14,
             color: passed ? SioColors.mentolGreen : SioColors.attention,
           ),
-          Gaps.gap10,
+          Gaps.gap5,
           Text(
             text,
             style: SioTextStyles.bodyDetail.copyWith(
-                color: passed ? SioColors.whiteBlue : SioColors.attention,
-                fontSize: Theme.of(context).textTheme.titleMedium?.fontSize),
+              color: passed ? SioColors.whiteBlue : SioColors.attention,
+              height: 1.0,
+            ),
           )
         ],
       ),

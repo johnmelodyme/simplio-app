@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/view/decorations/underlined_text_form_field_decoration.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
@@ -61,14 +61,17 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
                 widget.passwordComplexityCondition(password));
           }
         },
-        style: TextStyle(
-          color:
-              isComplexitySatisfied ? SioColors.whiteBlue : SioColors.attention,
+        style: SioTextStyles.bodyPrimary.copyWith(
+          color: isComplexitySatisfied
+              ? SioColorsDark.whiteBlue
+              : SioColorsDark.attention,
         ),
         obscuringCharacter: '⦁',
         cursorColor: SioColorsDark.whiteBlue,
         decoration: UnderLinedTextFormFieldDecoration(
           errorStyle: const TextStyle(height: 0),
+          hintStyle:
+              SioTextStyles.bodyPrimary.apply(color: SioColorsDark.secondary5),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           labelText:
               widget.labelText ?? context.locale.common_password_input_label,
