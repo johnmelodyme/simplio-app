@@ -16,11 +16,11 @@ class _SlidableBannerState extends State<SlidableBanner> {
   late Timer _timer;
   int _currentPage = 0;
   static const List<String> images = [
-    "assets/images/fulbo_galaxy.png",
-    "assets/images/mines_of_dalarnia.png",
-    "assets/images/mobox.png",
-    "assets/images/my_neighbor_alice.png",
-    "assets/images/vault_hill.png"
+    "assets/images/game_mines_of_dalarnia.png",
+    "assets/images/game_vault_hill.png",
+    "assets/images/game_alpha_league_racing.png",
+    "assets/images/game_tiny_world.png",
+    "assets/images/game_castles.png",
   ];
 
   @override
