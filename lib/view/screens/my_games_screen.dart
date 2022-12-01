@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 import 'package:simplio_app/view/widgets/my_games_content.dart';
 import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
-import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 
 class MyGamesScreen extends ScreenWithDialog {
@@ -40,25 +37,6 @@ class MyGamesScreen extends ScreenWithDialog {
                 slivers: [
                   SliverGap(MediaQuery.of(context).viewPadding.top +
                       Constants.appBarHeight),
-                  const SliverGap(Dimensions.padding20),
-                  SliverPadding(
-                    padding: Paddings.horizontal16,
-                    sliver: SliverPersistentHeader(
-                      floating: true,
-                      delegate: FixedHeightItemDelegate(
-                        fixedHeight: Constants.searchBarHeight,
-                        child: SearchBarPlaceholder(
-                          onTap: () {
-                            GoRouter.of(context).pushNamed(
-                              AuthenticatedRouter.gamesSearch,
-                            );
-                          },
-                          label: context
-                              .locale.discovery_screen_search_and_add_games,
-                        ),
-                      ),
-                    ),
-                  ),
                   const SliverGap(Dimensions.padding20),
                   MyGamesContent(
                     onCoinAdd: (int assetId, int networkId) {
