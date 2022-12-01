@@ -18,7 +18,6 @@ class AccountSetupSuccessScreen extends StatelessWidget {
       key: const ValueKey('account-setup-success-screen'),
       onWillPop: () async => false,
       child: SioScaffold(
-        backgroundGradient: BackgroundGradient.backGradientDark4,
         body: Column(
           children: [
             ColorizedAppBar(
@@ -34,36 +33,22 @@ class AccountSetupSuccessScreen extends StatelessWidget {
               child: Padding(
                 padding: Paddings.horizontal16,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Stack(
                       children: [
-                        Row(
-                          children: [
-                            const Spacer(),
-                            Expanded(
-                              flex: 6,
-                              child: Image.asset(
-                                'assets/images/blue_ring.png',
-                              ),
-                            ),
-                            const Spacer(),
-                          ],
+                        Image.asset(
+                          'assets/images/blue_ring.png',
                         ),
-                        Row(
-                          children: [
-                            const Spacer(),
-                            Expanded(
-                              flex: 4,
-                              child: Image.asset(
-                                'assets/images/simpliona_login.png',
-                              ),
-                            ),
-                            const Spacer(),
-                          ],
+                        Positioned.fill(
+                          top: 50,
+                          child: Image.asset(
+                            'assets/images/simpliona_login.png',
+                          ),
                         ),
                       ],
                     ),
+                    Gaps.gap20,
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -72,14 +57,14 @@ class AccountSetupSuccessScreen extends StatelessWidget {
                             text:
                                 '${context.locale.account_setup_success_screen_account_created_title1} ',
                             style: SioTextStyles.h1.apply(
-                              color: SioColorsDark.mentolGreen,
+                              color: SioColorsDark.whiteBlue,
                             ),
                           ),
                           TextSpan(
                             text:
                                 '${context.locale.account_setup_success_screen_account_created_title2} ',
                             style: SioTextStyles.h1
-                                .apply(color: SioColorsDark.whiteBlue),
+                                .apply(color: SioColorsDark.mentolGreen),
                           ),
                         ],
                       ),
@@ -105,11 +90,11 @@ class AccountSetupSuccessScreen extends StatelessWidget {
                   onPressed: () {
                     GoRouter.of(context).goNamed(AuthenticatedRouter.discovery);
                   },
-                  label: context.locale.common_continue,
+                  label: context.locale.common_go_to_app,
                 ),
               ),
             ),
-            Gaps.gap30,
+            Gaps.gap30
           ],
         ),
       ),

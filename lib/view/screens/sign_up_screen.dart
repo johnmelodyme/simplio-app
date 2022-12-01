@@ -35,227 +35,218 @@ class SignUpScreen extends StatelessWidget with PopupDialogMixin {
         children: [
           Column(
             children: [
-              Column(
-                children: [
-                  ColorizedAppBar(
-                      key: const Key('sign-in-screen-app-bar-button'),
-                      firstPart: context
-                          .locale.sign_up_screen_create_new_account_sign_up,
-                      secondPart: context
-                          .locale.sign_up_screen_create_new_account_with_email),
-                  Padding(
-                    padding: Paddings.horizontal20,
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          SioTextFormField(
-                            textFormKey: _emailFieldKey,
-                            controller: _emailEditingController,
-                            inputFormatters: [
-                              LowerCaseTextFormatter(),
-                            ],
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (email) => context
-                                .read<SignUpFormCubit>()
-                                .state
-                                .login
-                                .emailValidator(
-                                  email,
-                                  errorMessage: context
-                                      .locale.common_email_validation_error,
-                                ),
-                            cursorColor: SioColorsDark.whiteBlue,
-                            focusedStyle: SioTextStyles.bodyPrimary
-                                .apply(color: SioColorsDark.whiteBlue),
-                            unfocusedStyle: SioTextStyles.bodyPrimary
-                                .apply(color: SioColorsDark.secondary7),
-                            decoration: UnderLinedTextFormFieldDecoration(
-                              labelText: context.locale
-                                  .sign_up_screen_create_account_your_email_label,
-                              hintText: context.locale
-                                  .sign_up_screen_create_account_your_email_label,
+              ColorizedAppBar(
+                  key: const Key('sign-in-screen-app-bar-button'),
+                  firstPart:
+                      context.locale.sign_up_screen_create_new_account_sign_up,
+                  secondPart: context
+                      .locale.sign_up_screen_create_new_account_with_email),
+              Padding(
+                padding: Paddings.horizontal20,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SioTextFormField(
+                        textFormKey: _emailFieldKey,
+                        controller: _emailEditingController,
+                        inputFormatters: [
+                          LowerCaseTextFormatter(),
+                        ],
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (email) => context
+                            .read<SignUpFormCubit>()
+                            .state
+                            .login
+                            .emailValidator(
+                              email,
+                              errorMessage:
+                                  context.locale.common_email_validation_error,
                             ),
-                            onChanged: (String? email) {
-                              context
-                                  .read<SignUpFormCubit>()
-                                  .changeFormValue(login: email);
-                            },
-                            onFocusChange: (focused) {
-                              if (!focused &&
-                                  _emailEditingController.text.isNotEmpty) {
-                                _emailEditingController.text =
-                                    _emailEditingController.text
-                                        .toLowerCase()
-                                        .trim()
-                                        .replaceAll(RegExp(r'\s'), '');
-
-                                _emailFieldKey.currentState?.validate();
-                              }
-                            },
-                            maxLines: 1,
-                          ),
-                          Gaps.gap10,
-                          PasswordTextField(
-                            passwordFieldKey: _passwordFieldKey,
-                            passwordComplexityCondition: (pass) => context
-                                .read<SignUpFormCubit>()
-                                .state
-                                .password
-                                .isValid,
-                            onChanged: (password) {
-                              context
-                                  .read<SignUpFormCubit>()
-                                  .changeFormValue(password: password);
-                              _passwordFieldKey.currentState?.validate();
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gaps.gap10,
-                  Padding(
-                    padding: Paddings.horizontal20,
-                    child: BlocBuilder<SignUpFormCubit, SignUpFormState>(
-                      buildWhen: (previous, current) => previous != current,
-                      builder: (context, state) => Column(
-                        children: [
-                          PasswordRulesRow(
-                              key: const Key(
-                                  'sign-up-screen-length-password-rule'),
-                              text: context
-                                  .locale.common_password_rule_atleast_8_chars,
-                              passed: state.password.missingValue['length'] ??
-                                  false),
-                          Gaps.gap5,
-                          PasswordRulesRow(
-                              key: const Key(
-                                  'sign-up-screen-number-password-rule'),
-                              text:
-                                  context.locale.common_password_rule_num_char,
-                              passed:
-                                  state.password.missingValue['numberChar'] ??
-                                      false),
-                          Gaps.gap5,
-                          PasswordRulesRow(
-                              key: const Key(
-                                  'sign-up-screen-special-char-password-rule'),
-                              text: context
-                                  .locale.common_password_rule_special_char,
-                              passed:
-                                  state.password.missingValue['specialChar'] ??
-                                      false),
-                          Gaps.gap5,
-                          PasswordRulesRow(
-                              key: const Key(
-                                  'sign-up-screen-upper-char-password-rule'),
-                              text: context
-                                  .locale.common_password_rule_upper_char,
-                              passed:
-                                  state.password.missingValue['upperChar'] ??
-                                      false),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gaps.gap20,
-                  Padding(
-                    padding: Paddings.horizontal16,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: BlocConsumer<SignUpFormCubit, SignUpFormState>(
-                            listenWhen: ((prev, curr) =>
-                                prev.response != curr.response),
-                            listener: (context, state) {
-                              final r = state.response;
-
-                              if (r is SignUpFormSuccess) {
-                                context.read<AuthBloc>().add(
-                                    GotAuthenticated(accountId: r.account.id));
-                              }
-
-                              if (r is SignUpFormFailure) {
-                                showError(context,
-                                    message:
-                                        state.response!.props.first.toString());
-                              }
-                            },
-                            builder: (context, state) {
-                              return HighlightedElevatedButton(
-                                key: const Key(
-                                  'sign-up-screen-disabled-sign-up-button',
-                                ),
-                                onPressed: state.isValid
-                                    ? () {
-                                        context
-                                            .read<SignUpFormCubit>()
-                                            .submitForm();
-                                      }
-                                    : null,
-                                label: context.locale.common_continue,
-                              );
-                            },
-                          ),
+                        cursorColor: SioColorsDark.whiteBlue,
+                        focusedStyle: SioTextStyles.bodyPrimary
+                            .apply(color: SioColorsDark.whiteBlue),
+                        unfocusedStyle: SioTextStyles.bodyPrimary
+                            .apply(color: SioColorsDark.secondary7),
+                        decoration: UnderLinedTextFormFieldDecoration(
+                          labelText: context.locale
+                              .sign_up_screen_create_account_your_email_label,
+                          hintText: context.locale
+                              .sign_up_screen_create_account_your_email_label,
                         ),
-                      ],
-                    ),
-                  ),
-                  Gaps.gap20,
-                  Padding(
-                    padding: Paddings.horizontal16,
-                    child: GestureDetector(
-                      child: Row(
-                        key: const Key('sign-up-screen-log-in-button'),
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            context.locale
-                                .sign_up_screen_create_account_already_have_account,
-                            style: SioTextStyles.bodyPrimary.copyWith(
-                                color: SioColorsDark.secondary7, height: 1),
-                          ),
-                          Gaps.gap8,
-                          Text(
-                            context.locale.common_sign_in_button_label,
-                            style: SioTextStyles.bodyPrimary.copyWith(
-                              color: SioColorsDark.mentolGreen,
-                              height: 1,
-                            ),
-                          ),
-                          const Icon(
-                            SioIcons.arrow_right,
-                            size: 14,
-                            color: SioColorsDark.mentolGreen,
-                          ),
-                        ],
+                        onChanged: (String? email) {
+                          context
+                              .read<SignUpFormCubit>()
+                              .changeFormValue(login: email);
+                        },
+                        onFocusChange: (focused) {
+                          if (!focused &&
+                              _emailEditingController.text.isNotEmpty) {
+                            _emailEditingController.text =
+                                _emailEditingController.text
+                                    .toLowerCase()
+                                    .trim()
+                                    .replaceAll(RegExp(r'\s'), '');
+
+                            _emailFieldKey.currentState?.validate();
+                          }
+                        },
+                        maxLines: 1,
                       ),
-                      onTap: () {
-                        GoRouter.of(context)
-                            .replaceNamed(UnauthenticatedRouter.signIn);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              children: [
-                const Spacer(),
-                Expanded(
-                  flex: 3,
-                  child: Image.asset(
-                    'assets/images/simpliona_login.png',
+                      Gaps.gap10,
+                      PasswordTextField(
+                        passwordFieldKey: _passwordFieldKey,
+                        passwordComplexityCondition: (pass) => context
+                            .read<SignUpFormCubit>()
+                            .state
+                            .password
+                            .isValid,
+                        onChanged: (password) {
+                          context
+                              .read<SignUpFormCubit>()
+                              .changeFormValue(password: password);
+                          _passwordFieldKey.currentState?.validate();
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                const Spacer(),
-              ],
-            ),
+              ),
+              Gaps.gap10,
+              Padding(
+                padding: Paddings.horizontal20,
+                child: BlocBuilder<SignUpFormCubit, SignUpFormState>(
+                  buildWhen: (previous, current) => previous != current,
+                  builder: (context, state) => Column(
+                    children: [
+                      PasswordRulesRow(
+                          key: const Key('sign-up-screen-length-password-rule'),
+                          text: context
+                              .locale.common_password_rule_atleast_8_chars,
+                          passed:
+                              state.password.missingValue['length'] ?? false),
+                      Gaps.gap5,
+                      PasswordRulesRow(
+                          key: const Key('sign-up-screen-number-password-rule'),
+                          text: context.locale.common_password_rule_num_char,
+                          passed: state.password.missingValue['numberChar'] ??
+                              false),
+                      Gaps.gap5,
+                      PasswordRulesRow(
+                          key: const Key(
+                              'sign-up-screen-special-char-password-rule'),
+                          text:
+                              context.locale.common_password_rule_special_char,
+                          passed: state.password.missingValue['specialChar'] ??
+                              false),
+                      Gaps.gap5,
+                      PasswordRulesRow(
+                          key: const Key(
+                              'sign-up-screen-upper-char-password-rule'),
+                          text: context.locale.common_password_rule_upper_char,
+                          passed: state.password.missingValue['upperChar'] ??
+                              false),
+                    ],
+                  ),
+                ),
+              ),
+              Gaps.gap20,
+              Padding(
+                padding: Paddings.horizontal16,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: BlocConsumer<SignUpFormCubit, SignUpFormState>(
+                        listenWhen: ((prev, curr) =>
+                            prev.response != curr.response),
+                        listener: (context, state) {
+                          final r = state.response;
+
+                          if (r is SignUpFormSuccess) {
+                            context
+                                .read<AuthBloc>()
+                                .add(GotAuthenticated(accountId: r.account.id));
+                          }
+
+                          if (r is SignUpFormFailure) {
+                            showError(context,
+                                message:
+                                    state.response!.props.first.toString());
+                          }
+                        },
+                        builder: (context, state) {
+                          return HighlightedElevatedButton(
+                            key: const Key(
+                              'sign-up-screen-disabled-sign-up-button',
+                            ),
+                            onPressed: state.isValid
+                                ? () {
+                                    context
+                                        .read<SignUpFormCubit>()
+                                        .submitForm();
+                                  }
+                                : null,
+                            label: context.locale.common_continue,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Gaps.gap20,
+              Padding(
+                padding: Paddings.horizontal16,
+                child: GestureDetector(
+                  child: Row(
+                    key: const Key('sign-up-screen-log-in-button'),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        context.locale
+                            .sign_up_screen_create_account_already_have_account,
+                        style: SioTextStyles.bodyPrimary.copyWith(
+                            color: SioColorsDark.secondary7, height: 1),
+                      ),
+                      Gaps.gap8,
+                      Text(
+                        context.locale.common_sign_in_button_label,
+                        style: SioTextStyles.bodyPrimary.copyWith(
+                          color: SioColorsDark.mentolGreen,
+                          height: 1,
+                        ),
+                      ),
+                      const Icon(
+                        SioIcons.arrow_right,
+                        size: 14,
+                        color: SioColorsDark.mentolGreen,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    GoRouter.of(context)
+                        .replaceNamed(UnauthenticatedRouter.signIn);
+                  },
+                ),
+              ),
+              Gaps.gap10,
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Spacer(),
+                    Expanded(
+                      flex: 3,
+                      child: Image.asset(
+                        'assets/images/simpliona_login.png',
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              ),
+            ],
           ),
           Align(
             alignment: Alignment.bottomCenter,

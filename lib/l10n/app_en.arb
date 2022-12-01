@@ -35,6 +35,7 @@
   "common_error":"An error happened please try it later.",
   "common_cancel":"Cancel",
   "common_continue":"Continue",
+  "common_go_to_app":"Go to App",
   "common_disconnect":"Disconnect",
   "common_remove":"Remove",
   "common_read_more":"Read more",
@@ -213,9 +214,9 @@
     "find_dapps_screen_world":"world",
     "find_dapps_screen_description":"Explore and enjoy thousands of ranked blockchain games, social network, tools & more.",
 
-    "account_setup_success_screen_account_created_title1":"Complete",
-    "account_setup_success_screen_account_created_title2":"already\nstarted Identity\nverification",
-    "account_setup_success_screen_account_created_description_label":"You'll level up to User Status Level 3 so you can start buying coins.",
+    "account_setup_success_screen_account_created_title1":"Your account has\nbeen",
+    "account_setup_success_screen_account_created_title2":"created",
+    "account_setup_success_screen_account_created_description_label":"Now you can send, receive, exchange,\nbuy coins and play games.",
 
     "asset_receive_screen_receive_coins_btn": "Receive",
     "asset_receive_screen_network": "Network",
