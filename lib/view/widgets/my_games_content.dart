@@ -117,10 +117,12 @@ class _MyGamesContentState extends State<MyGamesContent> {
                           GameItem(
                             key: ValueKey(game.gameId),
                             game: game,
-                            gameActions: const [
-                              GameAction.play,
-                              GameAction.buyCoin,
-                            ],
+                            gameActions: game.isPromoted
+                                ? const [
+                                    GameAction.play,
+                                    GameAction.buyCoin,
+                                  ]
+                                : [],
                             onActionPressed: (GameAction gameAction) {
                               if (gameAction == GameAction.play) {
                                 GoRouter.of(context).pushNamed(
@@ -146,14 +148,17 @@ class _MyGamesContentState extends State<MyGamesContent> {
                                 }
                               }
                             },
-                            onTap: () {
-                              GoRouter.of(context).pushNamed(
-                                AuthenticatedRouter.gameDetail,
-                                params: {
-                                  'gameId': game.gameId.toString(),
-                                },
-                              );
-                            },
+                            onTap: game.isPromoted
+                                ? () {
+                                    if (!game.isPromoted) return;
+                                    GoRouter.of(context).pushNamed(
+                                      AuthenticatedRouter.gameDetail,
+                                      params: {
+                                        'gameId': game.gameId.toString(),
+                                      },
+                                    );
+                                  }
+                                : null,
                           ),
                           if (index < state.games.length) Gaps.gap10,
                         ],
