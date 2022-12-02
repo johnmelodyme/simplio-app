@@ -114,12 +114,14 @@ class _GamesSearchScreenState extends State<GamesSearchScreen>
                         padding: Paddings.horizontal16,
                         child: GameItem(
                           game: game,
-                          gameActions: [
-                            GameAction.play,
-                            game.isAdded
-                                ? GameAction.remove
-                                : GameAction.addToMyGames,
-                          ],
+                          gameActions: game.isPromoted
+                              ? [
+                                  GameAction.play,
+                                  game.isAdded
+                                      ? GameAction.remove
+                                      : GameAction.addToMyGames,
+                                ]
+                              : [],
                           onActionPressed: (GameAction gameAction) {
                             if (gameAction == GameAction.play) {
                               GoRouter.of(context).pushNamed(
@@ -140,14 +142,16 @@ class _GamesSearchScreenState extends State<GamesSearchScreen>
                               //TODO.. handle play game CTA
                             }
                           },
-                          onTap: () {
-                            GoRouter.of(context).pushNamed(
-                              AuthenticatedRouter.gameDetail,
-                              params: {
-                                'gameId': game.gameId.toString(),
-                              },
-                            );
-                          },
+                          onTap: game.isPromoted
+                              ? () {
+                                  GoRouter.of(context).pushNamed(
+                                    AuthenticatedRouter.gameDetail,
+                                    params: {
+                                      'gameId': game.gameId.toString(),
+                                    },
+                                  );
+                                }
+                              : null,
                         ),
                       );
                     },
