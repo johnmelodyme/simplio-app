@@ -17,7 +17,7 @@ class _SlidableBannerState extends State<SlidableBanner> {
   int _currentPage = 0;
   static const List<String> images = [
     "assets/images/game_mines_of_dalarnia.png",
-    "assets/images/game_vault_hill.png",
+    "assets/images/game_benji_bananas.png",
     "assets/images/game_alpha_league_racing.png",
     "assets/images/game_tiny_world.png",
     "assets/images/game_castles.png",
