@@ -88,4 +88,3 @@ jobs:
       major: ${{ needs.set-version.outputs.major }}
       minor: ${{needs.set-version.outputs.minor}}
       patch: ${{needs.set-version.outputs.patch}}
-

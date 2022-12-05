@@ -47,7 +47,6 @@ jobs:
           echo $MAJOR $MINOR $PATCH
         id: output-data
 
-
   build-ios:
     needs: [set-version]
     uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@master
