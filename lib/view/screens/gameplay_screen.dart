@@ -13,48 +13,39 @@ import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 const _sessionId = 'gameplay';
 
 class GameplayScreen extends StatelessWidget {
+  final GlobalKey _webViewKey = GlobalKey();
   final Game game;
-  final VoidCallback onClosed;
 
-  const GameplayScreen({
+  GameplayScreen({
     super.key,
     required this.game,
-    required this.onClosed,
   });
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        onClosed.call();
-        return true;
-      },
+      onWillPop: () async => false,
       child: SioScaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            FutureBuilder(
-              future: context.read<AccountWalletCubit>().enableNetworkWallet(
-                    networkId: game.assetEmbedded.networkId,
-                    assetId: game.assetEmbedded.assetId,
-                  ),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) GoRouter.of(context).pop();
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              FutureBuilder(
+                future: context.read<AccountWalletCubit>().enableNetworkWallet(
+                      networkId: game.assetEmbedded.networkId,
+                      assetId: game.assetEmbedded.assetId,
+                    ),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) GoRouter.of(context).pop();
 
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return SafeArea(
-                    child: InAppWebView(
-                      initialUrlRequest: URLRequest(
-                        url: Uri.parse(game.playUri),
-                      ),
-                      initialOptions: InAppWebViewGroupOptions(
-                        crossPlatform: InAppWebViewOptions(
-                          useShouldOverrideUrlLoading: true,
-                        ),
-                      ),
-                      onConsoleMessage: (controller, consoleMessage) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return _GameplayWebView(
+                      webViewKey: _webViewKey,
+                      playUri: game.playUri,
+                      onMessage: (message) {
                         if (!WalletConnectUriValidator.validate(
-                          consoleMessage.message,
+                          message,
                         )) return;
 
                         final s = context.read<AccountWalletCubit>().state;
@@ -63,55 +54,142 @@ class GameplayScreen extends StatelessWidget {
                               .read<WalletConnectCubit>()
                               .openApprovedSession(
                                 s.wallet.uuid,
-                                uri: consoleMessage.message,
+                                uri: message,
                                 sessionId: _sessionId,
                                 networkId: game.assetEmbedded.networkId,
                               );
                         }
                       },
+                    );
+                  }
+
+                  return Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: Dimensions.padding2,
+                      color: SioColors.secondary4,
+                      backgroundColor: SioColors.secondary2,
                     ),
                   );
-                }
-
-                return Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: Dimensions.padding2,
-                    color: SioColors.secondary4,
-                    backgroundColor: SioColors.secondary2,
-                  ),
-                );
-              },
-            ),
-            Positioned(
-              bottom:
-                  MediaQuery.of(context).padding.bottom + Dimensions.padding16,
-              right: Dimensions.padding16,
-              child: GestureDetector(
-                onTap: () async {
-                  context
-                      .read<WalletConnectCubit>()
-                      .closeSessionBySessionId(_sessionId);
-
-                  onClosed.call();
-                  GoRouter.of(context).pop();
                 },
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black,
-                  ),
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.white,
+              ),
+              Positioned(
+                bottom: Dimensions.padding16,
+                right: Dimensions.padding16,
+                child: GestureDetector(
+                  onTap: () async {
+                    context
+                        .read<WalletConnectCubit>()
+                        .closeSessionBySessionId(_sessionId);
+
+                    GoRouter.of(context).pop();
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+}
+
+class _GameplayWebView extends StatefulWidget {
+  final GlobalKey? webViewKey;
+  final String playUri;
+  final void Function(String message) onMessage;
+
+  const _GameplayWebView({
+    required this.webViewKey,
+    required this.playUri,
+    required this.onMessage,
+  });
+
+  @override
+  State<_GameplayWebView> createState() => _GameplayWebViewState();
+}
+
+class _GameplayWebViewState extends State<_GameplayWebView> {
+  InAppWebViewController? _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SioScaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              InAppWebView(
+                initialUrlRequest: URLRequest(
+                  url: WebUri(widget.playUri.trim()),
+                ),
+                key: widget.webViewKey,
+                initialSettings: InAppWebViewSettings(
+                  cacheEnabled: false,
+                  clearCache: true,
+                  iframeAllowFullscreen: false,
+                  isElementFullscreenEnabled: false,
+                  disableInputAccessoryView: true,
+                  disableContextMenu: true,
+                  allowsBackForwardNavigationGestures: false,
+                ),
+                onWebViewCreated: (controller) => setState(() {
+                  _controller = controller;
+                }),
+                onConsoleMessage: (controller, consoleMessage) {
+                  widget.onMessage(consoleMessage.message);
+                },
+              ),
+              Positioned(
+                bottom: Dimensions.padding16,
+                right: Dimensions.padding16,
+                child: GestureDetector(
+                  onTap: () async {
+                    context
+                        .read<WalletConnectCubit>()
+                        .closeSessionBySessionId(_sessionId);
+
+                    GoRouter.of(context).pop();
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _controller?.clearCache();
   }
 }

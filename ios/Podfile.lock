@@ -86,8 +86,6 @@ PODS:
     - SwiftProtobuf
   - url_launcher_ios (0.0.1):
     - Flutter
-  - webview_flutter_wkwebview (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -98,7 +96,6 @@ DEPENDENCIES:
   - sio_core_light (from `.symlinks/plugins/sio_core_light/ios`)
   - trust_wallet_core_lib (from `.symlinks/plugins/trust_wallet_core_lib/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
   trunk:
@@ -136,12 +133,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/trust_wallet_core_lib/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
-  webview_flutter_wkwebview:
-    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
+  flutter_inappwebview: 4fe74e5e65809c3d363febfd9e2b21aa79bb0f1c
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleMLKit: 755661c46990a85e42278015f26400286d98ad95
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
@@ -164,7 +159,6 @@ SPEC CHECKSUMS:
   trust_wallet_core_lib: 1d25320104cd3a7fee634d5f57596200da2b5d7c
   TrustWalletCore: e90c905d84680a7c2d7d32f4341ca3671588eb18
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
-  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
