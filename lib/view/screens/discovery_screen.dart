@@ -7,11 +7,13 @@ import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
+import 'package:simplio_app/logic/bloc/nft/nft_bloc.dart';
 import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/discover_coins_content.dart';
 import 'package:simplio_app/view/widgets/discover_games_content.dart';
+import 'package:simplio_app/view/widgets/discovery_nft_content.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
 import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
@@ -30,8 +32,9 @@ class DiscoveryScreen extends ScreenWithDialog {
       tabs: [
         NavigationBarTabItem(
           label: context.locale.discovery_tab_games,
-          onRefresh: () async =>
-              context.read<GamesBloc>().add(const ReloadGamesEvent()),
+          onRefresh: () async {
+            context.read<GamesBloc>().add(const ReloadGamesEvent());
+          },
           searchBar: SearchBarPlaceholder(
             onTap: () {
               GoRouter.of(context).pushNamed(
@@ -54,10 +57,10 @@ class DiscoveryScreen extends ScreenWithDialog {
         ),
         NavigationBarTabItem(
           label: context.locale.discovery_tab_coins,
-          onRefresh: () async => {
-            context.read<CryptoAssetBloc>().add(
-                  const ReloadCryptoAssetsEvent(),
-                ),
+          onRefresh: () async {
+            context
+                .read<CryptoAssetBloc>()
+                .add(const ReloadCryptoAssetsEvent());
           },
           searchBar: SearchBarPlaceholder(
             label: context.locale.discovery_screen_search_and_add_coins,
@@ -81,6 +84,9 @@ class DiscoveryScreen extends ScreenWithDialog {
         ),
         NavigationBarTabItem(
           label: context.locale.discovery_tab_nft,
+          onRefresh: () async {
+            context.read<NftBloc>().add(const NftRefreshed());
+          },
           searchBar: SearchBarPlaceholder(
             label: context.locale.discovery_screen_search_nft,
           ),
@@ -91,7 +97,10 @@ class DiscoveryScreen extends ScreenWithDialog {
             const SlidableBanner(),
             const SliverGap(Dimensions.padding20),
           ],
-          bottomSlivers: [],
+          bottomSlivers: [
+            const SliverGap(Dimensions.padding20),
+            const DiscoveryNftContent(),
+          ],
         )
       ],
     );

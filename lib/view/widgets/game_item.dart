@@ -96,7 +96,7 @@ class GameItem extends StatelessWidget {
               ),
             ),
             Image.network(
-              game.preview,
+              game.preview.high,
               fit: BoxFit.cover,
               height: double.infinity,
               width: double.infinity,

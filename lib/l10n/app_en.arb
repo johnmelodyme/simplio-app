@@ -134,10 +134,19 @@
       }
     },
     "common_item_coin_price_label": "Coin price: ",
+    "common_item_nft_price_label": "Nft price: ",
 
     "game_item_action_types": "{actionType, select, play{Play} buyCoin{Buy Coin} remove{Remove} addToMyGames{Add to My Games} other{none}}",
     "@game_item_action_types": {
       "description": "Game Action type",
+      "placeholders": {
+        "actionType": {}
+      }
+    },
+
+    "nft_item_action_types": "{actionType, select, buyNft{Buy Coin} other{none}}",
+    "@nft_item_action_types": {
+      "description": "Nft Action type",
       "placeholders": {
         "actionType": {}
       }

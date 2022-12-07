@@ -13,6 +13,7 @@ import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
+import 'package:simplio_app/logic/bloc/nft/nft_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
@@ -82,6 +83,12 @@ class AuthenticatedApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CryptoAssetBloc.builder(
+            marketplaceRepository:
+                RepositoryProvider.of<MarketplaceRepository>(context),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => NftBloc.builder(
             marketplaceRepository:
                 RepositoryProvider.of<MarketplaceRepository>(context),
           ),

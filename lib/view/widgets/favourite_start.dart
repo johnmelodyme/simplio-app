@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 
+// TODO - BUG - is has wrong spelling
 class FavouriteStar extends StatelessWidget {
   const FavouriteStar({
     super.key,

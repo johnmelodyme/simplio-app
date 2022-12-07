@@ -4,7 +4,6 @@ import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

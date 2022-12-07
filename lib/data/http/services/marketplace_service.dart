@@ -13,6 +13,9 @@ abstract class MarketplaceService extends ChopperService {
         GamesResponse: GamesResponse.fromJson,
         AssetsResponse: AssetsResponse.fromJson,
         GameDetail: GameDetail.fromJson,
+        SearchNftBody: SearchNftBody.fromJson,
+        SearchNftResponse: SearchNftResponse.fromJson,
+        SearchNftItem: SearchNftItem.fromJson,
       };
 
   @Post(path: '/assets/search')
@@ -36,6 +39,81 @@ abstract class MarketplaceService extends ChopperService {
     @Query('gameId') String gameId,
     @Query('currency') String currency,
   );
+
+  @Post(path: '/nfts/search')
+  Future<Response<SearchNftResponse>> searchNft(
+    @Body() SearchNftBody body,
+  );
+}
+
+@JsonSerializable()
+class SearchNftBody {
+  final int page;
+  final int pageSize;
+  final String currency;
+  final String name;
+  final String sort;
+  final List<int> categories;
+
+  const SearchNftBody({
+    required this.page,
+    required this.pageSize,
+    required this.currency,
+    this.name = '',
+    this.sort = '',
+    this.categories = const [],
+  });
+
+  factory SearchNftBody.fromJson(Map<String, dynamic> json) =>
+      _$SearchNftBodyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SearchNftBodyToJson(this);
+}
+
+@JsonSerializable()
+class SearchNftResponse {
+  final List<SearchNftItem> items;
+  final int totalCount;
+
+  const SearchNftResponse({
+    this.items = const [],
+    required this.totalCount,
+  });
+
+  factory SearchNftResponse.fromJson(Map<String, dynamic> json) =>
+      _$SearchNftResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SearchNftResponseToJson(this);
+}
+
+@JsonSerializable()
+class SearchNftItem {
+  final int nftId;
+  final String name;
+  final String game;
+  final bool isPromoted;
+  final int category;
+  final PreviewResolution preview;
+  final double price;
+  final String currency;
+  final AssetEmbedded asset;
+
+  const SearchNftItem({
+    required this.nftId,
+    required this.name,
+    required this.game,
+    required this.isPromoted,
+    required this.category,
+    required this.preview,
+    required this.price,
+    required this.currency,
+    required this.asset,
+  });
+
+  factory SearchNftItem.fromJson(Map<String, dynamic> json) =>
+      _$SearchNftItemFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SearchNftItemToJson(this);
 }
 
 @JsonSerializable()
@@ -135,8 +213,24 @@ class AssetsResponse {
 }
 
 @JsonSerializable()
+class PreviewResolution {
+  final String low;
+  final String high;
+
+  const PreviewResolution({
+    required this.low,
+    required this.high,
+  });
+
+  factory PreviewResolution.fromJson(Map<String, dynamic> json) =>
+      _$PreviewResolutionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PreviewResolutionToJson(this);
+}
+
+@JsonSerializable()
 class Game {
-  final String preview;
+  final PreviewResolution preview;
   final int gameId;
   final String name;
   final AssetEmbedded assetEmbedded;
