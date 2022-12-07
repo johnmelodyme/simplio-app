@@ -111,6 +111,7 @@ class AuthenticatedRouter with PageBuilderMixin {
         return ProtectedGuard(
           icon: const LockWithShadowIcon(),
           title: context.locale.protected_guard_enter_pin_code,
+          displayAppBar: false,
           protectWhen: (state) =>
               state.account.securityLevel.index > SecurityLevel.none.index &&
               state is AccountLocked,
@@ -195,6 +196,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                             path: 'password-change',
                             name: passwordChange,
                             pageBuilder: pageBuilder(
+                              withTransition: false,
                               settings: const ApplicationSettings(
                                 navigators: NavigatorsRouteSettings(
                                   selectedKey: ValueKey(configuration),
@@ -216,8 +218,11 @@ class AuthenticatedRouter with PageBuilderMixin {
                                         .locale.protected_guard_enter_pin_code,
                                     protectedBuilder: (_) =>
                                         const PasswordChangeScreen(),
-                                    onPrevent: (context) =>
-                                        context.goNamed(securitySettings),
+                                    onPrevent: (context) {
+                                      context
+                                          .read<AuthBloc>()
+                                          .add(const GotUnauthenticated());
+                                    },
                                   );
                                 }),
                               ),
@@ -227,6 +232,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                             path: 'backup-inventory',
                             name: backupInventory,
                             pageBuilder: pageBuilder(
+                              withTransition: false,
                               settings: const ApplicationSettings(
                                 navigators: NavigatorsRouteSettings(
                                   selectedKey: ValueKey(backupInventory),
@@ -248,8 +254,11 @@ class AuthenticatedRouter with PageBuilderMixin {
                                         .locale.protected_guard_enter_pin_code,
                                     protectedBuilder: (_) =>
                                         const BackupInventoryScreen(),
-                                    onPrevent: (context) =>
-                                        context.goNamed(securitySettings),
+                                    onPrevent: (context) {
+                                      context
+                                          .read<AuthBloc>()
+                                          .add(const GotUnauthenticated());
+                                    },
                                   );
                                 }),
                               ),

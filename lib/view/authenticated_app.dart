@@ -100,6 +100,8 @@ class AuthenticatedApp extends StatelessWidget {
             listenWhen: (previous, current) => previous != current,
             listener: (context, state) {
               if (state is! AccountUnlocked) return;
+              if (state.isLoaded) return;
+
               context
                   .read<AccountWalletCubit>()
                   .loadWallet(state.account.id, key: state.secret);
@@ -148,7 +150,8 @@ class AuthenticatedApp extends StatelessWidget {
   }
 
   Locale _setLocale(BuildContext context) {
-    final s = context.watch<AccountCubit>().state;
+    // TODO - BUG - don't use `watch` method to monitor state. It rebuilds the entire widget tree everytime the account is changed.
+    final s = context.read<AccountCubit>().state;
     return s is AccountProvided
         ? s.account.settings.locale
         : const AccountSettings.builder().locale;
@@ -156,7 +159,8 @@ class AuthenticatedApp extends StatelessWidget {
 
   ThemeMode _setThemeMode(BuildContext context) {
     final ThemeMode themeMode;
-    final s = context.watch<AccountCubit>().state;
+    // TODO - BUG - don't use `watch` method to monitor state.
+    final s = context.read<AccountCubit>().state;
 
     if (s is AccountProvided) {
       _setSystemUIOverlayStyle(s.account.settings.themeMode);

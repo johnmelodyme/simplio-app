@@ -9,6 +9,7 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
+import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 import 'package:simplio_app/view/widgets/pin_digits.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
@@ -22,6 +23,7 @@ class ProtectedGuard extends StatefulWidget {
   final Widget icon;
   final String title;
   final String? subtitle;
+  final bool displayAppBar;
 
   const ProtectedGuard({
     super.key,
@@ -31,6 +33,7 @@ class ProtectedGuard extends StatefulWidget {
     required this.icon,
     required this.title,
     this.subtitle,
+    this.displayAppBar = true,
   });
 
   @override
@@ -64,14 +67,18 @@ class _ProtectedGuardState extends State<ProtectedGuard> {
               icon: widget.icon,
               title: widget.title,
               subtitle: widget.subtitle,
-              onFailure: (context, account) async {
-                context
+              displayAppBar: widget.displayAppBar,
+              onFailure: (context, account) {
+                return context
                     .read<AccountCubit>()
                     .updateAccount(account)
                     .then((_) => widget.onPrevent(context));
               },
+              onInvalid: (context, account) {
+                return context.read<AccountCubit>().updateAccount(account);
+              },
               onSuccess: (context, response) {
-                context
+                return context
                     .read<AccountCubit>()
                     .unlockAccount(response.account, response.secret)
                     .then((_) => setState(() => isVerified = true));
@@ -82,18 +89,31 @@ class _ProtectedGuardState extends State<ProtectedGuard> {
 }
 
 class _Protection extends StatelessWidget {
-  final Function(BuildContext context, PinVerifyFormSuccess) onSuccess;
-  final Function(BuildContext context, Account account) onFailure;
+  final Future<void> Function(
+    BuildContext context,
+    PinVerifyFormSuccess response,
+  ) onSuccess;
+  final Future<void> Function(
+    BuildContext context,
+    Account account,
+  ) onInvalid;
+  final Future<void> Function(
+    BuildContext context,
+    Account account,
+  ) onFailure;
   final Widget icon;
   final String title;
   final String? subtitle;
+  final bool displayAppBar;
 
   const _Protection({
     required this.onSuccess,
+    required this.onInvalid,
     required this.onFailure,
     required this.icon,
     required this.title,
     required this.subtitle,
+    required this.displayAppBar,
   });
 
   @override
@@ -103,6 +123,11 @@ class _Protection extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            if (displayAppBar)
+              const ColorizedAppBar(
+                firstPart: '',
+                secondPart: '',
+              ),
             Expanded(
               flex: 5,
               child: Column(
@@ -125,17 +150,22 @@ class _Protection extends StatelessWidget {
                       ),
                     ),
                   ],
-                  Gaps.gap60,
+                  Gaps.gap20,
                   BlocConsumer<PinVerifyFormCubit, PinVerifyFormState>(
                     listenWhen: (p, c) => p.response != c.response,
-                    listener: (context, state) {
+                    listener: (context, state) async {
                       final res = state.response;
+
                       if (res is PinVerifyFormSuccess) {
-                        onSuccess(context, res);
+                        return onSuccess(context, res);
+                      }
+
+                      if (res is PinVerifyFormInvalid) {
+                        return onInvalid(context, state.account);
                       }
 
                       if (res is PinVerifyFormFailure) {
-                        onFailure(context, state.account);
+                        return onFailure(context, state.account);
                       }
                     },
                     buildWhen: (prev, curr) => prev.pin != curr.pin,
@@ -147,6 +177,7 @@ class _Protection extends StatelessWidget {
                       );
                     },
                   ),
+                  Gaps.gap16,
                   BlocBuilder<PinVerifyFormCubit, PinVerifyFormState>(
                     buildWhen: (prev, curr) =>
                         prev.account.securityAttempts !=
@@ -177,12 +208,8 @@ class _Protection extends StatelessWidget {
               child: Numpad(
                 key: const Key('protected-screen-numpad'),
                 displayEraseButton: true,
-                onTap: (value) async {
-                  context.read<PinVerifyFormCubit>().changeFormValue(value);
-                },
-                onErase: () {
-                  context.read<PinVerifyFormCubit>().eraseLastValue();
-                },
+                onTap: context.read<PinVerifyFormCubit>().changeFormValue,
+                onErase: context.read<PinVerifyFormCubit>().eraseLastValue,
               ),
             ),
           ],

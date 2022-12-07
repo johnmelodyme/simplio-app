@@ -37,23 +37,27 @@ class AccountLocked extends AccountProvided {
 
 class AccountUnlocked extends AccountProvided {
   final String secret;
+  final bool isLoaded;
 
   const AccountUnlocked({
     required super.account,
     required this.secret,
+    this.isLoaded = false,
   });
 
   @override
-  List<Object?> get props => [account, secret];
+  List<Object?> get props => [account, secret, isLoaded];
 
   @override
   AccountUnlocked copyWith({
     Account? account,
     String? secret,
+    bool? isLoaded,
   }) {
     return AccountUnlocked(
       account: account ?? this.account,
       secret: secret ?? this.secret,
+      isLoaded: isLoaded ?? true,
     );
   }
 }

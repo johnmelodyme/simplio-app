@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/model/account.dart';
 import 'package:simplio_app/data/model/helpers/lockable_string.dart';
@@ -87,9 +88,10 @@ class AccountRepository {
     return PinVerifyResponse(
       secret: secret,
       account: acc.copyWith(
-          securityAttempts: secret != null
-              ? securityAttemptsLimit
-              : acc.securityAttempts - 1),
+        securityAttempts: secret != null
+            ? securityAttemptsLimit
+            : max(acc.securityAttempts - 1, 0),
+      ),
     );
   }
 }
