@@ -20,15 +20,22 @@ import 'package:simplio_app/view/widgets/search_bar_placeholder.dart';
 import 'package:simplio_app/view/widgets/slidable_banner.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
+enum DiscoveryTab { games, coins, nft }
+
 class DiscoveryScreen extends ScreenWithDialog {
-  const DiscoveryScreen({super.key})
-      : super(
+  const DiscoveryScreen({
+    super.key,
+    this.tab = DiscoveryTab.games,
+  }) : super(
           withBottomTabBar: true,
         );
+
+  final DiscoveryTab tab;
 
   @override
   Widget innerBuild(BuildContext context) {
     return NavigationTabBar(
+      currentTab: tab.index,
       tabs: [
         NavigationBarTabItem(
           label: context.locale.discovery_tab_games,

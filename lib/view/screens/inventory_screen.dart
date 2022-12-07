@@ -6,6 +6,7 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/inventory_coins_content.dart';
+import 'package:simplio_app/view/widgets/inventory_nft_content.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/total_balance.dart';
 import 'package:simplio_app/view/widgets/transactions_content.dart';
@@ -14,10 +15,10 @@ import 'package:sio_glyphs/sio_icons.dart';
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({
     super.key,
-    this.inventoryTab = InventoryTab.coins,
+    this.tab = InventoryTab.coins,
   });
 
-  final InventoryTab inventoryTab;
+  final InventoryTab tab;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class InventoryScreen extends StatelessWidget {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         return NavigationTabBar(
-          currentTab: inventoryTab.index,
+          currentTab: tab.index,
           tabs: [
             NavigationBarTabItem(
                 label: context.locale.inventory_tab_coins,
@@ -57,7 +58,8 @@ class InventoryScreen extends StatelessWidget {
                   const SliverGap(Dimensions.padding20),
                 ],
                 bottomSlivers: [
-                  const SliverGap(100)
+                  const SliverGap(100),
+                  const InventoryNftContent(),
                 ]),
             NavigationBarTabItem(
                 label: context.locale.inventory_tab_transactions,

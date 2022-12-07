@@ -159,7 +159,14 @@ class AuthenticatedRouter with PageBuilderMixin {
                 pageBuilder: pageBuilder(
                   builder: (state) => BlocProvider(
                     create: (context) => DialogCubit.builder(),
-                    child: const DiscoveryScreen(),
+                    child: Builder(builder: (context) {
+                      final e = state.extra;
+
+                      return DiscoveryScreen(
+                        key: UniqueKey(),
+                        tab: e is DiscoveryTab ? e : DiscoveryTab.games,
+                      );
+                    }),
                   ),
                   withTransition: false,
                   settings: const ApplicationSettings(
@@ -318,8 +325,7 @@ class AuthenticatedRouter with PageBuilderMixin {
                       final e = state.extra;
                       return InventoryScreen(
                         key: UniqueKey(),
-                        inventoryTab:
-                            e is InventoryTab ? e : InventoryTab.coins,
+                        tab: e is InventoryTab ? e : InventoryTab.coins,
                       );
                     }),
                   ),
