@@ -1,0 +1,26 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+                {
+                        "name": "simplio-app Android",
+                        "request": "launch",
+                        "type": "dart",
+                        "args": [
+                                "--dart-define=API_URL=",
+                                "--dart-define=API_KEY=",
+                                "--dart-define=TEST_RUN=",
+                                "--flavor=dev"
+                        ]
+                },
+                {
+                        "name": "simplio-app iOS",
+                        "request": "launch",
+                        "type": "dart",
+                        "args": [
+                                "--dart-define=API_URL=",
+                                "--dart-define=API_KEY=",
+                                "--dart-define=TEST_RUN="
+                        ]
+                }
+        ]
+}
