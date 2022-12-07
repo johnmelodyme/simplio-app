@@ -85,7 +85,9 @@ class GameDetailScreen extends ScreenWithDialog {
                             Constants.appBarHeight),
                         Gaps.gap16,
                         SlidableGameImages(
-                          images: state.gameDetail.preview,
+                          images: state.gameDetail.preview
+                              .map((p) => p.low)
+                              .toList(),
                         ),
                         Gaps.gap20,
                         Padding(

@@ -348,7 +348,7 @@ class GameDetail {
   String name;
   int genre;
   int release;
-  List<String> preview;
+  List<PreviewResolution> preview;
   List<String> caption;
   List<Reference> references;
   AssetEmbedded assetEmbedded;

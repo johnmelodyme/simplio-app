@@ -188,19 +188,35 @@ class _SimplioAppState extends State<SimplioApp> {
     );
   }
 
+  // TODO - refactor - precache images in relative places
   void precacheAssetsImages() {
     precacheImage(
-        Image.asset('assets/images/start_screen1.png').image, context);
+      Image.asset('assets/images/start_screen1.png').image,
+      context,
+    );
     precacheImage(
-        Image.asset('assets/images/start_screen2.png').image, context);
+      Image.asset('assets/images/start_screen2.png').image,
+      context,
+    );
     precacheImage(
-        Image.asset('assets/images/start_screen3.png').image, context);
+      Image.asset('assets/images/start_screen3.png').image,
+      context,
+    );
     precacheImage(
-        Image.asset('assets/images/simpliona_dapps.png').image, context);
+      Image.asset('assets/images/simpliona_dapps.png').image,
+      context,
+    );
     precacheImage(
-        Image.asset('assets/images/find_dapps_coming_soon.png').image, context);
+      Image.asset('assets/images/find_dapps_coming_soon.png').image,
+      context,
+    );
     precacheImage(
-        Image.asset('assets/images/simpliona_dapps.png').image, context);
-    precacheImage(Image.asset('assets/images/blue_ring.png').image, context);
+      Image.asset('assets/images/blue_ring.png').image,
+      context,
+    );
+    precacheImage(
+      Image.asset('assets/images/empty_transactions_placeholder.png').image,
+      context,
+    );
   }
 }
