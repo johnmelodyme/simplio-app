@@ -105,7 +105,7 @@ class GameplayScreen extends StatelessWidget {
   }
 }
 
-class _GameplayWebView extends StatefulWidget {
+class _GameplayWebView extends StatelessWidget {
   final GlobalKey? webViewKey;
   final String playUri;
   final void Function(String message) onMessage;
@@ -115,13 +115,6 @@ class _GameplayWebView extends StatefulWidget {
     required this.playUri,
     required this.onMessage,
   });
-
-  @override
-  State<_GameplayWebView> createState() => _GameplayWebViewState();
-}
-
-class _GameplayWebViewState extends State<_GameplayWebView> {
-  // InAppWebViewController? _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -135,9 +128,9 @@ class _GameplayWebViewState extends State<_GameplayWebView> {
             children: [
               InAppWebView(
                 initialUrlRequest: URLRequest(
-                  url: WebUri(widget.playUri.trim()),
+                  url: WebUri(playUri.trim()),
                 ),
-                key: widget.webViewKey,
+                key: webViewKey,
                 initialSettings: InAppWebViewSettings(
                   // TODO - enabling cache is only for mvp.
                   cacheEnabled: true,
@@ -148,11 +141,8 @@ class _GameplayWebViewState extends State<_GameplayWebView> {
                   disableContextMenu: true,
                   allowsBackForwardNavigationGestures: false,
                 ),
-                onWebViewCreated: (controller) => setState(() {
-                  // _controller = controller;
-                }),
                 onConsoleMessage: (controller, consoleMessage) {
-                  widget.onMessage(consoleMessage.message);
+                  onMessage(consoleMessage.message);
                 },
               ),
               Positioned(
@@ -185,13 +175,5 @@ class _GameplayWebViewState extends State<_GameplayWebView> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    // TODO - cache is enabled for mvp purposes.
-    // _controller?.clearCache();
   }
 }
