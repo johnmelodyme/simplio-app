@@ -121,7 +121,7 @@ class _GameplayWebView extends StatefulWidget {
 }
 
 class _GameplayWebViewState extends State<_GameplayWebView> {
-  InAppWebViewController? _controller;
+  // InAppWebViewController? _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +139,7 @@ class _GameplayWebViewState extends State<_GameplayWebView> {
                 ),
                 key: widget.webViewKey,
                 initialSettings: InAppWebViewSettings(
-                  // TODO - this is only for mvp.
+                  // TODO - enabling cache is only for mvp.
                   cacheEnabled: true,
                   clearCache: false,
                   iframeAllowFullscreen: false,
@@ -149,7 +149,7 @@ class _GameplayWebViewState extends State<_GameplayWebView> {
                   allowsBackForwardNavigationGestures: false,
                 ),
                 onWebViewCreated: (controller) => setState(() {
-                  _controller = controller;
+                  // _controller = controller;
                 }),
                 onConsoleMessage: (controller, consoleMessage) {
                   widget.onMessage(consoleMessage.message);
