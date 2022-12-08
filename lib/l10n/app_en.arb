@@ -144,7 +144,7 @@
       }
     },
 
-    "nft_item_action_types": "{actionType, select, buyNft{Buy Coin} other{none}}",
+    "nft_item_action_types": "{actionType, select, buyNft{Go to shop} other{none}}",
     "@nft_item_action_types": {
       "description": "Nft Action type",
       "placeholders": {
