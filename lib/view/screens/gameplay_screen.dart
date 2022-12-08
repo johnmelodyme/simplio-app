@@ -139,8 +139,9 @@ class _GameplayWebViewState extends State<_GameplayWebView> {
                 ),
                 key: widget.webViewKey,
                 initialSettings: InAppWebViewSettings(
-                  cacheEnabled: false,
-                  clearCache: true,
+                  // TODO - this is only for mvp.
+                  cacheEnabled: true,
+                  clearCache: false,
                   iframeAllowFullscreen: false,
                   isElementFullscreenEnabled: false,
                   disableInputAccessoryView: true,
@@ -190,6 +191,7 @@ class _GameplayWebViewState extends State<_GameplayWebView> {
   void dispose() {
     super.dispose();
 
-    _controller?.clearCache();
+    // TODO - cache is enabled for mvp purposes.
+    // _controller?.clearCache();
   }
 }
