@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/data/repositories/marketplace_repository.dart';
-import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
@@ -17,20 +15,13 @@ import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
 
-class MyGamesContent extends StatefulWidget {
+class MyGamesContent extends StatelessWidget {
   const MyGamesContent({
     super.key,
     required this.onCoinAdd,
   });
 
   final Function(int, int) onCoinAdd;
-
-  @override
-  State<MyGamesContent> createState() => _MyGamesContentState();
-}
-
-class _MyGamesContentState extends State<MyGamesContent> {
-  MyGamesBloc? cubit;
 
   void _buyCoin(BuildContext context, String assetId, String networkId) {
     context.read<AssetBuyFormCubit>().clear();
@@ -42,20 +33,18 @@ class _MyGamesContentState extends State<MyGamesContent> {
 
   @override
   Widget build(BuildContext context) {
-    cubit ??= MyGamesBloc(
-      userRepository: RepositoryProvider.of<UserRepository>(context),
-      marketplaceRepository:
-          RepositoryProvider.of<MarketplaceRepository>(context),
-    );
-    cubit?.add(const LoadMyGamesEvent());
+    MyGamesBloc bloc = context.read<MyGamesBloc>();
+
+    bloc.add(const LoadMyGamesEvent());
     final accountWalletCubit = context.read<AccountWalletCubit>();
     return SliverPadding(
       padding: Paddings.horizontal16,
       sliver: BlocProvider(
         create: (context) {
-          return cubit!;
+          return bloc;
         },
         child: BlocBuilder<MyGamesBloc, GamesState>(
+          bloc: bloc,
           builder: (context, state) {
             if (state is GamesLoadingState) {
               return const SliverToBoxAdapter(
@@ -76,7 +65,7 @@ class _MyGamesContentState extends State<MyGamesContent> {
                       ),
                     ),
                     onTap: () {
-                      cubit?.add(const LoadMyGamesEvent());
+                      bloc.add(const LoadMyGamesEvent());
                     },
                   ),
                 ),
@@ -141,7 +130,7 @@ class _MyGamesContentState extends State<MyGamesContent> {
                                 )) {
                                   _buyCoin(context, assetId, networkId);
                                 } else {
-                                  widget.onCoinAdd.call(
+                                  onCoinAdd.call(
                                     int.parse(assetId),
                                     int.parse(networkId),
                                   );

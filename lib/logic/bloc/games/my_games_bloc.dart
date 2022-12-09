@@ -28,7 +28,9 @@ class MyGamesBloc extends GamesBloc {
 
       if (userProfile.gameLibrary?.isNotEmpty == true) {
         List<Game> games = await marketplaceRepository.loadMyGames(
-          games: userProfile.gameLibrary ?? [],
+          games: userProfile.gameLibrary?.isNotEmpty == true
+              ? userProfile.gameLibrary!.reversed.toList()
+              : [],
           currency: 'USD',
         );
 

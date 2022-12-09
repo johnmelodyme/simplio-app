@@ -6,6 +6,7 @@ import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/l10n/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
+import 'package:simplio_app/logic/bloc/games/my_games_bloc.dart';
 import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -84,6 +85,8 @@ class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
                         width: 50,
                       ),
                     );
+
+                    context.read<MyGamesBloc>().add(const LoadMyGamesEvent());
                   }
                 },
                 builder: (context, state) {
