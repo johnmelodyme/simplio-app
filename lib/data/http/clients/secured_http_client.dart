@@ -2,7 +2,6 @@ import 'package:chopper/chopper.dart';
 import 'package:simplio_app/data/http/authenticators/refresh_token_authenticator.dart';
 import 'package:simplio_app/data/http/clients/http_client.dart';
 import 'package:simplio_app/data/http/converters/json_serializable_converter.dart';
-import 'package:simplio_app/data/http/interceptors/api_key_interceptor.dart';
 import 'package:simplio_app/data/http/interceptors/authorize_interceptor.dart';
 import 'package:simplio_app/data/http/services/account_service.dart';
 import 'package:simplio_app/data/http/services/asset_service.dart';
@@ -51,7 +50,6 @@ class SecuredHttpClient extends HttpClient {
               refreshTokenService: refreshTokenService,
             ),
             interceptors: [
-              ApiKeyInterceptor(),
               AuthorizeInterceptor(authTokenStorage: authTokenStorage),
             ],
             services: [

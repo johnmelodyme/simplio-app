@@ -1,7 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:simplio_app/data/http/clients/http_client.dart';
 import 'package:simplio_app/data/http/converters/json_serializable_converter.dart';
-import 'package:simplio_app/data/http/interceptors/api_key_interceptor.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
 import 'package:simplio_app/data/http/services/sign_in_service.dart';
@@ -23,9 +22,6 @@ class PublicHttpClient extends HttpClient {
             ...RefreshTokenService.converter(),
             ...PasswordResetService.converter(),
           }),
-          interceptors: [
-            ApiKeyInterceptor(),
-          ],
           services: [
             SignInService.create(),
             SignUpService.create(),
