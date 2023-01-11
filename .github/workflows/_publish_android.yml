@@ -71,6 +71,10 @@ jobs:
           echo "patch: ${{ inputs.patch }}" >> ./version.yml
           tail ./version.yml
 
+      - name: Give write permissions to needed paths
+        if: ${{ inputs.testBuild == false }}
+        run: cd /var && sudo chmod -R a+w lib/
+
       - name: Set version
         if: ${{ inputs.testBuild == false }}
         uses: maierj/fastlane-action@v2.2.0
