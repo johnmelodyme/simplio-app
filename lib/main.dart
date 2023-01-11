@@ -35,7 +35,7 @@ import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/view/authenticated_app.dart';
-import 'package:simplio_app/view/routes/guards/auth_guard.dart';
+import 'package:simplio_app/view/guards/auth_guard.dart';
 import 'package:simplio_app/view/screens/splash_screen.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/unauthenticated_app.dart';

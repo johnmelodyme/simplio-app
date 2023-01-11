@@ -3,6 +3,7 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
+import 'package:simplio_app/view/widgets/keypad.dart';
 
 class KeypadItem extends StatelessWidget {
   const KeypadItem({
@@ -11,12 +12,12 @@ class KeypadItem extends StatelessWidget {
 
   factory KeypadItem.number({
     key,
-    required int value,
-    required Function(int) onTap,
+    required NumpadValue value,
+    required void Function(NumpadValue) onTap,
     bool? isCircular,
     Size? size,
   }) {
-    return _KeypadButton<int>(
+    return _KeypadButton<NumpadValue>(
       key: key,
       value: value,
       onTap: onTap,
@@ -51,6 +52,7 @@ class KeypadItem extends StatelessWidget {
     required Widget content,
     ActionButtonType? actionType,
     required VoidCallback onTap,
+    VoidCallback? onLongPress,
     bool? isCircular,
     Size? size,
   }) {
@@ -59,6 +61,7 @@ class KeypadItem extends StatelessWidget {
       content: content,
       actionButtonType: actionType ?? ActionButtonType.flat,
       onTap: onTap,
+      onLongPress: onLongPress,
       isCircular: isCircular ?? true,
       size: size ?? Constants.keypadButtonSize,
     );
@@ -73,8 +76,8 @@ class KeypadItem extends StatelessWidget {
   }
 }
 
-class _KeypadButton<T> extends KeypadItem {
-  final Function(T) onTap;
+class _KeypadButton<T extends NumpadValue> extends KeypadItem {
+  final void Function(T value) onTap;
   final T value;
   final Size size;
   final bool isCircular;
@@ -97,7 +100,7 @@ class _KeypadButton<T> extends KeypadItem {
         onTap: () => onTap(value),
         customBorder: isCircular ? const CircleBorder() : null,
         child: Center(
-          child: Text(value.toString(),
+          child: Text(value.value.toString(),
               textAlign: TextAlign.center,
               style: SioTextStyles.numericKeyboard.copyWith(
                 color: SioColors.whiteBlue,
@@ -119,6 +122,7 @@ class _ActionButton extends KeypadItem {
   final Size size;
   final ActionButtonType actionButtonType;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
   final bool isCircular;
 
   const _ActionButton({
@@ -127,6 +131,7 @@ class _ActionButton extends KeypadItem {
     required this.size,
     required this.actionButtonType,
     required this.onTap,
+    this.onLongPress,
     required this.isCircular,
   });
 
@@ -139,6 +144,7 @@ class _ActionButton extends KeypadItem {
       height: size.height,
       child: InkWell(
         onTap: onTap,
+        onLongPress: onLongPress,
         customBorder: shape,
         child: Center(
           child: content,

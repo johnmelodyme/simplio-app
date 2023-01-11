@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:chopper/chopper.dart';
-import 'package:simplio_app/data/model/auth_token.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
-import 'package:simplio_app/data/providers/storage_provider.dart';
+import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
+import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
 
 class RefreshTokenAuthenticator extends Authenticator {
   final StorageProvider<AuthToken> authTokenStorage;

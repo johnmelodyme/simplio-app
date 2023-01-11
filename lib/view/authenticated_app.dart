@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
@@ -10,23 +11,21 @@ import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/my_games_bloc.dart';
 import 'package:simplio_app/logic/bloc/nft/nft_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
-import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
-import 'package:simplio_app/logic/cubit/asset_send_form/asset_send_form_cubit.dart';
-import 'package:simplio_app/logic/cubit/navigators/navigators_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
+import 'package:simplio_app/view/routers/authenticated_router.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 
 class AuthenticatedApp extends StatelessWidget {
+  static GoRouter get router => AuthenticatedRouter().router;
+
   final String accountId;
 
   const AuthenticatedApp({
@@ -59,21 +58,6 @@ class AuthenticatedApp extends StatelessWidget {
                 RepositoryProvider.of<WalletConnectRepository>(context),
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
           ),
-        ),
-        BlocProvider(create: (_) => NavigatorsCubit()),
-        BlocProvider(
-          create: (context) => AssetExchangeFormCubit(
-            swapRepository: RepositoryProvider.of<SwapRepository>(context),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => AssetSendFormCubit.builder(
-            feeRepository: RepositoryProvider.of<FeeRepository>(context),
-            walletRepository: RepositoryProvider.of<WalletRepository>(context),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => AssetBuyFormCubit.builder(),
         ),
         BlocProvider(
           create: (context) => GamesBloc.builder(
@@ -125,26 +109,17 @@ class AuthenticatedApp extends StatelessWidget {
             },
           ),
         ],
-        child: Builder(
-          builder: (context) {
-            final r = AuthenticatedRouter.of(context).router;
-            return Builder(
-              builder: (context) {
-                return MaterialApp.router(
-                  key: UniqueKey(),
-                  onGenerateTitle: (context) => context.locale.simplioTitle,
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale: _setLocale(context),
-                  themeMode: _setThemeMode(context),
-                  routeInformationParser: r.routeInformationParser,
-                  routeInformationProvider: r.routeInformationProvider,
-                  routerDelegate: r.routerDelegate,
-                );
-              },
-            );
-          },
-        ),
+        child: Builder(builder: (context) {
+          return MaterialApp.router(
+            key: UniqueKey(),
+            onGenerateTitle: (context) => context.locale.simplioTitle,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: _setLocale(context),
+            themeMode: _setThemeMode(context),
+            routerConfig: router,
+          );
+        }),
       ),
     );
   }

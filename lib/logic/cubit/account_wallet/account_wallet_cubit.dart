@@ -1,8 +1,6 @@
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/data/model/account_wallet.dart';
-import 'package:simplio_app/data/model/network_wallet.dart';
+import 'package:simplio_app/data/model/wallet.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
@@ -46,22 +44,6 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
     } on Exception catch (e) {
       emit(AccountWalletLoadedWithError(error: e));
     }
-  }
-
-  bool hasNetworkWalledAdded({
-    required int assetId,
-    required int networkId,
-  }) {
-    final s = state;
-    if (s is AccountWalletProvided) {
-      final assetWallet = s.wallet.wallets.firstWhereOrNull(
-        (wallet) => wallet.containsWallet(networkId),
-      );
-
-      return assetWallet != null;
-    }
-
-    return false;
   }
 
   Future<void> enableNetworkWallet({

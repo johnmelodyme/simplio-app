@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:simplio_app/data/model/auth_token.dart';
-import 'package:simplio_app/data/providers/storage_provider.dart';
+import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
+import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
 
 class AuthorizeInterceptor extends RequestInterceptor {
   final StorageProvider<AuthToken> authTokenStorage;

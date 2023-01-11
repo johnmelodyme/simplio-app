@@ -1,8 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-
-part 'account_settings.g.dart';
 
 const defaultLocale = Locale('en');
 const defaultThemeMode = ThemeMode.dark;
@@ -39,17 +36,4 @@ class AccountSettings extends Equatable {
       locale: locale ?? this.locale,
     );
   }
-}
-
-@HiveType(typeId: 2)
-class AccountSettingsLocal {
-  @HiveField(0)
-  final int themeMode;
-  @HiveField(1)
-  final String languageCode;
-
-  const AccountSettingsLocal({
-    required this.themeMode,
-    required this.languageCode,
-  });
 }

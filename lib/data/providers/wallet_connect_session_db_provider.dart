@@ -1,7 +1,8 @@
 import 'package:hive/hive.dart';
-import 'package:simplio_app/data/model/wallet_connect_session.dart';
-import 'package:simplio_app/data/providers/box_provider.dart';
+import 'package:simplio_app/data/providers/helpers/box_provider.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
+
+part 'wallet_connect_session_db_provider.g.dart';
 
 class WalletConnectSessionDbProvider
     extends BoxProvider<WalletConnectSessionLocal>
@@ -37,4 +38,26 @@ class WalletConnectSessionDbProvider
   Future<void> save(WalletConnectSessionLocal session) {
     return box.add(session);
   }
+}
+
+@HiveType(typeId: 6)
+class WalletConnectSessionLocal extends HiveObject {
+  @HiveField(0)
+  final String accountWalletId;
+
+  @HiveField(1)
+  final String topicId;
+
+  @HiveField(2)
+  final String sessionId;
+
+  @HiveField(3)
+  final String sessionDetail;
+
+  WalletConnectSessionLocal({
+    required this.accountWalletId,
+    required this.topicId,
+    required this.sessionId,
+    required this.sessionDetail,
+  });
 }

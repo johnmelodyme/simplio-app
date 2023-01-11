@@ -15,7 +15,7 @@ class PublicHttpClient extends HttpClient {
   PublicHttpClient.builder(
     String url,
   ) : this._(ChopperClient(
-          baseUrl: url,
+          baseUrl: Uri.parse(url),
           converter: JsonSerializableConverter({
             ...SignInService.converter(),
             ...SignUpService.converter(),

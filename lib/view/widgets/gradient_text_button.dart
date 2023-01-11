@@ -48,18 +48,12 @@ class GradientTextButton extends StatelessWidget {
               color: Colors.transparent,
               borderRadius: BorderRadii.radius12,
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ThemedText(
-                  text,
-                  inverseColor: enabled,
-                  style: TextStyle(
-                    color: !enabled ? SioColors.secondary6 : null,
-                  ),
-                )
-              ],
+            child: ThemedText(
+              text,
+              inverseColor: enabled,
+              style: TextStyle(
+                color: !enabled ? SioColors.secondary6 : null,
+              ),
             ),
           ),
         ],

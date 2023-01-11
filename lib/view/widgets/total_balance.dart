@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 
+// TODO - rename to InventoryBalanceOverview
 class TotalBalance extends StatefulWidget {
   const TotalBalance({
     super.key,
@@ -22,6 +23,7 @@ class _TotalBalanceState extends State<TotalBalance> {
   Widget build(BuildContext context) {
     double totalBalance = 0;
 
+    // TODO - do not use bloc on widget level.
     return BlocBuilder<AccountWalletCubit, AccountWalletState>(
         buildWhen: (prev, curr) => curr is AccountWalletChanged,
         builder: (context, state) {
@@ -30,6 +32,7 @@ class _TotalBalanceState extends State<TotalBalance> {
             // todo: add notification for the user when the snackbar task is done
           }
 
+          // TODO - sto_____rk - move this functionality to AccountWallet and AssetWallet model.
           // get total balance of portfolio
           totalBalance = 0;
           for (final wallet in state.wallet.wallets) {

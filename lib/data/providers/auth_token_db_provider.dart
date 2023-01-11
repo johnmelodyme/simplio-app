@@ -1,7 +1,8 @@
 import 'package:hive_flutter/adapters.dart';
-import 'package:simplio_app/data/model/auth_token.dart';
-import 'package:simplio_app/data/providers/box_provider.dart';
-import 'package:simplio_app/data/providers/storage_provider.dart';
+import 'package:simplio_app/data/providers/helpers/box_provider.dart';
+import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
+
+part 'auth_token_db_provider.g.dart';
 
 class AuthTokenDbProvider extends BoxProvider<AuthToken>
     implements StorageProvider<AuthToken> {
@@ -30,4 +31,22 @@ class AuthTokenDbProvider extends BoxProvider<AuthToken>
     await box.clear();
     box.add(authToken);
   }
+}
+
+@HiveType(typeId: 7)
+class AuthToken extends HiveObject {
+  @HiveField(0)
+  final String refreshToken;
+
+  @HiveField(1)
+  final String accessToken;
+
+  @HiveField(2)
+  final String tokenType;
+
+  AuthToken({
+    required this.refreshToken,
+    required this.accessToken,
+    required this.tokenType,
+  });
 }

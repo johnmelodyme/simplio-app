@@ -104,7 +104,7 @@ class _SioExpansionRadioPanelState extends State<ExpansionPanelList> {
       );
       if (child.canTapOnHeader) {
         header = MergeSemantics(
-          child: InkWell(
+          child: GestureDetector(
             onTap: () => _handlePressed(_isChildExpanded(index), index),
             child: header,
           ),

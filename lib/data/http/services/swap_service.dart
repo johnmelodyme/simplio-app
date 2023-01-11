@@ -129,10 +129,12 @@ class SingleSwapBody {
 class CryptoAsset {
   final int assetId;
   final int networkId;
+  final double price;
 
   const CryptoAsset({
     required this.assetId,
     required this.networkId,
+    required this.price,
   });
 
   factory CryptoAsset.fromJson(Map<String, dynamic> json) =>

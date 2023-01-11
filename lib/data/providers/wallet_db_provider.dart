@@ -1,9 +1,10 @@
 import 'package:hive/hive.dart';
-import 'package:simplio_app/data/model/account_wallet.dart';
-import 'package:simplio_app/data/model/asset_wallet.dart';
-import 'package:simplio_app/data/model/network_wallet.dart';
-import 'package:simplio_app/data/providers/box_provider.dart';
+import 'package:simplio_app/data/model/helpers/lockable.dart';
+import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/providers/helpers/box_provider.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
+
+part 'wallet_db_provider.g.dart';
 
 class WalletDbProvider extends BoxProvider<AccountWalletLocal>
     implements WalletDb {
@@ -20,7 +21,6 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
 
   @override
   void registerAdapters() {
-    Hive.registerAdapter(AccountWalletTypesAdapter());
     Hive.registerAdapter(NetworkWalletLocalAdapter());
     Hive.registerAdapter(AssetWalletLocalAdapter());
     Hive.registerAdapter(AccountWalletLocalAdapter());
@@ -64,7 +64,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       mnemonic: wallet.mnemonic.toString(),
       isBackedUp: wallet.mnemonic.isBackedUp,
       isImported: wallet.mnemonic.isImported,
-      walletType: wallet.walletType,
+      walletType: wallet.walletType.index,
       wallets: wallet.wallets.map(_mapAssetWalletTo).toList(),
     );
   }
@@ -98,7 +98,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
         isImported: local.isImported,
         isBackedUp: local.isBackedUp,
       ),
-      local.walletType,
+      AccountWalletTypes.values[local.walletType],
       Map.fromEntries(local.wallets.map(
         (e) => MapEntry(
           e.assetId,
@@ -138,4 +138,90 @@ class WalletDbProvider extends BoxProvider<AccountWalletLocal>
       ),
     );
   }
+}
+
+@HiveType(typeId: 3)
+class AccountWalletLocal extends HiveObject {
+  @HiveField(0)
+  final String uuid;
+
+  @HiveField(1)
+  final String accountId;
+
+  @HiveField(2)
+  final DateTime updatedAt;
+
+  @HiveField(3)
+  final String mnemonic;
+
+  @HiveField(4)
+  final bool isImported;
+
+  @HiveField(5)
+  final bool isBackedUp;
+
+  @HiveField(6)
+  final int walletType;
+
+  @HiveField(7)
+  final List<AssetWalletLocal> wallets;
+
+  AccountWalletLocal({
+    required this.uuid,
+    required this.accountId,
+    required this.updatedAt,
+    required this.mnemonic,
+    required this.isImported,
+    required this.isBackedUp,
+    required this.walletType,
+    required this.wallets,
+  });
+}
+
+@HiveType(typeId: 4)
+class AssetWalletLocal extends HiveObject {
+  @HiveField(0)
+  final String uuid;
+
+  @HiveField(1)
+  final int assetId;
+
+  @HiveField(2)
+  final List<NetworkWalletLocal> wallets;
+
+  AssetWalletLocal({
+    required this.uuid,
+    required this.assetId,
+    required this.wallets,
+  });
+}
+
+@HiveType(typeId: 5)
+class NetworkWalletLocal extends HiveObject {
+  @HiveField(0)
+  final String uuid;
+
+  @HiveField(1)
+  final int networkId;
+
+  @HiveField(2)
+  final String address;
+
+  @HiveField(3)
+  final BigInt balance;
+
+  @HiveField(4)
+  final bool isEnabled;
+
+  @HiveField(5)
+  final double fiatBalance;
+
+  NetworkWalletLocal({
+    required this.uuid,
+    required this.networkId,
+    required this.address,
+    required this.balance,
+    required this.isEnabled,
+    required this.fiatBalance,
+  });
 }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
-import 'package:simplio_app/view/screens/discovery_screen.dart';
+import 'package:simplio_app/view/routers/authenticated_routes/discovery_route.dart';
+import 'package:simplio_app/view/screens/authenticated_screens/discovery_screen.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/empty_list_placeholder.dart';
-import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 
+// TODO - put content into the screen as a pricate widget.
 class InventoryNftContent extends StatelessWidget {
   const InventoryNftContent({super.key});
 
@@ -24,11 +25,11 @@ class InventoryNftContent extends StatelessWidget {
           Gaps.gap20,
           SizedBox(
             width: 234,
-            child: HighlightedElevatedButton(
+            child: HighlightedElevatedButton.primary(
               label: context.locale.inventory_screen_discover_new_nft,
               onPressed: () {
                 GoRouter.of(context).goNamed(
-                  AuthenticatedRouter.discovery,
+                  DiscoveryRoute.name,
                   extra: DiscoveryTab.nft,
                 );
               },

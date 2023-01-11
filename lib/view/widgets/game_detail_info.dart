@@ -3,17 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/my_games_bloc.dart';
-import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
+import 'package:simplio_app/view/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/back_gradient2.dart';
 import 'package:simplio_app/view/widgets/bordered_text_button.dart';
-import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
@@ -107,17 +107,15 @@ class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
                         ),
                       );
                     } else if (state.isAdded == false) {
-                      return HighlightedElevatedButton(
-                        onPressed: () {
-                          bloc.add(
-                              AddGameToLibraryEvent(gameId: gameDetail.gameId));
-                        },
+                      return HighlightedElevatedButton.primary(
                         label:
                             context.locale.game_detail_screen_add_to_my_games,
-                        icon: Icon(
-                          SioIcons.plus_rounded,
-                          color: SioColors.softBlack,
-                        ),
+                        icon: SioIcons.plus_rounded,
+                        onPressed: () {
+                          bloc.add(
+                            AddGameToLibraryEvent(gameId: gameDetail.gameId),
+                          );
+                        },
                       );
                     } else {
                       return const SizedBox(

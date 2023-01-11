@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/model/transaction.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/transactions/transactions_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/empty_list_placeholder.dart';

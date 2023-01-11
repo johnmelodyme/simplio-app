@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account.dart';
-import 'package:simplio_app/data/model/helpers/validated_pin.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
+import 'package:simplio_app/logic/helpers/validated_pin.dart';
 
 part 'pin_setup_state.dart';
 

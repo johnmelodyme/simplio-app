@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/bottom_tab_bar_container.dart';
 import 'package:simplio_app/view/widgets/coin_details_menu_button.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-typedef CoinDetailsMenuCallback = void Function(ActionType actioType);
+typedef CoinDetailsMenuCallback = void Function(ActionType actionType);
 
 class CoinDetailsMenu extends StatelessWidget {
   const CoinDetailsMenu({
@@ -39,9 +39,9 @@ class CoinDetailsMenu extends StatelessWidget {
           label: context.locale.coin_menu_buy_coin,
           icon: SioIcons.basket,
         );
-      case ActionType.exchange:
+      case ActionType.swap:
         return CoinDetailMenuItem(
-          actionType: ActionType.exchange,
+          actionType: ActionType.swap,
           label: context.locale.coin_menu_exchange,
           icon: SioIcons.swap,
         );
@@ -87,9 +87,9 @@ class CoinDetailsMenu extends StatelessWidget {
           label: context.locale.coin_menu_buy,
           icon: SioIcons.basket,
         ),
-      if (allowedActions.contains(ActionType.exchange))
+      if (allowedActions.contains(ActionType.swap))
         CoinDetailMenuItem(
-          actionType: ActionType.exchange,
+          actionType: ActionType.swap,
           label: context.locale.coin_menu_exchange,
           icon: SioIcons.swap,
         ),
@@ -147,7 +147,7 @@ class CoinDetailsMenu extends StatelessWidget {
   }
 }
 
-enum ActionType { play, buy, buyCoin, exchange, receive, send, earn }
+enum ActionType { play, buy, buyCoin, swap, receive, send, earn }
 
 class CoinDetailMenuItem {
   final ActionType actionType;

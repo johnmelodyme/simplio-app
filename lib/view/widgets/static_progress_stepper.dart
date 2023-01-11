@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/helpers/custom_painters.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -12,6 +12,7 @@ const double _xTextOffset = 0.5;
 
 enum ProgressBarType { sending, exchanging, buying }
 
+// TODO - refactor. to ve more generic.
 class StaticProgressStepper extends StatelessWidget {
   final ProgressBarType progressBarType;
 
@@ -29,12 +30,7 @@ class StaticProgressStepper extends StatelessWidget {
         ];
         break;
       case ProgressBarType.exchanging:
-        labels = [
-          context.locale.asset_exchange_success_screen_verification,
-          context.locale.asset_exchange_success_screen_exchanging,
-          context.locale.asset_exchange_success_screen_paying_out,
-          context.locale.asset_exchange_success_screen_finished,
-        ];
+        labels = [];
         break;
       case ProgressBarType.buying:
         labels = [

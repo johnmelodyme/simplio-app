@@ -211,7 +211,7 @@ class Constants {
   static const double earningButtonHeight = 49;
   static const double coinsBottomTabBarHeight = 131;
   static const double colorizedAppBarHeight = 54;
-  static const double panelKeyboardHeightWithButton = 357;
+  static const double panelKeyboardHeightWithButton = 336;
   static const double slidableBannerHeight = 140;
   static const double slidableBannerBulletSize = 4;
   static const double dialogHeight = 250;

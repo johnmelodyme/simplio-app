@@ -1,80 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:simplio_app/data/repositories/helpers/wallet_connect_uri_validator.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
-import 'package:simplio_app/view/screens/mixins/popup_dialog_mixin.dart';
-import 'package:sio_core_light/sio_core_light.dart' as sio;
 
-enum QrCodeType { address, walletConnectUri }
+typedef QrCodeValidator = bool Function(String value);
 
-class QrCodeScanner extends StatelessWidget with PopupDialogMixin {
-  final QrCodeType qrCodeType;
-  final ValueChanged<String> qrCodeCallback;
-  final int? networkId;
-  final Function() errorCallback;
-  final Function() closedCallback;
+class QrCodeScanner extends StatefulWidget {
+  final QrCodeValidator validator;
+  final ValueChanged<String> onScan;
+  final void Function(Exception? error) onError;
+
+  const QrCodeScanner({
+    super.key,
+    required this.validator,
+    required this.onScan,
+    required this.onError,
+  });
+
+  @override
+  State<QrCodeScanner> createState() => _QrCodeScannerState();
+}
+
+class _QrCodeScannerState extends State<QrCodeScanner> {
   final mobileScannerController = MobileScannerController(
     torchEnabled: false,
+    formats: [BarcodeFormat.qrCode],
   );
 
-  QrCodeScanner({
-    super.key,
-    required this.qrCodeType,
-    required this.qrCodeCallback,
-    this.networkId,
-    required this.errorCallback,
-    required this.closedCallback,
-  }) : assert(
-          qrCodeType == QrCodeType.address ? networkId != null : true,
-          'NetworkId needs to be specified for Address type',
-        );
+  @override
+  void dispose() {
+    mobileScannerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MobileScanner(
       controller: mobileScannerController,
-      onDetect: (barcode, args) {
-        if (barcode.rawValue == null ||
-            barcode.format != BarcodeFormat.qrCode) {
-          // debugPrint('Failed to scan Barcode');
-          errorCallback();
-        } else {
-          final String code = barcode.rawValue!;
-          HapticFeedback.vibrate();
+      onDetect: (barcode, _) {
+        final value = barcode.rawValue;
 
-          switch (qrCodeType) {
-            case QrCodeType.walletConnectUri:
-              if (!WalletConnectUriValidator.validate(code)) {
-                mobileScannerController.stop();
-                showError(context,
-                    message:
-                        context.locale.qr_code_scanner_wallet_connect_error,
-                    afterHideAction: errorCallback);
-
-                Future.delayed(
-                    const Duration(seconds: 2), mobileScannerController.start);
-
-                return;
-              }
-              break;
-            case QrCodeType.address:
-              if (!sio.Address.isValid(address: code, networkId: networkId!)) {
-                mobileScannerController.stop();
-                showError(context,
-                    message: context.locale.qr_code_scanner_address_error,
-                    afterHideAction: errorCallback);
-
-                Future.delayed(
-                    const Duration(seconds: 2), mobileScannerController.start);
-
-                return;
-              }
-              break;
-          }
-
-          qrCodeCallback(code);
+        if (value == null || barcode.format != BarcodeFormat.qrCode) {
+          return widget.onError(null);
         }
+
+        if (widget.validator(value)) return widget.onScan(value);
+
+        mobileScannerController.start().onError((error, stackTrace) {
+          widget.onError(Exception('Error starting scanner: $error'));
+        });
       },
     );
   }

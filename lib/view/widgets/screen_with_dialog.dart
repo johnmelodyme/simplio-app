@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/view/helpers/custom_painters.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -12,6 +12,8 @@ import 'package:simplio_app/view/widgets/outlined_container.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+// TODO - Why not to use the built-in ModalBottomSheet widget?
+// TODO - Consider to remove or refactor. I causes multiple issues.
 abstract class ScreenWithDialog extends StatefulWidget {
   const ScreenWithDialog({
     this.withBottomTabBar = false,

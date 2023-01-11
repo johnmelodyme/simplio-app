@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:simplio_app/data/http/services/inventory_service.dart';
-import 'package:simplio_app/data/model/account_wallet.dart';
-import 'package:simplio_app/data/model/asset_wallet.dart';
-import 'package:simplio_app/data/model/network_wallet.dart';
+import 'package:simplio_app/data/model/wallet.dart';
 import 'package:simplio_app/data/repositories/wallet_repository.dart';
 
+// TODO - Refreshing wallet balances should be mode to the realated domain.
 class InventoryRepository {
   final WalletDb _walletDb;
   final InventoryService _inventoryService;

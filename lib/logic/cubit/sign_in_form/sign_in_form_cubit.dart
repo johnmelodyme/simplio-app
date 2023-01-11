@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/model/account.dart';
-import 'package:simplio_app/data/model/helpers/validated_email.dart';
-import 'package:simplio_app/data/model/helpers/validated_password.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
+import 'package:simplio_app/logic/helpers/validated_email.dart';
+import 'package:simplio_app/logic/helpers/validated_password.dart';
 
 part 'sign_in_form_state.dart';
 

@@ -1,7 +1,6 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
@@ -12,13 +11,13 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/asset_search_item.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
 
+// TODO - rename coins to assets. Coins and tokens = assets.
 class DiscoverCoinsContent extends StatefulWidget {
   const DiscoverCoinsContent({super.key});
 
@@ -69,13 +68,7 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
                                       networkId: data.networkId)
                                   .then((_) {
                                 if (assetAction == AssetAction.buy) {
-                                  GoRouter.of(context).pushNamed(
-                                    AuthenticatedRouter.assetBuy,
-                                    params: {
-                                      'assetId': data.assetId.toString(),
-                                      'networkId': data.networkId.toString(),
-                                    },
-                                  );
+                                  // TODO: add buy flow when buy is implemented.
                                 }
                               });
                               break;

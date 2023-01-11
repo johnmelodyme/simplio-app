@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/logic/cubit/asset_exchange_form/asset_exchange_form_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-class AssetFormException<B extends StateStreamable<S>,
-    S extends AssetFormExceptions> extends StatelessWidget {
+// TODO - remove this widget after refactoring.
+class AssetFormException<B extends StateStreamable<S>, S extends dynamic>
+    extends StatelessWidget {
   final int formElementIndex;
 
   const AssetFormException({

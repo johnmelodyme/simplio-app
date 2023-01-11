@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
+import 'package:simplio_app/view/routers/authenticated_routes/wallet_connect_qr_scanner_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -71,8 +71,9 @@ class AvatarAppBar extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: () {
-                              GoRouter.of(context).pushNamed(AuthenticatedRouter
-                                  .walletConnectQrCodeScanner);
+                              GoRouter.of(context).pushNamed(
+                                WalletConnectQrScannerRoute.name,
+                              );
                             },
                             padding: EdgeInsets.zero,
                             icon: Icon(

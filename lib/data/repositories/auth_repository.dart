@@ -6,8 +6,8 @@ import 'package:simplio_app/data/http/services/sign_in_service.dart';
 import 'package:simplio_app/data/http/services/sign_up_service.dart';
 import 'package:simplio_app/data/mixins/jwt_mixin.dart';
 import 'package:simplio_app/data/model/account.dart';
-import 'package:simplio_app/data/model/auth_token.dart';
-import 'package:simplio_app/data/providers/storage_provider.dart';
+import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
+import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 
 class AuthRepository with JwtMixin {

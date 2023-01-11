@@ -5,8 +5,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
-import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
+import 'package:simplio_app/view/routers/authenticated_routes/game_detail_route.dart';
+import 'package:simplio_app/view/routers/authenticated_routes/gameplay_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/game_item.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
@@ -54,27 +54,20 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
                   onActionPressed: (GameAction gameAction) {
                     if (gameAction == GameAction.play) {
                       GoRouter.of(context).pushNamed(
-                        AuthenticatedRouter.gameplay,
+                        GameplayRoute.name,
                         extra: game,
                       );
                     }
 
                     if (gameAction == GameAction.buyCoin) {
-                      context.read<AssetBuyFormCubit>().clear();
-                      GoRouter.of(context).pushNamed(
-                        AuthenticatedRouter.assetBuy,
-                        params: {
-                          'assetId': game.assetEmbedded.assetId.toString(),
-                          'networkId': game.assetEmbedded.networkId.toString(),
-                        },
-                      );
+                      // TODO - Navigator to buy screen when buy is implemented.
                     }
                   },
                   onTap: game.isPromoted
                       ? () {
                           if (!game.isPromoted) return;
                           GoRouter.of(context).pushNamed(
-                            AuthenticatedRouter.gameDetail,
+                            GameDetailRoute.name,
                             params: {
                               'gameId': game.gameId.toString(),
                             },

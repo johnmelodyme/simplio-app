@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -8,6 +8,7 @@ import 'package:simplio_app/view/widgets/back_gradient2.dart';
 import 'package:simplio_app/view/widgets/small_button.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
+// TODO - remove this widget.
 class AssetSearchItem extends StatelessWidget {
   const AssetSearchItem({
     super.key,
@@ -34,6 +35,7 @@ class AssetSearchItem extends StatelessWidget {
     }
   }
 
+  // TODO - make buttons and content composable.
   SmallButtonType getButtonStyleByActionType(AssetAction assetAction) {
     switch (assetAction) {
       case AssetAction.buy:
@@ -56,6 +58,7 @@ class AssetSearchItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO - There is not error handling for the case when adding an asset to the inventory fails.
     return ClipRRect(
       borderRadius: BorderRadii.radius20,
       child: SizedBox(

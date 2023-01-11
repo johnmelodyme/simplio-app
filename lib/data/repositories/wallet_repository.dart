@@ -3,14 +3,23 @@ import 'package:flutter/foundation.dart';
 import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
-import 'package:simplio_app/data/model/account_wallet.dart';
-import 'package:simplio_app/data/model/asset_wallet.dart';
-import 'package:simplio_app/data/model/network_wallet.dart';
+import 'package:simplio_app/data/model/helpers/lockable.dart';
+import 'package:simplio_app/data/model/wallet.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 import 'package:sio_core_light/sio_core_light.dart' as sio;
 
 class WalletRepository {
+  static bool validateAddress(
+    String address, {
+    required NetworkId networkId,
+  }) {
+    return sio.Address.isValid(
+      address: address,
+      networkId: networkId,
+    );
+  }
+
   final WalletDb _walletDb;
   final BlockchainUtilsService _blockchainUtilsService;
   final BroadcastService _broadcastService;
@@ -142,13 +151,6 @@ class WalletRepository {
   String getMnemonic(String accountWalletId) {
     _checkInitializedAccountWallet(accountWalletId);
     return _wallet.mnemonic();
-  }
-
-  bool isValidAddress({
-    required String address,
-    required int networkId,
-  }) {
-    return sio.Address.isValid(address: address, networkId: networkId);
   }
 
   String getCoinAddress(

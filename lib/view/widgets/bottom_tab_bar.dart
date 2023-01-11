@@ -3,7 +3,33 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/bottom_tab_bar_container.dart';
-import 'package:simplio_app/view/widgets/tab_bar_item.dart';
+
+enum TabItemType {
+  button,
+  spacer,
+}
+
+class TabBarItem {
+  final Key? key;
+  final String value;
+  final TabItemType tabBarItemType;
+  final VoidCallback? onTap;
+  final IconData? icon;
+  final IconData? activeIcon;
+  final Color selectedColor;
+  final String? label;
+
+  TabBarItem({
+    this.key,
+    this.tabBarItemType = TabItemType.button,
+    required this.selectedColor,
+    required this.value,
+    this.onTap,
+    this.icon,
+    this.activeIcon,
+    this.label,
+  });
+}
 
 class BottomTabBar extends StatelessWidget {
   final List<TabBarItem> items;
@@ -14,12 +40,12 @@ class BottomTabBar extends StatelessWidget {
   final double borderRadius;
   final int spacerRatio;
   final bool showLabel;
-  final Key activeItem;
+  final String currentPath;
 
   const BottomTabBar({
     super.key,
     required this.items,
-    required this.activeItem,
+    required this.currentPath,
     this.floatingActionButton,
     this.height = Constants.bottomTabBarHeight,
     this.floatingActionButtonOffset = 20,
@@ -55,10 +81,13 @@ class BottomTabBar extends StatelessWidget {
                       }
 
                       return Expanded(
-                          key: e.key,
+                          key: e.key ?? ObjectKey(e.value),
                           flex: spacerRatio,
                           child: _TabBarItem(
-                            isActive: activeItem == e.key,
+                            isActive: _isItemActive(
+                              currentPath,
+                              segment: e.value,
+                            ),
                             tabBarItem: e,
                             selectedColor: e.selectedColor,
                             unselectedColor: SioColors.whiteBlue,
@@ -75,6 +104,13 @@ class BottomTabBar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool _isItemActive(
+    String path, {
+    required String segment,
+  }) {
+    return path.contains(segment);
   }
 }
 
@@ -96,9 +132,7 @@ class _TabBarItem extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
-          tabBarItem.onTap?.call(context, tabBarItem.key!);
-        },
+        onTap: tabBarItem.onTap,
         child: Center(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

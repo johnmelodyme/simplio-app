@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
+import 'package:simplio_app/view/routers/authenticated_routes/configuration_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/app_bar_mask.dart';
@@ -102,8 +102,9 @@ class AvatarAppBarBlured extends StatelessWidget {
             title: 'Nick name',
             userLevel: 1,
             onTap: () {
+              // TODO - REFACTOR - widget should not be aware of router. Move it to upper layer.
               GoRouter.of(context).pushNamed(
-                AuthenticatedRouter.configuration,
+                ConfigurationRoute.name,
               );
             },
           ),

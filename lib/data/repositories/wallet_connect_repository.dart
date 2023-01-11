@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:simplio_app/data/model/wallet_connect_session.dart';
+import 'package:simplio_app/data/providers/wallet_connect_session_db_provider.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wallet_connect/wallet_connect.dart';
@@ -463,7 +463,7 @@ class WalletConnectRepository {
         icons: client.remotePeerMeta?.icons ?? const [],
       ),
       fromAddress: transaction.from,
-      toAddress: transaction.to,
+      toAddress: transaction.to!,
       amount: amount != null ? BigInt.parse(amount) : BigInt.zero,
       networkId: networkId,
       chainId: chainId,
@@ -472,7 +472,7 @@ class WalletConnectRepository {
       gasPrice: gasPrice != null ? BigInt.parse(gasPrice) : null,
       gas: gas != null ? BigInt.parse(gas) : null,
       gasLimit: gasLimit != null ? BigInt.parse(gasLimit) : null,
-      data: transaction.data,
+      data: transaction.data!,
     );
   }
 }

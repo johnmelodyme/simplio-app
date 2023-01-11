@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -9,6 +9,7 @@ import 'package:simplio_app/view/widgets/gradient_text.dart';
 import 'package:simplio_app/view/widgets/outlined_container.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
+// TODO - make the button more generic so it can be a reusable widget.
 class EarningElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final EarningType earningType;

@@ -1,0 +1,17 @@
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simplio_app/data/http/services/swap_service.dart';
+import 'package:simplio_app/data/model/helpers/big_decimal.dart';
+import 'package:simplio_app/data/repositories/swap_repository.dart';
+import 'package:simplio_app/data/repositories/wallet_repository.dart';
+
+part 'asset_swap_summary_state.dart';
+
+class AssetSwapSummaryCubit extends Cubit<AssetSwapSummaryState> {
+  AssetSwapSummaryCubit._() : super(const AssetSwapSummaryInit());
+
+  AssetSwapSummaryCubit({
+    required SwapRepository swapRepository,
+    required WalletRepository walletRepository,
+  }) : this._();
+}

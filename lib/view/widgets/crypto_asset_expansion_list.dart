@@ -86,6 +86,11 @@ class _CryptoAssetExpansionList extends State<CryptoAssetExpansionList> {
                               context.read<ExpansionListCubit>().selectValue(
                                   isSelected ? -1 : widget.children.indexOf(a));
                             }
+                            // TODO - do not use else unless it is necessary. Flatten the indentation.
+                            else {
+                              widget.onTap(
+                                  a.networks.first, selectedAssetAction);
+                            }
                           } else {
                             widget.onTap(a.networks.first, selectedAssetAction);
                           }

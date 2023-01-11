@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'dialog_state.dart';
 
+// TODO - Why do we solve this functionality with a local cubit. This might be resolved with a statefull widget?
 class DialogCubit extends Cubit<DialogState> {
   DialogCubit._() : super(const DialogState.init());
 

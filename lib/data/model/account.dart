@@ -1,12 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
 import 'package:simplio_app/data/mixins/aes_encryption_mixin.dart';
 import 'package:simplio_app/data/model/account_settings.dart';
-import 'package:simplio_app/data/model/helpers/lockable_string.dart';
+import 'package:simplio_app/data/model/helpers/lockable.dart';
 import 'package:uuid/uuid.dart';
 import 'package:encrypt/encrypt.dart';
-
-part 'account.g.dart';
 
 const int securityAttemptsLimit = 6;
 
@@ -19,6 +16,7 @@ class Account extends Equatable {
   final SecurityLevel securityLevel;
   final int securityAttempts;
   final DateTime signedIn;
+  // TODO - Think if account settings will hold information that will be sync with account service. In that case it should be restrucured and renamed. It is possible that the logic for relationship might be shipped to standalone hive box.
   final AccountSettings settings;
 
   const Account({
@@ -49,7 +47,7 @@ class Account extends Equatable {
 
   Account.anonymous()
       : this(
-          id: "${const Uuid().v4()}.${DateTime.now().microsecondsSinceEpoch}",
+          id: "${const Uuid().v4()}.${DateTime.now().millisecondsSinceEpoch}",
           accountType: AccountType.anonymous,
           secret: LockableString.unlocked(value: generateSecret()),
           securityLevel: SecurityLevel.none,
@@ -88,54 +86,12 @@ class Account extends Equatable {
       ];
 }
 
-@HiveType(typeId: 11)
 enum AccountType {
-  @HiveField(0)
   anonymous,
-
-  @HiveField(1)
   registered,
 }
 
-@HiveType(typeId: 12)
 enum SecurityLevel {
-  @HiveField(0)
   none,
-
-  @HiveField(1)
   pin,
-}
-
-@HiveType(typeId: 1)
-class AccountLocal extends HiveObject {
-  @HiveField(0)
-  final String id;
-
-  @HiveField(1)
-  final AccountType accountType;
-
-  @HiveField(2)
-  final String secret;
-
-  @HiveField(3)
-  final SecurityLevel securityLevel;
-
-  @HiveField(4)
-  final int securityAttempts;
-
-  @HiveField(5)
-  final DateTime signedIn;
-
-  @HiveField(6)
-  final AccountSettingsLocal settings;
-
-  AccountLocal({
-    required this.id,
-    required this.accountType,
-    required this.secret,
-    required this.securityLevel,
-    required this.securityAttempts,
-    required this.signedIn,
-    required this.settings,
-  });
 }

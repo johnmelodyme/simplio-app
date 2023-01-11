@@ -3,23 +3,24 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/text/highlighted_text.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class ColorizedAppBar extends StatelessWidget {
   const ColorizedAppBar({
     Key? key,
-    required this.firstPart,
-    required this.secondPart,
     this.actionType = ActionType.back,
+    required this.title,
+    this.color,
     this.onBackTap,
     this.onShareTap,
   }) : super(key: key);
 
-  final String firstPart;
-  final String secondPart;
   final ActionType actionType;
-  final Function()? onBackTap;
-  final Function()? onShareTap;
+  final String title;
+  final Color? color;
+  final VoidCallback? onBackTap;
+  final VoidCallback? onShareTap;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +36,8 @@ class ColorizedAppBar extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: IconButton(
                 onPressed: () {
+                  if (onBackTap != null) return onBackTap!();
                   GoRouter.of(context).pop();
-                  onBackTap?.call();
                 },
                 padding: const EdgeInsets.all(Dimensions.padding16),
                 color: SioColors.secondary6,
@@ -49,22 +50,14 @@ class ColorizedAppBar extends StatelessWidget {
               left: Dimensions.padding48,
               right: Dimensions.padding48,
               child: Center(
-                child: RichText(
+                child: HighlightedText(
+                  title,
                   textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '$firstPart ',
-                        style: SioTextStyles.h4.apply(
-                          color: SioColors.whiteBlue,
-                        ),
-                      ),
-                      TextSpan(
-                        text: secondPart,
-                        style: SioTextStyles.h4
-                            .apply(color: SioColors.mentolGreen),
-                      ),
-                    ],
+                  style: SioTextStyles.h4.apply(
+                    color: SioColors.whiteBlue,
+                  ),
+                  highlightedStyle: SioTextStyles.h4.apply(
+                    color: color ?? SioColors.mentolGreen,
                   ),
                 ),
               ),

@@ -15,8 +15,8 @@ import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
 import 'package:simplio_app/data/http/services/swap_service.dart';
 import 'package:simplio_app/data/http/services/transaction_history_service.dart';
-import 'package:simplio_app/data/model/auth_token.dart';
-import 'package:simplio_app/data/providers/storage_provider.dart';
+import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
+import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
 
 class SecuredHttpClient extends HttpClient {
   @override
@@ -30,7 +30,7 @@ class SecuredHttpClient extends HttpClient {
     required RefreshTokenService refreshTokenService,
   }) : this._(
           ChopperClient(
-            baseUrl: url,
+            baseUrl: Uri.parse(url),
             converter: JsonSerializableConverter({
               ...AssetService.converter(),
               ...BalanceService.converter(),

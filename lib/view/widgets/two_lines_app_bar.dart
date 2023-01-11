@@ -7,16 +7,18 @@ import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class TwoLinesAppBar extends ColorizedAppBar {
+  final String firstPart;
+  final String secondPart;
+
   const TwoLinesAppBar({
     Key? key,
-    required String firstPart,
-    required String secondPart,
+    required this.firstPart,
+    required this.secondPart,
     ActionType? actionType,
     Function()? onBackTap,
   }) : super(
           key: key,
-          firstPart: firstPart,
-          secondPart: secondPart,
+          title: '$firstPart  ^$secondPart',
           actionType: actionType ?? ActionType.close,
           onBackTap: onBackTap,
         );

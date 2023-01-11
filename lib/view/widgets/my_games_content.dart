@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/l10n/localized_build_context_extension.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/my_games_bloc.dart';
-import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/asset_buy_form/asset_buy_form_cubit.dart';
-import 'package:simplio_app/view/routes/authenticated_router.dart';
+import 'package:simplio_app/view/routers/authenticated_routes/discovery_route.dart';
+import 'package:simplio_app/view/routers/authenticated_routes/game_detail_route.dart';
+import 'package:simplio_app/view/routers/authenticated_routes/gameplay_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/empty_list_placeholder.dart';
 import 'package:simplio_app/view/widgets/game_item.dart';
-import 'package:simplio_app/view/widgets/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
 
@@ -23,20 +23,11 @@ class MyGamesContent extends StatelessWidget {
 
   final Function(int, int) onCoinAdd;
 
-  void _buyCoin(BuildContext context, String assetId, String networkId) {
-    context.read<AssetBuyFormCubit>().clear();
-    GoRouter.of(context).pushNamed(AuthenticatedRouter.assetBuy, params: {
-      'assetId': assetId,
-      'networkId': networkId,
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     MyGamesBloc bloc = context.read<MyGamesBloc>();
 
     bloc.add(const LoadMyGamesEvent());
-    final accountWalletCubit = context.read<AccountWalletCubit>();
     return SliverPadding(
       padding: Paddings.horizontal16,
       sliver: BlocProvider(
@@ -84,12 +75,13 @@ class MyGamesContent extends StatelessWidget {
                       Gaps.gap20,
                       SizedBox(
                         width: 234,
-                        child: HighlightedElevatedButton(
+                        child: HighlightedElevatedButton.primary(
                           label:
                               context.locale.my_games_screen_discover_new_games,
                           onPressed: () {
-                            GoRouter.of(context)
-                                .goNamed(AuthenticatedRouter.discovery);
+                            GoRouter.of(context).goNamed(
+                              DiscoveryRoute.name,
+                            );
                           },
                         ),
                       )
@@ -115,33 +107,18 @@ class MyGamesContent extends StatelessWidget {
                             onActionPressed: (GameAction gameAction) {
                               if (gameAction == GameAction.play) {
                                 GoRouter.of(context).pushNamed(
-                                  AuthenticatedRouter.gameplay,
+                                  GameplayRoute.name,
                                   extra: game,
                                 );
                               } else if (gameAction == GameAction.buyCoin) {
-                                final String assetId =
-                                    game.assetEmbedded.assetId.toString();
-                                final String networkId =
-                                    game.assetEmbedded.networkId.toString();
-
-                                if (accountWalletCubit.hasNetworkWalledAdded(
-                                  assetId: int.parse(assetId),
-                                  networkId: int.parse(networkId),
-                                )) {
-                                  _buyCoin(context, assetId, networkId);
-                                } else {
-                                  onCoinAdd.call(
-                                    int.parse(assetId),
-                                    int.parse(networkId),
-                                  );
-                                }
+                                // TODO - Add buy coin.
                               }
                             },
                             onTap: game.isPromoted
                                 ? () {
                                     if (!game.isPromoted) return;
                                     GoRouter.of(context).pushNamed(
-                                      AuthenticatedRouter.gameDetail,
+                                      GameDetailRoute.name,
                                       params: {
                                         'gameId': game.gameId.toString(),
                                       },

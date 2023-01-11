@@ -83,8 +83,8 @@ class _SearchState extends State<Search> {
                                   actionType: ActionType.close,
                                 )
                               : ColorizedAppBar(
-                                  firstPart: widget.firstPart,
-                                  secondPart: widget.secondPart,
+                                  title:
+                                      '${widget.firstPart} ^${widget.secondPart}',
                                   actionType: ActionType.close,
                                 ),
                           Padding(

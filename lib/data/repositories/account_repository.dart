@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:simplio_app/data/model/account.dart';
-import 'package:simplio_app/data/model/helpers/lockable_string.dart';
+import 'package:simplio_app/data/model/helpers/lockable.dart';
 
 class AccountRepository {
   final AccountDb _accountDb;
