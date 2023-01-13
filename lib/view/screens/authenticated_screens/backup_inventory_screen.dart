@@ -6,7 +6,7 @@ import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
-import 'package:simplio_app/view/widgets/bordered_press_button.dart';
+import 'package:simplio_app/view/widgets/button/bordered_press_button.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:sio_glyphs/sio_icons.dart';

@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
-import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/helpers/application_route.dart';
+import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/screens/authenticated_screens/my_games_screen.dart';
 
 class GamesRoute extends ApplicationRoute with PageBuilderMixin {
@@ -24,14 +21,7 @@ class GamesRoute extends ApplicationRoute with PageBuilderMixin {
       routes: routes,
       pageBuilder: pageBuilder(
         withTransition: false,
-        builder: (state) => BlocProvider(
-          create: (context) => DialogCubit.builder(),
-          child: Builder(
-            builder: (context) {
-              return const MyGamesScreen();
-            },
-          ),
-        ),
+        builder: (state) => const MyGamesScreen(),
       ),
     );
   }

@@ -8,10 +8,10 @@ import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc_event.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
 import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/asset_confirmation.dart';
 import 'package:simplio_app/view/widgets/asset_search_item.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
@@ -44,7 +44,7 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
     return BlocBuilder<CryptoAssetBloc, CryptoAssetState>(
       builder: (context, state) {
         return BlocBuilder<AccountWalletCubit, AccountWalletState>(
-          buildWhen: (prev, curr) => curr is AccountWalletChanged,
+          buildWhen: (prev, current) => current is AccountWalletChanged,
           builder: (context, state) {
             if (state is! AccountWalletProvided) {
               throw Exception('No asset wallet found');
@@ -55,36 +55,42 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
               builderDelegate: PagedChildBuilderDelegate<Asset>(
                 itemBuilder: (context, item, index) {
                   final asset = Assets.getAssetDetail(item.assetId);
-                  void tapFunction(NetworkData data, AssetAction assetAction) =>
-                      context.read<DialogCubit>().showDialog((proceed) async {
-                        if (proceed) {
-                          switch (assetAction) {
-                            case AssetAction.buy:
-                            case AssetAction.addToInventory:
-                              await context
-                                  .read<AccountWalletCubit>()
-                                  .enableNetworkWallet(
-                                      assetId: data.assetId,
-                                      networkId: data.networkId)
-                                  .then((_) {
-                                if (assetAction == AssetAction.buy) {
-                                  // TODO: add buy flow when buy is implemented.
-                                }
-                              });
-                              break;
-                            case AssetAction.remove:
-                              await context
-                                  .read<AccountWalletCubit>()
-                                  .disableNetworkWallet(
-                                    assetId: data.assetId,
-                                    networkId: data.networkId,
-                                  );
-                          }
-                        }
-                      },
-                          assetAction == AssetAction.remove
-                              ? DialogType.removeCoin
-                              : DialogType.createCoin);
+                  Future<void> tapFunction(
+                      NetworkData data, AssetAction assetAction) async {
+                    //TODO.. refactor asset actions
+                    switch (assetAction) {
+                      case AssetAction.buy:
+                      case AssetAction.addToInventory:
+                        _showAssetConfirmation(assetAction)
+                            .then((confirmed) async {
+                          if (!confirmed) return;
+
+                          await context
+                              .read<AccountWalletCubit>()
+                              .enableNetworkWallet(
+                                  assetId: data.assetId,
+                                  networkId: data.networkId)
+                              .then((_) {
+                            if (assetAction == AssetAction.buy) {
+                              // TODO: add buy flow when buy is implemented.
+                            }
+                          });
+                        });
+
+                        break;
+                      case AssetAction.remove:
+                        _showAssetConfirmation(assetAction)
+                            .then((confirmed) async {
+                          if (!confirmed) return;
+                          await context
+                              .read<AccountWalletCubit>()
+                              .disableNetworkWallet(
+                                assetId: data.assetId,
+                                networkId: data.networkId,
+                              );
+                        });
+                    }
+                  }
 
                   return Padding(
                     padding: Paddings.horizontal16,
@@ -174,6 +180,24 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
         );
       },
     );
+  }
+
+  Future<bool> _showAssetConfirmation(AssetAction assetAction) async {
+    final result = await showModalBottomSheet<bool>(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return AssetConfirmation(
+          dialogType: assetAction == AssetAction.remove
+              ? DialogType.removeAsset
+              : DialogType.createAsset,
+        );
+      },
+    );
+
+    return result ?? false;
   }
 
   @override

@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
-import 'package:simplio_app/view/widgets/bordered_text_button.dart';
+import 'package:simplio_app/view/widgets/button/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/widgets/text/highlighted_text.dart';
 
 // TODO - refactor this dialog to dilalog for creating new asset wallet.

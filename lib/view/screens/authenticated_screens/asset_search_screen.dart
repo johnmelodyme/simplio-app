@@ -6,23 +6,21 @@ import 'package:intl/intl.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_search_bloc.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
-import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';
-import 'package:simplio_app/view/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
+import 'package:simplio_app/view/widgets/asset_confirmation.dart';
 import 'package:simplio_app/view/widgets/asset_search_item.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
-import 'package:simplio_app/view/widgets/screen_with_dialog.dart';
 import 'package:simplio_app/view/widgets/search.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
 
-class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
+class AssetSearchScreen extends StatelessWidget {
   AssetSearchScreen({super.key});
 
   final TextEditingController searchController = TextEditingController();
@@ -36,7 +34,7 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
   }
 
   @override
-  Widget innerBuild(BuildContext context) {
+  Widget build(BuildContext context) {
     bool addedPageRequestLister = false;
 
     final bloc = CryptoAssetSearchBloc.builder(
@@ -200,34 +198,54 @@ class AssetSearchScreen extends ScreenWithDialog with PopupDialogMixin {
     );
   }
 
-  void _tapFunction(
+  Future<void> _tapFunction(
     BuildContext context,
     NetworkData data,
     AssetAction assetAction,
-  ) {
-    context.read<DialogCubit>().showDialog((proceed) async {
-      if (proceed) {
-        switch (assetAction) {
-          case AssetAction.buy:
-          case AssetAction.addToInventory:
-            await context
-                .read<AccountWalletCubit>()
-                .enableNetworkWallet(
-                    assetId: data.assetId, networkId: data.networkId)
-                .then((_) {
-              if (assetAction == AssetAction.buy) {}
-            });
-            break;
-          case AssetAction.remove:
-            await context.read<AccountWalletCubit>().disableNetworkWallet(
-                  assetId: data.assetId,
-                  networkId: data.networkId,
-                );
-        }
-      }
-    },
-        assetAction == AssetAction.remove
-            ? DialogType.removeCoin
-            : DialogType.createCoin);
+  ) async {
+    //TODO.. refactor asset actions
+    switch (assetAction) {
+      case AssetAction.buy:
+      case AssetAction.addToInventory:
+        _showAssetConfirmation(context, assetAction).then((confirmed) async {
+          if (!confirmed) return;
+          await context
+              .read<AccountWalletCubit>()
+              .enableNetworkWallet(
+                  assetId: data.assetId, networkId: data.networkId)
+              .then((_) {
+            if (assetAction == AssetAction.buy) {}
+          });
+        });
+
+        break;
+      case AssetAction.remove:
+        _showAssetConfirmation(context, assetAction).then((confirmed) async {
+          if (!confirmed) return;
+          await context.read<AccountWalletCubit>().disableNetworkWallet(
+                assetId: data.assetId,
+                networkId: data.networkId,
+              );
+        });
+    }
+  }
+
+  Future<bool> _showAssetConfirmation(
+      BuildContext context, AssetAction assetAction) async {
+    final result = await showModalBottomSheet<bool>(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return AssetConfirmation(
+          dialogType: assetAction == AssetAction.remove
+              ? DialogType.removeAsset
+              : DialogType.createAsset,
+        );
+      },
+    );
+
+    return result ?? false;
   }
 }

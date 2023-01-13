@@ -23,6 +23,38 @@ class BorderedTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _BorderedTextButton(
+      key: key,
+      onPressed: onPressed,
+      label: label,
+      icon: icon,
+      labelColor: labelColor,
+      backgroundColor: backgroundColor,
+      borderColor: borderColor,
+    );
+  }
+}
+
+class _BorderedTextButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final String label;
+  final Widget? icon;
+  final Color? labelColor;
+  final Color? backgroundColor;
+  final Color? borderColor;
+
+  const _BorderedTextButton({
+    super.key,
+    this.onPressed,
+    required this.label,
+    this.icon,
+    this.labelColor,
+    this.backgroundColor,
+    this.borderColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
         minimumSize: const Size.fromHeight(Constants.buttonHeight),

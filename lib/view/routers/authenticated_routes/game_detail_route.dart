@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
-import 'package:simplio_app/logic/cubit/dialog/dialog_cubit.dart';
-import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/helpers/application_route.dart';
+import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/screens/authenticated_screens/game_detail_screen.dart';
 
 class GameDetailRoute extends ApplicationRoute with PageBuilderMixin {
@@ -34,9 +33,6 @@ class GameDetailRoute extends ApplicationRoute with PageBuilderMixin {
                 marketplaceRepository:
                     RepositoryProvider.of<MarketplaceRepository>(context),
               ),
-            ),
-            BlocProvider(
-              create: (context) => DialogCubit.builder(),
             ),
           ],
           child: GameDetailScreen(

@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,21 +9,21 @@ import 'package:simplio_app/data/model/wallet.dart';
 import 'package:simplio_app/logic/bloc/asset_send_form/asset_send_form_bloc.dart';
 import 'package:simplio_app/logic/bloc/asset_swap_form/asset_swap_form_bloc.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/asset_receive_route.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/asset_send_form_route.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/asset_swap_form_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
-import 'package:simplio_app/view/widgets/back_gradient4.dart';
-import 'package:simplio_app/view/widgets/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/asset_balance_overview.dart';
+import 'package:simplio_app/view/widgets/back_gradient4.dart';
+import 'package:simplio_app/view/widgets/button/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/coin_details_menu.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 import 'package:simplio_app/view/widgets/transactions_content.dart';
 import 'package:simplio_app/view/widgets/two_lines_app_bar.dart';
 import 'package:sio_glyphs/sio_icons.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 
 class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
   final String? assetId;
