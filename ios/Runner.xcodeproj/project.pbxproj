@@ -358,9 +358,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 6KCD6N7FF3;
 				ENABLE_BITCODE = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.simplio.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = ami.test.release;
 				PRODUCT_NAME = Runner;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore dev.simplio.wallet";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ami.test.release";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Profile;
@@ -435,9 +435,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dev.simplio.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = ami.test.release;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore dev.simplio.wallet";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ami.test.release";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -572,7 +572,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dev.simplio.wallet.local;
+				PRODUCT_BUNDLE_IDENTIFIER = ami.test.release.local;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

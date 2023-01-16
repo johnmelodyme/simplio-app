@@ -59,7 +59,7 @@ android {
         productFlavors {
             dev {
                 dimension "productVersion"
-                applicationId "dev.simplio.wallet"
+                applicationId "ami.test.release"
             }
 
             production {
