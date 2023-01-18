@@ -65,6 +65,7 @@ class HighlightedElevatedButton extends StatelessWidget {
     return _PrimaryButton(
       onPressed: onPressed,
       label: label,
+      icon: icon,
     );
   }
 }

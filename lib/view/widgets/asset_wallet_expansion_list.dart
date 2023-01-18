@@ -42,12 +42,12 @@ class AssetWalletExpansionList<T> extends StatelessWidget {
   }) {
     return AssetWalletExpansionList<List<int>>(
       key: key,
-      wallets: wallets.fold({}, (acc, curr) {
+      wallets: wallets.fold({}, (acc, current) {
         return acc
           ..addAll({
-            curr: curr.enabled.map((n) => ExpansionListValue<List<int>>(
+            current: current.enabled.map((n) => ExpansionListValue<List<int>>(
                   networkWallet: n,
-                  value: [curr.assetId, n.networkId],
+                  value: [current.assetId, n.networkId],
                 ))
           });
       }),
@@ -62,21 +62,21 @@ class AssetWalletExpansionList<T> extends StatelessWidget {
     required AccountWallet accountWallet,
     required ValueChanged<SwapAsset> onTap,
   }) {
-    final swapAssets =
-        assets.fold<Map<AssetWallet, Set<ExpansionListValue>>>({}, (acc, curr) {
-      final aw = accountWallet.getWallet(curr.assetId) ??
-          AssetWallet.builder(assetId: curr.assetId);
-      final nw = aw.getWallet(curr.networkId) ??
+    final swapAssets = assets
+        .fold<Map<AssetWallet, Set<ExpansionListValue>>>({}, (acc, current) {
+      final aw = accountWallet.getWallet(current.assetId) ??
+          AssetWallet.builder(assetId: current.assetId);
+      final nw = aw.getWallet(current.networkId) ??
           NetworkWallet.builder(
-            networkId: curr.networkId,
+            networkId: current.networkId,
             address: '',
             preset: Assets.getAssetPreset(
               assetId: aw.assetId,
-              networkId: curr.networkId,
+              networkId: current.networkId,
             ),
           );
 
-      final val = ExpansionListValue(networkWallet: nw, value: curr);
+      final val = ExpansionListValue(networkWallet: nw, value: current);
       if (acc.containsKey(aw)) {
         acc[aw]!.add(val);
         return acc;

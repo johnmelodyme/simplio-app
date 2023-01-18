@@ -410,6 +410,9 @@
     "my_games_screen_discover_new_games": "Discover new games",
     "my_games_screen_empty_list_label": "You’ll see added or played\ngames here.",
 
+    "inventory_screen_discover_new_coins": "Discover new coins",
+    "inventory_screen_coins_empty_list_label": "You’ll see your owned \ncoins here.",
+
     "inventory_screen_discover_new_nft": "Discover new NFTs",
     "inventory_screen_nft_empty_list_label": "You’ll see your owned \nNFT here.",
 
