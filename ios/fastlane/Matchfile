@@ -4,7 +4,7 @@ storage_mode("git")
 
 type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
 
-app_identifier(["io.simplio.wallet", "ami.test.release"])
+app_identifier(["io.simplio.dev", "io.simplio.test", "io.simplio.app"])
 username("apps@simplio.io") # Your Apple Developer Portal username
 
 # For all available options run `fastlane match --help`
