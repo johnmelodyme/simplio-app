@@ -1,7 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:simplio_app/data/model/account.dart';
-import 'package:simplio_app/data/model/helpers/lockable.dart';
+import 'package:simplio_app/data/models/account.dart';
+import 'package:simplio_app/data/models/helpers/lockable.dart';
+import 'package:simplio_app/data/providers/interfaces/account_db.dart';
 
 class AccountRepository {
   final AccountDb _accountDb;
@@ -16,7 +17,7 @@ class AccountRepository {
     return _accountDb.save(account);
   }
 
-  Account? get(String id) {
+  Future<Account?> get(String id) async {
     return _accountDb.get(id);
   }
 
@@ -104,10 +105,4 @@ class PinVerifyResponse {
     required this.secret,
     required this.account,
   });
-}
-
-abstract class AccountDb {
-  Account? get(String id);
-  Future<Account> save(Account account);
-  Account? getLast();
 }

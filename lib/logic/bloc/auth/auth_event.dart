@@ -5,12 +5,12 @@ abstract class AuthEvent extends Equatable {
 }
 
 class GotAuthenticated extends AuthEvent {
-  final String accountId;
+  final Account account;
 
-  const GotAuthenticated({required this.accountId});
+  const GotAuthenticated({required this.account});
 
   @override
-  List<Object?> get props => [accountId];
+  List<Object?> get props => [account];
 }
 
 class GotUnauthenticated extends AuthEvent {

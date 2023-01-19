@@ -1,14 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
+import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 
 part 'account_wallet_state.dart';
 
 class AccountWalletCubit extends Cubit<AccountWalletState> {
   final WalletRepository _walletRepository;
+  // TODO - remove inventory repository.
   final InventoryRepository _inventoryRepository;
   final SwapRepository _swapRepository;
 
@@ -18,7 +19,7 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
     this._swapRepository,
   ) : super(const AccountWalletInitial());
 
-  AccountWalletCubit.builder({
+  AccountWalletCubit({
     required WalletRepository walletRepository,
     required InventoryRepository inventoryRepository,
     required SwapRepository swapRepository,
@@ -118,7 +119,7 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
     if (s.wallet.isValid && !forceUpdate) return;
 
     try {
-      final wallet = await _walletRepository.refreshNetworkWalletBalance(
+      final wallet = await _walletRepository.updateNetworkWalletBalance(
         s.wallet,
         networkWallet: networkWallet,
       );

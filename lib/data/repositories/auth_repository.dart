@@ -1,18 +1,17 @@
 import 'dart:io';
-
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
 import 'package:simplio_app/data/http/services/sign_in_service.dart';
 import 'package:simplio_app/data/http/services/sign_up_service.dart';
 import 'package:simplio_app/data/mixins/jwt_mixin.dart';
-import 'package:simplio_app/data/model/account.dart';
-import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
+import 'package:simplio_app/data/models/account.dart';
+import 'package:simplio_app/data/providers/entities/auth_token_entity.dart';
 import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
-import 'package:simplio_app/data/repositories/account_repository.dart';
+import 'package:simplio_app/data/providers/interfaces/account_db.dart';
 
 class AuthRepository with JwtMixin {
   final AccountDb _accountDb;
-  final StorageProvider<AuthToken> _authTokenStorage;
+  final StorageProvider<AuthTokenEntity> _authTokenStorage;
   final SignInService _signInService;
   final SignUpService _signUpService;
   final PasswordChangeService _passwordChangeService;
@@ -29,7 +28,7 @@ class AuthRepository with JwtMixin {
 
   const AuthRepository.builder({
     required AccountDb accountDb,
-    required StorageProvider<AuthToken> authTokenStorage,
+    required StorageProvider<AuthTokenEntity> authTokenStorage,
     required SignInService signInService,
     required SignUpService signUpService,
     required PasswordChangeService passwordChangeService,
@@ -43,7 +42,7 @@ class AuthRepository with JwtMixin {
           passwordResetService,
         );
 
-  Account? getLastSignedIn() {
+  Future<Account?> getLastSignedIn() async {
     return _accountDb.getLast();
   }
 
@@ -70,10 +69,10 @@ class AuthRepository with JwtMixin {
   }
 
   Future<Account> _registerSignIn(String accountId) async {
-    final acc = _accountDb.get(accountId);
+    final acc = await _accountDb.get(accountId);
 
     if (acc != null) {
-      return _accountDb.save(acc.copyWith(
+      return await _accountDb.save(acc.copyWith(
         signedIn: DateTime.now(),
         securityAttempts: securityAttemptsLimit,
       ));
@@ -102,7 +101,7 @@ class AuthRepository with JwtMixin {
           throw Exception("Provided IdToken has missing 'name' field.");
         }
 
-        await _authTokenStorage.write(AuthToken(
+        await _authTokenStorage.write(AuthTokenEntity(
           refreshToken: body.refreshToken,
           tokenType: body.tokenType,
           accessToken: body.accessToken,
@@ -118,7 +117,7 @@ class AuthRepository with JwtMixin {
   }
 
   Future<void> signOut({required String accountId}) async {
-    final Account? account = _accountDb.get(accountId);
+    final Account? account = await _accountDb.get(accountId);
 
     if (account != null) {
       await _accountDb.save(account.copyWith(

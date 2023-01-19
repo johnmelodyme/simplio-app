@@ -26,13 +26,14 @@ import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 import 'package:simplio_app/data/repositories/buy_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
+import 'package:simplio_app/data/repositories/hd_wallet_repository.dart';
+import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/view/authenticated_app.dart';
 import 'package:simplio_app/view/guards/auth_guard.dart';
@@ -103,7 +104,7 @@ class _SimplioAppState extends State<SimplioApp> {
           onAuthenticated: (context, authState) {
             isAuthenticated = true;
             return AuthenticatedApp(
-              accountId: authState.accountId,
+              account: authState.account,
             )..init();
           },
           onUnauthenticated: (context) {
@@ -153,9 +154,9 @@ class _SimplioAppState extends State<SimplioApp> {
     accountRepository = AccountRepository.builder(
       accountDb: accountDbProvider,
     );
-    walletRepository = WalletRepository(
+    walletRepository = HDWalletRepository(
       walletDb: walletDbProvider,
-      blockchainUtilsService: securedApi.service<BlockchainUtilsService>(),
+      blockchainService: securedApi.service<BlockchainUtilsService>(),
       broadcastService: securedApi.service<BroadcastService>(),
       balanceService: securedApi.service<BalanceService>(),
     );
@@ -182,7 +183,6 @@ class _SimplioAppState extends State<SimplioApp> {
     swapRepository = SwapRepository.builder(
       swapService: securedApi.service<SwapService>(),
     );
-
     userRepository = UserRepository(
       accountService: securedApi.service<AccountService>(),
     );

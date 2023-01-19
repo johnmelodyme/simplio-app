@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/data/model/account_settings.dart';
+import 'package:simplio_app/data/models/account.dart';
+import 'package:simplio_app/data/models/account_settings.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/inventory_repository.dart';
@@ -10,7 +11,7 @@ import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
+import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
@@ -26,11 +27,11 @@ import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 class AuthenticatedApp extends StatelessWidget {
   static GoRouter get router => AuthenticatedRouter().router;
 
-  final String accountId;
+  final Account account;
 
   const AuthenticatedApp({
     super.key,
-    required this.accountId,
+    required this.account,
   });
 
   @override
@@ -38,13 +39,13 @@ class AuthenticatedApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AccountCubit.builder(
+          create: (context) => AccountCubit(
             accountRepository:
                 RepositoryProvider.of<AccountRepository>(context),
-          )..loadAccount(accountId),
+          )..loadAccount(account),
         ),
         BlocProvider(
-          create: (context) => AccountWalletCubit.builder(
+          create: (context) => AccountWalletCubit(
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
             inventoryRepository:
                 RepositoryProvider.of<InventoryRepository>(context),
@@ -90,11 +91,11 @@ class AuthenticatedApp extends StatelessWidget {
         listeners: [
           BlocListener<AccountCubit, AccountState>(
             listenWhen: (previous, current) => previous != current,
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is! AccountUnlocked) return;
               if (state.isLoaded) return;
 
-              context
+              await context
                   .read<AccountWalletCubit>()
                   .loadWallet(state.account.id, key: state.secret);
             },

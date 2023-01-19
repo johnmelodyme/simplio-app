@@ -164,7 +164,7 @@ class SignUpScreen extends StatelessWidget with PopupDialogMixin {
                           if (r is SignUpFormSuccess) {
                             context
                                 .read<AuthBloc>()
-                                .add(GotAuthenticated(accountId: r.account.id));
+                                .add(GotAuthenticated(account: r.account));
                           }
 
                           if (r is SignUpFormFailure) {

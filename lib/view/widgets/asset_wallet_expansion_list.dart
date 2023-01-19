@@ -1,6 +1,6 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -62,21 +62,22 @@ class AssetWalletExpansionList<T> extends StatelessWidget {
     required AccountWallet accountWallet,
     required ValueChanged<SwapAsset> onTap,
   }) {
-    final swapAssets = assets
-        .fold<Map<AssetWallet, Set<ExpansionListValue>>>({}, (acc, current) {
-      final aw = accountWallet.getWallet(current.assetId) ??
-          AssetWallet.builder(assetId: current.assetId);
-      final nw = aw.getWallet(current.networkId) ??
+    final swapAssets =
+        assets.fold<Map<AssetWallet, Set<ExpansionListValue>>>({}, (acc, curr) {
+      final aw = accountWallet.getWallet(curr.assetId) ??
+          AssetWallet.builder(assetId: curr.assetId);
+      final nw = aw.getWallet(curr.networkId) ??
           NetworkWallet.builder(
-            networkId: current.networkId,
+            assetId: curr.assetId,
+            networkId: curr.networkId,
             address: '',
             preset: Assets.getAssetPreset(
               assetId: aw.assetId,
-              networkId: current.networkId,
+              networkId: curr.networkId,
             ),
           );
 
-      final val = ExpansionListValue(networkWallet: nw, value: current);
+      final val = ExpansionListValue(networkWallet: nw, value: curr);
       if (acc.containsKey(aw)) {
         acc[aw]!.add(val);
         return acc;

@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:simplio_app/data/providers/wallet_connect_session_db_provider.dart';
+import 'package:simplio_app/data/providers/entities/wallet_connect_v1_session_entity.dart';
+import 'package:simplio_app/data/providers/interfaces/wallet_connect_session_db.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wallet_connect/wallet_connect.dart';
@@ -23,7 +24,7 @@ class WalletConnectRepository {
   final WalletConnectSessionDb _walletConnectSessionDb;
 
   /// Active sessions hold 'topicId' as their key and [WCClient] as value
-  final Map<TopicId, WalletConnectSession> _sessions = {};
+  final Map<TopicId, WalletConnectV1Session> _sessions = {};
   final _eventController = BehaviorSubject<WalletConnectEvent>();
 
   WalletConnectRepository._(this._walletConnectSessionDb);
@@ -95,7 +96,7 @@ class WalletConnectRepository {
     );
 
     try {
-      final session = WalletConnectSession.builder(
+      final session = WalletConnectV1Session.builder(
         client: client,
         sessionId: sessionId,
       );
@@ -150,7 +151,7 @@ class WalletConnectRepository {
     required String walletAddress,
     required int chainId,
   }) async {
-    final WalletConnectSession? session = _sessions[request.topicId];
+    final WalletConnectV1Session? session = _sessions[request.topicId];
 
     if (session == null) {
       throw Exception("Client for '${request.topicId}' session does not exist");
@@ -169,7 +170,7 @@ class WalletConnectRepository {
     }
 
     try {
-      await _walletConnectSessionDb.save(WalletConnectSessionLocal(
+      await _walletConnectSessionDb.save(WalletConnectV1SessionEntity(
         accountWalletId: request.accountWalletId,
         topicId: request.topicId,
         sessionId: session.sessionId,
@@ -274,7 +275,7 @@ class WalletConnectRepository {
     WalletConnectConnectionData data,
   ) {
     return (int requestId, WCPeerMeta peer) {
-      final WalletConnectSession? session = _sessions[topicId];
+      final WalletConnectV1Session? session = _sessions[topicId];
 
       if (session == null) {
         throw Exception("Client for '$topicId' session does not exist");
@@ -304,7 +305,7 @@ class WalletConnectRepository {
 
   SessionRequest _onSessionRequest(TopicId topicId, String accountWalletId) {
     return (int requestId, WCPeerMeta peer) {
-      final WalletConnectSession? session = _sessions[topicId];
+      final WalletConnectV1Session? session = _sessions[topicId];
 
       if (session == null) {
         throw Exception("Client for '$topicId' session does not exist");
@@ -669,16 +670,16 @@ class WalletConnectPeer {
   });
 }
 
-class WalletConnectSession {
+class WalletConnectV1Session {
   final SessionId sessionId;
   final WCClient client;
 
-  const WalletConnectSession({
+  const WalletConnectV1Session({
     required this.sessionId,
     required this.client,
   });
 
-  WalletConnectSession.builder({
+  WalletConnectV1Session.builder({
     SessionId? sessionId,
     required WCClient client,
   }) : this(sessionId: sessionId ?? const Uuid().v4(), client: client);
@@ -692,10 +693,4 @@ class WalletConnectConnectionData {
     required this.walletAddress,
     required this.networkId,
   });
-}
-
-abstract class WalletConnectSessionDb {
-  Future<void> save(WalletConnectSessionLocal session);
-  List<WalletConnectSessionLocal> getAll(String accountWalletId);
-  Future<void> remove(String topicId);
 }

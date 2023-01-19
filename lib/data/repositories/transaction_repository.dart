@@ -1,4 +1,4 @@
-import 'package:simplio_app/data/model/transaction.dart';
+import 'package:simplio_app/data/models/transaction.dart';
 
 class TransactionRepository {
   Future<List<Transaction>> loadDummyTransactions(

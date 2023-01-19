@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/mixins/wallet_utils_mixin.dart';

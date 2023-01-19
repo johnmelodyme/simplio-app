@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:chopper/chopper.dart';
 import 'package:simplio_app/data/http/services/refresh_token_service.dart';
-import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
+import 'package:simplio_app/data/providers/entities/auth_token_entity.dart';
 import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
 
 class RefreshTokenAuthenticator extends Authenticator {
-  final StorageProvider<AuthToken> authTokenStorage;
+  final StorageProvider<AuthTokenEntity> authTokenStorage;
   final RefreshTokenService refreshTokenService;
 
   RefreshTokenAuthenticator({
@@ -33,7 +33,7 @@ class RefreshTokenAuthenticator extends Authenticator {
     return null;
   }
 
-  Future<AuthToken> _refreshToken(String refreshToken) async {
+  Future<AuthTokenEntity> _refreshToken(String refreshToken) async {
     final response = await refreshTokenService.refreshToken(
       RefreshTokenBody(refreshToken: refreshToken),
     );
@@ -41,7 +41,7 @@ class RefreshTokenAuthenticator extends Authenticator {
     final body = response.body;
 
     if (response.isSuccessful && body != null) {
-      final authToken = AuthToken(
+      final authToken = AuthTokenEntity(
         refreshToken: body.refreshToken,
         accessToken: body.accessToken,
         tokenType: body.tokenType,

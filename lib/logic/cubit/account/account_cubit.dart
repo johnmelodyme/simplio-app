@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:simplio_app/data/model/account.dart';
+import 'package:simplio_app/data/models/account.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 
 part 'account_state.dart';
@@ -13,20 +13,14 @@ class AccountCubit extends Cubit<AccountState> {
     this._accountRepository,
   ) : super(const AccountInitial());
 
-  AccountCubit.builder({
+  AccountCubit({
     required AccountRepository accountRepository,
   }) : this._(accountRepository);
 
-  Account? loadAccount(String accountId) {
-    final account = _accountRepository.get(accountId);
-
-    if (account == null) return null;
-
+  void loadAccount(Account account) {
     emit(AccountLocked(
       account: account,
     ));
-
-    return account;
   }
 
   Future<void> updateAccount(Account account) async {

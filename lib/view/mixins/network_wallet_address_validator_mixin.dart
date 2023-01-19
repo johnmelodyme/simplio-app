@@ -1,11 +1,11 @@
-import 'package:simplio_app/data/model/wallet.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
+import 'package:simplio_app/data/models/wallet.dart';
+import 'package:simplio_app/data/repositories/hd_wallet_repository.dart';
 
 mixin NetworkWalletAddressValidatorMixin {
   bool Function(String) validateAddress({
     required NetworkId networkId,
   }) {
-    return (String address) => WalletRepository.validateAddress(
+    return (String address) => HDWalletRepository.validateAddress(
           address,
           networkId: networkId,
         );

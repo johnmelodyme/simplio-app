@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:simplio_app/data/model/transaction.dart';
+import 'package:simplio_app/data/models/transaction.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/transactions/transactions_cubit.dart';

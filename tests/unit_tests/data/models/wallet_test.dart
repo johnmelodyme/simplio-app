@@ -1,8 +1,8 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:simplio_app/data/model/account.dart';
-import 'package:simplio_app/data/model/helpers/lockable.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/models/account.dart';
+import 'package:simplio_app/data/models/helpers/lockable.dart';
+import 'package:simplio_app/data/models/wallet.dart';
 import 'package:uuid/uuid.dart';
 
 const _mnemonic = 'not your keys not your coins';
@@ -122,6 +122,7 @@ void main() {
           final updated = accountWallet.updateWalletsFromIterable([
             AssetWallet.builder(uuid: 'ethereum', assetId: 2, wallets: {
               60: NetworkWallet.builder(
+                assetId: 2,
                 networkId: 60,
                 address: '0x',
                 preset: const AssetPreset(decimalPlaces: 19),
@@ -129,6 +130,7 @@ void main() {
             }),
             AssetWallet.builder(uuid: 'solana', assetId: 3, wallets: {
               501: NetworkWallet.builder(
+                assetId: 3,
                 networkId: 501,
                 address: '0x',
                 preset: const AssetPreset(decimalPlaces: 19),
@@ -146,6 +148,7 @@ void main() {
           final updated = accountWallet.updateWalletsFromIterable([
             AssetWallet.builder(uuid: 'solana', assetId: 3, wallets: {
               501: NetworkWallet.builder(
+                assetId: 3,
                 networkId: 501,
                 address: '0x',
                 preset: const AssetPreset(decimalPlaces: 19),
@@ -165,6 +168,7 @@ void main() {
           final updated = accountWallet.updateWalletsFromIterable([
             AssetWallet.builder(uuid: 'bitcoin', assetId: 1, wallets: {
               0: NetworkWallet.builder(
+                assetId: 1,
                 networkId: 0,
                 address: '0x',
                 preset: const AssetPreset(decimalPlaces: 8),
@@ -202,6 +206,7 @@ void main() {
           for (int i = 0; i < 100; i++) {
             assetWallet = assetWallet.addWallet(
               NetworkWallet.builder(
+                assetId: 0,
                 networkId: i,
                 address: '',
                 preset: const AssetPreset(decimalPlaces: 2),
@@ -220,27 +225,30 @@ void main() {
     () {
       final eth = NetworkWallet(
         uuid: 'ethereum',
+        assetId: 2,
         networkId: 60,
         address: '0x',
-        balance: BigInt.zero,
+        cryptoBalance: BigInt.zero,
         fiatBalance: 0,
         isEnabled: true,
         preset: const AssetPreset(decimalPlaces: 18),
       );
       final sol = NetworkWallet(
         uuid: 'solana',
+        assetId: 5,
         networkId: 501,
         address: '0x',
-        balance: BigInt.zero,
+        cryptoBalance: BigInt.zero,
         fiatBalance: 0,
         isEnabled: true,
         preset: const AssetPreset(decimalPlaces: 6),
       );
       final bnb = NetworkWallet(
         uuid: 'bnb',
+        assetId: 10,
         networkId: 20000714,
         address: '0x',
-        balance: BigInt.zero,
+        cryptoBalance: BigInt.zero,
         fiatBalance: 0,
         isEnabled: true,
         preset: const AssetPreset(decimalPlaces: 18),
@@ -275,7 +283,7 @@ void main() {
         'network wallets which are updated from Iterable have equal length as original.',
         () {
           final updated = assetWallet.updateWalletsFromIterable([
-            sol.copyWith(balance: BigInt.from(4000)),
+            sol.copyWith(cryptoBalance: BigInt.from(4000)),
           ]);
 
           expect(updated.wallets.length, equals(assetWallet.wallets.length));
@@ -302,9 +310,10 @@ void main() {
             sol.copyWith(isEnabled: false),
             NetworkWallet(
               uuid: 'x',
+              assetId: 1,
               networkId: 0,
               address: '0x',
-              balance: BigInt.zero,
+              cryptoBalance: BigInt.zero,
               fiatBalance: 0,
               isEnabled: false,
               preset: const AssetPreset(decimalPlaces: 8),

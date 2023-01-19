@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:simplio_app/data/model/account_settings.dart';
+import 'package:simplio_app/data/models/account_settings.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routers/unauthenticated_router.dart';
 

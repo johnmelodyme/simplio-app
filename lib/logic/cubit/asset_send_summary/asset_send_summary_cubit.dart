@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
+import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 
 part 'asset_send_summary_state.dart';
 

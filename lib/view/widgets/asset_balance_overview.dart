@@ -1,7 +1,7 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
-import 'package:simplio_app/data/model/helpers/big_decimal.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/models/helpers/big_decimal.dart';
+import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -43,7 +43,7 @@ class AssetBalanceOverview extends StatelessWidget {
                 child: Column(
                   children: [
                     CurrencyText(
-                      value: BigDecimal.fromBigInt(networkWallet.balance),
+                      value: BigDecimal.fromBigInt(networkWallet.cryptoBalance),
                       style: SioTextStyles.h1.apply(
                         color: SioColors.whiteBlue,
                       ),

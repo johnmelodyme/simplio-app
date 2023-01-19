@@ -1,6 +1,6 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:equatable/equatable.dart';
-import 'package:simplio_app/data/model/helpers/lockable.dart';
+import 'package:simplio_app/data/models/helpers/lockable.dart';
 import 'package:uuid/uuid.dart';
 
 typedef ID = int;
@@ -11,12 +11,14 @@ const accountWalletUpdateLifetimeInSeconds = 180;
 
 abstract class Wallet<T> extends Equatable {
   String get uuid;
-  BigInt get balance;
+  BigInt get cryptoBalance;
+  // TOOD - add fait balance.
+  // double get fiatBalance;
 
   const Wallet();
 
   @override
-  List<Object?> get props => [uuid, balance];
+  List<Object?> get props => [uuid, cryptoBalance];
 
   Wallet<T> copyWith();
 }
@@ -86,12 +88,12 @@ class AccountWallet extends Wallet<AssetWallet>
   }
 
   @override
-  BigInt get balance => BigInt.zero;
+  BigInt get cryptoBalance => BigInt.zero;
 
   @override
   List<Object?> get props => [
         uuid,
-        balance,
+        cryptoBalance,
         accountId,
         updatedAt,
         walletType,
@@ -211,12 +213,12 @@ class AssetWallet extends Wallet<NetworkWallet>
   }
 
   @override
-  BigInt get balance => BigInt.zero;
+  BigInt get cryptoBalance => BigInt.zero;
 
   @override
   List<Object?> get props => [
         uuid,
-        balance,
+        cryptoBalance,
         assetId,
         wallets,
       ];
@@ -288,25 +290,28 @@ class NetworkWallet extends Wallet<Object> {
 
   @override
   final String uuid;
+  final AssetId assetId;
   final NetworkId networkId;
   final String address;
   @override
-  final BigInt balance;
+  final BigInt cryptoBalance;
   final double fiatBalance;
   final bool isEnabled;
   final AssetPreset preset;
 
   const NetworkWallet({
     required this.uuid,
+    required this.assetId,
     required this.networkId,
     required this.address,
-    required this.balance,
+    required this.cryptoBalance,
     required this.fiatBalance,
     required this.isEnabled,
     required this.preset,
   });
 
   NetworkWallet.builder({
+    required AssetId assetId,
     required NetworkId networkId,
     required String address,
     BigInt? balance,
@@ -315,9 +320,10 @@ class NetworkWallet extends Wallet<Object> {
     required AssetPreset preset,
   }) : this(
           uuid: const Uuid().v4(),
+          assetId: assetId,
           networkId: networkId,
           address: address,
-          balance: balance ?? BigInt.zero,
+          cryptoBalance: balance ?? BigInt.zero,
           fiatBalance: fiatBalance ?? 0,
           isEnabled: isEnabled,
           preset: preset,
@@ -326,11 +332,18 @@ class NetworkWallet extends Wallet<Object> {
   bool get isToken => preset.contractAddress?.isNotEmpty == true;
   bool get isNotToken => !isToken;
 
+  // TODO - get price in BigDecimal
+  double get price =>
+      fiatBalance /
+      (cryptoBalance.toDouble() /
+          BigInt.from(10).pow(preset.decimalPlaces).toDouble());
+
   @override
   List<Object?> get props => [
         uuid,
-        balance,
+        assetId,
         networkId,
+        cryptoBalance,
         address,
         fiatBalance,
         isEnabled,
@@ -338,15 +351,16 @@ class NetworkWallet extends Wallet<Object> {
 
   @override
   NetworkWallet copyWith({
-    BigInt? balance,
+    BigInt? cryptoBalance,
     double? fiatBalance,
     bool? isEnabled,
   }) {
     return NetworkWallet(
       uuid: uuid,
+      assetId: assetId,
       networkId: networkId,
       address: address,
-      balance: balance ?? this.balance,
+      cryptoBalance: cryptoBalance ?? this.cryptoBalance,
       fiatBalance: fiatBalance ?? this.fiatBalance,
       isEnabled: isEnabled ?? this.isEnabled,
       preset: preset,

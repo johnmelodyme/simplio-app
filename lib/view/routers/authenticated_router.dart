@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/data/model/account.dart';
+import 'package:simplio_app/data/models/account.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
@@ -81,7 +81,7 @@ class AuthenticatedRouter {
             GoRoute(
               path: '/in',
               parentNavigatorKey: navWalletConnect,
-              builder: (_, __) => const SizedBox.shrink(),
+              builder: (_, __) => const ApplicationLoadingScreen(),
               redirect: (context, state) {
                 final s = context.read<AccountCubit>().state;
                 if (s is! AccountProvided) {

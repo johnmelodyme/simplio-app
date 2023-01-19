@@ -2,8 +2,8 @@ import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/data/model/helpers/big_decimal.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/models/helpers/big_decimal.dart';
+import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/logic/bloc/asset_swap_form/asset_swap_form_bloc.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/mixins/route_builder_mixin.dart';
@@ -594,7 +594,7 @@ class _ConvertedSourceValue extends StatelessWidget {
                             context.read<AssetSwapFormBloc>().add(
                                   MaxValueRequested(
                                     balance: BigDecimal.fromBigInt(
-                                      networkWallet.balance,
+                                      networkWallet.cryptoBalance,
                                     ),
                                   ),
                                 );

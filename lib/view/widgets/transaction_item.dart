@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:simplio_app/data/model/transaction.dart';
+import 'package:simplio_app/data/models/transaction.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/date_extensions.dart';
 import 'package:simplio_app/view/extensions/number_extensions.dart';

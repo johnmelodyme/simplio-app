@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simplio_app/data/mixins/aes_encryption_mixin.dart';
-import 'package:simplio_app/data/model/account.dart';
+import 'package:simplio_app/data/models/account.dart';
 import 'package:string_validator/string_validator.dart' as string_validator;
 
 void main() {

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
+import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 
 part 'wallet_connect_state.dart';
 

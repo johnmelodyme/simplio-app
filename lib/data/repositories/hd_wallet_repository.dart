@@ -1,15 +1,20 @@
 import 'package:crypto_assets/crypto_assets.dart';
-import 'package:flutter/foundation.dart';
 import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
-import 'package:simplio_app/data/model/helpers/lockable.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/models/helpers/lockable.dart';
+import 'package:simplio_app/data/models/wallet.dart';
+import 'package:simplio_app/data/providers/interfaces/wallet_db.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
+import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 import 'package:sio_core_light/sio_core_light.dart' as sio;
 
-class WalletRepository {
+class HDWalletRepository extends WalletRepository {
+  static HDWallet createWithMnemonic(String mnemonic) {
+    return HDWallet.createWithMnemonic(mnemonic);
+  }
+
   static bool validateAddress(
     String address, {
     required NetworkId networkId,
@@ -21,32 +26,24 @@ class WalletRepository {
   }
 
   final WalletDb _walletDb;
-  final BlockchainUtilsService _blockchainUtilsService;
+  final BlockchainUtilsService _blockchainService;
   final BroadcastService _broadcastService;
   final BalanceService _balanceService;
 
   late String _walletId;
   late HDWallet _wallet;
 
-  WalletRepository._(
-    this._walletDb,
-    this._blockchainUtilsService,
-    this._broadcastService,
-    this._balanceService,
-  );
-
-  WalletRepository({
+  HDWalletRepository({
     required WalletDb walletDb,
-    required BlockchainUtilsService blockchainUtilsService,
+    required BlockchainUtilsService blockchainService,
     required BroadcastService broadcastService,
     required BalanceService balanceService,
-  }) : this._(
-          walletDb,
-          blockchainUtilsService,
-          broadcastService,
-          balanceService,
-        );
+  })  : _walletDb = walletDb,
+        _blockchainService = blockchainService,
+        _broadcastService = broadcastService,
+        _balanceService = balanceService;
 
+  @override
   Future<AccountWallet> loadAccountWallet(
     String accountId, {
     required String key,
@@ -66,12 +63,13 @@ class WalletRepository {
     return w;
   }
 
+  @override
   Future<AccountWallet> addAccountWallet(
     String accountId, {
     required key,
     String? name,
     String? mnemonic,
-  }) async {
+  }) {
     final m = mnemonic ?? sio.Mnemonic().generate;
     final isProvided = mnemonic != null;
 
@@ -85,17 +83,37 @@ class WalletRepository {
 
     return _walletDb.save(AccountWallet.hd(
       uuid: AccountWallet.makeUUID(
-        HDWallet.createWithMnemonic(m).getAddressForCoin(NetworkIds.bitcoin.id),
+        createWithMnemonic(m).getAddressForCoin(NetworkIds.bitcoin.id),
       ),
       accountId: accountId,
       mnemonic: lockableMnemonic,
     ));
   }
 
+  @override
+  Future<AccountWallet> importAccountWallet(
+    String accountId, {
+    required key,
+    String? name,
+    required String mnemonic,
+  }) {
+    // TODO: implement importAccountWallet
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeAccountWallet(
+    String accountId,
+  ) {
+    // TODO: implement removeAccountWallet
+    throw UnimplementedError();
+  }
+
+  @override
   Future<AccountWallet> enableNetworkWallet(
     AccountWallet accountWallet, {
     required int assetId,
-    required int networkId,
+    required NetworkId networkId,
   }) async {
     _checkInitializedAccountWallet(accountWallet.uuid);
 
@@ -105,9 +123,12 @@ class WalletRepository {
     final networkWallet =
         assetWallet.getWallet(networkId)?.copyWith(isEnabled: true) ??
             NetworkWallet.builder(
+              assetId: assetId,
               networkId: networkId,
-              address: getCoinAddress(accountWallet.uuid, networkId: networkId),
-              isEnabled: true,
+              address: getCoinAddress(
+                accountWallet.uuid,
+                networkId: networkId,
+              ),
               preset: NetworkWallet.makePreset(
                 assetId: assetId,
                 networkId: networkId,
@@ -121,10 +142,11 @@ class WalletRepository {
     );
   }
 
+  @override
   Future<AccountWallet> disableNetworkWallet(
     AccountWallet accountWallet, {
     required int assetId,
-    required int networkId,
+    required NetworkId networkId,
   }) async {
     final assetWallet = accountWallet.getWallet(assetId);
     if (assetWallet == null) {
@@ -147,15 +169,101 @@ class WalletRepository {
     );
   }
 
-  // Might be used in the future.
-  String getMnemonic(String accountWalletId) {
-    _checkInitializedAccountWallet(accountWalletId);
-    return _wallet.mnemonic();
+  @override
+  Future<AccountWallet> updateAccountWalletBalance(
+    AccountWallet accountWallet, {
+    bool save = true,
+  }) async {
+    try {
+      final wallet = await _updateAccountWalletBalance(accountWallet);
+
+      if (save) await _walletDb.save(wallet);
+
+      return wallet;
+    } catch (e) {
+      return accountWallet;
+    }
   }
 
+  @override
+  Future<AccountWallet> updateAssetWalletBalance(
+    AccountWallet accountWallet, {
+    required AssetWallet assetWallet,
+    bool save = true,
+  }) async {
+    try {
+      final assWallet = await _updateAssetWalletBalance(assetWallet);
+      final accWallet = accountWallet.updateWalletsFromIterable([assWallet]);
+
+      if (save) await _walletDb.save(accWallet);
+
+      return accWallet;
+    } catch (e) {
+      return accountWallet;
+    }
+  }
+
+  @override
+  Future<AccountWallet> updateNetworkWalletBalance(
+    AccountWallet accountWallet, {
+    required NetworkWallet networkWallet,
+    bool save = true,
+  }) async {
+    try {
+      final netWallet = await _updateNetworkWalletBalance(networkWallet);
+      final assWallet = accountWallet.wallets.firstWhere(
+        (w) => w.findWallet(networkWallet.uuid) != null,
+      );
+      final accWallet = accountWallet.updateWalletsFromIterable([
+        assWallet.updateWalletsFromIterable([netWallet]),
+      ]);
+
+      if (save) await _walletDb.save(accWallet);
+
+      return accWallet;
+    } catch (e) {
+      return accountWallet;
+    }
+  }
+
+  @override
+  String getMnemonic(
+    AccountWallet accountWallet, {
+    required String key,
+  }) {
+    // TODO - unlock lockable mnemonic with provided key.
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> broadcastTransaction(
+    WalletTransaction transaction,
+  ) async {
+    final res = await _broadcastService.transaction(
+      transaction.networkId.toString(),
+      transaction.rawTx,
+    );
+
+    final body = res.body;
+
+    if (!res.isSuccessful || body == null) {
+      throw Exception('Broadcasting Transaction has failed!');
+    }
+
+    if (!body.success) {
+      throw Exception(body.errorMessage);
+    }
+
+    final result = body.result;
+    if (result != null) return result;
+
+    throw Exception('Broadcasted transaction does not exist');
+  }
+
+  @override
   String getCoinAddress(
     String accountWalletId, {
-    required int networkId,
+    required NetworkId networkId,
   }) {
     _checkInitializedAccountWallet(accountWalletId);
     if (!sio.Networks.isSupported(networkId: networkId)) {
@@ -164,17 +272,26 @@ class WalletRepository {
     return _wallet.getAddressForCoin(networkId);
   }
 
+  @override
+  String getTokenAddress(
+    String accountWalletId, {
+    required AssetId assetId,
+    required NetworkId networkId,
+  }) {
+    // TODO: implement getTokenAddress
+    throw UnimplementedError();
+  }
+
+  @override
   Future<WalletTransaction> signTransaction(
     String accountWalletId, {
-    required int networkId,
+    required NetworkId networkId,
     required String toAddress,
     required BigInt amount,
     required BigInt feeAmount,
     required BigInt gasLimit,
     required int assetDecimals,
     String? contractAddress,
-    // TODO: change this to required after it is implemented in backend and
-    // we can fetch it from there.
     String maxInclusionFeePerGas = '2000000000',
     String? data,
   }) async {
@@ -217,49 +334,15 @@ class WalletRepository {
     return transaction;
   }
 
-  Future<int> _getNonce({
-    required int networkId,
-    required String walletAddress,
-  }) async {
-    final res = await _blockchainUtilsService.ethereum(
-      networkId: networkId.toString(),
-      walletAddress: walletAddress,
-    );
-
-    final body = res.body;
-
-    if (!res.isSuccessful || body == null) {
-      throw Exception('Nonce fetching has failed!');
-    }
-
-    if (!body.success) {
-      throw Exception(body.errorMessage);
-    }
-
-    return int.parse(body.transactionCount ?? '0');
-  }
-
-  WalletTransaction _makeTransaction({
-    required int networkId,
-    required sio.Transaction transaction,
-  }) {
-    return WalletTransaction(
-      networkId: networkId,
-      rawTx: transaction.rawTx,
-      networkFee: transaction.networkFee,
-    );
-  }
-
+  @override
   Future<WalletTransaction?> signEthereumTransaction(
     String accountWalletId, {
-    required int networkId,
+    required NetworkId networkId,
     required BigInt amount,
     required String toAddress,
     required BigInt feeAmount,
     required BigInt gasLimit,
     String? contractAddress,
-    // TODO: change this to required after it is implemented in backend and
-    // we can fetch it from there.
     String maxInclusionFeePerGas = '2000000000',
     String? data,
   }) async {
@@ -352,22 +435,89 @@ class WalletRepository {
     return transaction;
   }
 
-  Future<List<Utxo>> _getUtxo(
-    String accountWalletId, {
+  @override
+  String signMessage({
+    required NetworkId networkId,
+    required String message,
+  }) {
+    try {
+      return sio.EthSign.personalMessage(
+        wallet: _wallet,
+        networkId: networkId,
+        message: message,
+      );
+    } catch (_) {
+      return sio.EthSign.message(
+        wallet: _wallet,
+        networkId: networkId,
+        message: message,
+      );
+    }
+  }
+
+  @override
+  String signPersonalMessage({
+    required NetworkId networkId,
+    required String message,
+  }) {
+    try {
+      return sio.EthSign.personalMessage(
+        wallet: _wallet,
+        networkId: networkId,
+        message: message,
+      );
+    } catch (_) {
+      return '';
+    }
+  }
+
+  @override
+  String signTypedData({
+    required NetworkId networkId,
+    required String jsonData,
+  }) {
+    try {
+      return sio.EthSign.typedData(
+        wallet: _wallet,
+        networkId: networkId,
+        jsonData: jsonData,
+      );
+    } catch (_) {
+      return '';
+    }
+  }
+
+  Future<int> _getNonce({
     required int networkId,
+    required String walletAddress,
   }) async {
-    final res = await _blockchainUtilsService.utxo(
+    final res = await _blockchainService.ethereum(
       networkId: networkId.toString(),
-      walletAddress: getCoinAddress(accountWalletId, networkId: networkId),
+      walletAddress: walletAddress,
     );
 
     final body = res.body;
 
     if (!res.isSuccessful || body == null) {
-      throw Exception('Utxo fetching has failed!');
+      throw Exception('Nonce fetching has failed!');
     }
 
-    return body.items;
+    if (!body.success) {
+      throw Exception(body.errorMessage);
+    }
+
+    return int.parse(body.transactionCount ?? '0');
+  }
+
+  WalletTransaction _makeTransaction({
+    required int networkId,
+    required sio.Transaction transaction,
+  }) {
+    return WalletTransaction(
+      networkId: networkId,
+      rawTx: transaction.rawTx,
+      networkFee: transaction.networkFee,
+    );
   }
 
   Future<WalletTransaction?> _signUtxoTransaction(
@@ -400,7 +550,7 @@ class WalletRepository {
     required int networkId,
     required String walletAddress,
   }) async {
-    final res = await _blockchainUtilsService.solana(
+    final res = await _blockchainService.solana(
       walletAddress: walletAddress,
     );
 
@@ -460,139 +610,22 @@ class WalletRepository {
     );
   }
 
-  Future<String> broadcastTransaction(WalletTransaction transaction) async {
-    final res = await _broadcastService.transaction(
-      transaction.networkId.toString(),
-      transaction.rawTx,
+  Future<List<Utxo>> _getUtxo(
+    String accountWalletId, {
+    required int networkId,
+  }) async {
+    final res = await _blockchainService.utxo(
+      networkId: networkId.toString(),
+      walletAddress: getCoinAddress(accountWalletId, networkId: networkId),
     );
 
     final body = res.body;
 
     if (!res.isSuccessful || body == null) {
-      throw Exception('Broadcasting Transaction has failed!');
+      throw Exception('Utxo fetching has failed!');
     }
 
-    if (!body.success) {
-      throw Exception(body.errorMessage);
-    }
-
-    final result = body.result;
-    if (result != null) return result;
-
-    throw Exception('Broadcasted transaction does not exist');
-  }
-
-  void _checkInitializedAccountWallet(String accountWalletId) {
-    if (_walletId == accountWalletId) return;
-    throw Exception("Account wallet '$accountWalletId}' is not initialized");
-  }
-
-  String signMessage({
-    required int networkId,
-    required String message,
-  }) {
-    try {
-      return sio.EthSign.personalMessage(
-        wallet: _wallet,
-        networkId: networkId,
-        message: message,
-      );
-    } catch (_) {
-      return sio.EthSign.message(
-        wallet: _wallet,
-        networkId: networkId,
-        message: message,
-      );
-    }
-  }
-
-  String signPersonalMessage({
-    required int networkId,
-    required String message,
-  }) {
-    try {
-      return sio.EthSign.personalMessage(
-        wallet: _wallet,
-        networkId: networkId,
-        message: message,
-      );
-    } catch (_) {
-      return '';
-    }
-  }
-
-  String signTypedData({
-    required int networkId,
-    required String jsonData,
-  }) {
-    try {
-      return sio.EthSign.typedData(
-        wallet: _wallet,
-        networkId: networkId,
-        jsonData: jsonData,
-      );
-    } catch (_) {
-      return '';
-    }
-  }
-
-  // Do we need this or is inventoryRepository enough??
-  Future<AccountWallet> refreshAccountWalletBalance(
-    AccountWallet accountWallet, {
-    bool save = true,
-  }) async {
-    try {
-      final wallet = await _updateAccountWalletBalance(accountWallet);
-
-      if (save) await _walletDb.save(wallet);
-
-      return wallet;
-    } catch (e) {
-      debugPrint(e.toString());
-      return accountWallet;
-    }
-  }
-
-  // Might be used in the future
-  Future<AccountWallet> refreshAssetWalletBalance(
-    AccountWallet accountWallet, {
-    required AssetWallet assetWallet,
-    bool save = true,
-  }) async {
-    try {
-      final assWallet = await _updateAssetWalletBalance(assetWallet);
-      final accWallet = accountWallet.updateWalletsFromIterable([assWallet]);
-
-      if (save) await _walletDb.save(accWallet);
-
-      return accWallet;
-    } catch (e) {
-      debugPrint(e.toString());
-      return accountWallet;
-    }
-  }
-
-  Future<AccountWallet> refreshNetworkWalletBalance(
-    AccountWallet accountWallet, {
-    required NetworkWallet networkWallet,
-    bool save = true,
-  }) async {
-    try {
-      final netWallet = await _updateNetworkWalletBalance(networkWallet);
-      final assWallet = accountWallet.wallets.firstWhere(
-        (w) => w.findWallet(networkWallet.uuid) != null,
-      );
-      final accWallet = accountWallet.updateWalletsFromIterable([
-        assWallet.updateWalletsFromIterable([netWallet]),
-      ]);
-
-      if (save) await _walletDb.save(accWallet);
-
-      return accWallet;
-    } catch (e) {
-      debugPrint(e.toString());
-      return accountWallet;
-    }
+    return body.items;
   }
 
   Future<AccountWallet> _updateAccountWalletBalance(
@@ -605,7 +638,6 @@ class WalletRepository {
 
       return accountWallet.updateWalletsFromIterable(updatedWallets);
     } catch (e) {
-      debugPrint(e.toString());
       return accountWallet;
     }
   }
@@ -620,7 +652,6 @@ class WalletRepository {
 
       return assetWallet.updateWalletsFromIterable(updatedWallets);
     } catch (e) {
-      debugPrint(e.toString());
       return assetWallet;
     }
   }
@@ -629,13 +660,12 @@ class WalletRepository {
     NetworkWallet networkWallet,
   ) async {
     try {
-      final BigInt balance = await (networkWallet.isToken
+      final BigInt cryptoBalance = await (networkWallet.isToken
           ? _getTokenBalance(networkWallet)
           : _getCoinBalance(networkWallet));
 
-      return networkWallet.copyWith(balance: balance);
+      return networkWallet.copyWith(cryptoBalance: cryptoBalance);
     } catch (e) {
-      debugPrint(e.toString());
       return networkWallet;
     }
   }
@@ -688,22 +718,9 @@ class WalletRepository {
       "Fetching token balance for ${networkWallet.address} address failed",
     );
   }
-}
 
-class WalletTransaction {
-  final int networkId;
-  String rawTx;
-  final BigInt networkFee;
-
-  WalletTransaction({
-    required this.networkId,
-    required this.rawTx,
-    required this.networkFee,
-  });
-}
-
-abstract class WalletDb {
-  Future<AccountWallet> save(AccountWallet accountWallet);
-  List<AccountWallet> getAll(String accountId);
-  AccountWallet? getLast(String accountId);
+  void _checkInitializedAccountWallet(String accountWalletId) {
+    if (_walletId == accountWalletId) return;
+    throw Exception("Account wallet '$accountWalletId}' is not initialized");
+  }
 }

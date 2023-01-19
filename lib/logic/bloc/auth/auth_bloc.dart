@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/data/model/account.dart';
+import 'package:simplio_app/data/models/account.dart';
 import 'package:simplio_app/data/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
@@ -23,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     GotAuthenticated event,
     Emitter<AuthState> emit,
   ) async {
-    emit(Authenticated(accountId: event.accountId));
+    emit(Authenticated(account: event.account));
   }
 
   void _onGotUnauthenticated(
@@ -32,7 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) {
     final s = state;
     if (s is Authenticated) {
-      _authRepository.signOut(accountId: s.accountId);
+      _authRepository.signOut(accountId: s.account.id);
     }
 
     emit(const Unauthenticated());
@@ -41,12 +41,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onGotLastAuthenticated(
     GotLastAuthenticated event,
     Emitter<AuthState> emit,
-  ) {
-    final Account? account = _authRepository.getLastSignedIn();
+  ) async {
+    emit(const Authenticating());
+
+    final Account? account = await _authRepository.getLastSignedIn();
 
     emit(
       account != null
-          ? Authenticated(accountId: account.id)
+          ? Authenticated(account: account)
           : const Unauthenticated(),
     );
   }

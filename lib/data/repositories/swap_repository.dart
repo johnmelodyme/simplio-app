@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:simplio_app/data/http/errors/bad_request_http_error.dart';
 import 'package:simplio_app/data/http/errors/internal_server_http_error.dart';
 import 'package:simplio_app/data/http/services/swap_service.dart';
-import 'package:simplio_app/data/model/helpers/big_decimal.dart';
+import 'package:simplio_app/data/models/helpers/big_decimal.dart';
 import 'package:simplio_app/data/providers/helpers/memory_cache_provider.dart';
 
 const _cacheLifetimeInSeconds = 1800;

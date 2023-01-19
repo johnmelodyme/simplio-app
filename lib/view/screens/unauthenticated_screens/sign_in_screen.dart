@@ -160,8 +160,9 @@ class SignInScreen extends StatelessWidget with PopupDialogMixin {
                             final res = state.response;
 
                             if (res is SignInFormSuccess) {
-                              context.read<AuthBloc>().add(
-                                  GotAuthenticated(accountId: res.account.id));
+                              context
+                                  .read<AuthBloc>()
+                                  .add(GotAuthenticated(account: res.account));
                             }
 
                             if (res is SignInFormFailure) {

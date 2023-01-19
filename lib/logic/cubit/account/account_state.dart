@@ -11,10 +11,6 @@ class AccountInitial extends AccountState {
   const AccountInitial();
 }
 
-class AccountLoading extends AccountState {
-  const AccountLoading();
-}
-
 abstract class AccountProvided extends AccountState {
   final Account account;
 

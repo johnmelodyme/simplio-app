@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/data/model/helpers/big_decimal.dart';
-import 'package:simplio_app/data/model/wallet.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
+import 'package:simplio_app/data/models/helpers/big_decimal.dart';
+import 'package:simplio_app/data/models/wallet.dart';
+import 'package:simplio_app/data/repositories/hd_wallet_repository.dart';
+import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 import 'package:simplio_app/logic/errors/validation_error.dart';
 import 'package:simplio_app/logic/mixins/bigdecimal_value_updater_mixin.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
@@ -89,7 +90,7 @@ class AssetSendFormBloc extends Bloc<AssetSendFormEvent, AssetSendFormState>
           code: ValidationErrorCodes.insufficientValue,
           message: 'Invalid amount',
         ),
-      if (amount.toBigInt() > wallet.balance)
+      if (amount.toBigInt() > wallet.cryptoBalance)
         const ValidationError(
           code: ValidationErrorCodes.invalidValue,
           message: 'Invalid amount',
@@ -148,7 +149,7 @@ class AssetSendFormBloc extends Bloc<AssetSendFormEvent, AssetSendFormState>
     String address, {
     required NetworkWallet wallet,
   }) {
-    final isValid = WalletRepository.validateAddress(
+    final isValid = HDWalletRepository.validateAddress(
       address,
       networkId: wallet.networkId,
     );
@@ -194,7 +195,7 @@ class AssetSendFormBloc extends Bloc<AssetSendFormEvent, AssetSendFormState>
     final s = state;
     if (s is! SendFormConverted) return;
 
-    final cryptoAmount = BigDecimal.fromBigInt(s.wallet.balance);
+    final cryptoAmount = BigDecimal.fromBigInt(s.wallet.cryptoBalance);
     final fiatAmount = cryptoAmount * s.price;
 
     emit(s.copyWith(

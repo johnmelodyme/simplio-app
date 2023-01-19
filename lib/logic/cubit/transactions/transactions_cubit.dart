@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:simplio_app/data/model/transaction.dart';
+import 'package:simplio_app/data/models/transaction.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 

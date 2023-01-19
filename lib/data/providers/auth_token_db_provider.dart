@@ -1,11 +1,10 @@
 import 'package:hive_flutter/adapters.dart';
+import 'package:simplio_app/data/providers/entities/auth_token_entity.dart';
 import 'package:simplio_app/data/providers/helpers/box_provider.dart';
 import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
 
-part 'auth_token_db_provider.g.dart';
-
-class AuthTokenDbProvider extends BoxProvider<AuthToken>
-    implements StorageProvider<AuthToken> {
+class AuthTokenDbProvider extends BoxProvider<AuthTokenEntity>
+    implements StorageProvider<AuthTokenEntity> {
   static final AuthTokenDbProvider _instance = AuthTokenDbProvider._();
 
   @override
@@ -17,36 +16,18 @@ class AuthTokenDbProvider extends BoxProvider<AuthToken>
 
   @override
   void registerAdapters() {
-    Hive.registerAdapter(AuthTokenAdapter());
+    Hive.registerAdapter(AuthTokenEntityAdapter());
   }
 
   @override
-  AuthToken read() {
+  AuthTokenEntity read() {
     if (box.isNotEmpty) return box.values.first;
     throw Exception('Auth token not found.');
   }
 
   @override
-  Future<void> write(AuthToken authToken) async {
+  Future<void> write(AuthTokenEntity authToken) async {
     await box.clear();
     box.add(authToken);
   }
-}
-
-@HiveType(typeId: 7)
-class AuthToken extends HiveObject {
-  @HiveField(0)
-  final String refreshToken;
-
-  @HiveField(1)
-  final String accessToken;
-
-  @HiveField(2)
-  final String tokenType;
-
-  AuthToken({
-    required this.refreshToken,
-    required this.accessToken,
-    required this.tokenType,
-  });
 }

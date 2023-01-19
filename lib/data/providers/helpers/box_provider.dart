@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
 
-abstract class BoxProvider<T> {
+abstract class Entity extends HiveObject {}
+
+abstract class BoxProvider<T extends Entity> {
   /// `box` holds an instance of a Hive box that stores data types of [T].
   /// Instance of a box is initialized late which means we need to run
   /// `init` method asynchronously to assign this property a value.

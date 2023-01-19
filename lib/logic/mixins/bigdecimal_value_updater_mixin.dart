@@ -1,4 +1,4 @@
-import 'package:simplio_app/data/model/helpers/big_decimal.dart';
+import 'package:simplio_app/data/models/helpers/big_decimal.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
 
 mixin BigDecimalValueUpdaterMixin {

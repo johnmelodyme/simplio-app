@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
+import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 import 'package:simplio_app/logic/cubit/asset_swap_summary/asset_swap_summary_cubit.dart';
 import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/helpers/application_route.dart';

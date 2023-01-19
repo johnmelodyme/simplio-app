@@ -21,10 +21,10 @@ class Unauthenticated extends AuthState {
 }
 
 class Authenticated extends AuthState {
-  final String accountId;
+  final Account account;
 
-  const Authenticated({required this.accountId});
+  const Authenticated({required this.account});
 
   @override
-  List<Object?> get props => [accountId];
+  List<Object?> get props => [account];
 }

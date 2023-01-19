@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplio_app/data/model/wallet.dart';
+import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/mixins/network_wallet_address_validator_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';

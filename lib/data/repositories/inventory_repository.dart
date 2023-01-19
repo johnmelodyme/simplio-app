@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:simplio_app/data/http/services/inventory_service.dart';
-import 'package:simplio_app/data/model/wallet.dart';
-import 'package:simplio_app/data/repositories/wallet_repository.dart';
+import 'package:simplio_app/data/models/wallet.dart';
+import 'package:simplio_app/data/providers/interfaces/wallet_db.dart';
 
 // TODO - Refreshing wallet balances should be mode to the realated domain.
 class InventoryRepository {
@@ -65,7 +65,7 @@ class InventoryRepository {
                 .assets
                 .firstWhere((a) => a.assetId == assetWallet.assetId);
             final updatedNetworkWallet = networkWallet.copyWith(
-                balance: BigInt.parse(asset.balance),
+                cryptoBalance: BigInt.parse(asset.balance),
                 fiatBalance: asset.fiatValue);
             networkWallets.add(updatedNetworkWallet);
           }
