@@ -7,10 +7,6 @@ on:
     secrets:
       ANDROID_KEYS_SECRET_PASSPHRASE:
         required: true
-      DART_DEFINE_API_KEY_DEV:
-        required: true
-      DART_DEFINE_API_KEY_PROD:
-        required: true
       DART_DEFINE_API_URL_DEV:
         required: true
       DART_DEFINE_API_URL_PROD:
@@ -84,11 +80,15 @@ jobs:
 
       - name: Build production version
         if: ${{ inputs.environment == 'production' }}
-        run: flutter build appbundle --release --flavor production --dart-define=IS_PROD=true --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_PROD }} --dart-define=API_KEY=${{ secrets.DART_DEFINE_API_KEY_PROD }}
+        run: flutter build appbundle --release --flavor production --dart-define=IS_PROD=true --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_PROD }}
+
+      - name: Build test version
+        if: ${{ inputs.environment == 'test' }}
+        run: flutter build appbundle --release --flavor releaseTest --dart-define=IS_PROD=true --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }}
 
       - name: Build dev version
         if: ${{ inputs.environment == 'dev' }}
-        run: flutter build appbundle --release --flavor dev --dart-define=IS_PROD=true --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }} --dart-define=API_KEY=${{ secrets.DART_DEFINE_API_KEY_DEV }}
+        run: flutter build appbundle --release --flavor dev --dart-define=IS_PROD=true --dart-define=API_URL=${{ secrets.DART_DEFINE_API_URL_DEV }}
 
       - name: Run Fastlane
         if: ${{ inputs.testBuild == false }}

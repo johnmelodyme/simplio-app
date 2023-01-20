@@ -13,5 +13,4 @@ jobs:
       e2e: true
       unitTests: true
     secrets:
-      DART_DEFINE_API_KEY_DEV: ${{ secrets.DART_DEFINE_API_KEY_DEV }}
       DART_DEFINE_API_URL_DEV: ${{ secrets.DART_DEFINE_API_URL_DEV }}

@@ -3,7 +3,7 @@ name: Deploy test version of Simplio app v2 to AppStore and GooglePlay
 on:
   push:
     tags:
-      - 'dev*'
+      - 'test*'
 
 jobs:
   run-tests:
@@ -12,7 +12,6 @@ jobs:
       e2e: true
       unitTests: true
     secrets:
-      DART_DEFINE_API_KEY_DEV: ${{ secrets.DART_DEFINE_API_KEY_DEV }}
       DART_DEFINE_API_URL_DEV: ${{ secrets.DART_DEFINE_API_URL_DEV }}
 
   set-version:
@@ -51,7 +50,7 @@ jobs:
     needs: [set-version]
     uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@master
     with:
-      environment: 'dev'
+      environment: 'test'
       testBuild: false
       major: ${{ needs.set-version.outputs.major }}
       minor: ${{needs.set-version.outputs.minor}}
@@ -67,8 +66,6 @@ jobs:
       PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
       TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
       TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
-      DART_DEFINE_API_KEY_DEV: ${{ secrets.DART_DEFINE_API_KEY_DEV }}
-      DART_DEFINE_API_KEY_PROD: ${{ secrets.DART_DEFINE_API_KEY_PROD }}
       DART_DEFINE_API_URL_DEV: ${{ secrets.DART_DEFINE_API_URL_DEV }}
       DART_DEFINE_API_URL_PROD: ${{ secrets.DART_DEFINE_API_URL_PROD }}
 
@@ -77,12 +74,10 @@ jobs:
     uses: SimplioOfficial/simplio-app/.github/workflows/_publish_android.yml@master
     secrets:
       ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
-      DART_DEFINE_API_KEY_DEV: ${{ secrets.DART_DEFINE_API_KEY_DEV }}
-      DART_DEFINE_API_KEY_PROD: ${{ secrets.DART_DEFINE_API_KEY_PROD }}
       DART_DEFINE_API_URL_DEV: ${{ secrets.DART_DEFINE_API_URL_DEV }}
       DART_DEFINE_API_URL_PROD: ${{ secrets.DART_DEFINE_API_URL_PROD }}
     with:
-      environment: 'dev'
+      environment: 'test'
       testBuild: false
       major: ${{ needs.set-version.outputs.major }}
       minor: ${{needs.set-version.outputs.minor}}

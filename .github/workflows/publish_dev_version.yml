@@ -1,13 +1,12 @@
-name: Deploy production version of Simplio app v2 to AppStore and GooglePlay
+name: Deploy dev version of Simplio app v2 to AppStore and GooglePlay
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'dev*'
 
 jobs:
   run-tests:
-    if: github.ref == 'refs/heads/master'
     uses: SimplioOfficial/simplio-app/.github/workflows/_test_application.yml@master
     with:
       e2e: true
@@ -30,7 +29,7 @@ jobs:
         run: |
           echo $RELEASE_VERSION
           echo ${{ env.RELEASE_VERSION }}
-          prefix='v'
+          prefix='dev'
           tag_version=${RELEASE_VERSION#$prefix};
           IFS='.'
           read -ra parsed_versions <<< "$tag_version"
@@ -51,7 +50,7 @@ jobs:
     needs: [set-version]
     uses: SimplioOfficial/simplio-app/.github/workflows/_publish_ios.yml@master
     with:
-      environment: 'production'
+      environment: 'dev'
       testBuild: false
       major: ${{ needs.set-version.outputs.major }}
       minor: ${{needs.set-version.outputs.minor}}
@@ -78,7 +77,7 @@ jobs:
       DART_DEFINE_API_URL_DEV: ${{ secrets.DART_DEFINE_API_URL_DEV }}
       DART_DEFINE_API_URL_PROD: ${{ secrets.DART_DEFINE_API_URL_PROD }}
     with:
-      environment: 'production'
+      environment: 'dev'
       testBuild: false
       major: ${{ needs.set-version.outputs.major }}
       minor: ${{needs.set-version.outputs.minor}}
