@@ -18,8 +18,8 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_balance_overview.dart';
 import 'package:simplio_app/view/widgets/back_gradient4.dart';
-import 'package:simplio_app/view/widgets/button/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/button/outlined_sio_button.dart';
 import 'package:simplio_app/view/widgets/coin_details_menu.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 import 'package:simplio_app/view/widgets/transactions_content.dart';
@@ -101,7 +101,7 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
                           children: [
                             if (networkWallet.cryptoBalance == BigInt.zero)
                               if (networkWallet.isEnabled)
-                                BorderedTextButton(
+                                OutlinedSioButton(
                                   label: context.locale
                                       .coin_detail_screen_remove_from_inventory_button,
                                   icon: Icon(

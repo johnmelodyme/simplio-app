@@ -5,7 +5,7 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
-import 'package:simplio_app/view/widgets/button/gradient_bordered_text_button.dart';
+import 'package:simplio_app/view/widgets/button/outlined_sio_button.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 enum DialogType { createAsset, removeAsset, cancelEarning, disconnectDapp }
@@ -69,9 +69,9 @@ class AssetConfirmation extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: GradientBorderedTextButton(
+                    child: OutlinedSioButton.gradient(
                       label: _cancelAction(dialogType, context),
-                      onTap: () {
+                      onPressed: () {
                         Navigator.of(context).pop(false);
                       },
                     ),

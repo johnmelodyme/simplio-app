@@ -8,8 +8,8 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/back_gradient2.dart';
-import 'package:simplio_app/view/widgets/button/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/button/outlined_sio_button.dart';
 
 abstract class WalletConnectRequestItem<T extends WalletConnectRequest>
     extends Widget {
@@ -114,7 +114,7 @@ class _WalletConnectTransactionRequestItemState
                   child: Row(
                     children: [
                       Expanded(
-                        child: BorderedTextButton(
+                        child: OutlinedSioButton(
                           onPressed: () {
                             setState(() => _isLoading = true);
                             widget.onReject().onError((_, __) {
@@ -232,7 +232,7 @@ class _WalletConnectSignatureRequestItemState
                   child: Row(
                     children: [
                       Expanded(
-                        child: BorderedTextButton(
+                        child: OutlinedSioButton(
                           onPressed: () {
                             setState(() => _isLoading = true);
                             widget.onReject();
@@ -372,7 +372,7 @@ class _WalletConnectSessionRequestItemState
             padding: const EdgeInsets.all(Dimensions.padding10),
             child: Row(children: [
               Expanded(
-                child: BorderedTextButton(
+                child: OutlinedSioButton(
                   label: context.locale.common_reject,
                   onPressed: widget.onReject,
                 ),

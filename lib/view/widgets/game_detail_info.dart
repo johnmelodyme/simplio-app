@@ -12,8 +12,8 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/back_gradient2.dart';
-import 'package:simplio_app/view/widgets/button/bordered_text_button.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/button/outlined_sio_button.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
@@ -94,7 +94,7 @@ class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
                     return const Center(child: ListLoading());
                   } else if (state is GameDetailIsAddedState) {
                     if (state.isAdded == true) {
-                      return BorderedTextButton(
+                      return OutlinedSioButton(
                         onPressed: () {
                           bloc.add(RemoveGameFromLibraryEvent(
                               gameId: gameDetail.gameId));
