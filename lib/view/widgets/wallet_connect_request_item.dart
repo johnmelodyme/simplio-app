@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/back_gradient2.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/text/currency_text.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:simplio_app/view/widgets/button/outlined_sio_button.dart';
 
 abstract class WalletConnectRequestItem<T extends WalletConnectRequest>
@@ -74,13 +75,12 @@ class _WalletConnectTransactionRequestItemState
                       ),
                     ),
                   ),
-                  Text(
-                    widget.request.amount
-                        .getFormattedBalance(
-                          preset.decimalPlaces,
-                        )
-                        .toString(),
-                    textAlign: TextAlign.center,
+                  CurrencyText(
+                    // TODO - make request amount a big decimal.
+                    value: BigDecimal.fromBigInt(
+                      widget.request.amount,
+                      precision: preset.decimalPlaces,
+                    ),
                     style: SioTextStyles.h3.copyWith(
                       overflow: TextOverflow.ellipsis,
                       color: SioColors.white,

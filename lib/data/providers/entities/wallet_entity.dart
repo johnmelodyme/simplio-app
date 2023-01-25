@@ -77,7 +77,7 @@ class NetworkWalletEntity extends Entity {
   final BigInt cryptoBalance;
 
   @HiveField(5)
-  final double fiatBalance;
+  final BigInt fiatBalance;
 
   @HiveField(6)
   final bool isEnabled;

@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:simplio_app/data/models/transaction.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/extensions/date_extensions.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:simplio_app/view/widgets/text/currency_text.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class TransactionItem extends StatelessWidget {
   TransactionItem({
     super.key,
     required this.transaction,
+    required this.currency,
   });
 
+  final String currency;
   final Transaction transaction;
 
   final Map<TransactionType, IconData> transactionIcons = {
@@ -77,10 +79,13 @@ class TransactionItem extends StatelessWidget {
                       style:
                           SioTextStyles.bodyL.apply(color: SioColors.whiteBlue),
                     ),
-                    Text(
-                      transaction.volume.getThousandSeparatedValue(),
-                      style:
-                          SioTextStyles.bodyL.apply(color: SioColors.whiteBlue),
+                    CurrencyText(
+                      value: BigDecimal.fromDouble(
+                        transaction.volume,
+                      ),
+                      style: SioTextStyles.bodyL.apply(
+                        color: SioColors.whiteBlue,
+                      ),
                     ),
                   ],
                 ),
@@ -93,13 +98,13 @@ class TransactionItem extends StatelessWidget {
                         color: SioColors.secondary7,
                       ),
                     ),
-                    Text(
-                      transaction.price.getThousandValueWithCurrency(
-                        currency: 'USD', //TODO.. replace by real currency
-                        locale: Intl.getCurrentLocale(),
+                    CurrencyText(
+                      value: BigDecimal.fromDouble(
+                        transaction.volume,
                       ),
-                      style: SioTextStyles.bodyS.apply(
-                        color: SioColors.secondary7,
+                      currency: currency,
+                      style: SioTextStyles.bodyL.apply(
+                        color: SioColors.whiteBlue,
                       ),
                     ),
                   ],

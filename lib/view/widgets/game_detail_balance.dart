@@ -1,14 +1,14 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 import 'package:simplio_app/view/widgets/back_gradient1.dart';
+import 'package:simplio_app/view/widgets/text/currency_text.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class GameDetailBalance extends StatelessWidget {
@@ -54,12 +54,13 @@ class GameDetailBalance extends StatelessWidget {
                     ),
                   ),
                   */
-                  Text(
-                    gameDetail.assetEmbedded.price.getThousandValueWithCurrency(
-                        currency: gameDetail.assetEmbedded.currency,
-                        locale: Intl.getCurrentLocale()),
-                    style: SioTextStyles.bodyL.copyWith(
-                      color: SioColors.secondary5,
+                  CurrencyText(
+                    value: BigDecimal.fromDouble(
+                      gameDetail.assetEmbedded.price,
+                    ),
+                    currency: gameDetail.assetEmbedded.currency,
+                    style: SioTextStyles.bodyPrimary.copyWith(
+                      color: SioColors.whiteBlue,
                     ),
                   ),
                 ],

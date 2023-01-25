@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:simplio_app/data/models/account.dart';
 import 'package:simplio_app/data/models/helpers/lockable.dart';
 import 'package:simplio_app/data/models/wallet.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:uuid/uuid.dart';
 
 const _mnemonic = 'not your keys not your coins';
@@ -223,40 +224,40 @@ void main() {
   group(
     'AssetWallet updating wallets:',
     () {
-      final eth = NetworkWallet(
+      const eth = NetworkWallet(
         uuid: 'ethereum',
         assetId: 2,
         networkId: 60,
         address: '0x',
-        cryptoBalance: BigInt.zero,
-        fiatBalance: 0,
+        cryptoBalance: BigDecimal.zero(),
+        fiatBalance: BigDecimal.zero(),
         isEnabled: true,
-        preset: const AssetPreset(decimalPlaces: 18),
+        preset: AssetPreset(decimalPlaces: 18),
       );
-      final sol = NetworkWallet(
+      const sol = NetworkWallet(
         uuid: 'solana',
         assetId: 5,
         networkId: 501,
         address: '0x',
-        cryptoBalance: BigInt.zero,
-        fiatBalance: 0,
+        cryptoBalance: BigDecimal.zero(),
+        fiatBalance: BigDecimal.zero(),
         isEnabled: true,
-        preset: const AssetPreset(decimalPlaces: 6),
+        preset: AssetPreset(decimalPlaces: 6),
       );
-      final bnb = NetworkWallet(
+      const bnb = NetworkWallet(
         uuid: 'bnb',
         assetId: 10,
         networkId: 20000714,
         address: '0x',
-        cryptoBalance: BigInt.zero,
-        fiatBalance: 0,
+        cryptoBalance: BigDecimal.zero(),
+        fiatBalance: BigDecimal.zero(),
         isEnabled: true,
-        preset: const AssetPreset(decimalPlaces: 18),
+        preset: AssetPreset(decimalPlaces: 18),
       );
 
       final assetWallet = AssetWallet.builder(
         assetId: 100,
-        wallets: {
+        wallets: const {
           60: eth,
           501: sol,
           20000714: bnb,
@@ -283,7 +284,11 @@ void main() {
         'network wallets which are updated from Iterable have equal length as original.',
         () {
           final updated = assetWallet.updateWalletsFromIterable([
-            sol.copyWith(cryptoBalance: BigInt.from(4000)),
+            sol.copyWith(
+              cryptoBalance: BigDecimal.fromBigInt(
+                BigInt.from(4000),
+              ),
+            ),
           ]);
 
           expect(updated.wallets.length, equals(assetWallet.wallets.length));
@@ -308,15 +313,15 @@ void main() {
         () {
           final updated = assetWallet.updateWalletsFromIterable([
             sol.copyWith(isEnabled: false),
-            NetworkWallet(
+            const NetworkWallet(
               uuid: 'x',
               assetId: 1,
               networkId: 0,
               address: '0x',
-              cryptoBalance: BigInt.zero,
-              fiatBalance: 0,
+              cryptoBalance: BigDecimal.zero(),
+              fiatBalance: BigDecimal.zero(),
               isEnabled: false,
-              preset: const AssetPreset(decimalPlaces: 8),
+              preset: AssetPreset(decimalPlaces: 8),
             ),
           ]);
 

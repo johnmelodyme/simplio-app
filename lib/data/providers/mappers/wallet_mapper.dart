@@ -2,6 +2,7 @@ import 'package:simplio_app/data/models/helpers/lockable.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/data/providers/entities/wallet_entity.dart';
 import 'package:simplio_app/data/providers/helpers/mapper.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 class AccountWalletMapper extends Mapper<AccountWallet, AccountWalletEntity> {
   final AssetWalletMapper _assetWalletMapper = AssetWalletMapper();
@@ -77,8 +78,8 @@ class NetworkWalletMapper extends Mapper<NetworkWallet, NetworkWalletEntity> {
       assetId: entity.assetId,
       networkId: entity.networkId,
       address: entity.address,
-      cryptoBalance: entity.cryptoBalance,
-      fiatBalance: entity.fiatBalance,
+      cryptoBalance: BigDecimal.fromBigInt(entity.cryptoBalance),
+      fiatBalance: BigDecimal.fromBigInt(entity.fiatBalance),
       isEnabled: entity.isEnabled,
       preset: NetworkWallet.makePreset(
         assetId: entity.assetId,
@@ -94,8 +95,8 @@ class NetworkWalletMapper extends Mapper<NetworkWallet, NetworkWalletEntity> {
       assetId: data.assetId,
       networkId: data.networkId,
       address: data.address,
-      cryptoBalance: data.cryptoBalance,
-      fiatBalance: data.fiatBalance,
+      cryptoBalance: data.cryptoBalance.toBigInt(),
+      fiatBalance: data.fiatBalance.toBigInt(),
       isEnabled: data.isEnabled,
     );
   }

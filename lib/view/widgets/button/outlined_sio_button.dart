@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/gradient_text.dart';
 import 'package:simplio_app/view/widgets/outlined_container.dart';
+import 'package:simplio_app/view/widgets/text/currency_text.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class OutlinedSioButton extends StatelessWidget {
@@ -68,7 +68,7 @@ class OutlinedSioButton extends StatelessWidget {
     VoidCallback? onPressed,
     required EarningType earningType,
     double? apyPercentage,
-    BigInt? balance,
+    BigDecimal? balance,
     double? increment,
   }) {
     return _OutlinedEarningButton(
@@ -191,7 +191,7 @@ class _GradientOutlinedButton extends OutlinedSioButton {
 class _OutlinedEarningButton extends OutlinedSioButton {
   final EarningType earningType;
   final double? apyPercentage;
-  final BigInt? balance;
+  final BigDecimal? balance;
   final double? increment;
 
   const _OutlinedEarningButton({
@@ -258,12 +258,8 @@ class _OutlinedEarningButton extends OutlinedSioButton {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                        Text(
-                          balance!.getFormattedPrice(
-                            decimalPlaces: 2,
-                            locale: Intl.getCurrentLocale(),
-                            currency: 'USD', //TODO.. replace by real currency
-                          ),
+                        CurrencyText(
+                          value: balance ?? const BigDecimal.zero(),
                           style: SioTextStyles.bodyL
                               .apply(color: SioColors.whiteBlue)
                               .copyWith(height: 1.0),

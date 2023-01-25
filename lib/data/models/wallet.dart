@@ -1,6 +1,7 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:simplio_app/data/models/helpers/lockable.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:uuid/uuid.dart';
 
 typedef ID = int;
@@ -11,14 +12,13 @@ const accountWalletUpdateLifetimeInSeconds = 180;
 
 abstract class Wallet<T> extends Equatable {
   String get uuid;
-  BigInt get cryptoBalance;
-  // TOOD - add fait balance.
-  // double get fiatBalance;
+  BigDecimal get cryptoBalance;
+  BigDecimal get fiatBalance;
 
   const Wallet();
 
   @override
-  List<Object?> get props => [uuid, cryptoBalance];
+  List<Object?> get props => [uuid, cryptoBalance, fiatBalance];
 
   Wallet<T> copyWith();
 }
@@ -33,14 +33,24 @@ mixin WalletGetter<T> on WalletOwner<T> {
   bool containsWallet(ID address);
 }
 
-mixin WalletsUpdated<T> on WalletOwner<T> {
+mixin WalletsUpdater<T> on WalletOwner<T> {
   Wallet<T> updateWalletsFromIterable(Iterable<T> wallets);
   Wallet<T> updateWalletsFrom(Map<ID, T> wallets);
   Wallet<T> addWallet(T wallet);
 }
 
+mixin WalletFiatBalanceCounter<T extends Wallet> on WalletOwner<T> {
+  @override
+  BigDecimal get fiatBalance {
+    return wallets.fold(
+      const BigDecimal.zero(),
+      (sum, wallet) => sum + wallet.fiatBalance,
+    );
+  }
+}
+
 class AccountWallet extends Wallet<AssetWallet>
-    with WalletOwner, WalletGetter, WalletsUpdated {
+    with WalletOwner, WalletGetter, WalletsUpdater, WalletFiatBalanceCounter {
   static String makeUUID(String address) {
     return const Uuid().v5(
       Uuid.NAMESPACE_URL,
@@ -88,12 +98,16 @@ class AccountWallet extends Wallet<AssetWallet>
   }
 
   @override
-  BigInt get cryptoBalance => BigInt.zero;
+  BigDecimal get cryptoBalance => const BigDecimal.zero();
+
+  @override
+  BigDecimal get fiatBalance => const BigDecimal.zero();
 
   @override
   List<Object?> get props => [
         uuid,
         cryptoBalance,
+        fiatBalance,
         accountId,
         updatedAt,
         walletType,
@@ -184,7 +198,7 @@ enum AccountWalletTypes {
 }
 
 class AssetWallet extends Wallet<NetworkWallet>
-    with WalletOwner, WalletGetter, WalletsUpdated {
+    with WalletOwner, WalletGetter, WalletsUpdater {
   @override
   final String uuid;
   final AssetId assetId;
@@ -213,7 +227,10 @@ class AssetWallet extends Wallet<NetworkWallet>
   }
 
   @override
-  BigInt get cryptoBalance => BigInt.zero;
+  BigDecimal get cryptoBalance => const BigDecimal.zero();
+
+  @override
+  BigDecimal get fiatBalance => const BigDecimal.zero();
 
   @override
   List<Object?> get props => [
@@ -294,8 +311,9 @@ class NetworkWallet extends Wallet<Object> {
   final NetworkId networkId;
   final String address;
   @override
-  final BigInt cryptoBalance;
-  final double fiatBalance;
+  final BigDecimal cryptoBalance;
+  @override
+  final BigDecimal fiatBalance;
   final bool isEnabled;
   final AssetPreset preset;
 
@@ -314,8 +332,8 @@ class NetworkWallet extends Wallet<Object> {
     required AssetId assetId,
     required NetworkId networkId,
     required String address,
-    BigInt? balance,
-    double? fiatBalance,
+    BigDecimal? cryptoBalance,
+    BigDecimal? fiatBalance,
     bool isEnabled = true,
     required AssetPreset preset,
   }) : this(
@@ -323,20 +341,14 @@ class NetworkWallet extends Wallet<Object> {
           assetId: assetId,
           networkId: networkId,
           address: address,
-          cryptoBalance: balance ?? BigInt.zero,
-          fiatBalance: fiatBalance ?? 0,
+          cryptoBalance: cryptoBalance ?? const BigDecimal.zero(),
+          fiatBalance: fiatBalance ?? const BigDecimal.zero(),
           isEnabled: isEnabled,
           preset: preset,
         );
 
   bool get isToken => preset.contractAddress?.isNotEmpty == true;
   bool get isNotToken => !isToken;
-
-  // TODO - get price in BigDecimal
-  double get price =>
-      fiatBalance /
-      (cryptoBalance.toDouble() /
-          BigInt.from(10).pow(preset.decimalPlaces).toDouble());
 
   @override
   List<Object?> get props => [
@@ -351,8 +363,8 @@ class NetworkWallet extends Wallet<Object> {
 
   @override
   NetworkWallet copyWith({
-    BigInt? cryptoBalance,
-    double? fiatBalance,
+    BigDecimal? cryptoBalance,
+    BigDecimal? fiatBalance,
     bool? isEnabled,
   }) {
     return NetworkWallet(

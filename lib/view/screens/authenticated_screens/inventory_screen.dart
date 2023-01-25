@@ -12,7 +12,7 @@ import 'package:simplio_app/view/widgets/inventory_coins_content.dart';
 import 'package:simplio_app/view/widgets/navigation_tab_bar.dart';
 import 'package:simplio_app/view/widgets/no_content_placeholder.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
-import 'package:simplio_app/view/widgets/total_balance.dart';
+import 'package:simplio_app/view/widgets/total_balance_overview.dart';
 import 'package:simplio_app/view/widgets/transactions_content.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
@@ -35,6 +35,10 @@ class InventoryScreen extends StatelessWidget {
       body: BlocBuilder<AccountWalletCubit, AccountWalletState>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
+          if (state is! AccountWalletProvided) {
+            return const SizedBox.shrink();
+          }
+
           return NavigationTabBar(
             currentTab: tab.index,
             tabs: [
@@ -44,8 +48,7 @@ class InventoryScreen extends StatelessWidget {
                   iconColor: SioColors.coins,
                   topSlivers: [
                     const SliverGap(Dimensions.padding16),
-                    //todo.. replace by real data
-                    const TotalBalance(),
+                    TotalBalanceOverview(balance: state.wallet.fiatBalance),
                     const SliverGap(Dimensions.padding20),
                   ],
                   bottomSlivers: [
@@ -59,8 +62,7 @@ class InventoryScreen extends StatelessWidget {
                   iconColor: SioColors.nft,
                   topSlivers: [
                     const SliverGap(Dimensions.padding16),
-                    //todo.. replace by real data
-                    const TotalBalance(),
+                    TotalBalanceOverview(balance: state.wallet.fiatBalance),
                     const SliverGap(Dimensions.padding20),
                   ],
                   bottomSlivers: [
@@ -82,8 +84,7 @@ class InventoryScreen extends StatelessWidget {
                   label: context.locale.inventory_tab_transactions,
                   topSlivers: [
                     const SliverGap(Dimensions.padding16),
-                    //todo.. replace by real data
-                    const TotalBalance(),
+                    TotalBalanceOverview(balance: state.wallet.fiatBalance),
                     const SliverGap(Dimensions.padding20),
                   ],
                   bottomSlivers: [

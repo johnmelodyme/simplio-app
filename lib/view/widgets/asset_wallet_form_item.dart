@@ -1,12 +1,12 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
-import 'package:simplio_app/data/models/helpers/big_decimal.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 import 'package:simplio_app/view/widgets/text/currency_text.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 class AssetWalletFormItem extends StatelessWidget {
   final AssetId assetId;

@@ -6,6 +6,8 @@ import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 import 'package:simplio_app/view/widgets/back_gradient2.dart';
 import 'package:simplio_app/view/widgets/small_button.dart';
+import 'package:simplio_app/view/widgets/text/currency_text.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 // TODO - remove this widget.
@@ -13,14 +15,14 @@ class AssetSearchItem extends StatelessWidget {
   const AssetSearchItem({
     super.key,
     required this.label,
-    required this.priceLabel,
+    required this.fiatPrice,
     required this.assetIcon,
     required this.assetAction,
     required this.onActionPressed,
   });
 
   final String label;
-  final String priceLabel;
+  final BigDecimal fiatPrice;
   final Widget assetIcon;
   final List<AssetAction> assetAction;
   final Function(AssetAction) onActionPressed;
@@ -101,13 +103,13 @@ class AssetSearchItem extends StatelessWidget {
                               height: 1,
                             ),
                           ),
-                          Text(
-                            priceLabel,
+                          CurrencyText(
+                            value: fiatPrice,
                             style: SioTextStyles.bodyDetail.copyWith(
                               color: SioColors.whiteBlue,
                               height: 1,
                             ),
-                          )
+                          ),
                         ],
                       ),
                       const Spacer(),

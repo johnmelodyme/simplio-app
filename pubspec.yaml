@@ -50,6 +50,7 @@ dependencies:
   flutter_inappwebview: ^6.0.0-beta.20
   collection: ^1.16.0
   decimal: ^2.3.0
+  sio_big_decimal: ^0.1.1
 
 dev_dependencies:
   flutter_driver:

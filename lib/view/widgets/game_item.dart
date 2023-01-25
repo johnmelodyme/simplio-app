@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/favourite_start.dart';
 import 'package:simplio_app/view/widgets/promoted_red_strip.dart';
 import 'package:simplio_app/view/widgets/small_button.dart';
+import 'package:simplio_app/view/widgets/text/highlighted_text.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class GameItem extends StatelessWidget {
@@ -167,27 +166,13 @@ class GameItem extends StatelessWidget {
                               ),
                             ),
                             Gaps.gap5,
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: context
-                                        .locale.common_item_coin_price_label,
-                                    style: SioTextStyles.bodyDetail.apply(
-                                      color: SioColors.secondary7,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: game.assetEmbedded.price
-                                        .getThousandValueWithCurrency(
-                                      currency: game.assetEmbedded.currency,
-                                      locale: Intl.getCurrentLocale(),
-                                    ),
-                                    style: SioTextStyles.bodyDetail
-                                        .apply(color: SioColors.whiteBlue),
-                                  ),
-                                ],
+                            HighlightedText(
+                              '${context.locale.common_item_coin_price_label} ^${game.assetEmbedded.price} ${game.assetEmbedded.currency}',
+                              style: SioTextStyles.bodyDetail.apply(
+                                color: SioColors.secondary7,
+                              ),
+                              highlightedStyle: SioTextStyles.bodyDetail.apply(
+                                color: SioColors.whiteBlue,
                               ),
                             ),
                           ],

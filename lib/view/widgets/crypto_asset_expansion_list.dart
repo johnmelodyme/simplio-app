@@ -1,16 +1,15 @@
 import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/asset_search_item.dart';
 import 'package:simplio_app/view/widgets/network_wallet_search_item.dart';
 import 'package:simplio_app/view/widgets/sio_expansion_radio_panel.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 class CryptoAssetExpansionList extends StatefulWidget {
   final List<CryptoAssetData> children;
@@ -59,10 +58,8 @@ class _CryptoAssetExpansionList extends State<CryptoAssetExpansionList> {
                             ),
                       child: AssetSearchItem(
                         label: a.name,
-                        priceLabel: a.price.getThousandValueWithCurrency(
-                          currency: 'USD', //TODO.. replace by real currency
-                          locale: Intl.getCurrentLocale(),
-                        ),
+                        // TODO - Provide BigDecimal dirrectly from `item`.
+                        fiatPrice: BigDecimal.fromDouble(a.price),
                         assetIcon: asset.style.icon,
                         assetAction: a.networks.length == 1 &&
                                 !accountWalletState.wallet

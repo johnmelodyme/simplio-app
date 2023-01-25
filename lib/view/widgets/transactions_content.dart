@@ -11,6 +11,7 @@ import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
 import 'package:simplio_app/view/widgets/transaction_item.dart';
 
+// TODO - move it to a screen as a private widget as it is not reusable.
 class TransactionsContent extends StatefulWidget {
   const TransactionsContent({super.key});
 
@@ -43,7 +44,11 @@ class _TransactionsContentState extends State<TransactionsContent> {
               pagingController: cubit!.pagingController,
               builderDelegate: PagedChildBuilderDelegate<Transaction>(
                 itemBuilder: (context, item, index) {
-                  return TransactionItem(transaction: item);
+                  return TransactionItem(
+                    transaction: item,
+                    // TODO - replace with the actual currency.
+                    currency: 'USD',
+                  );
                 },
                 firstPageProgressIndicatorBuilder: (_) =>
                     Column(children: const [

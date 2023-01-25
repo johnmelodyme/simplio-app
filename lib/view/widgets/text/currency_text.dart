@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:simplio_app/data/models/helpers/big_decimal.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 class CurrencyText extends StatelessWidget {
-  final String? locale;
+  final String locale;
   final String? currency;
   final BigDecimal value;
   final TextStyle? style;
@@ -13,7 +13,7 @@ class CurrencyText extends StatelessWidget {
   const CurrencyText({
     super.key,
     required this.value,
-    this.locale,
+    this.locale = 'en_US',
     this.currency,
     this.style,
   });

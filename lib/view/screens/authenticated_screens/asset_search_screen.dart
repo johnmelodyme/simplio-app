@@ -2,7 +2,6 @@ import 'package:crypto_assets/crypto_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:intl/intl.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
@@ -11,7 +10,6 @@ import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc_event.dart
 import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_search_bloc.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/asset_confirmation.dart';
 import 'package:simplio_app/view/widgets/asset_search_item.dart';
@@ -19,6 +17,7 @@ import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/search.dart';
 import 'package:simplio_app/view/widgets/tap_to_retry_loader.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 class AssetSearchScreen extends StatelessWidget {
   AssetSearchScreen({super.key});
@@ -101,11 +100,9 @@ class AssetSearchScreen extends StatelessWidget {
                           child: item.networks.length == 1
                               ? AssetSearchItem(
                                   label: item.name,
-                                  priceLabel:
-                                      item.price.getThousandValueWithCurrency(
-                                    currency:
-                                        'USD', //TODO.. replace by real currency
-                                    locale: Intl.getCurrentLocale(),
+                                  // TODO - Provide BigDecimal dirrectly from `item`.
+                                  fiatPrice: BigDecimal.fromDouble(
+                                    item.price,
                                   ),
                                   assetIcon: asset.style.icon,
                                   assetAction: [

@@ -24,6 +24,7 @@ import 'package:simplio_app/view/widgets/coin_details_menu.dart';
 import 'package:simplio_app/view/widgets/fixed_item_height_delegate.dart';
 import 'package:simplio_app/view/widgets/transactions_content.dart';
 import 'package:simplio_app/view/widgets/two_lines_app_bar.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
@@ -99,7 +100,8 @@ class AssetDetailScreen extends StatelessWidget with WalletUtilsMixin {
                           assetDetail: assetDetail,
                           networkWallet: networkWallet,
                           children: [
-                            if (networkWallet.cryptoBalance == BigInt.zero)
+                            if (networkWallet.cryptoBalance ==
+                                const BigDecimal.zero())
                               if (networkWallet.isEnabled)
                                 OutlinedSioButton(
                                   label: context.locale

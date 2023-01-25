@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
-import 'package:simplio_app/view/extensions/number_extensions.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/promoted_red_strip.dart';
 import 'package:simplio_app/view/widgets/small_button.dart';
+import 'package:simplio_app/view/widgets/text/highlighted_text.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class NftItem extends StatelessWidget {
@@ -86,27 +85,15 @@ class NftItem extends StatelessWidget {
                                 ),
                               ),
                               Gaps.gap5,
-                              RichText(
+                              HighlightedText(
+                                '${context.locale.common_item_nft_price_label} ^${nft.price} ${nft.currency}',
                                 textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: context
-                                          .locale.common_item_nft_price_label,
-                                      style: SioTextStyles.bodyDetail.apply(
-                                        color: SioColors.secondary7,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: nft.price
-                                          .getThousandValueWithCurrency(
-                                        currency: nft.currency,
-                                        locale: Intl.getCurrentLocale(),
-                                      ),
-                                      style: SioTextStyles.bodyDetail
-                                          .apply(color: SioColors.whiteBlue),
-                                    ),
-                                  ],
+                                style: SioTextStyles.bodyDetail.apply(
+                                  color: SioColors.secondary7,
+                                ),
+                                highlightedStyle:
+                                    SioTextStyles.bodyDetail.apply(
+                                  color: SioColors.whiteBlue,
                                 ),
                               ),
                             ],

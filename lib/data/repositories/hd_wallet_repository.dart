@@ -7,6 +7,7 @@ import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/data/providers/interfaces/wallet_db.dart';
 import 'package:simplio_app/data/repositories/asset_repository.dart';
 import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:trust_wallet_core_lib/trust_wallet_core_lib.dart';
 import 'package:sio_core_light/sio_core_light.dart' as sio;
 
@@ -660,7 +661,7 @@ class HDWalletRepository extends WalletRepository {
     NetworkWallet networkWallet,
   ) async {
     try {
-      final BigInt cryptoBalance = await (networkWallet.isToken
+      final BigDecimal cryptoBalance = await (networkWallet.isToken
           ? _getTokenBalance(networkWallet)
           : _getCoinBalance(networkWallet));
 
@@ -670,7 +671,7 @@ class HDWalletRepository extends WalletRepository {
     }
   }
 
-  Future<BigInt> _getCoinBalance(NetworkWallet networkWallet) async {
+  Future<BigDecimal> _getCoinBalance(NetworkWallet networkWallet) async {
     final res = await _balanceService.coin(
       networkWallet.networkId,
       networkWallet.address,
@@ -680,7 +681,10 @@ class HDWalletRepository extends WalletRepository {
     final success = body?.success ?? false;
 
     if (body != null && success) {
-      return BigInt.parse(body.balance);
+      return BigDecimal.parse(
+        body.balance,
+        precision: networkWallet.preset.decimalPlaces,
+      );
     }
 
     if (!success) {
@@ -694,7 +698,7 @@ class HDWalletRepository extends WalletRepository {
     );
   }
 
-  Future<BigInt> _getTokenBalance(NetworkWallet networkWallet) async {
+  Future<BigDecimal> _getTokenBalance(NetworkWallet networkWallet) async {
     final res = await _balanceService.token(
       networkWallet.networkId,
       networkWallet.address,
@@ -705,7 +709,10 @@ class HDWalletRepository extends WalletRepository {
     final success = body?.success ?? false;
 
     if (body != null && success) {
-      return BigInt.parse(body.balance);
+      return BigDecimal.parse(
+        body.balance,
+        precision: networkWallet.preset.decimalPlaces,
+      );
     }
 
     if (!success) {

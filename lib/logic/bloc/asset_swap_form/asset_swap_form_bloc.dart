@@ -3,11 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:simplio_app/data/http/errors/http_error.dart';
-import 'package:simplio_app/data/models/helpers/big_decimal.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/logic/mixins/bigdecimal_value_updater_mixin.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 part 'asset_swap_form_event.dart';
 part 'asset_swap_form_state.dart';

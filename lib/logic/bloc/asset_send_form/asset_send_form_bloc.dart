@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/data/models/helpers/big_decimal.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/data/repositories/hd_wallet_repository.dart';
 import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 import 'package:simplio_app/logic/errors/validation_error.dart';
 import 'package:simplio_app/logic/mixins/bigdecimal_value_updater_mixin.dart';
 import 'package:simplio_app/view/widgets/keypad.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 part 'asset_send_form_event.dart';
 part 'asset_send_form_state.dart';
@@ -90,7 +90,7 @@ class AssetSendFormBloc extends Bloc<AssetSendFormEvent, AssetSendFormState>
           code: ValidationErrorCodes.insufficientValue,
           message: 'Invalid amount',
         ),
-      if (amount.toBigInt() > wallet.cryptoBalance)
+      if (amount.toBigInt() > wallet.cryptoBalance.toBigInt())
         const ValidationError(
           code: ValidationErrorCodes.invalidValue,
           message: 'Invalid amount',
@@ -195,7 +195,7 @@ class AssetSendFormBloc extends Bloc<AssetSendFormEvent, AssetSendFormState>
     final s = state;
     if (s is! SendFormConverted) return;
 
-    final cryptoAmount = BigDecimal.fromBigInt(s.wallet.cryptoBalance);
+    final cryptoAmount = s.wallet.cryptoBalance;
     final fiatAmount = cryptoAmount * s.price;
 
     emit(s.copyWith(
