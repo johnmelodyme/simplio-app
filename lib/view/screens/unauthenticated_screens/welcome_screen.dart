@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
+import 'package:simplio_app/view/routers/unauthenticated_routes/sign_in_route.dart';
 import 'package:simplio_app/view/routers/unauthenticated_routes/sign_up_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -156,7 +157,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       onTap: () {
                         GoRouter.of(context).pushNamed(
-                          SignUpRoute.name,
+                          SignInRoute.name,
                         );
                       },
                     ),

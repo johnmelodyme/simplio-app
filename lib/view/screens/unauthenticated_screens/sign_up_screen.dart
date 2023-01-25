@@ -21,7 +21,7 @@ import 'package:sio_glyphs/sio_icons.dart';
 class SignUpScreen extends StatelessWidget with PopupDialogMixin {
   SignUpScreen({super.key});
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>(debugLabel: 'GlobalFormKey SignUp');
   final _emailFieldKey = GlobalKey<FormFieldState>();
   final _passwordFieldKey = GlobalKey<FormFieldState>();
   final TextEditingController _emailEditingController = TextEditingController();

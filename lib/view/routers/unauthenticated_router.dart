@@ -16,11 +16,6 @@ class UnauthenticatedRouter {
         routes: [
           WelcomeRoute(
             navigator: navRoot,
-          ).route,
-          GoRoute(
-            path: '/auth',
-            parentNavigatorKey: navRoot,
-            redirect: (context, __) => '/auth/sign-in',
             routes: [
               SignInRoute(
                 navigator: navRoot,
@@ -32,7 +27,7 @@ class UnauthenticatedRouter {
                 navigator: navRoot,
               ).route,
             ],
-          ),
+          ).route,
         ],
       );
 }

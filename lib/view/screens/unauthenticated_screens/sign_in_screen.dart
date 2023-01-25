@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/sign_in_form/sign_in_form_cubit.dart';
 import 'package:simplio_app/view/decorations/underlined_text_form_field_decoration.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/routers/unauthenticated_routes/password_reset_route.dart';
 import 'package:simplio_app/view/routers/unauthenticated_routes/sign_up_route.dart';
@@ -12,8 +12,8 @@ import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
-import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/sio_text_form_field.dart';
@@ -24,9 +24,9 @@ class SignInScreen extends StatelessWidget with PopupDialogMixin {
 
   final TextEditingController _emailEditingController = TextEditingController();
 
-  static final _formKey = GlobalKey<FormState>();
-  static final _emailFieldKey = GlobalKey<FormFieldState>();
-  static final _passwordFieldKey = GlobalKey<FormFieldState>();
+  final _formKey = GlobalKey<FormState>(debugLabel: 'GlobalFormKey SignIn');
+  final _emailFieldKey = GlobalKey<FormFieldState>();
+  final _passwordFieldKey = GlobalKey<FormFieldState>();
 
   @override
   Widget build(BuildContext context) {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/password_change_form/password_change_form_cubit.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/mixins/popup_dialog_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
-import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
@@ -23,7 +23,8 @@ class PasswordChangeScreen extends StatefulWidget {
 
 class _PasswordChangeScreenState extends State<PasswordChangeScreen>
     with PopupDialogMixin {
-  final formKey = GlobalKey<FormState>();
+  final formKey =
+      GlobalKey<FormState>(debugLabel: 'GlobalFormKey PasswordChange');
   final oldPasswordKey = const Key('old-password.key');
   final newPasswordKey = const Key('new-password-key');
   final confirmPasswordKey = const Key('confirm-password-key');
