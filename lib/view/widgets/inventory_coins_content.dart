@@ -9,16 +9,10 @@ import 'package:simplio_app/view/screens/authenticated_screens/discovery_screen.
 import 'package:simplio_app/view/widgets/asset_wallet_expansion_list.dart';
 import 'package:simplio_app/view/widgets/no_content_placeholder.dart';
 
-// TODO - why is it a stateful widget?
 // TODO - think of making a new view layer for screen content. Ideally. As it is not reusable, keep it inside a screen as s private widget.
-class InventoryCoinsContent extends StatefulWidget {
+class InventoryCoinsContent extends StatelessWidget {
   const InventoryCoinsContent({Key? key}) : super(key: key);
 
-  @override
-  State<InventoryCoinsContent> createState() => _InventoryCoinsContentState();
-}
-
-class _InventoryCoinsContentState extends State<InventoryCoinsContent> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountWalletCubit, AccountWalletState>(
@@ -47,22 +41,26 @@ class _InventoryCoinsContentState extends State<InventoryCoinsContent> {
                       },
                     ),
                   )
-                : SliverToBoxAdapter(
-                    child: AssetWalletExpansionList.fromAssetWallets(
-                    wallets: state.wallet.enabled,
-                    onTap: (value) {
-                      if (value.length < 2) return;
+                : SliverFillRemaining(
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: AssetWalletExpansionList.fromAssetWallets(
+                        wallets: state.wallet.enabled,
+                        onTap: (value) {
+                          if (value.length < 2) return;
 
-                      // TODO - GoRouter should not be used in Widget. Instead it should be visible on screeens.
-                      GoRouter.of(context).pushNamed(
-                        AssetDetailRoute.name,
-                        params: {
-                          'assetId': value.first.toString(),
-                          'networkId': value.last.toString(),
+                          // TODO - GoRouter should not be used in Widget. Instead it should be visible on screeens.
+                          GoRouter.of(context).pushNamed(
+                            AssetDetailRoute.name,
+                            params: {
+                              'assetId': value.first.toString(),
+                              'networkId': value.last.toString(),
+                            },
+                          );
                         },
-                      );
-                    },
-                  ));
+                      ),
+                    ),
+                  );
       },
     );
   }

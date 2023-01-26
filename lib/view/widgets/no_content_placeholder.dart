@@ -18,7 +18,7 @@ class NoContentPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
+    return SliverFillRemaining(
       child: Column(
         children: [
           EmptyListPlaceholder(
