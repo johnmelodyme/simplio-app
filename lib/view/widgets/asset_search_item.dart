@@ -16,6 +16,7 @@ class AssetSearchItem extends StatelessWidget {
     super.key,
     required this.label,
     required this.fiatPrice,
+    required this.currency,
     required this.assetIcon,
     required this.assetAction,
     required this.onActionPressed,
@@ -23,6 +24,7 @@ class AssetSearchItem extends StatelessWidget {
 
   final String label;
   final BigDecimal fiatPrice;
+  final String currency;
   final Widget assetIcon;
   final List<AssetAction> assetAction;
   final Function(AssetAction) onActionPressed;
@@ -104,7 +106,9 @@ class AssetSearchItem extends StatelessWidget {
                             ),
                           ),
                           CurrencyText(
-                            value: fiatPrice,
+                            fiatPrice,
+                            currency: currency,
+                            precision: 2,
                             style: SioTextStyles.bodyDetail.copyWith(
                               color: SioColors.whiteBlue,
                               height: 1,

@@ -25,7 +25,7 @@ mixin WalletUtilsMixin {
     return networkId == null
         ? getAssetWallet(context, assetId)
             ?.getWallet(int.parse(assetId))
-            ?.address
-        : getNetwork(context, assetId, networkId)?.address;
+            ?.walletAddress
+        : getNetwork(context, assetId, networkId)?.walletAddress;
   }
 }

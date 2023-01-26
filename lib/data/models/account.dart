@@ -34,7 +34,7 @@ class Account extends Equatable {
     required String id,
     SecurityLevel? securityLevel,
     required DateTime signedIn,
-    AccountSettings settings = const AccountSettings.builder(),
+    AccountSettings settings = const AccountSettings(),
   }) : this(
           id: id,
           accountType: AccountType.registered,
@@ -53,7 +53,7 @@ class Account extends Equatable {
           securityLevel: SecurityLevel.none,
           securityAttempts: securityAttemptsLimit,
           signedIn: DateTime.now(),
-          settings: const AccountSettings.builder(),
+          settings: const AccountSettings(),
         );
 
   Account copyWith({

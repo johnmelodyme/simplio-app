@@ -9,7 +9,7 @@ class AccountRepository {
 
   const AccountRepository._(this._accountDb);
 
-  const AccountRepository.builder({
+  const AccountRepository({
     required AccountDb accountDb,
   }) : this._(accountDb);
 

@@ -40,6 +40,9 @@ class TransactionItem extends StatelessWidget {
         return SioColors.games;
       case TransactionType.earning:
         return SioColors.earningStart;
+      default:
+        // TODO - assign a correct values for unknown transactions
+        return SioColors.black;
     }
   }
 
@@ -80,7 +83,7 @@ class TransactionItem extends StatelessWidget {
                           SioTextStyles.bodyL.apply(color: SioColors.whiteBlue),
                     ),
                     CurrencyText(
-                      value: BigDecimal.fromDouble(
+                      BigDecimal.fromDouble(
                         transaction.volume,
                       ),
                       style: SioTextStyles.bodyL.apply(
@@ -99,7 +102,7 @@ class TransactionItem extends StatelessWidget {
                       ),
                     ),
                     CurrencyText(
-                      value: BigDecimal.fromDouble(
+                      BigDecimal.fromDouble(
                         transaction.volume,
                       ),
                       currency: currency,

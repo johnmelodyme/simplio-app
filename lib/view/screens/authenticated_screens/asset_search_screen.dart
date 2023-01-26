@@ -80,7 +80,7 @@ class AssetSearchScreen extends StatelessWidget {
               );
             } else {
               return BlocBuilder<AccountWalletCubit, AccountWalletState>(
-                buildWhen: (prev, curr) => curr is AccountWalletChanged,
+                buildWhen: (prev, curr) => curr is AccountWalletUpdated,
                 builder: (context, state) {
                   if (state is! AccountWalletProvided) {
                     throw Exception('No asset wallet found');
@@ -104,6 +104,7 @@ class AssetSearchScreen extends StatelessWidget {
                                   fiatPrice: BigDecimal.fromDouble(
                                     item.price,
                                   ),
+                                  currency: 'USD',
                                   assetIcon: asset.style.icon,
                                   assetAction: [
                                     AssetAction.buy,

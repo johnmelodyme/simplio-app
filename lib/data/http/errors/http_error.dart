@@ -1,13 +1,18 @@
 import 'dart:convert';
+import 'package:simplio_app/data/models/error.dart';
 
-enum HttpErrorCodes {
+part './bad_request_http_error.dart';
+part './unauthorized_http_error.dart';
+part './forbidden_http_error.dart';
+part './internal_server_http_error.dart';
+
+enum HttpErrorCodes implements ErrorCode {
+  unknown(code: 'UNKNOWN'),
   buyChangedRate(code: 'RATES_CHANGED'),
   authMissingCredentials(code: 'AUTH_CREDENTIALS_MISSING'),
   authMissingEmail(code: 'AUTH_EMAIL_MISSING'),
   authInvalidEmail(code: 'AUTH_EMAIL_INVALID'),
   authMissingPassword(code: 'AUTH_PASSWORD_MISSING'),
-  authInvalidPassword(code: 'AUTH_PASSWORD_INVALID'),
-  authInvalidOldPassword(code: 'AUTH_PASSWORD_OLD_INVALID'),
   authInvalidNewPassword(code: 'AUTH_PASSWORD_NEW_INVALID'),
   authInvalidChangedPassword(code: 'AUTH_PASSWORD_CHANGE_INVALID'),
   authChangingPasswordFailed(code: 'AUTH_PASSWORD_CHANGE_FAILED'),
@@ -47,35 +52,31 @@ enum HttpErrorCodes {
   swapLoadingRoutesFailed(code: 'SWAP_SWAP_ROUTES_FAILED'),
   swapLoadingReportsFailed(code: 'SWAP_GET_REPORTS_FAILED'),
   swapConvertingFailed(code: 'SWAP_GET_SWAP_PARAMS'),
-  sendFailed(code: 'TRANS_SENT_UNSUCCESSFUL'),
-  unknown();
+  sendFailed(code: 'TRANS_SENT_UNSUCCESSFUL');
 
+  @override
   final String code;
 
   const HttpErrorCodes({this.code = ''});
 }
 
-abstract class HttpError {
-  final HttpErrorCodes code;
-  final String message;
+abstract class HttpError extends BaseError<HttpErrorCodes> {
   final Map<String, dynamic> detail;
 
   const HttpError({
-    required this.code,
-    required this.message,
-    required this.detail,
+    super.code = HttpErrorCodes.unknown,
+    super.message = 'Unknown error',
+    this.detail = const {},
   });
 }
 
-class HttpErrorBody {
+class HttpErrorBody extends BaseError<HttpErrorCodes> {
   const HttpErrorBody({
-    this.code = HttpErrorCodes.unknown,
-    this.message = '',
+    super.code = HttpErrorCodes.unknown,
+    super.message = 'Unknown error',
     this.detail = const {},
   });
 
-  final HttpErrorCodes code;
-  final String message;
   final Map<String, dynamic> detail;
 }
 

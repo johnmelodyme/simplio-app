@@ -33,7 +33,7 @@ class _CryptoAssetExpansionList extends State<CryptoAssetExpansionList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountWalletCubit, AccountWalletState>(
-        buildWhen: (prev, curr) => curr is AccountWalletChanged,
+        buildWhen: (prev, curr) => curr is AccountWalletUpdated,
         builder: (context, accountWalletState) {
           if (accountWalletState is! AccountWalletProvided) {
             throw Exception('No asset wallet found');
@@ -60,6 +60,7 @@ class _CryptoAssetExpansionList extends State<CryptoAssetExpansionList> {
                         label: a.name,
                         // TODO - Provide BigDecimal dirrectly from `item`.
                         fiatPrice: BigDecimal.fromDouble(a.price),
+                        currency: 'USD',
                         assetIcon: asset.style.icon,
                         assetAction: a.networks.length == 1 &&
                                 !accountWalletState.wallet

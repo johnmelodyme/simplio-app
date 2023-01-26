@@ -11,8 +11,9 @@ import 'package:sio_big_decimal/sio_big_decimal.dart';
 class AssetWalletFormItem extends StatelessWidget {
   final AssetId assetId;
   final NetworkId networkId;
-  final BigDecimal balance;
+  final BigDecimal cryptoBalance;
   final BigDecimal fiatBalance;
+  final String currency;
   final void Function(
     AssetId assetId,
     NetworkId networkId,
@@ -22,8 +23,9 @@ class AssetWalletFormItem extends StatelessWidget {
     super.key,
     required this.assetId,
     required this.networkId,
-    this.balance = const BigDecimal.zero(),
+    this.cryptoBalance = const BigDecimal.zero(),
     this.fiatBalance = const BigDecimal.zero(),
+    required this.currency,
     this.onTap,
   });
 
@@ -95,13 +97,12 @@ class AssetWalletFormItem extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          // TODO - replace it with a real balance value
-                          const CurrencyText(
-                            value: BigDecimal.zero(),
+                          CurrencyText(
+                            cryptoBalance,
                           ),
                           CurrencyText(
-                            value: const BigDecimal.zero(),
-                            currency: 'USD',
+                            fiatBalance,
+                            currency: currency,
                             style: SioTextStyles.bodyS.copyWith(
                               color: SioColors.mentolGreen,
                             ),

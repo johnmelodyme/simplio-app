@@ -71,7 +71,7 @@ class NetworkWalletEntity extends Entity {
   final int networkId;
 
   @HiveField(3)
-  final String address;
+  final String walletAddress;
 
   @HiveField(4)
   final BigInt cryptoBalance;
@@ -86,7 +86,7 @@ class NetworkWalletEntity extends Entity {
     required this.uuid,
     required this.assetId,
     required this.networkId,
-    required this.address,
+    required this.walletAddress,
     required this.cryptoBalance,
     required this.fiatBalance,
     required this.isEnabled,

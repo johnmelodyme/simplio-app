@@ -1,10 +1,11 @@
+import 'package:simplio_app/data/http/apis/buy_api.dart';
 import 'package:simplio_app/data/http/services/buy_service.dart';
 
 class BuyRepository {
   BuyRepository._();
 
   BuyRepository({
-    required BuyService buyService,
+    required BuyApi buyApi,
   }) : this._();
 
   Future<List<BuyPairResponseItem>> pairs({

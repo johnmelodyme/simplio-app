@@ -7,6 +7,7 @@ import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/logic/bloc/asset_send_form/asset_send_form_bloc.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/errors/validation_error.dart';
+import 'package:simplio_app/view/mixins/currency_getter_mixin.dart';
 import 'package:simplio_app/view/mixins/route_builder_mixin.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/asset_send_summary_route.dart';
 import 'package:simplio_app/view/screens/authenticated_screens/asset_selection_screen.dart';
@@ -182,7 +183,7 @@ class _AssetSendPage extends StatelessWidget {
   }
 }
 
-class _SourceFormField extends StatelessWidget {
+class _SourceFormField extends StatelessWidget with CurrencyGetter {
   final AssetId assetId;
   final NetworkWallet networkWallet;
   final AccountWallet accountWallet;
@@ -201,6 +202,9 @@ class _SourceFormField extends StatelessWidget {
         AssetWalletFormItem(
           assetId: assetId,
           networkId: networkWallet.networkId,
+          cryptoBalance: networkWallet.cryptoBalance,
+          fiatBalance: networkWallet.fiatBalance,
+          currency: getCurrency(context),
           onTap: (assetId, networkId) {
             Navigator.of(context).pushNamed(
               _selectSource,

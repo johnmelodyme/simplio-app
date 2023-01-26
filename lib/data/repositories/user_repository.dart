@@ -1,25 +1,22 @@
+import 'package:simplio_app/data/http/apis/account_api.dart';
 import 'package:simplio_app/data/http/services/account_service.dart';
 
+// TODO - This should belong to a account repository or should have its own domain like sync repository.
 class UserRepository {
-  final AccountService _accountService;
+  final AccountApi _accountApi;
 
   UserRepository._(
-    this._accountService,
+    this._accountApi,
   );
 
   UserRepository({
-    required AccountService accountService,
+    required AccountApi accountApi,
   }) : this._(
-          accountService,
+          accountApi,
         );
 
-  Future<AccountProfileResponse> getAccountProfile() async {
-    final res = await _accountService.profile();
-
-    final body = res.body;
-    if (res.isSuccessful && body != null) return body;
-
-    throw Exception("Could not fetch account profile: ${res.error.toString()}");
+  Future<AccountProfileResponse> getAccountProfile() {
+    return _accountApi.getAccountProfile();
   }
 
   Future<bool> gameIsAdded(int gameId) async {
@@ -50,12 +47,8 @@ class UserRepository {
   }
 
   Future<AccountProfileResponse> updateUserProfile(
-      AccountProfileResponse userProfile) async {
-    final res = await _accountService.updateProfile(userProfile);
-
-    final body = res.body;
-    if (res.isSuccessful && body != null) return body;
-
-    throw Exception("Could not fetch account profile: ${res.error.toString()}");
+    AccountProfileResponse userProfile,
+  ) {
+    return _accountApi.updateUserProfile(userProfile);
   }
 }

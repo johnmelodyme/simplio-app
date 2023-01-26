@@ -1,5 +1,6 @@
 import 'package:simplio_app/data/models/transaction.dart';
 
+// TODO - remove transaction repository when wallet repository is ready.
 class TransactionRepository {
   Future<List<Transaction>> loadDummyTransactions(
     int offset,

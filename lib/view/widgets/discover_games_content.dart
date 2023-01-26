@@ -45,6 +45,7 @@ class _DiscoverGamesContentState extends State<DiscoverGamesContent> {
               itemBuilder: (context, game, index) {
                 return GameItem(
                   game: game,
+                  currency: 'USD',
                   gameActions: game.isPromoted
                       ? const [
                           GameAction.play,

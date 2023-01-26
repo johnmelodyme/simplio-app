@@ -55,7 +55,7 @@ class GameDetailBalance extends StatelessWidget {
                   ),
                   */
                   CurrencyText(
-                    value: BigDecimal.fromDouble(
+                    BigDecimal.fromDouble(
                       gameDetail.assetEmbedded.price,
                     ),
                     currency: gameDetail.assetEmbedded.currency,

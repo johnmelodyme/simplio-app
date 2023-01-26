@@ -1,36 +1,21 @@
-import 'package:simplio_app/data/http/services/asset_service.dart';
+import 'package:simplio_app/data/http/apis/asset_api.dart';
 
 class FeeRepository {
-  final AssetService _assetService;
+  final AssetApi _assetApi;
 
   FeeRepository._(
-    this._assetService,
+    this._assetApi,
   );
 
-  FeeRepository.builder({
-    required AssetService assetService,
-  }) : this._(assetService);
-
-  Future<CryptoAssetResponse> _fetchCryptoFees(
-    int assetId,
-    int networkId,
-  ) async {
-    final res = await _assetService.crypto(
-      selectedAssets: [assetId.toString()],
-      selectedNetworks: [networkId.toString()],
-    );
-
-    final body = res.body;
-    if (res.isSuccessful && body?.isNotEmpty == true) return body!.first;
-
-    throw Exception(res.error);
-  }
+  FeeRepository({
+    required AssetApi assetApi,
+  }) : this._(assetApi);
 
   Future<FeeData> loadFees({
     required int assetId,
     required int networkId,
   }) async {
-    final res = await _fetchCryptoFees(assetId, networkId);
+    final res = await _assetApi.getCryptoFees(assetId, networkId);
 
     return FeeData(
       gasLimit: BigInt.parse(res.gasLimit),

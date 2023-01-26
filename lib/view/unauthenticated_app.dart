@@ -27,4 +27,19 @@ class UnauthenticatedApp extends StatelessWidget {
       routerDelegate: r.routerDelegate,
     );
   }
+
+  void init(BuildContext context) {
+    precacheImage(
+      Image.asset('assets/images/start_screen1.png').image,
+      context,
+    );
+    precacheImage(
+      Image.asset('assets/images/start_screen2.png').image,
+      context,
+    );
+    precacheImage(
+      Image.asset('assets/images/start_screen3.png').image,
+      context,
+    );
+  }
 }

@@ -8,8 +8,6 @@ typedef ID = int;
 typedef AssetId = ID;
 typedef NetworkId = ID;
 
-const accountWalletUpdateLifetimeInSeconds = 180;
-
 abstract class Wallet<T> extends Equatable {
   String get uuid;
   BigDecimal get cryptoBalance;
@@ -101,7 +99,12 @@ class AccountWallet extends Wallet<AssetWallet>
   BigDecimal get cryptoBalance => const BigDecimal.zero();
 
   @override
-  BigDecimal get fiatBalance => const BigDecimal.zero();
+  BigDecimal get fiatBalance {
+    return wallets.fold(
+      const BigDecimal.zero(),
+      (sum, wallet) => sum + wallet.fiatBalance,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -147,7 +150,7 @@ class AccountWallet extends Wallet<AssetWallet>
         return findWallet(wallet.uuid) != null ? wallet : assetWallet;
       });
 
-    return copyWith(wallets: walletsMap, updatedAt: DateTime.now());
+    return copyWith(wallets: walletsMap);
   }
 
   @override
@@ -165,15 +168,6 @@ class AccountWallet extends Wallet<AssetWallet>
     if (networkWallet == null) return false;
 
     return networkWallet.isEnabled;
-  }
-
-  bool get isNotValid => !isValid;
-
-  bool get isValid {
-    final expiresAt = updatedAt.millisecondsSinceEpoch +
-        (accountWalletUpdateLifetimeInSeconds * 1000);
-
-    return DateTime.now().millisecondsSinceEpoch <= expiresAt;
   }
 
   @override
@@ -227,15 +221,26 @@ class AssetWallet extends Wallet<NetworkWallet>
   }
 
   @override
-  BigDecimal get cryptoBalance => const BigDecimal.zero();
+  BigDecimal get cryptoBalance {
+    return _wallets.values.fold(
+      const BigDecimal.zero(),
+      (acc, curr) => acc + curr.cryptoBalance,
+    );
+  }
 
   @override
-  BigDecimal get fiatBalance => const BigDecimal.zero();
+  BigDecimal get fiatBalance {
+    return _wallets.values.fold(
+      const BigDecimal.zero(),
+      (acc, curr) => acc + curr.fiatBalance,
+    );
+  }
 
   @override
   List<Object?> get props => [
         uuid,
         cryptoBalance,
+        fiatBalance,
         assetId,
         wallets,
       ];
@@ -309,7 +314,7 @@ class NetworkWallet extends Wallet<Object> {
   final String uuid;
   final AssetId assetId;
   final NetworkId networkId;
-  final String address;
+  final String walletAddress;
   @override
   final BigDecimal cryptoBalance;
   @override
@@ -321,7 +326,7 @@ class NetworkWallet extends Wallet<Object> {
     required this.uuid,
     required this.assetId,
     required this.networkId,
-    required this.address,
+    required this.walletAddress,
     required this.cryptoBalance,
     required this.fiatBalance,
     required this.isEnabled,
@@ -331,7 +336,7 @@ class NetworkWallet extends Wallet<Object> {
   NetworkWallet.builder({
     required AssetId assetId,
     required NetworkId networkId,
-    required String address,
+    required String walletAddress,
     BigDecimal? cryptoBalance,
     BigDecimal? fiatBalance,
     bool isEnabled = true,
@@ -340,7 +345,7 @@ class NetworkWallet extends Wallet<Object> {
           uuid: const Uuid().v4(),
           assetId: assetId,
           networkId: networkId,
-          address: address,
+          walletAddress: walletAddress,
           cryptoBalance: cryptoBalance ?? const BigDecimal.zero(),
           fiatBalance: fiatBalance ?? const BigDecimal.zero(),
           isEnabled: isEnabled,
@@ -356,7 +361,7 @@ class NetworkWallet extends Wallet<Object> {
         assetId,
         networkId,
         cryptoBalance,
-        address,
+        walletAddress,
         fiatBalance,
         isEnabled,
       ];
@@ -371,7 +376,7 @@ class NetworkWallet extends Wallet<Object> {
       uuid: uuid,
       assetId: assetId,
       networkId: networkId,
-      address: address,
+      walletAddress: walletAddress,
       cryptoBalance: cryptoBalance ?? this.cryptoBalance,
       fiatBalance: fiatBalance ?? this.fiatBalance,
       isEnabled: isEnabled ?? this.isEnabled,

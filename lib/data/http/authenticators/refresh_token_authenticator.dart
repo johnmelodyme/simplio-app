@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:chopper/chopper.dart';
-import 'package:simplio_app/data/http/services/refresh_token_service.dart';
+import 'package:simplio_app/data/http/apis/refresh_token_api.dart';
 import 'package:simplio_app/data/providers/entities/auth_token_entity.dart';
 import 'package:simplio_app/data/providers/helpers/storage_provider.dart';
 
 class RefreshTokenAuthenticator extends Authenticator {
   final StorageProvider<AuthTokenEntity> authTokenStorage;
-  final RefreshTokenService refreshTokenService;
+  final RefreshTokenApi refreshTokenApi;
 
   RefreshTokenAuthenticator({
     required this.authTokenStorage,
-    required this.refreshTokenService,
+    required this.refreshTokenApi,
   });
 
   @override
@@ -22,7 +22,9 @@ class RefreshTokenAuthenticator extends Authenticator {
   ]) async {
     if (response.statusCode == HttpStatus.unauthorized) {
       final refreshToken = _loadRefreshToken();
-      final authToken = await _refreshToken(refreshToken);
+      final authToken = await refreshTokenApi.refreshToken(refreshToken);
+
+      await authTokenStorage.write(authToken);
 
       return request.copyWith(headers: {
         ...request.headers,
@@ -31,28 +33,6 @@ class RefreshTokenAuthenticator extends Authenticator {
     }
 
     return null;
-  }
-
-  Future<AuthTokenEntity> _refreshToken(String refreshToken) async {
-    final response = await refreshTokenService.refreshToken(
-      RefreshTokenBody(refreshToken: refreshToken),
-    );
-
-    final body = response.body;
-
-    if (response.isSuccessful && body != null) {
-      final authToken = AuthTokenEntity(
-        refreshToken: body.refreshToken,
-        accessToken: body.accessToken,
-        tokenType: body.tokenType,
-      );
-
-      await authTokenStorage.write(authToken);
-
-      return authToken;
-    }
-
-    throw Exception("Refreshing token has failed");
   }
 
   String _loadRefreshToken() {

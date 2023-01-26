@@ -43,7 +43,7 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
     return BlocBuilder<CryptoAssetBloc, CryptoAssetState>(
       builder: (context, state) {
         return BlocBuilder<AccountWalletCubit, AccountWalletState>(
-          buildWhen: (prev, current) => current is AccountWalletChanged,
+          buildWhen: (prev, current) => current is AccountWalletUpdated,
           builder: (context, state) {
             if (state is! AccountWalletProvided) {
               throw Exception('No asset wallet found');
@@ -98,6 +98,7 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
                             label: item.name,
                             // TODO - Provide BigDecimal dirrectly from `item`.
                             fiatPrice: BigDecimal.fromDouble(item.price),
+                            currency: 'USD',
                             assetIcon: asset.style.icon,
                             assetAction: [
                               AssetAction.buy,

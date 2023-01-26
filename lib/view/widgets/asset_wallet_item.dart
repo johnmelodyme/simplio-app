@@ -6,7 +6,6 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 import 'package:simplio_app/view/widgets/text/currency_text.dart';
-import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 class AssetWalletItem extends StatelessWidget {
   final String currency;
@@ -17,7 +16,7 @@ class AssetWalletItem extends StatelessWidget {
   const AssetWalletItem({
     super.key,
     required this.wallet,
-    this.currency = 'USD',
+    required this.currency,
     this.locale,
     this.assetDetail,
   });
@@ -25,9 +24,6 @@ class AssetWalletItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final detail = assetDetail ?? Assets.getAssetDetail(wallet.assetId);
-
-    final cryptoAmount = BigDecimal.fromBigInt(BigInt.zero);
-    final fiatAmount = BigDecimal.fromBigInt(BigInt.zero);
 
     return Container(
       height: 70,
@@ -70,11 +66,13 @@ class AssetWalletItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 CurrencyText(
-                  value: cryptoAmount,
+                  wallet.cryptoBalance,
+                  precision: 8,
                 ),
                 CurrencyText(
-                  value: fiatAmount,
-                  currency: 'USD',
+                  wallet.fiatBalance,
+                  precision: 2,
+                  currency: currency,
                   style: SioTextStyles.bodyS.copyWith(
                     color: SioColors.mentolGreen,
                   ),

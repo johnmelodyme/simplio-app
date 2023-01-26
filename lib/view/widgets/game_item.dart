@@ -7,24 +7,27 @@ import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/favourite_start.dart';
 import 'package:simplio_app/view/widgets/promoted_red_strip.dart';
 import 'package:simplio_app/view/widgets/small_button.dart';
-import 'package:simplio_app/view/widgets/text/highlighted_text.dart';
+import 'package:simplio_app/view/widgets/text/currency_text.dart';
+import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class GameItem extends StatelessWidget {
   const GameItem({
     super.key,
     required this.game,
+    required this.currency,
     this.onTap,
     required this.gameActions,
     required this.onActionPressed,
-    this.isFavourite,
+    this.isFavorite,
   });
 
   final Game game;
+  final String currency;
   final VoidCallback? onTap;
   final List<GameAction> gameActions;
   final Function(GameAction) onActionPressed;
-  final bool? isFavourite;
+  final bool? isFavorite;
 
   Color getTextColorByActionType(BuildContext context, GameAction gameAction) {
     switch (gameAction) {
@@ -166,14 +169,25 @@ class GameItem extends StatelessWidget {
                               ),
                             ),
                             Gaps.gap5,
-                            HighlightedText(
-                              '${context.locale.common_item_coin_price_label} ^${game.assetEmbedded.price} ${game.assetEmbedded.currency}',
-                              style: SioTextStyles.bodyDetail.apply(
-                                color: SioColors.secondary7,
-                              ),
-                              highlightedStyle: SioTextStyles.bodyDetail.apply(
-                                color: SioColors.whiteBlue,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  context.locale.common_item_coin_price_label,
+                                  style: SioTextStyles.bodyDetail.apply(
+                                    color: SioColors.secondary7,
+                                  ),
+                                ),
+                                CurrencyText(
+                                  BigDecimal.fromDouble(
+                                    game.assetEmbedded.price,
+                                  ),
+                                  currency: currency,
+                                  precision: 2,
+                                  style: SioTextStyles.bodyDetail.apply(
+                                    color: SioColors.whiteBlue,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -209,10 +223,10 @@ class GameItem extends StatelessWidget {
                 ),
               ),
             ),
-            if (isFavourite != null)
+            if (isFavorite != null)
               Align(
                 alignment: Alignment.topRight,
-                child: FavouriteStar(isFilled: isFavourite!),
+                child: FavouriteStar(isFilled: isFavorite!),
               )
             else if (game.isPromoted)
               Align(

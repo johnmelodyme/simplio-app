@@ -15,7 +15,6 @@ import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
-import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/sio_text_form_field.dart';

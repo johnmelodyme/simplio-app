@@ -28,26 +28,30 @@ typedef ExpansionListValues<T>
 class AssetWalletExpansionList<T> extends StatelessWidget {
   final ValueChanged<T> onTap;
   final ExpansionListValues wallets;
+  final String currency;
 
   const AssetWalletExpansionList({
     super.key,
     required this.onTap,
     this.wallets = const {},
+    required this.currency,
   });
 
   static AssetWalletExpansionList fromAssetWallets({
     Key? key,
     required List<AssetWallet> wallets,
     required ValueChanged<List<int>> onTap,
+    required String currency,
   }) {
     return AssetWalletExpansionList<List<int>>(
       key: key,
-      wallets: wallets.fold({}, (acc, current) {
+      currency: currency,
+      wallets: wallets.fold({}, (acc, curr) {
         return acc
           ..addAll({
-            current: current.enabled.map((n) => ExpansionListValue<List<int>>(
+            curr: curr.enabled.map((n) => ExpansionListValue<List<int>>(
                   networkWallet: n,
-                  value: [current.assetId, n.networkId],
+                  value: [curr.assetId, n.networkId],
                 ))
           });
       }),
@@ -58,6 +62,7 @@ class AssetWalletExpansionList<T> extends StatelessWidget {
   // TODO - review and write test
   static AssetWalletExpansionList fromSwapAsset({
     Key? key,
+    required String currency,
     required Iterable<SwapAsset> assets,
     required AccountWallet accountWallet,
     required ValueChanged<SwapAsset> onTap,
@@ -70,7 +75,7 @@ class AssetWalletExpansionList<T> extends StatelessWidget {
           NetworkWallet.builder(
             assetId: curr.assetId,
             networkId: curr.networkId,
-            address: '',
+            walletAddress: '',
             preset: Assets.getAssetPreset(
               assetId: aw.assetId,
               networkId: curr.networkId,
@@ -93,6 +98,7 @@ class AssetWalletExpansionList<T> extends StatelessWidget {
     return AssetWalletExpansionList<SwapAsset>(
       key: key,
       wallets: swapAssets,
+      currency: currency,
       onTap: onTap,
     );
   }
@@ -121,6 +127,7 @@ class AssetWalletExpansionList<T> extends StatelessWidget {
                       ),
                       child: AssetWalletItem(
                         wallet: k,
+                        currency: currency,
                         assetDetail: detail,
                       ),
                     );
@@ -134,8 +141,9 @@ class AssetWalletExpansionList<T> extends StatelessWidget {
                             right: Dimensions.padding16),
                         child: NetworkWalletItem(
                           key: key,
-                          assetStyle: detail.style,
                           wallet: n.networkWallet,
+                          currency: currency,
+                          assetStyle: detail.style,
                           onTap: () {
                             onTap(n.value);
                           },

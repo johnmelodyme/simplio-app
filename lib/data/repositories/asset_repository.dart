@@ -1,4 +1,4 @@
-import 'package:simplio_app/data/http/services/asset_service.dart';
+import 'package:simplio_app/data/http/apis/asset_api.dart';
 import 'package:simplio_app/data/providers/helpers/memory_cache_provider.dart';
 import 'package:sio_core_light/sio_core_light.dart' as sio;
 
@@ -17,19 +17,19 @@ class AssetRepository {
     return sio.EthNetworks.networkId(chainId: chainId);
   }
 
-  final AssetService _assetService;
+  final AssetApi _assetApi;
 
   final MemoryCacheProvider<List<FiatAssetData>> _fiatDataCache;
 
   AssetRepository._(
-    this._assetService,
+    this._assetApi,
     this._fiatDataCache,
   );
 
-  AssetRepository.builder({
-    required AssetService assetService,
+  AssetRepository({
+    required AssetApi assetApi,
   }) : this._(
-          assetService,
+          assetApi,
           MemoryCacheProvider.builder(
             lifetimeInSeconds: _cacheLifetimeInSeconds,
             initialData: const [],
@@ -41,31 +41,9 @@ class AssetRepository {
   }) async {
     if (readCache && _fiatDataCache.isValid) return _fiatDataCache.read();
 
-    final response = await _assetService.fiat();
-    final body = response.body;
-
-    if (response.isSuccessful && body != null) {
-      final fiatAssets = _makeFiatAssetData(body);
-      _fiatDataCache.write(fiatAssets);
-      return fiatAssets;
-    }
-
-    throw Exception("Could not load 'fiat' assets");
-  }
-
-  List<FiatAssetData> _makeFiatAssetData(List<FiatAssetResponse> response) {
-    final map = response.fold<Map<String, FiatAssetData>>({}, (acc, curr) {
-      return acc
-        ..addAll({
-          curr.assetId: FiatAssetData(
-            assetId: curr.assetId,
-            name: curr.name,
-            ticker: curr.ticker,
-          ),
-        });
-    });
-
-    return map.values.toList();
+    final fiatAssets = await _assetApi.loadFiatAssets();
+    _fiatDataCache.write(fiatAssets);
+    return fiatAssets;
   }
 }
 

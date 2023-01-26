@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/data/providers/entities/wallet_entity.dart';
+import 'package:simplio_app/data/providers/errors/provider_error.dart';
 import 'package:simplio_app/data/providers/helpers/box_provider.dart';
 import 'package:simplio_app/data/providers/interfaces/wallet_db.dart';
 import 'package:simplio_app/data/providers/mappers/wallet_mapper.dart';
@@ -11,7 +12,6 @@ class WalletDbProvider extends BoxProvider<AccountWalletEntity>
 
   @override
   final String boxName = 'walletBox';
-  final AccountWalletMapper _mapper = AccountWalletMapper();
 
   WalletDbProvider._();
 
@@ -28,12 +28,19 @@ class WalletDbProvider extends BoxProvider<AccountWalletEntity>
 
   @override
   Future<AccountWallet> save(AccountWallet accountWallet) async {
-    await box.put(
-      accountWallet.uuid,
-      _mapper.mapTo(accountWallet),
-    );
+    try {
+      await box.put(
+        accountWallet.uuid,
+        accountWallet.toEntity(),
+      );
 
-    return accountWallet;
+      return accountWallet;
+    } catch (e) {
+      throw ProviderError(
+        code: ProviderErrorCodes.failedToSave,
+        message: 'Saving Account wallet failed with error: $e.',
+      );
+    }
   }
 
   @override
@@ -41,7 +48,7 @@ class WalletDbProvider extends BoxProvider<AccountWalletEntity>
     try {
       return box.values
           .where((w) => w.accountId == accountId)
-          .map(_mapper.mapFrom)
+          .map(((a) => a.toModel()))
           .toList();
     } catch (_) {
       return const [];

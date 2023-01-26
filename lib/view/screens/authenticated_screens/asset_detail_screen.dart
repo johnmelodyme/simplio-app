@@ -11,6 +11,7 @@ import 'package:simplio_app/logic/bloc/asset_swap_form/asset_swap_form_bloc.dart
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/view/dialogs/dialog_content.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
+import 'package:simplio_app/view/mixins/currency_getter_mixin.dart';
 import 'package:simplio_app/view/mixins/snackbar_mixin.dart';
 import 'package:simplio_app/view/mixins/wallet_utils_mixin.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/asset_receive_route.dart';
@@ -30,7 +31,7 @@ import 'package:sio_big_decimal/sio_big_decimal.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
 class AssetDetailScreen extends StatelessWidget
-    with WalletUtilsMixin, SnackBarMixin {
+    with WalletUtilsMixin, CurrencyGetter, SnackBarMixin {
   final String? assetId;
   final String? networkId;
 
@@ -59,10 +60,6 @@ class AssetDetailScreen extends StatelessWidget
 
     final assetDetail = Assets.getAssetDetail(assetWallet.assetId);
     final networkDetail = Assets.getNetworkDetail(networkWallet.networkId);
-
-    context
-        .read<AccountWalletCubit>()
-        .refreshNetworkWalletBalance(networkWallet);
 
     return Scaffold(
       body: Stack(
@@ -100,6 +97,7 @@ class AssetDetailScreen extends StatelessWidget
                         }
 
                         return AssetBalanceOverview(
+                          currency: getCurrency(context),
                           assetDetail: assetDetail,
                           networkWallet: networkWallet,
                           children: [

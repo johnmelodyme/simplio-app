@@ -1,20 +1,18 @@
-import 'package:simplio_app/data/http/errors/http_error.dart';
+part of './http_error.dart';
 
-class BadRequestHttpError implements HttpError {
-  const BadRequestHttpError(this._body);
+class BadRequestHttpError extends HttpError {
+  const BadRequestHttpError({
+    super.code,
+    super.message,
+    super.detail,
+  });
 
-  BadRequestHttpError.fromObject(Object? object)
-      : this(HttpErrorBodyConvertor.fromObject(object));
-
-  BadRequestHttpError.fromMap(Map<String, dynamic> map)
-      : this(HttpErrorBodyConvertor.fromMap(map));
-
-  final HttpErrorBody _body;
-
-  @override
-  HttpErrorCodes get code => _body.code;
-  @override
-  String get message => _body.message;
-  @override
-  Map<String, dynamic> get detail => _body.detail;
+  factory BadRequestHttpError.fromObject(Object? object) {
+    final body = HttpErrorBodyConvertor.fromObject(object);
+    return BadRequestHttpError(
+      code: body.code,
+      message: body.message,
+      detail: body.detail,
+    );
+  }
 }

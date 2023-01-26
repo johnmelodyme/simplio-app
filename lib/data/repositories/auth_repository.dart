@@ -1,8 +1,7 @@
-import 'dart:io';
-import 'package:simplio_app/data/http/services/password_change_service.dart';
-import 'package:simplio_app/data/http/services/password_reset_service.dart';
-import 'package:simplio_app/data/http/services/sign_in_service.dart';
-import 'package:simplio_app/data/http/services/sign_up_service.dart';
+import 'package:simplio_app/data/http/apis/password_change_api.dart';
+import 'package:simplio_app/data/http/apis/password_reset_api.dart';
+import 'package:simplio_app/data/http/apis/sign_in_api.dart';
+import 'package:simplio_app/data/http/apis/sign_up_api.dart';
 import 'package:simplio_app/data/mixins/jwt_mixin.dart';
 import 'package:simplio_app/data/models/account.dart';
 import 'package:simplio_app/data/providers/entities/auth_token_entity.dart';
@@ -12,60 +11,46 @@ import 'package:simplio_app/data/providers/interfaces/account_db.dart';
 class AuthRepository with JwtMixin {
   final AccountDb _accountDb;
   final StorageProvider<AuthTokenEntity> _authTokenStorage;
-  final SignInService _signInService;
-  final SignUpService _signUpService;
-  final PasswordChangeService _passwordChangeService;
-  final PasswordResetService _passwordResetService;
+  final SignInApi _signInApi;
+  final SignUpApi _signUpApi;
+  final PasswordChangeApi _passwordChangeApi;
+  final PasswordResetApi _passwordResetApi;
 
   const AuthRepository._(
     this._accountDb,
     this._authTokenStorage,
-    this._signInService,
-    this._signUpService,
-    this._passwordChangeService,
-    this._passwordResetService,
+    this._signInApi,
+    this._signUpApi,
+    this._passwordChangeApi,
+    this._passwordResetApi,
   );
 
-  const AuthRepository.builder({
+  const AuthRepository({
     required AccountDb accountDb,
     required StorageProvider<AuthTokenEntity> authTokenStorage,
-    required SignInService signInService,
-    required SignUpService signUpService,
-    required PasswordChangeService passwordChangeService,
-    required PasswordResetService passwordResetService,
+    required SignInApi signInApi,
+    required SignUpApi signUpApi,
+    required PasswordChangeApi passwordChangeApi,
+    required PasswordResetApi passwordResetApi,
   }) : this._(
           accountDb,
           authTokenStorage,
-          signInService,
-          signUpService,
-          passwordChangeService,
-          passwordResetService,
+          signInApi,
+          signUpApi,
+          passwordChangeApi,
+          passwordResetApi,
         );
 
   Future<Account?> getLastSignedIn() async {
     return _accountDb.getLast();
   }
 
-  Future<Account> signUp(String email, String password) async {
-    final response = await _signUpService.signUp(SignUpBody(
-      email: email,
-      password: password,
-    ));
-
-    if (response.isSuccessful) {
-      return await signIn(email, password);
-    }
-
-    //TODO: Handle the error in the future with HttpErrorCodes and codes that
-    // come from backend. In this case the response comming from backend is:
-    // { "ErrorCode":"AUTH_USER_REGISTRATION_FAILED",
-    // "ErrorMessage":"{ code = DUPLICATE }", "StatusCode":409 }
-    // but we do not take it into consideration
-    if (response.statusCode == HttpStatus.conflict) {
-      throw Exception('Account already exists');
-    }
-
-    throw Exception("Sign up has failed");
+  Future<Account> signUp(String email, String password) {
+    return _signUpApi.signUp(
+      email,
+      password,
+      afterSignUp: signIn,
+    );
   }
 
   Future<Account> _registerSignIn(String accountId) async {
@@ -84,33 +69,23 @@ class AuthRepository with JwtMixin {
     ));
   }
 
-  Future<Account> signIn(String login, String password) async {
+  Future<Account> signIn(
+    String login,
+    String password,
+  ) async {
     try {
-      final response = await _signInService.signIn(SignInBody(
-        email: login,
-        password: password,
+      final res = await _signInApi.signIn(login, password);
+
+      const accountIdKey = 'sub';
+      final decodedIdToken = parseJwt(res.idToken);
+
+      await _authTokenStorage.write(AuthTokenEntity(
+        refreshToken: res.refreshToken,
+        tokenType: res.tokenType,
+        accessToken: res.accessToken,
       ));
 
-      final body = response.body;
-
-      if (response.isSuccessful && body != null) {
-        const accountIdKey = 'sub';
-        final decodedIdToken = parseJwt(body.idToken);
-
-        if (!decodedIdToken.containsKey(accountIdKey)) {
-          throw Exception("Provided IdToken has missing 'name' field.");
-        }
-
-        await _authTokenStorage.write(AuthTokenEntity(
-          refreshToken: body.refreshToken,
-          tokenType: body.tokenType,
-          accessToken: body.accessToken,
-        ));
-
-        return await _registerSignIn(decodedIdToken[accountIdKey]);
-      }
-
-      throw Exception(response.error);
+      return await _registerSignIn(decodedIdToken[accountIdKey]);
     } catch (e) {
       throw Exception("Sign in has failed");
     }
@@ -126,25 +101,11 @@ class AuthRepository with JwtMixin {
     }
   }
 
-  Future<void> changePassword(String oldPassword, String newPassword) async {
-    final response =
-        await _passwordChangeService.changePassword(PasswordChangeBody(
-      oldPassword: oldPassword,
-      newPassword: newPassword,
-    ));
-
-    if (response.isSuccessful) return;
-
-    throw Exception("Changing a password has failed");
+  Future<void> changePassword(String oldPassword, String newPassword) {
+    return _passwordChangeApi.changePassword(oldPassword, newPassword);
   }
 
-  Future<void> resetPassword(String email) async {
-    final response = await _passwordResetService.resetPassword(
-      PasswordResetBody(email: email),
-    );
-
-    if (response.isSuccessful) return;
-
-    throw Exception("Resetting a password has failed");
+  Future<void> resetPassword(String email) {
+    return _passwordResetApi.resetPassword(email);
   }
 }

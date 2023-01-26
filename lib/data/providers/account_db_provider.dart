@@ -11,7 +11,6 @@ class AccountDbProvider extends BoxProvider<AccountEntity>
 
   @override
   final String boxName = 'accountBox';
-  final AccountMapper _mapper = AccountMapper();
 
   AccountDbProvider._();
 
@@ -29,7 +28,7 @@ class AccountDbProvider extends BoxProvider<AccountEntity>
   Future<Account?> get(String id) async {
     try {
       final AccountEntity? account = box.get(id);
-      return account != null ? _mapper.mapFrom(account) : null;
+      return account?.toModel();
     } catch (_) {
       return null;
     }
@@ -39,7 +38,7 @@ class AccountDbProvider extends BoxProvider<AccountEntity>
   Future<Account> save(Account account) async {
     await box.put(
       account.id,
-      _mapper.mapTo(account),
+      account.toEntity(),
     );
     return account;
   }
@@ -56,7 +55,7 @@ class AccountDbProvider extends BoxProvider<AccountEntity>
       );
       if (isZero) return null;
 
-      return _mapper.mapFrom(localAccount);
+      return localAccount.toModel();
     } catch (_) {
       return null;
     }

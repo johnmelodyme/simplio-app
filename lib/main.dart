@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:simplio_app/data/http/clients/public_http_client.dart';
-import 'package:simplio_app/data/http/clients/secured_http_client.dart';
+import 'package:simplio_app/data/http/apis/account_api.dart';
+import 'package:simplio_app/data/http/apis/asset_api.dart';
+import 'package:simplio_app/data/http/apis/blockchain_api.dart';
+import 'package:simplio_app/data/http/apis/broadcast_api.dart';
+import 'package:simplio_app/data/http/apis/buy_api.dart';
+import 'package:simplio_app/data/http/apis/marketplace_api.dart';
+import 'package:simplio_app/data/http/apis/password_change_api.dart';
+import 'package:simplio_app/data/http/apis/password_reset_api.dart';
+import 'package:simplio_app/data/http/apis/refresh_token_api.dart';
+import 'package:simplio_app/data/http/apis/sign_in_api.dart';
+import 'package:simplio_app/data/http/apis/sign_up_api.dart';
+import 'package:simplio_app/data/http/apis/swap_api.dart';
+import 'package:simplio_app/data/http/apis/transaction_history_api.dart';
+import 'package:simplio_app/data/http/apis/wallet_inventory_api.dart';
+import 'package:simplio_app/data/http/authenticators/refresh_token_authenticator.dart';
+import 'package:simplio_app/data/http/http_client.dart';
+import 'package:simplio_app/data/http/converters/json_serializable_converter.dart';
+import 'package:simplio_app/data/http/interceptors/authorize_interceptor.dart';
 import 'package:simplio_app/data/http/services/account_service.dart';
 import 'package:simplio_app/data/http/services/asset_service.dart';
-import 'package:simplio_app/data/http/services/balance_service.dart';
 import 'package:simplio_app/data/http/services/blockchain_utils_service.dart';
 import 'package:simplio_app/data/http/services/broadcast_service.dart';
 import 'package:simplio_app/data/http/services/buy_service.dart';
-import 'package:simplio_app/data/http/services/inventory_service.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/http/services/password_change_service.dart';
 import 'package:simplio_app/data/http/services/password_reset_service.dart';
@@ -17,6 +31,8 @@ import 'package:simplio_app/data/http/services/refresh_token_service.dart';
 import 'package:simplio_app/data/http/services/sign_in_service.dart';
 import 'package:simplio_app/data/http/services/sign_up_service.dart';
 import 'package:simplio_app/data/http/services/swap_service.dart';
+import 'package:simplio_app/data/http/services/transaction_history_service.dart';
+import 'package:simplio_app/data/http/services/wallet_inventory_service.dart';
 import 'package:simplio_app/data/providers/account_db_provider.dart';
 import 'package:simplio_app/data/providers/auth_token_db_provider.dart';
 import 'package:simplio_app/data/providers/wallet_connect_session_db_provider.dart';
@@ -28,7 +44,6 @@ import 'package:simplio_app/data/repositories/buy_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
 import 'package:simplio_app/data/repositories/hd_wallet_repository.dart';
 import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
-import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/transaction_repository.dart';
@@ -66,7 +81,6 @@ class _SimplioAppState extends State<SimplioApp> {
   late BuyRepository buyRepository;
   late TransactionRepository transactionRepository;
   late MarketplaceRepository marketplaceRepository;
-  late InventoryRepository inventoryRepository;
   late SwapRepository swapRepository;
   late UserRepository userRepository;
 
@@ -92,7 +106,6 @@ class _SimplioAppState extends State<SimplioApp> {
         RepositoryProvider.value(value: transactionRepository),
         RepositoryProvider.value(value: marketplaceRepository),
         RepositoryProvider.value(value: buyRepository),
-        RepositoryProvider.value(value: inventoryRepository),
         RepositoryProvider.value(value: swapRepository),
         RepositoryProvider.value(value: userRepository),
       ],
@@ -101,15 +114,15 @@ class _SimplioAppState extends State<SimplioApp> {
           authRepository: RepositoryProvider.of<AuthRepository>(context),
         )..add(GotLastAuthenticated()),
         child: AuthGuard(
-          onAuthenticated: (context, authState) {
+          onAuthenticated: (context, account) {
             isAuthenticated = true;
             return AuthenticatedApp(
-              account: authState.account,
-            )..init();
+              account: account,
+            )..init(context);
           },
           onUnauthenticated: (context) {
             isAuthenticated = false;
-            return const UnauthenticatedApp();
+            return const UnauthenticatedApp()..init(context);
           },
         ),
       ),
@@ -118,9 +131,6 @@ class _SimplioAppState extends State<SimplioApp> {
 
   Future<void> init() async {
     await Hive.initFlutter();
-
-    // Precache assets screen images, otherwise they would pope into view later.
-    precacheAssetsImages();
 
     /// Initialize all top-level Hive Db Providers
     final authTokenDbProvider = AuthTokenDbProvider();
@@ -135,88 +145,116 @@ class _SimplioAppState extends State<SimplioApp> {
 
     /// Init http client
     const apiUrl = String.fromEnvironment('API_URL');
-    final publicApi = PublicHttpClient.builder(apiUrl);
-    final securedApi = SecuredHttpClient.builder(
-      apiUrl,
-      authTokenStorage: authTokenDbProvider,
-      refreshTokenService: publicApi.service<RefreshTokenService>(),
+
+    final publicApi = HttpClient(
+      url: apiUrl,
+      converter: JsonSerializableConverter([
+        SignInService.converter(),
+        SignUpService.converter(),
+        RefreshTokenService.converter(),
+        PasswordResetService.converter(),
+      ]),
+      services: [
+        SignInService.create(),
+        SignUpService.create(),
+        RefreshTokenService.create(),
+        PasswordResetService.create(),
+      ],
     );
 
+    publicApi.registerApi(RefreshTokenApi());
+    publicApi.registerApi(SignInApi());
+    publicApi.registerApi(SignUpApi());
+    publicApi.registerApi(PasswordResetApi());
+
+    final authorizedApi = HttpClient(
+      url: apiUrl,
+      converter: JsonSerializableConverter([
+        AssetService.converter(),
+        WalletInventoryService.converter(),
+        BlockchainUtilsService.converter(),
+        BroadcastService.converter(),
+        PasswordChangeService.converter(),
+        TransactionHistoryService.converter(),
+        MarketplaceService.converter(),
+        AccountService.converter(),
+        BuyService.converter(),
+        SwapService.converter(),
+        BuyService.converter(),
+      ]),
+      authenticator: RefreshTokenAuthenticator(
+        authTokenStorage: authTokenDbProvider,
+        refreshTokenApi: publicApi.api<RefreshTokenApi>(),
+      ),
+      interceptors: [
+        AuthorizeInterceptor(
+          authTokenStorage: authTokenDbProvider,
+        ),
+      ],
+      services: [
+        AssetService.create(),
+        WalletInventoryService.create(),
+        BlockchainUtilsService.create(),
+        BroadcastService.create(),
+        PasswordChangeService.create(),
+        TransactionHistoryService.create(),
+        MarketplaceService.create(),
+        AccountService.create(),
+        BuyService.create(),
+        SwapService.create(),
+      ],
+    );
+
+    authorizedApi.registerApi(AssetApi());
+    authorizedApi.registerApi(WalletInventoryApi());
+    authorizedApi.registerApi(BlockchainApi());
+    authorizedApi.registerApi(BroadcastApi());
+    authorizedApi.registerApi(PasswordChangeApi());
+    authorizedApi.registerApi(TransactionHistoryApi());
+    authorizedApi.registerApi(MarketplaceApi());
+    authorizedApi.registerApi(AccountApi());
+    authorizedApi.registerApi(BuyApi());
+    authorizedApi.registerApi(SwapApi());
+
     // Initialize repositories
-    authRepository = AuthRepository.builder(
+    authRepository = AuthRepository(
       accountDb: accountDbProvider,
       authTokenStorage: authTokenDbProvider,
-      signInService: publicApi.service<SignInService>(),
-      signUpService: publicApi.service<SignUpService>(),
-      passwordChangeService: securedApi.service<PasswordChangeService>(),
-      passwordResetService: publicApi.service<PasswordResetService>(),
+      signInApi: publicApi.api<SignInApi>(),
+      signUpApi: publicApi.api<SignUpApi>(),
+      passwordChangeApi: authorizedApi.api<PasswordChangeApi>(),
+      passwordResetApi: publicApi.api<PasswordResetApi>(),
     );
-    accountRepository = AccountRepository.builder(
+    accountRepository = AccountRepository(
       accountDb: accountDbProvider,
     );
     walletRepository = HDWalletRepository(
       walletDb: walletDbProvider,
-      blockchainService: securedApi.service<BlockchainUtilsService>(),
-      broadcastService: securedApi.service<BroadcastService>(),
-      balanceService: securedApi.service<BalanceService>(),
+      blockchainApi: authorizedApi.api<BlockchainApi>(),
+      broadcastApi: authorizedApi.api<BroadcastApi>(),
+      walletInventoryApi: authorizedApi.api<WalletInventoryApi>(),
     );
-    assetRepository = AssetRepository.builder(
-      assetService: securedApi.service<AssetService>(),
+    assetRepository = AssetRepository(
+      assetApi: authorizedApi.api<AssetApi>(),
     );
     walletConnectRepository = WalletConnectRepository(
       walletConnectSessionDb: walletConnectSessionDbProvider,
     );
-    feeRepository = FeeRepository.builder(
-      assetService: securedApi.service<AssetService>(),
+    feeRepository = FeeRepository(
+      assetApi: authorizedApi.api<AssetApi>(),
     );
     buyRepository = BuyRepository(
-      buyService: securedApi.service<BuyService>(),
+      buyApi: authorizedApi.api<BuyApi>(),
     );
     transactionRepository = TransactionRepository();
-    marketplaceRepository = MarketplaceRepository.builder(
-      marketplaceService: securedApi.service<MarketplaceService>(),
+    marketplaceRepository = MarketplaceRepository(
+      marketplaceApi: authorizedApi.api<MarketplaceApi>(),
     );
-    inventoryRepository = InventoryRepository(
-      walletDb: walletDbProvider,
-      inventoryService: securedApi.service<InventoryService>(),
-    );
-    swapRepository = SwapRepository.builder(
-      swapService: securedApi.service<SwapService>(),
+    swapRepository = SwapRepository(
+      swapApi: authorizedApi.api<SwapApi>(),
     );
     userRepository = UserRepository(
-      accountService: securedApi.service<AccountService>(),
-    );
-  }
-
-  // TODO - refactor - precache images in relative places
-  void precacheAssetsImages() {
-    precacheImage(
-      Image.asset('assets/images/start_screen1.png').image,
-      context,
-    );
-    precacheImage(
-      Image.asset('assets/images/start_screen2.png').image,
-      context,
-    );
-    precacheImage(
-      Image.asset('assets/images/start_screen3.png').image,
-      context,
-    );
-    precacheImage(
-      Image.asset('assets/images/simpliona_dapps.png').image,
-      context,
-    );
-    precacheImage(
-      Image.asset('assets/images/find_dapps_coming_soon.png').image,
-      context,
-    );
-    precacheImage(
-      Image.asset('assets/images/blue_ring.png').image,
-      context,
-    );
-    precacheImage(
-      Image.asset('assets/images/empty_transactions_placeholder.png').image,
-      context,
+      accountApi: authorizedApi.api<AccountApi>(),
     );
   }
 }

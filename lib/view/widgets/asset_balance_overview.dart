@@ -17,7 +17,7 @@ class AssetBalanceOverview extends StatelessWidget {
     super.key,
     required this.assetDetail,
     required this.networkWallet,
-    this.currency = 'USD',
+    required this.currency,
     this.children = const [],
   });
 
@@ -42,14 +42,16 @@ class AssetBalanceOverview extends StatelessWidget {
                 child: Column(
                   children: [
                     CurrencyText(
-                      value: networkWallet.cryptoBalance,
+                      networkWallet.cryptoBalance,
+                      precision: 8,
                       style: SioTextStyles.h1.apply(
                         color: SioColors.whiteBlue,
                       ),
                     ),
                     CurrencyText(
-                      value: networkWallet.fiatBalance,
+                      networkWallet.fiatBalance,
                       currency: currency,
+                      precision: 2,
                       style: SioTextStyles.bodyPrimary.apply(
                         color: SioColors.mentolGreen,
                       ),

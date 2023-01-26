@@ -7,6 +7,7 @@ import 'package:simplio_app/view/themes/constants.dart';
 
 part 'transactions_state.dart';
 
+// TODO - remove this cubit as it belongs to account wallet cubit.
 class TransactionsCubit extends Cubit<TransactionsState> {
   final TransactionRepository _transactionRepository;
   final PagingController<int, Transaction> pagingController =

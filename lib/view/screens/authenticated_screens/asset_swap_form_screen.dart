@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/logic/bloc/asset_swap_form/asset_swap_form_bloc.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/view/mixins/currency_getter_mixin.dart';
 import 'package:simplio_app/view/mixins/route_builder_mixin.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/asset_swap_summary_route.dart';
 import 'package:simplio_app/view/screens/authenticated_screens/asset_selection_screen.dart';
@@ -207,7 +208,7 @@ class _AssetSwapPage extends StatelessWidget {
   }
 }
 
-class _AssetSwapNoRoutes extends StatelessWidget {
+class _AssetSwapNoRoutes extends StatelessWidget with CurrencyGetter {
   final AssetId assetId;
   final NetworkId networkId;
 
@@ -275,11 +276,10 @@ class _AssetSwapNoRoutes extends StatelessWidget {
             [
               BlocBuilder<AccountWalletCubit, AccountWalletState>(
                 builder: (context, state) {
-                  final s = state;
-
                   return AssetWalletExpansionList.fromAssetWallets(
-                    wallets: s is AccountWalletProvided
-                        ? s.wallet.enabled
+                    currency: getCurrency(context),
+                    wallets: state is AccountWalletProvided
+                        ? state.wallet.enabled
                         : const [],
                     onTap: (value) {
                       if (value.length < 2) return;
@@ -302,7 +302,7 @@ class _AssetSwapNoRoutes extends StatelessWidget {
   }
 }
 
-class _AssetSwapForm extends StatelessWidget {
+class _AssetSwapForm extends StatelessWidget with CurrencyGetter {
   final SwapRoutesLoaded state;
 
   const _AssetSwapForm({
@@ -316,6 +316,7 @@ class _AssetSwapForm extends StatelessWidget {
     Widget sourceItem(AssetId a, NetworkId n) => AssetWalletFormItem(
           assetId: a,
           networkId: n,
+          currency: getCurrency(context),
           onTap: (assetId, networkId) {
             Navigator.of(context).pushNamed(
               _selectSourceRoute,
@@ -339,6 +340,7 @@ class _AssetSwapForm extends StatelessWidget {
     Widget targetItem(AssetId a, NetworkId n) => AssetWalletFormItem(
           assetId: a,
           networkId: n,
+          currency: getCurrency(context),
           onTap: (assetId, networkId) {
             Navigator.of(context).pushNamed(
               _selectTargetRoute,

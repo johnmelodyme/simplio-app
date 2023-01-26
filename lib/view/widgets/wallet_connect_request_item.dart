@@ -76,8 +76,7 @@ class _WalletConnectTransactionRequestItemState
                     ),
                   ),
                   CurrencyText(
-                    // TODO - make request amount a big decimal.
-                    value: BigDecimal.fromBigInt(
+                    BigDecimal.fromBigInt(
                       widget.request.amount,
                       precision: preset.decimalPlaces,
                     ),

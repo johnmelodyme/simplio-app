@@ -125,7 +125,7 @@ void main() {
               60: NetworkWallet.builder(
                 assetId: 2,
                 networkId: 60,
-                address: '0x',
+                walletAddress: '0x',
                 preset: const AssetPreset(decimalPlaces: 19),
               )
             }),
@@ -133,7 +133,7 @@ void main() {
               501: NetworkWallet.builder(
                 assetId: 3,
                 networkId: 501,
-                address: '0x',
+                walletAddress: '0x',
                 preset: const AssetPreset(decimalPlaces: 19),
               )
             }),
@@ -151,7 +151,7 @@ void main() {
               501: NetworkWallet.builder(
                 assetId: 3,
                 networkId: 501,
-                address: '0x',
+                walletAddress: '0x',
                 preset: const AssetPreset(decimalPlaces: 19),
               )
             }),
@@ -171,7 +171,7 @@ void main() {
               0: NetworkWallet.builder(
                 assetId: 1,
                 networkId: 0,
-                address: '0x',
+                walletAddress: '0x',
                 preset: const AssetPreset(decimalPlaces: 8),
               )
             }),
@@ -209,7 +209,7 @@ void main() {
               NetworkWallet.builder(
                 assetId: 0,
                 networkId: i,
-                address: '',
+                walletAddress: '',
                 preset: const AssetPreset(decimalPlaces: 2),
               ),
             );
@@ -228,7 +228,7 @@ void main() {
         uuid: 'ethereum',
         assetId: 2,
         networkId: 60,
-        address: '0x',
+        walletAddress: '0x',
         cryptoBalance: BigDecimal.zero(),
         fiatBalance: BigDecimal.zero(),
         isEnabled: true,
@@ -238,7 +238,7 @@ void main() {
         uuid: 'solana',
         assetId: 5,
         networkId: 501,
-        address: '0x',
+        walletAddress: '0x',
         cryptoBalance: BigDecimal.zero(),
         fiatBalance: BigDecimal.zero(),
         isEnabled: true,
@@ -248,7 +248,7 @@ void main() {
         uuid: 'bnb',
         assetId: 10,
         networkId: 20000714,
-        address: '0x',
+        walletAddress: '0x',
         cryptoBalance: BigDecimal.zero(),
         fiatBalance: BigDecimal.zero(),
         isEnabled: true,
@@ -284,11 +284,7 @@ void main() {
         'network wallets which are updated from Iterable have equal length as original.',
         () {
           final updated = assetWallet.updateWalletsFromIterable([
-            sol.copyWith(
-              cryptoBalance: BigDecimal.fromBigInt(
-                BigInt.from(4000),
-              ),
-            ),
+            sol.copyWith(cryptoBalance: BigDecimal.fromDouble(4000)),
           ]);
 
           expect(updated.wallets.length, equals(assetWallet.wallets.length));
@@ -317,7 +313,7 @@ void main() {
               uuid: 'x',
               assetId: 1,
               networkId: 0,
-              address: '0x',
+              walletAddress: '0x',
               cryptoBalance: BigDecimal.zero(),
               fiatBalance: BigDecimal.zero(),
               isEnabled: false,

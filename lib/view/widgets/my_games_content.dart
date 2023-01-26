@@ -98,6 +98,7 @@ class MyGamesContent extends StatelessWidget {
                           GameItem(
                             key: ValueKey(game.gameId),
                             game: game,
+                            currency: 'USD',
                             gameActions: game.isPromoted
                                 ? const [
                                     GameAction.play,

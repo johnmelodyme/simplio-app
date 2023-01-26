@@ -1,6 +1,4 @@
-import 'dart:io';
-import 'package:simplio_app/data/http/errors/bad_request_http_error.dart';
-import 'package:simplio_app/data/http/errors/internal_server_http_error.dart';
+import 'package:simplio_app/data/http/apis/swap_api.dart';
 import 'package:simplio_app/data/http/services/swap_service.dart';
 import 'package:simplio_app/data/providers/helpers/memory_cache_provider.dart';
 import 'package:sio_big_decimal/sio_big_decimal.dart';
@@ -8,19 +6,19 @@ import 'package:sio_big_decimal/sio_big_decimal.dart';
 const _cacheLifetimeInSeconds = 1800;
 
 class SwapRepository {
-  final SwapService _swapService;
+  final SwapApi _swapApi;
 
   final MemoryCacheProvider<List<SwapRoute>> _swapRoutesCache;
 
   SwapRepository._(
-    this._swapService,
+    this._swapApi,
     this._swapRoutesCache,
   );
 
-  SwapRepository.builder({
-    required SwapService swapService,
+  SwapRepository({
+    required SwapApi swapApi,
   }) : this._(
-          swapService,
+          swapApi,
           MemoryCacheProvider<List<SwapRoute>>.builder(
             lifetimeInSeconds: _cacheLifetimeInSeconds,
             initialData: const [],
@@ -35,25 +33,9 @@ class SwapRepository {
     bool readCache = true,
   ]) async {
     if (readCache && _swapRoutesCache.isValid) return _swapRoutesCache.read();
-
-    final res = await _swapService.getAvailableRoutes();
-    final body = res.body;
-
-    if (res.isSuccessful && body != null) {
-      final swapRoutes = body.map(SwapRoute.fromSwapRouteResponse).toList();
-      _swapRoutesCache.write(swapRoutes);
-      return swapRoutes;
-    }
-
-    if (res.statusCode == HttpStatus.badRequest) {
-      throw BadRequestHttpError.fromObject(res.error);
-    }
-
-    if (res.statusCode == HttpStatus.internalServerError) {
-      throw InternalServerHttpError.fromObject(res.error);
-    }
-
-    throw Exception('Could not load swap routes: ${res.error}');
+    final routes = await _swapApi.loadRoutes();
+    _swapRoutesCache.write(routes);
+    return routes;
   }
 
   Future<SwapConversion> convert({
@@ -63,39 +45,15 @@ class SwapRepository {
     required int sourceAssetPrecision,
     required int targetAssetId,
     required int targetNetworkId,
-  }) async {
-    final res = await _swapService.getSwapParameters(
-      sourceAmount: sourceAmount.toBigInt().toString(),
-      sourceAssetId: sourceAssetId.toString(),
-      sourceNetworkId: sourceNetworkId.toString(),
-      targetAssetId: targetAssetId.toString(),
-      targetNetworkId: targetNetworkId.toString(),
+  }) {
+    return _swapApi.convert(
+      sourceAmount: sourceAmount,
+      sourceAssetId: sourceAssetId,
+      sourceNetworkId: sourceNetworkId,
+      sourceAssetPrecision: sourceAssetPrecision,
+      targetAssetId: targetAssetId,
+      targetNetworkId: targetNetworkId,
     );
-
-    final swapData = res.body;
-    if (res.isSuccessful && swapData != null) {
-      return SwapConversion(
-        withdrawalAmount: BigDecimal.fromBigInt(
-          swapData.targetGuaranteedWithdrawalAmount,
-          precision: sourceAssetPrecision,
-        ),
-        minAmount: BigDecimal.fromBigInt(
-          swapData.sourceMinDepositAmount,
-          precision: sourceAssetPrecision,
-        ),
-        response: swapData,
-      );
-    }
-
-    if (res.statusCode == HttpStatus.badRequest) {
-      throw BadRequestHttpError.fromObject(res.error);
-    }
-
-    if (res.statusCode == HttpStatus.internalServerError) {
-      throw InternalServerHttpError.fromObject(res.error);
-    }
-
-    throw Exception('Could not load active swap parameters: ${res.error}');
   }
 
   Future<bool> startSwap({

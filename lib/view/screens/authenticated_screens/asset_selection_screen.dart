@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/view/mixins/currency_getter_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/asset_wallet_expansion_list.dart';
 import 'package:simplio_app/view/widgets/back_gradient4.dart';
@@ -24,7 +25,7 @@ class AssetSelectionScreenArguments {
   });
 }
 
-class AssetSelectionScreen extends StatelessWidget {
+class AssetSelectionScreen extends StatelessWidget with CurrencyGetter {
   final AssetSelectionScreenArguments arguments;
 
   const AssetSelectionScreen({
@@ -55,12 +56,11 @@ class AssetSelectionScreen extends StatelessWidget {
                 [
                   BlocBuilder<AccountWalletCubit, AccountWalletState>(
                     builder: (context, state) {
-                      final s = state;
-
                       return AssetWalletExpansionList.fromAssetWallets(
+                        currency: getCurrency(context),
                         wallets: _filter(
-                          s is AccountWalletProvided
-                              ? s.wallet.enabled
+                          state is AccountWalletProvided
+                              ? state.wallet.enabled
                               : const [],
                           assetId: arguments.assetId,
                           networkId: arguments.networkId,

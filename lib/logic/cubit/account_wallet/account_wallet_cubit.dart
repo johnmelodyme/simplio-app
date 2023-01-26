@@ -1,33 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simplio_app/data/models/error.dart';
+import 'package:simplio_app/data/models/transaction.dart';
 import 'package:simplio_app/data/models/wallet.dart';
-import 'package:simplio_app/data/repositories/inventory_repository.dart';
-import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
 
 part 'account_wallet_state.dart';
 
 class AccountWalletCubit extends Cubit<AccountWalletState> {
   final WalletRepository _walletRepository;
-  // TODO - remove inventory repository.
-  final InventoryRepository _inventoryRepository;
-  final SwapRepository _swapRepository;
 
   AccountWalletCubit._(
     this._walletRepository,
-    this._inventoryRepository,
-    this._swapRepository,
   ) : super(const AccountWalletInitial());
 
   AccountWalletCubit({
     required WalletRepository walletRepository,
-    required InventoryRepository inventoryRepository,
-    required SwapRepository swapRepository,
-  }) : this._(
-          walletRepository,
-          inventoryRepository,
-          swapRepository,
-        );
+  }) : this._(walletRepository);
 
   Future<void> loadWallet(
     String accountId, {
@@ -36,97 +25,72 @@ class AccountWalletCubit extends Cubit<AccountWalletState> {
     emit(const AccountWalletLoading());
 
     try {
-      final accountWallet = await _walletRepository.loadAccountWallet(
+      final w = await _walletRepository.loadAccountWallet(
         accountId,
         key: key,
       );
 
-      emit(AccountWalletLoaded(wallet: accountWallet));
-    } on Exception catch (e) {
-      emit(AccountWalletLoadedWithError(error: e));
+      emit(AccountWalletLoaded(wallet: w));
+    } on BaseError catch (e) {
+      emit(AccountWalletLoadedWithError(e));
     }
   }
 
   Future<void> enableNetworkWallet({
-    required int assetId,
-    required int networkId,
+    required AssetId assetId,
+    required NetworkId networkId,
   }) async {
     final s = state;
     if (s is! AccountWalletProvided) return;
 
-    _swapRepository.clearSwapRoutesCache();
+    final w = await _walletRepository.enableNetworkWallet(
+      s.wallet,
+      assetId: assetId,
+      networkId: networkId,
+    );
 
-    try {
-      final accountWallet = await _walletRepository.enableNetworkWallet(
-        s.wallet,
-        assetId: assetId,
-        networkId: networkId,
-      );
-
-      emit(AccountWalletChanged(wallet: accountWallet));
-    } on Exception catch (e) {
-      emit(AccountWalletChangedWithError(wallet: s.wallet, error: e));
-    }
+    emit(AccountWalletUpdated(wallet: w));
   }
 
   Future<void> disableNetworkWallet({
-    required int assetId,
-    required int networkId,
+    required AssetId assetId,
+    required NetworkId networkId,
+  }) async {
+    final s = state;
+    if (s is! AccountWalletProvided) return;
+
+    final w = await _walletRepository.disableNetworkWallet(
+      s.wallet,
+      assetId: assetId,
+      networkId: networkId,
+    );
+
+    emit(AccountWalletUpdated(wallet: w));
+  }
+
+  Future<void> updateAccountWalletBalance({
+    required String currency,
   }) async {
     final s = state;
     if (s is! AccountWalletProvided) return;
 
     try {
-      final accountWallet = await _walletRepository.disableNetworkWallet(
+      final w = await _walletRepository.updateAccountWalletBalance(
         s.wallet,
-        assetId: assetId,
-        networkId: networkId,
+        currency: currency,
       );
 
-      emit(AccountWalletChanged(wallet: accountWallet));
-    } on Exception catch (e) {
-      emit(AccountWalletChangedWithError(wallet: s.wallet, error: e));
+      emit(AccountWalletUpdated(wallet: w));
+    } on BaseError catch (e) {
+      emit(AccountWalletUpdatedWithError(e, wallet: s.wallet));
+    } catch (_) {
+      return;
     }
   }
 
-  Future<void> refreshAccountWalletBalance({
-    bool forceUpdate = false,
-  }) async {
-    final s = state;
-    if (s is! AccountWalletProvided) return;
-
-    if (s.wallet.isValid && !forceUpdate) return;
-
-    try {
-      final wallet = await _inventoryRepository.refreshAccountWalletBalance(
-        accountWallet: s.wallet,
-        fiatAssetId: 'USD', // todo: use correct fiat
-      );
-
-      emit(AccountWalletChanged(wallet: wallet));
-    } on Exception catch (e) {
-      emit(AccountWalletChangedWithError(wallet: s.wallet, error: e));
-    }
-  }
-
-  Future<void> refreshNetworkWalletBalance(
-    NetworkWallet networkWallet, {
-    bool forceUpdate = false,
-  }) async {
-    final s = state;
-    if (s is! AccountWalletProvided) return;
-
-    if (s.wallet.isValid && !forceUpdate) return;
-
-    try {
-      final wallet = await _walletRepository.updateNetworkWalletBalance(
-        s.wallet,
-        networkWallet: networkWallet,
-      );
-
-      emit(AccountWalletChanged(wallet: wallet));
-    } on Exception catch (e) {
-      emit(AccountWalletChangedWithError(wallet: s.wallet, error: e));
-    }
+  Future<void> updateNetworkWalletBalance(
+    NetworkWallet networkWallet,
+  ) {
+    throw UnimplementedError();
   }
 }

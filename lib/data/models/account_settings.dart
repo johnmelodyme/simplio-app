@@ -1,39 +1,37 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+const defaultCurrency = 'USD';
 const defaultLocale = Locale('en');
 const defaultThemeMode = ThemeMode.dark;
 
 class AccountSettings extends Equatable {
   final ThemeMode themeMode;
   final Locale locale;
+  final String currency;
 
   const AccountSettings({
-    required this.themeMode,
-    required this.locale,
+    this.themeMode = defaultThemeMode,
+    this.locale = defaultLocale,
+    this.currency = defaultCurrency,
   });
-
-  const AccountSettings.builder({
-    ThemeMode? themeMode,
-    Locale? locale,
-  }) : this(
-          themeMode: themeMode ?? defaultThemeMode,
-          locale: locale ?? defaultLocale,
-        );
 
   @override
   List<Object?> get props => [
         themeMode,
         locale,
+        currency,
       ];
 
   AccountSettings copyWith({
     ThemeMode? themeMode,
     Locale? locale,
+    String? currency,
   }) {
     return AccountSettings(
       themeMode: themeMode ?? this.themeMode,
       locale: locale ?? this.locale,
+      currency: currency ?? this.currency,
     );
   }
 }

@@ -258,8 +258,10 @@ class _OutlinedEarningButton extends OutlinedSioButton {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
+                        // TODO - update with real data.
                         CurrencyText(
-                          value: balance ?? const BigDecimal.zero(),
+                          const BigDecimal.zero(),
+                          currency: 'USD',
                           style: SioTextStyles.bodyL
                               .apply(color: SioColors.whiteBlue)
                               .copyWith(height: 1.0),

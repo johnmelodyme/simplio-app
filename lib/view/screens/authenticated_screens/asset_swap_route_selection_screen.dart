@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/view/mixins/currency_getter_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/asset_wallet_expansion_list.dart';
 import 'package:simplio_app/view/widgets/back_gradient4.dart';
@@ -19,7 +20,8 @@ class AssetSwapRouteSelectionScreenArguments {
   });
 }
 
-class AssetSwapRouteSelectionScreen extends StatelessWidget {
+class AssetSwapRouteSelectionScreen extends StatelessWidget
+    with CurrencyGetter {
   final AssetSwapRouteSelectionScreenArguments arguments;
 
   const AssetSwapRouteSelectionScreen({
@@ -55,6 +57,7 @@ class AssetSwapRouteSelectionScreen extends StatelessWidget {
                       }
 
                       return AssetWalletExpansionList.fromSwapAsset(
+                        currency: getCurrency(context),
                         accountWallet: state.wallet,
                         assets: arguments.routes.map((e) => e.targetAsset),
                         onTap: (value) {

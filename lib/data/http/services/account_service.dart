@@ -46,7 +46,7 @@ class AccountProfileResponse {
 
   final String email;
   final String? phone;
-  final List<AccountWallet>? wallets;
+  final List<AccountWalletResponse>? wallets;
 
   AccountProfileResponse(
       {required this.accountId,
@@ -73,20 +73,21 @@ class AccountProfileResponse {
   Map<String, dynamic> toJson() => _$AccountProfileResponseToJson(this);
 }
 
+// TODO - do not name object as domains models!
 @JsonSerializable()
-class AccountWallet {
+class AccountWalletResponse {
   final String walletAddress;
   final int networkId;
   final List<int> assets;
 
-  AccountWallet({
+  AccountWalletResponse({
     required this.walletAddress,
     required this.networkId,
     required this.assets,
   });
 
-  factory AccountWallet.fromJson(Map<String, dynamic> json) =>
-      _$AccountWalletFromJson(json);
+  factory AccountWalletResponse.fromJson(Map<String, dynamic> json) =>
+      _$AccountWalletResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AccountWalletToJson(this);
+  Map<String, dynamic> toJson() => _$AccountWalletResponseToJson(this);
 }

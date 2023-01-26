@@ -13,7 +13,7 @@ class TotalBalanceOverview extends StatelessWidget {
   const TotalBalanceOverview({
     super.key,
     this.balance = const BigDecimal.zero(),
-    this.currency = 'USD',
+    required this.currency,
   });
 
   @override
@@ -46,8 +46,9 @@ class TotalBalanceOverview extends StatelessWidget {
               ),
               Gaps.gap5,
               CurrencyText(
-                value: balance,
+                balance,
                 currency: currency,
+                precision: 2,
                 style: SioTextStyles.h1.apply(
                   color: SioColors.mentolGreen,
                 ),

@@ -234,4 +234,5 @@ class Constants {
   static const slidableBannerSwapItemAnimationTimeTimeMillis = 500;
 
   static const Duration searchDebounceDuration = Duration(milliseconds: 500);
+  static const updateBalanceThresholdDuration = Duration(seconds: 120);
 }

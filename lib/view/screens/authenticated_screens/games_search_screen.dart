@@ -119,6 +119,7 @@ class _GamesSearchScreenState extends State<GamesSearchScreen>
                         padding: Paddings.horizontal16,
                         child: GameItem(
                           game: game,
+                          currency: 'USD',
                           gameActions: game.isPromoted
                               ? [
                                   GameAction.play,

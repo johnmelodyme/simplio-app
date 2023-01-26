@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
 import 'package:simplio_app/view/themes/sio_colors_light.dart';
 
+// TODO - @TomasPetrik - refactor logic to define a dark mode. Do not use global variables.
 bool? isAuthenticated;
 ThemeMode? globalThemeMode;
 

@@ -1,103 +1,106 @@
 import 'package:simplio_app/data/models/helpers/lockable.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 import 'package:simplio_app/data/providers/entities/wallet_entity.dart';
-import 'package:simplio_app/data/providers/helpers/mapper.dart';
 import 'package:sio_big_decimal/sio_big_decimal.dart';
 
-class AccountWalletMapper extends Mapper<AccountWallet, AccountWalletEntity> {
-  final AssetWalletMapper _assetWalletMapper = AssetWalletMapper();
+extension AccountWalletMapperExtension on AccountWallet {
+  AccountWalletEntity toEntity() {
+    return AccountWalletEntity(
+      uuid: uuid,
+      accountId: accountId,
+      updatedAt: updatedAt,
+      mnemonic: mnemonic.toString(),
+      isBackedUp: mnemonic.isBackedUp,
+      isImported: mnemonic.isImported,
+      walletType: walletType.index,
+      wallets: wallets.map((a) => a.toEntity()).toList(),
+    );
+  }
+}
 
-  @override
-  AccountWallet mapFrom(AccountWalletEntity entity) {
+extension AssetWalletMapperExtension on AssetWallet {
+  AssetWalletEntity toEntity() {
+    return AssetWalletEntity(
+      uuid: uuid,
+      assetId: assetId,
+      wallets: wallets.map((n) => n.toEntity()).toList(),
+    );
+  }
+}
+
+extension NetworkWalletMapperExtension on NetworkWallet {
+  NetworkWalletEntity toEntity() {
+    return NetworkWalletEntity(
+      uuid: uuid,
+      assetId: assetId,
+      networkId: networkId,
+      walletAddress: walletAddress,
+      cryptoBalance: cryptoBalance.toBigInt(),
+      fiatBalance: fiatBalance.toBigInt(),
+      isEnabled: isEnabled,
+    );
+  }
+}
+
+extension AccountWalletEntityMapperExtension on AccountWalletEntity {
+  AccountWallet toModel() {
     return AccountWallet(
-      entity.uuid,
-      entity.accountId,
-      entity.updatedAt,
+      uuid,
+      accountId,
+      updatedAt,
       LockableMnemonic.locked(
-        base64Mnemonic: entity.mnemonic,
-        isImported: entity.isImported,
-        isBackedUp: entity.isBackedUp,
+        base64Mnemonic: mnemonic,
+        isImported: isImported,
+        isBackedUp: isBackedUp,
       ),
-      AccountWalletTypes.values[entity.walletType],
-      Map.fromEntries(entity.wallets.map(
+      AccountWalletTypes.values[walletType],
+      Map.fromEntries(wallets.map(
         (e) => MapEntry(
           e.assetId,
-          _assetWalletMapper.mapFrom(e),
+          e.toModel(),
         ),
       )),
     );
   }
-
-  @override
-  AccountWalletEntity mapTo(AccountWallet data) {
-    return AccountWalletEntity(
-      uuid: data.uuid,
-      accountId: data.accountId,
-      updatedAt: data.updatedAt,
-      mnemonic: data.mnemonic.toString(),
-      isBackedUp: data.mnemonic.isBackedUp,
-      isImported: data.mnemonic.isImported,
-      walletType: data.walletType.index,
-      wallets: data.wallets.map(_assetWalletMapper.mapTo).toList(),
-    );
-  }
 }
 
-class AssetWalletMapper extends Mapper<AssetWallet, AssetWalletEntity> {
-  final NetworkWalletMapper _networkWalletMapper = NetworkWalletMapper();
-
-  @override
-  AssetWallet mapFrom(AssetWalletEntity entity) {
+extension AssetWalletEntityMapperExtension on AssetWalletEntity {
+  AssetWallet toModel() {
     return AssetWallet(
-      entity.uuid,
-      entity.assetId,
-      Map.fromEntries(entity.wallets.map(
+      uuid,
+      assetId,
+      Map.fromEntries(wallets.map(
         (e) => MapEntry(
           e.networkId,
-          _networkWalletMapper.mapFrom(e),
+          e.toModel(),
         ),
       )),
     );
   }
-
-  @override
-  AssetWalletEntity mapTo(AssetWallet data) {
-    return AssetWalletEntity(
-      uuid: data.uuid,
-      assetId: data.assetId,
-      wallets: data.wallets.map(_networkWalletMapper.mapTo).toList(),
-    );
-  }
 }
 
-class NetworkWalletMapper extends Mapper<NetworkWallet, NetworkWalletEntity> {
-  @override
-  NetworkWallet mapFrom(NetworkWalletEntity entity) {
-    return NetworkWallet(
-      uuid: entity.uuid,
-      assetId: entity.assetId,
-      networkId: entity.networkId,
-      address: entity.address,
-      cryptoBalance: BigDecimal.fromBigInt(entity.cryptoBalance),
-      fiatBalance: BigDecimal.fromBigInt(entity.fiatBalance),
-      isEnabled: entity.isEnabled,
-      preset: NetworkWallet.makePreset(
-        assetId: entity.assetId,
-        networkId: entity.networkId,
-      ),
+extension NetworkWalletEntityMapperExtension on NetworkWalletEntity {
+  NetworkWallet toModel() {
+    final preset = NetworkWallet.makePreset(
+      assetId: assetId,
+      networkId: networkId,
     );
-  }
 
-  @override
-  NetworkWalletEntity mapTo(NetworkWallet data) {
-    return NetworkWalletEntity(
-      uuid: data.uuid,
-      assetId: data.assetId,
-      networkId: data.networkId,
-      address: data.address,
-      cryptoBalance: data.cryptoBalance.toBigInt(),
-      fiatBalance: data.fiatBalance.toBigInt(),
-      isEnabled: data.isEnabled,
+    return NetworkWallet(
+      uuid: uuid,
+      assetId: assetId,
+      networkId: networkId,
+      walletAddress: walletAddress,
+      cryptoBalance: BigDecimal.fromBigInt(
+        cryptoBalance,
+        precision: preset.decimalPlaces,
+      ),
+      fiatBalance: BigDecimal.fromBigInt(
+        fiatBalance,
+        precision: preset.decimalPlaces,
+      ),
+      isEnabled: isEnabled,
+      preset: preset,
     );
   }
 }

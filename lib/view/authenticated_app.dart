@@ -6,9 +6,7 @@ import 'package:simplio_app/data/models/account.dart';
 import 'package:simplio_app/data/models/account_settings.dart';
 import 'package:simplio_app/data/repositories/account_repository.dart';
 import 'package:simplio_app/data/repositories/fee_repository.dart';
-import 'package:simplio_app/data/repositories/inventory_repository.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
-import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/data/repositories/wallet_connect_repository.dart';
 import 'package:simplio_app/data/repositories/interfaces/wallet_repository.dart';
@@ -47,9 +45,6 @@ class AuthenticatedApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AccountWalletCubit(
             walletRepository: RepositoryProvider.of<WalletRepository>(context),
-            inventoryRepository:
-                RepositoryProvider.of<InventoryRepository>(context),
-            swapRepository: RepositoryProvider.of<SwapRepository>(context),
           ),
         ),
         BlocProvider(
@@ -138,7 +133,7 @@ class AuthenticatedApp extends StatelessWidget {
     final s = context.read<AccountCubit>().state;
     return s is AccountProvided
         ? s.account.settings.locale
-        : const AccountSettings.builder().locale;
+        : const AccountSettings().locale;
   }
 
   ThemeMode _setThemeMode(BuildContext context) {
@@ -150,14 +145,31 @@ class AuthenticatedApp extends StatelessWidget {
       _setSystemUIOverlayStyle(s.account.settings.themeMode);
       themeMode = s.account.settings.themeMode;
     } else {
-      themeMode = const AccountSettings.builder().themeMode;
+      themeMode = const AccountSettings().themeMode;
     }
 
     globalThemeMode = themeMode;
     return themeMode;
   }
 
-  void init() {
+  void init(BuildContext context) {
+    precacheImage(
+      Image.asset('assets/images/simpliona_dapps.png').image,
+      context,
+    );
+    precacheImage(
+      Image.asset('assets/images/find_dapps_coming_soon.png').image,
+      context,
+    );
+    precacheImage(
+      Image.asset('assets/images/blue_ring.png').image,
+      context,
+    );
+    precacheImage(
+      Image.asset('assets/images/empty_transactions_placeholder.png').image,
+      context,
+    );
+
     TrustWalletCoreLib.init();
   }
 }

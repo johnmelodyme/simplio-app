@@ -1,39 +1,23 @@
-import 'dart:io';
-import 'dart:math';
 import 'package:collection/collection.dart';
-import 'package:simplio_app/data/http/errors/bad_request_http_error.dart';
+import 'package:simplio_app/data/http/apis/marketplace_api.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
-import 'package:simplio_app/view/themes/constants.dart';
 
 class MarketplaceRepository {
-  final MarketplaceService _marketplaceService;
+  final MarketplaceApi _marketplaceApi;
   final Map<int, List<Game>> _gamesPages = {};
 
   MarketplaceRepository._(
-    this._marketplaceService,
+    this._marketplaceApi,
   );
 
-  MarketplaceRepository.builder({
-    required MarketplaceService marketplaceService,
-  }) : this._(marketplaceService);
+  MarketplaceRepository({
+    required MarketplaceApi marketplaceApi,
+  }) : this._(marketplaceApi);
 
   Future<List<Asset>> assetSearch(
-      SearchAssetsRequest? searchAssetsRequest) async {
-    final response = await _marketplaceService.assetSearch(
-      searchAssetsRequest ??
-          const SearchAssetsRequest(
-            page: 1,
-            pageSize: 10,
-            currency: 'USD', // todo: use correct fiat
-            name: '', categories: [],
-          ),
-    );
-
-    if (response.isSuccessful && response.body != null) {
-      return response.body!.items;
-    }
-
-    throw Exception("Could not search games");
+    SearchAssetsRequest? searchAssetsRequest,
+  ) {
+    return _marketplaceApi.searchAsset(searchAssetsRequest);
   }
 
   Game getGameById(int gameId) {
@@ -50,35 +34,24 @@ class MarketplaceRepository {
   Future<List<Game>> loadMyGames({
     required List<int> games,
     required String currency,
-  }) async {
-    final response = await _marketplaceService.games(games.join(','), currency);
-
-    if (response.isSuccessful && response.body != null) {
-      return response.body!.items;
-    }
-
-    throw Exception("Could not search games");
+  }) {
+    return _marketplaceApi.loadMyGames(games: games, currency: currency);
   }
 
-  Future<List<Game>> gameSearch(SearchGamesRequest searchGamesRequest) async {
-    final response = await _marketplaceService.gameSearch(searchGamesRequest);
+  Future<List<Game>> searchGame(
+    SearchGamesRequest searchGamesRequest,
+  ) async {
+    final res = await _marketplaceApi.searchGame(searchGamesRequest);
+    _gamesPages[searchGamesRequest.page] = res;
 
-    if (response.isSuccessful && response.body != null) {
-      _gamesPages[searchGamesRequest.page] = response.body!.items;
-      return response.body!.items;
-    }
-
-    throw Exception("Could not search games");
+    return res;
   }
 
-  Future<GameDetail> getGameDetail(String gameId, String currency) async {
-    final response = await _marketplaceService.getGameDetail(gameId, currency);
-    final gameDetail = response.body;
-    if (response.isSuccessful && gameDetail != null) {
-      return gameDetail;
-    }
-
-    throw Exception("Could not load game detail");
+  Future<GameDetail> getGameDetail(
+    String gameId,
+    String currency,
+  ) {
+    return _marketplaceApi.getGameDetail(gameId, currency);
   }
 
   Future<SearchNftResponse> searchNft({
@@ -87,29 +60,13 @@ class MarketplaceRepository {
     String name = '',
     List<int> categories = const [],
     String sort = '',
-  }) async {
-    try {
-      final res = await _marketplaceService.searchNft(SearchNftBody(
-        page: max(page, 1),
-        pageSize: Constants.pageSizeGames,
-        currency: currency,
-        categories: categories,
-        name: name,
-        sort: sort,
-      ));
-
-      final body = res.body;
-      if (res.isSuccessful && body != null) {
-        return body;
-      }
-
-      if (res.statusCode == HttpStatus.badRequest) {
-        throw BadRequestHttpError.fromObject(res.error);
-      }
-
-      throw Exception('Could not search nft: ${res.error}');
-    } catch (e) {
-      throw Exception('searching nft has failed');
-    }
+  }) {
+    return _marketplaceApi.searchNft(
+      page: page,
+      currency: currency,
+      name: name,
+      categories: categories,
+      sort: sort,
+    );
   }
 }

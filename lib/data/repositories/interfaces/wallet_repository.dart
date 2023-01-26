@@ -1,3 +1,4 @@
+import 'package:simplio_app/data/models/transaction.dart';
 import 'package:simplio_app/data/models/wallet.dart';
 
 abstract class WalletRepository
@@ -7,6 +8,7 @@ abstract class WalletRepository
         MnemonicGetter,
         NetworkWalletEnablerDisabler,
         NetworkWalletAddressGetter,
+        WalletInventoryUpdater,
         BalanceUpdater,
         TransactionSigner,
         MessageSigner,
@@ -67,16 +69,10 @@ abstract class NetworkWalletAddressGetter {
     String accountWalletId, {
     required NetworkId networkId,
   });
-
-  String getTokenAddress(
-    String accountWalletId, {
-    required AssetId assetId,
-    required NetworkId networkId,
-  });
 }
 
 abstract class TransactionSigner {
-  Future<WalletTransaction> signTransaction(
+  Future<BroadcastTransaction> signTransaction(
     String accountWalletId, {
     required NetworkId networkId,
     required String toAddress,
@@ -91,7 +87,7 @@ abstract class TransactionSigner {
     String? data,
   });
 
-  Future<WalletTransaction?> signEthereumTransaction(
+  Future<BroadcastTransaction?> signEthereumTransaction(
     String accountWalletId, {
     required NetworkId networkId,
     required BigInt amount,
@@ -125,38 +121,24 @@ abstract class MessageSigner {
 
 abstract class TransactionBroadcaster {
   Future<String> broadcastTransaction(
-    WalletTransaction transaction,
+    BroadcastTransaction transaction,
   );
 }
 
 abstract class BalanceUpdater {
   Future<AccountWallet> updateAccountWalletBalance(
     AccountWallet accountWallet, {
-    bool save = true,
-  });
-
-  Future<AccountWallet> updateAssetWalletBalance(
-    AccountWallet accountWallet, {
-    required AssetWallet assetWallet,
-    bool save = true,
-  });
-
-  Future<AccountWallet> updateNetworkWalletBalance(
-    AccountWallet accountWallet, {
-    required NetworkWallet networkWallet,
-    bool save = true,
+    required String currency,
   });
 }
 
-// TODO - this should be moved to a separate file.
-class WalletTransaction {
-  final NetworkId networkId;
-  String rawTx;
-  final BigInt networkFee;
+abstract class WalletInventoryUpdater {
+  Future<AccountWallet> updateAccountWalletInventory(
+    AccountWallet accountWallet,
+  );
 
-  WalletTransaction({
-    required this.networkId,
-    required this.rawTx,
-    required this.networkFee,
+  Future<AccountWallet> updateNetworkWalletInventory(
+    AccountWallet accountWallet, {
+    required NetworkWallet networkWallet,
   });
 }

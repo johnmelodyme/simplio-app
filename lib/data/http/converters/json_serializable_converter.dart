@@ -11,7 +11,12 @@ typedef FactoryConvertMap = Map<Type, JsonFactory>;
 class JsonSerializableConverter extends JsonConverter {
   final FactoryConvertMap factories;
 
-  const JsonSerializableConverter(this.factories);
+  const JsonSerializableConverter._(this.factories);
+
+  JsonSerializableConverter(Iterable<FactoryConvertMap> maps)
+      : this._(
+          maps.fold<FactoryConvertMap>({}, (prev, next) => prev..addAll(next)),
+        );
 
   T? _decodeMap<T>(Map<String, dynamic> values) {
     final jsonFactory = factories[T];

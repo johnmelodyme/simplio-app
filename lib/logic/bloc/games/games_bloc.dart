@@ -43,7 +43,7 @@ class GamesBloc extends Bloc<GameBlocEvent, GamesState> {
     emitSafely(emit, GamesLoadingState());
 
     try {
-      List<Game> games = await marketplaceRepository.gameSearch(
+      List<Game> games = await marketplaceRepository.searchGame(
         SearchGamesRequest(
           page: event.page,
           pageSize: Constants.pageSizeGames,

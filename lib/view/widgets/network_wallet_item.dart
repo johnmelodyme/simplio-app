@@ -6,16 +6,17 @@ import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/widgets/avatar_with_shadow.dart';
 import 'package:simplio_app/view/widgets/text/currency_text.dart';
-import 'package:sio_big_decimal/sio_big_decimal.dart';
 
 class NetworkWalletItem extends StatelessWidget {
   final NetworkWallet wallet;
+  final String currency;
   final AssetStyle? assetStyle;
   final VoidCallback? onTap;
 
   const NetworkWalletItem({
     super.key,
     required this.wallet,
+    required this.currency,
     this.assetStyle,
     this.onTap,
   });
@@ -76,13 +77,14 @@ class NetworkWalletItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  // TODO - replace with real balance
-                  const CurrencyText(
-                    value: BigDecimal.zero(),
+                  CurrencyText(
+                    wallet.cryptoBalance,
+                    precision: 8,
                   ),
                   CurrencyText(
-                    value: const BigDecimal.zero(),
-                    currency: 'USD',
+                    wallet.fiatBalance,
+                    precision: 2,
+                    currency: currency,
                     style: SioTextStyles.bodyS.copyWith(
                       color: SioColors.mentolGreen,
                     ),
