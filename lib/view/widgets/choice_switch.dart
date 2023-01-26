@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 
+// TODO - delete this widget as it is not used anywhere.
 class SwitchWidget {
   const SwitchWidget({
     required this.gradient,

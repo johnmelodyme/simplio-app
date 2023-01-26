@@ -99,10 +99,12 @@ class AssetWalletFormItem extends StatelessWidget {
                         children: [
                           CurrencyText(
                             cryptoBalance,
+                            precision: 8,
                           ),
                           CurrencyText(
                             fiatBalance,
                             currency: currency,
+                            precision: 2,
                             style: SioTextStyles.bodyS.copyWith(
                               color: SioColors.mentolGreen,
                             ),

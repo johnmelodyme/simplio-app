@@ -2,16 +2,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
-import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
-import 'package:simplio_app/logic/bloc/asset_swap_form/asset_swap_form_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
-import 'package:simplio_app/view/routers/authenticated_routes/gameplay_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/widgets/back_gradient4.dart';
-import 'package:simplio_app/view/widgets/coin_details_menu.dart';
+import 'package:simplio_app/view/widgets/scrollable_bottom_panel.dart';
+import 'package:simplio_app/view/widgets/button/bottom_panel_button.dart';
 import 'package:simplio_app/view/widgets/colorized_app_bar.dart' as app_bar;
 import 'package:simplio_app/view/widgets/game_detail_balance.dart';
 import 'package:simplio_app/view/widgets/game_detail_info.dart';
@@ -19,8 +16,8 @@ import 'package:simplio_app/view/widgets/game_detail_socials.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:simplio_app/view/widgets/sio_expandable_text.dart';
 import 'package:simplio_app/view/widgets/slidable_game_images.dart';
+import 'package:sio_glyphs/sio_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:simplio_app/view/routers/authenticated_routes/asset_swap_form_route.dart';
 
 class GameDetailScreen extends StatelessWidget {
   const GameDetailScreen({
@@ -52,9 +49,9 @@ class GameDetailScreen extends StatelessWidget {
     final bottomGap = MediaQuery.of(context).viewPadding.bottom +
         Constants.coinsBottomTabBarHeight;
 
-    final Game game = cubit.getGameById(int.parse(gameId));
-    final String assetId = game.assetEmbedded.assetId.toString();
-    final String networkId = game.assetEmbedded.networkId.toString();
+    // final Game game = cubit.getGameById(int.parse(gameId));
+    // final String assetId = game.assetEmbedded.assetId.toString();
+    // final String networkId = game.assetEmbedded.networkId.toString();
 
     return Scaffold(
       body: Stack(
@@ -157,33 +154,25 @@ class GameDetailScreen extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: CoinDetailsMenu(
-              allowedActions: const [ActionType.play, ActionType.swap],
-              onActionCallback: (actionType) async {
-                switch (actionType) {
-                  case ActionType.play:
-                    GoRouter.of(context).pushNamed(
-                      GameplayRoute.name,
-                      extra: game,
-                    );
-                    break;
-                  case ActionType.buyCoin:
-                    // TODO - add buy coin when ready.
-                    break;
-                  // TODO - check if a user has a wallet for this network. If not, hide the swap button.
-                  case ActionType.swap:
-                    return GoRouter.of(context).pushNamed(
-                      AssetSwapFormRoute.name,
-                      extra: RoutesLoaded(
-                        assetId: int.parse(assetId),
-                        networkId: int.parse(networkId),
-                      ),
-                    );
-                  default:
-                    break;
-                }
-              },
-            ),
+            child: ScrollableBottomPanel(children: [
+              BottomPanelButton(
+                label: context.locale.coin_menu_play,
+                icon: SioIcons.play,
+                onTap: () {},
+              ),
+              BottomPanelButton(
+                label: context.locale.coin_menu_buy_coin,
+                icon: SioIcons.basket,
+              ),
+              BottomPanelButton(
+                label: context.locale.coin_menu_exchange,
+                icon: SioIcons.swap,
+              ),
+              BottomPanelButton(
+                label: context.locale.coin_menu_earn,
+                icon: SioIcons.north_east,
+              ),
+            ]),
           ),
         ],
       ),
