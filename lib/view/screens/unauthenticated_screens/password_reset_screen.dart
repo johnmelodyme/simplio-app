@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/cubit/password_reset_form/password_reset_form_cubit.dart';
 import 'package:simplio_app/view/decorations/underlined_text_form_field_decoration.dart';
-import 'package:simplio_app/view/mixins/popup_dialog_mixin.dart';
+import 'package:simplio_app/view/dialogs/dialog_content.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
+import 'package:simplio_app/view/mixins/snackbar_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
-import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/sio_text_form_field.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
+class PasswordResetScreen extends StatelessWidget with SnackBarMixin {
   const PasswordResetScreen({Key? key}) : super(key: key);
 
   @override
@@ -40,24 +41,29 @@ class PasswordResetScreen extends StatelessWidget with PopupDialogMixin {
                   listener: (context, state) {
                     final response = state.response;
                     if (response is PasswordResetFormSuccess) {
-                      showPopup(
+                      showSnackBar(
                         context,
-                        message: response.resend
-                            ? context.locale.password_reset_screen_link_resent(
-                                state.email.value)
-                            : context.locale.password_reset_screen_link_sent(
-                                state.email.value),
-                        icon: Icon(
-                          SioIcons.verified,
-                          size: 50,
-                          color: SioColors.softBlack,
+                        content: DialogContent.regular(
+                          message: response.resend
+                              ? context.locale
+                                  .password_reset_screen_link_resent(
+                                      state.email.value)
+                              : context.locale.password_reset_screen_link_sent(
+                                  state.email.value),
+                          icon: Icon(
+                            SioIcons.verified,
+                            size: 50,
+                            color: SioColors.softBlack,
+                          ),
                         ),
                       );
                     }
                     if (response is PasswordResetFormFailure) {
-                      showError(
+                      showSnackBar(
                         context,
-                        message: response.exception.toString(),
+                        content: DialogContent.error(
+                          message: response.exception.toString(),
+                        ),
                       );
                     }
                   },

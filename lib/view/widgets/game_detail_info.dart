@@ -6,8 +6,9 @@ import 'package:simplio_app/data/repositories/user_repository.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/my_games_bloc.dart';
+import 'package:simplio_app/view/dialogs/dialog_content.dart';
 import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
-import 'package:simplio_app/view/mixins/popup_dialog_mixin.dart';
+import 'package:simplio_app/view/mixins/snackbar_mixin.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors.dart';
@@ -17,7 +18,7 @@ import 'package:simplio_app/view/widgets/button/outlined_sio_button.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
+class GameDetailInfo extends StatelessWidget with SnackBarMixin {
   const GameDetailInfo({
     required this.gameDetail,
   }) : super(key: const Key('game-detail-info'));
@@ -74,15 +75,17 @@ class GameDetailInfo extends StatelessWidget with PopupDialogMixin {
                 listener: (context, state) {
                   if (state is GameDetailIsAddedState && state.wasUpdated) {
                     final isAdded = state.isAdded!;
-                    showPopup(
+                    showSnackBar(
                       context,
-                      message: isAdded
-                          ? context.locale.game_detail_screen_game_added
-                          : context.locale.game_detail_screen_game_removed,
-                      icon: Image.asset(
-                        'assets/icon/simpliona_icon.png',
-                        height: 50,
-                        width: 50,
+                      content: DialogContent.regular(
+                        message: isAdded
+                            ? context.locale.game_detail_screen_game_added
+                            : context.locale.game_detail_screen_game_removed,
+                        icon: Image.asset(
+                          'assets/icon/simpliona_icon.png',
+                          height: 50,
+                          width: 50,
+                        ),
                       ),
                     );
 

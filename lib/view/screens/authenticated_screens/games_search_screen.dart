@@ -5,11 +5,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:simplio_app/data/http/services/marketplace_service.dart';
 import 'package:simplio_app/data/repositories/marketplace_repository.dart';
 import 'package:simplio_app/data/repositories/user_repository.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/games/game_bloc_event.dart';
 import 'package:simplio_app/logic/bloc/games/games_bloc.dart';
 import 'package:simplio_app/logic/bloc/games/games_search_bloc.dart';
-import 'package:simplio_app/view/mixins/popup_dialog_mixin.dart';
+import 'package:simplio_app/view/dialogs/dialog_content.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
+import 'package:simplio_app/view/mixins/snackbar_mixin.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/game_detail_route.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/gameplay_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
@@ -26,7 +27,7 @@ class GamesSearchScreen extends StatefulWidget {
 }
 
 class _GamesSearchScreenState extends State<GamesSearchScreen>
-    with PopupDialogMixin {
+    with SnackBarMixin {
   late TextEditingController searchController = TextEditingController();
   late GamesSearchBloc bloc;
   late bool addedPageRequestLister;
@@ -76,15 +77,18 @@ class _GamesSearchScreenState extends State<GamesSearchScreen>
 
               if (state is GameDetailIsAddedState && state.wasUpdated) {
                 final isAdded = state.isAdded!;
-                showPopup(
+
+                showSnackBar(
                   context,
-                  message: isAdded
-                      ? context.locale.game_detail_screen_game_added
-                      : context.locale.game_detail_screen_game_removed,
-                  icon: Image.asset(
-                    'assets/icon/simpliona_icon.png',
-                    height: 50,
-                    width: 50,
+                  content: DialogContent.regular(
+                    message: isAdded
+                        ? context.locale.game_detail_screen_game_added
+                        : context.locale.game_detail_screen_game_removed,
+                    icon: Image.asset(
+                      'assets/icon/simpliona_icon.png',
+                      height: 50,
+                      width: 50,
+                    ),
                   ),
                 );
               }

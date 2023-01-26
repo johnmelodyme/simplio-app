@@ -9,7 +9,7 @@ import 'package:simplio_app/logic/bloc/crypto_asset/crypto_asset_bloc_event.dart
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
 import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
 import 'package:simplio_app/view/themes/constants.dart';
-import 'package:simplio_app/view/widgets/asset_confirmation.dart';
+import 'package:simplio_app/view/dialogs/asset_confirmation_dialog.dart';
 import 'package:simplio_app/view/widgets/asset_search_item.dart';
 import 'package:simplio_app/view/widgets/crypto_asset_expansion_list.dart';
 import 'package:simplio_app/view/widgets/list_loading.dart';
@@ -186,7 +186,7 @@ class _DiscoverCoinsContentState extends State<DiscoverCoinsContent> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return AssetConfirmation(
+        return AssetConfirmationDialog(
           dialogType: assetAction == AssetAction.remove
               ? DialogType.removeAsset
               : DialogType.createAsset,

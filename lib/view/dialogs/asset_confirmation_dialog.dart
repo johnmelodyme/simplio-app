@@ -10,8 +10,8 @@ import 'package:sio_glyphs/sio_icons.dart';
 
 enum DialogType { createAsset, removeAsset, cancelEarning, disconnectDapp }
 
-class AssetConfirmation extends StatelessWidget {
-  const AssetConfirmation({
+class AssetConfirmationDialog extends StatelessWidget {
+  const AssetConfirmationDialog({
     super.key,
     required this.dialogType,
   });

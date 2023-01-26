@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/sign_up_form/sign_up_form_cubit.dart';
 import 'package:simplio_app/view/decorations/underlined_text_form_field_decoration.dart';
-import 'package:simplio_app/view/mixins/popup_dialog_mixin.dart';
+import 'package:simplio_app/view/dialogs/dialog_content.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
+import 'package:simplio_app/view/mixins/snackbar_mixin.dart';
 import 'package:simplio_app/view/routers/unauthenticated_routes/sign_in_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
 import 'package:simplio_app/view/themes/sio_colors_dark.dart';
-import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/button/highlighted_elevated_button.dart';
+import 'package:simplio_app/view/widgets/colorized_app_bar.dart';
 import 'package:simplio_app/view/widgets/password_rules_row.dart';
 import 'package:simplio_app/view/widgets/password_text_field.dart';
 import 'package:simplio_app/view/widgets/sio_scaffold.dart';
 import 'package:simplio_app/view/widgets/sio_text_form_field.dart';
 import 'package:sio_glyphs/sio_icons.dart';
 
-class SignUpScreen extends StatelessWidget with PopupDialogMixin {
+class SignUpScreen extends StatelessWidget with SnackBarMixin {
   SignUpScreen({super.key});
 
   final _formKey = GlobalKey<FormState>(debugLabel: 'GlobalFormKey SignUp');
@@ -168,9 +169,12 @@ class SignUpScreen extends StatelessWidget with PopupDialogMixin {
                           }
 
                           if (r is SignUpFormFailure) {
-                            showError(context,
-                                message:
-                                    state.response!.props.first.toString());
+                            showSnackBar(
+                              context,
+                              content: DialogContent.error(
+                                message: state.response!.props.first.toString(),
+                              ),
+                            );
                           }
                         },
                         builder: (context, state) {

@@ -390,6 +390,22 @@
         }
     },
 
+    "coin_detail_screen_asset_removed": "“{assetName} wallet removed from your Inventory”",
+    "@coin_detail_screen_asset_removed" : {
+        "description" : "Last week increment",
+        "placeholders": {
+            "assetName": {}
+        }
+    },
+
+    "coin_detail_screen_asset_added": "“{assetName} wallet added to your Inventory”",
+    "@coin_detail_screen_asset_added" : {
+        "description" : "Last week increment",
+        "placeholders": {
+            "assetName": {}
+        }
+    },
+
     "coin_menu_play": "Play",
     "coin_menu_buy" : "Buy",
     "coin_menu_buy_coin" : "Buy coin",
