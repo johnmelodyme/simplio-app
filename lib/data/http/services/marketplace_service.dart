@@ -176,7 +176,7 @@ enum Release { alpha, beta, live, playToEarn, preSale }
 
 enum Genre { action, adventure, arcade }
 
-enum Category { airdrops, freeToPlay, nftIncluded, playToEarn }
+enum GameCategory { airdrops, freeToPlay, nftIncluded, playToEarn }
 
 enum SortType { trending, latest, desc }
 

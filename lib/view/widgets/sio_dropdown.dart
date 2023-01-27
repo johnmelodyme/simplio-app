@@ -91,7 +91,7 @@ class _SioDropdown extends State<SioDropdown> {
                 widget.itemSelectedCallback(e.key);
                 overlayEntry.remove();
               } else {
-                Overlay.of(context)?.insert(overlayEntry);
+                Overlay.of(context).insert(overlayEntry);
               }
             },
             child: Container(
@@ -114,7 +114,7 @@ class _SioDropdown extends State<SioDropdown> {
           if (overlayEntry.mounted) {
             overlayEntry.remove();
           } else {
-            Overlay.of(context)?.insert(overlayEntry);
+            Overlay.of(context).insert(overlayEntry);
           }
         },
         child: Container(
@@ -141,13 +141,13 @@ class _SioDropdown extends State<SioDropdown> {
 
                   Future.delayed(const Duration(milliseconds: 50), () {
                     overlayEntry.remove();
-                    Overlay.of(context)?.insert(overlayEntry);
+                    Overlay.of(context).insert(overlayEntry);
                   });
 
                   Future.delayed(const Duration(milliseconds: 300),
                       () => overlayEntry.remove());
                 } else {
-                  Overlay.of(context)?.insert(overlayEntry);
+                  Overlay.of(context).insert(overlayEntry);
                 }
               },
               child: Stack(
@@ -203,8 +203,8 @@ class _SioDropdown extends State<SioDropdown> {
       link: layerLink,
       child: GestureDetector(
         onTap: () {
-          if (Overlay.of(context) == null || !Overlay.of(context)!.mounted) {
-            Overlay.of(context)!.insert(overlayEntry);
+          if (!Overlay.of(context).mounted) {
+            Overlay.of(context).insert(overlayEntry);
           }
         },
         child: Stack(children: [

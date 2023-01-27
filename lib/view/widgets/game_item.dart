@@ -152,8 +152,8 @@ class GameItem extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              context.locale
-                                  .common_games_categories(game.category),
+                              context.locale.common_games_categories(
+                                  GameCategory.values[game.category].name),
                               style: SioTextStyles.bodyL.apply(
                                 color: SioColors.secondary7,
                               ),

@@ -57,8 +57,9 @@ class GameDetailInfo extends StatelessWidget with SnackBarMixin {
                       ),
                       Gaps.gap5,
                       Text(
-                        context.locale
-                            .common_games_categories(gameDetail.category),
+                        context.locale.common_games_categories(
+                          GameCategory.values[gameDetail.category].name,
+                        ),
                         style: SioTextStyles.bodyPrimary.copyWith(
                           color: SioColors.secondary7,
                         ),

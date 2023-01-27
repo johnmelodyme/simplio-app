@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/wallet_connect/wallet_connect_cubit.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/configuration_security_route.dart';
 import 'package:simplio_app/view/themes/constants.dart';
 import 'package:simplio_app/view/themes/simplio_text_styles.dart';
@@ -94,7 +94,8 @@ class ConfigurationScreen extends StatelessWidget {
                   children: [
                     Text(
                         context.locale.common_configuration_dark_mode(
-                            globalThemeMode == ThemeMode.dark),
+                          globalThemeMode == ThemeMode.dark ? 'dark' : 'light',
+                        ),
                         style: SioTextStyles.bodyStyle.apply(
                           color: SioColors.whiteBlue,
                         )),
