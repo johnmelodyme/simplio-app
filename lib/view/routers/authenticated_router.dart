@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/models/account.dart';
-import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/logic/bloc/auth/auth_bloc.dart';
 import 'package:simplio_app/logic/cubit/account/account_cubit.dart';
 import 'package:simplio_app/logic/cubit/account_wallet/account_wallet_cubit.dart';
+import 'package:simplio_app/view/extensions/localized_build_context_extension.dart';
 import 'package:simplio_app/view/guards/protected_guard.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/account_setup_failure_route.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/account_setup_success_route.dart';
@@ -28,8 +28,8 @@ import 'package:simplio_app/view/routers/authenticated_routes/password_change_ro
 import 'package:simplio_app/view/routers/authenticated_routes/pin_setup_route.dart';
 import 'package:simplio_app/view/routers/authenticated_routes/wallet_connect_qr_scanner_route.dart';
 import 'package:simplio_app/view/screens/authenticated_screens/application_loading_screen.dart';
-import 'package:simplio_app/view/shells/app_bar_shell.dart';
 import 'package:simplio_app/view/screens/not_found_screen.dart';
+import 'package:simplio_app/view/shells/app_bar_shell.dart';
 import 'package:simplio_app/view/shells/tab_bar_shell.dart';
 import 'package:simplio_app/view/shells/wallet_connect_shell.dart';
 import 'package:simplio_app/view/widgets/lock_with_shadow_icon.dart';
@@ -45,9 +45,21 @@ class AuthenticatedRouter {
   GoRouter get router {
     return GoRouter(
       navigatorKey: navRoot,
-      initialLocation: '/in/${DiscoveryRoute.path}',
+      initialLocation: DiscoveryRoute.path,
       debugLogDiagnostics: true,
       errorBuilder: (context, state) => const NotFoundScreen(),
+      redirect: (context, state) {
+        final s = context.read<AccountCubit>().state;
+        if (s is! AccountProvided) {
+          return '/set/${AccountSetupFailureRoute.path}';
+        }
+
+        if (s.account.securityLevel.index <= SecurityLevel.none.index) {
+          return '/set/${PinSetupRoute.path}';
+        }
+
+        return null;
+      },
       routes: [
         ShellRoute(
           navigatorKey: navWalletConnect,
@@ -78,105 +90,86 @@ class AuthenticatedRouter {
             );
           },
           routes: [
-            GoRoute(
-              path: '/in',
-              parentNavigatorKey: navWalletConnect,
-              builder: (_, __) => const ApplicationLoadingScreen(),
-              redirect: (context, state) {
-                final s = context.read<AccountCubit>().state;
-                if (s is! AccountProvided) {
-                  return '/set/${AccountSetupFailureRoute.path}';
-                }
-
-                if (s.account.securityLevel.index <= SecurityLevel.none.index) {
-                  return '/set/${PinSetupRoute.path}';
-                }
-
-                return null;
+            ShellRoute(
+              navigatorKey: navTabBar,
+              builder: (_, state, child) {
+                return TabBarShell(
+                  path: state.location,
+                  child: child,
+                );
               },
               routes: [
                 ShellRoute(
-                  navigatorKey: navTabBar,
+                  navigatorKey: navAppBar,
                   builder: (_, state, child) {
-                    return TabBarShell(
-                      path: state.location,
+                    return AppBarShell(
                       child: child,
                     );
                   },
                   routes: [
-                    ShellRoute(
-                      navigatorKey: navAppBar,
-                      builder: (_, state, child) {
-                        return AppBarShell(
-                          child: child,
-                        );
-                      },
-                      routes: [
-                        DiscoveryRoute(
-                          navigator: navAppBar,
-                        ).route,
-                        GamesRoute(
-                          navigator: navAppBar,
-                        ).route,
-                        InventoryRoute(
-                          navigator: navAppBar,
-                        ).route,
-                        FindDappsRoute(
-                          navigator: navAppBar,
-                        ).route,
-                      ],
-                    ),
+                    DiscoveryRoute(
+                      navigator: navAppBar,
+                    ).route,
+                    GamesRoute(
+                      navigator: navAppBar,
+                    ).route,
+                    InventoryRoute(
+                      navigator: navAppBar,
+                    ).route,
+                    FindDappsRoute(
+                      navigator: navAppBar,
+                    ).route,
                   ],
                 ),
-                GameplayRoute(
+              ],
+            ),
+            GameplayRoute(
+              navigator: navWalletConnect,
+            ).route,
+            GameDetailRoute(
+              navigator: navWalletConnect,
+            ).route,
+            AssetDetailRoute(
+              navigator: navWalletConnect,
+            ).route,
+            AssetReceiveRoute(
+              navigator: navWalletConnect,
+            ).route,
+            AssetSendFormRoute(
+              navigator: navWalletConnect,
+              routes: [
+                AssetSendSummaryRoute(
                   navigator: navWalletConnect,
                 ).route,
-                GameDetailRoute(
+              ],
+            ).route,
+            AssetSwapFormRoute(
+              navigator: navWalletConnect,
+              routes: [
+                AssetSwapSummaryRoute(
                   navigator: navWalletConnect,
                 ).route,
-                AssetDetailRoute(
-                  navigator: navWalletConnect,
-                ).route,
-                AssetReceiveRoute(
-                  navigator: navWalletConnect,
-                ).route,
-                AssetSendFormRoute(
+              ],
+            ).route,
+            WalletConnectQrScannerRoute(
+              navigator: navWalletConnect,
+            ).route,
+            ConfigurationRoute(
+              navigator: navWalletConnect,
+              routes: [
+                ConfigurationSecurityRoute(
                   navigator: navWalletConnect,
                   routes: [
-                    AssetSendSummaryRoute(
+                    PasswordChangeRoute(
                       navigator: navWalletConnect,
                     ).route,
-                  ],
-                ).route,
-                AssetSwapFormRoute(
-                  navigator: navWalletConnect,
-                  routes: [
-                    AssetSwapSummaryRoute(
+                    BackupInventoryRoute(
                       navigator: navWalletConnect,
-                    ).route,
-                  ],
-                ).route,
-                WalletConnectQrScannerRoute(
-                  navigator: navWalletConnect,
-                ).route,
-                ConfigurationRoute(
-                  navigator: navWalletConnect,
-                  routes: [
-                    ConfigurationSecurityRoute(
-                      navigator: navWalletConnect,
-                      routes: [
-                        PasswordChangeRoute(
-                          navigator: navWalletConnect,
-                        ).route,
-                        BackupInventoryRoute(
-                          navigator: navWalletConnect,
-                        ).route,
-                      ],
                     ).route,
                   ],
                 ).route,
               ],
-            ),
+            ).route,
           ],
         ),
         GoRoute(

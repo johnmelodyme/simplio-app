@@ -3,13 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:simplio_app/data/repositories/swap_repository.dart';
 import 'package:simplio_app/logic/bloc/asset_swap_form/asset_swap_form_bloc.dart';
 import 'package:simplio_app/logic/cubit/expansion_list/expansion_list_cubit.dart';
-import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/helpers/application_route.dart';
+import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/screens/authenticated_screens/asset_swap_form_screen.dart';
 
 class AssetSwapFormRoute extends ApplicationRoute with PageBuilderMixin {
   static const name = 'asset-swap-form';
-  static const path = 'swap';
+  static const path = '/swap';
 
   const AssetSwapFormRoute({
     required super.navigator,

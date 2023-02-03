@@ -6,7 +6,7 @@ import 'package:simplio_app/view/screens/authenticated_screens/discovery_screen.
 
 class DiscoveryRoute extends ApplicationRoute with PageBuilderMixin {
   static const name = 'discovery';
-  static const path = 'discovery';
+  static const path = '/discovery';
 
   const DiscoveryRoute({
     required super.navigator,

@@ -5,7 +5,7 @@ import 'package:simplio_app/view/screens/authenticated_screens/my_games_screen.d
 
 class GamesRoute extends ApplicationRoute with PageBuilderMixin {
   static const name = 'games';
-  static const path = 'games';
+  static const path = '/games';
 
   const GamesRoute({
     required super.navigator,

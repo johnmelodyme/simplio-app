@@ -10,7 +10,7 @@ import 'package:simplio_app/view/screens/authenticated_screens/game_detail_scree
 
 class GameDetailRoute extends ApplicationRoute with PageBuilderMixin {
   static const name = 'game-detail';
-  static const path = 'game/:gameId';
+  static const path = '/game/:gameId';
 
   const GameDetailRoute({
     required super.navigator,

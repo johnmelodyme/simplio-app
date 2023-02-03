@@ -1,11 +1,11 @@
 import 'package:go_router/go_router.dart';
-import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/helpers/application_route.dart';
+import 'package:simplio_app/view/mixins/page_builder_mixin.dart';
 import 'package:simplio_app/view/screens/authenticated_screens/asset_receive_screen.dart';
 
 class AssetReceiveRoute extends ApplicationRoute with PageBuilderMixin {
   static const name = 'asset-receive';
-  static const path = 'receive/:assetId/:networkId';
+  static const path = '/receive/:assetId/:networkId';
 
   const AssetReceiveRoute({
     required super.navigator,

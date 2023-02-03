@@ -10,7 +10,7 @@ import 'package:simplio_app/view/screens/authenticated_screens/inventory_screen.
 
 class InventoryRoute extends ApplicationRoute with PageBuilderMixin {
   static const name = 'inventory';
-  static const path = 'inventory';
+  static const path = '/inventory';
 
   const InventoryRoute({
     required super.navigator,
